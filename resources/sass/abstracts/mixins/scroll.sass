@@ -1,0 +1,27 @@
+@use '../variables' as variables
+
+@mixin scroll()
+    /*IE*/
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+        scrollbar-face-color: variables.$scroll-color
+        scrollbar-track-color: variables.$scroll-background
+        scrollbar-3dlight-color: variables.$scroll-background
+        scrollbar-darkshadow-color: variables.$scroll-background
+        scrollbar-arrow-color: variables.$scroll-background
+        -ms-overflow-style: -ms-autohiding-scrollbar
+        scrollbar-width: thin
+    /* for chrome */
+    @media screen and (-webkit-min-device-pixel-ratio: 0)
+        &::-webkit-scrollbar
+            width: 6px
+            height: 5px
+        &::-webkit-scrollbar-track
+            background-color: variables.$scroll-background
+        &::-webkit-scrollbar-thumb
+            background: variables.$scroll-color
+        &::-webkit-scrollbar-thumb:hover
+            background-color: variables.$scroll-color
+    /* for firefox */
+    @-moz-document url-prefix()
+        scrollbar-width: thin
+        scroll-behavior: smooth
