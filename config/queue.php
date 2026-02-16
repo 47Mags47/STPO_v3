@@ -104,7 +104,7 @@ return [
 
     'batching' => [
         'database' => env('DB_CONNECTION', 'sqlite'),
-        'table' => 'laravel_job_batches',
+        'table' => 'laravel__job_batches',
     ],
 
     /*
@@ -123,7 +123,7 @@ return [
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'sqlite'),
-        'table' => 'laravel_failed_jobs',
+        'table' => 'laravel__failed_jobs',
     ],
 
 ];
