@@ -1,0 +1,1 @@
+export { outsideClick } from "./outsideClick";
