@@ -11,6 +11,8 @@ class {{ class }} extends BaseModel
 
     ### Настройки
     ##################################################
+    protected $table = '';
+
     protected $fillable = [];
 
     ### Методы

@@ -4,7 +4,6 @@ namespace App\Classes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
@@ -58,23 +57,15 @@ abstract class BaseModel extends Model
     {
         $query = self::Filter();
 
-        $data = (request()->has('paginate') and (int) request()->input('paginate') > 0)
-            ? $query->paginate(request()->input('paginate'))
+        $paginate = getRequestPaginate();
+
+        $data = $paginate !== false
+            ? $query->paginate($paginate)
             : $query->get();
 
         return self::getGuessNames('resource')
             ? self::getGuessNames('resource')::collection($data)
             : $data->toResourceCollection();
-    }
-
-    public static function findFromArray(array $array) // DELETE
-    {
-        return self::where(function ($query) use ($array) {
-            foreach ($array as $column => $value) {
-                if (!in_array($column, new static()->getHidden()) and in_array($column, new static()->getFillable()))
-                    $query->where($column, $value);
-            }
-        })->get();
     }
 
     public static function randomOrCreate(array $attributes = [])

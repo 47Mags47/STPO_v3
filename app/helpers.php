@@ -15,3 +15,20 @@ if (! function_exists('user')) {
         return $user;
     }
 }
+
+if (! function_exists('getRequestPaginate')) {
+    function getRequestPaginate(): bool|int
+    {
+        if (request()->has('paginate')) {
+            if (request()->input('paginate') === 'false')
+                return false;
+
+            if (((int) request()->input('paginate')) === 0)
+                return false;
+
+            return (int) request()->input('paginate');
+        }
+
+        return 50;
+    }
+}
