@@ -7,7 +7,7 @@ export default {
         },
         type: {
             type: [String, null],
-            default: 'text',
+            default: "text",
         },
         name: {
             type: [String, null],
@@ -21,23 +21,27 @@ export default {
             type: Boolean,
             default: false,
         },
-        value:{
+        modelValue: {
             type: [String, Boolean, Number],
-            default: '',
+            default: "",
+        },
+        autocomplete: {
+            type: Boolean,
+            default: false,
         },
 
-        onInput:{
+        onInput: {
             type: Function,
-            default: () => { }
-        }
+            default: () => {},
+        },
     },
 
-    methods:{
-        inputHandler(e){
-            this.onInput(e)
-        }
+    methods: {
+        inputHandler(e) {
+            this.onInput(e);
+        },
     },
-}
+};
 </script>
 
 <template>
@@ -48,9 +52,10 @@ export default {
         :name
         :placeholder
         :required
-        :value
+        :autocomplete
+        :value="modelValue"
         @input="inputHandler"
-    >
+    />
 </template>
 
 <style lang="sass" scoped>

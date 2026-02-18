@@ -1,5 +1,5 @@
 <script>
-import Baseinput from './Baseinput.vue';
+import Baseinput from "./Baseinput.vue";
 
 export default {
     components: {
@@ -8,36 +8,45 @@ export default {
     props: {
         mask: {
             type: String,
-            default: ''
+            default: "",
         },
         value: {
             type: [String, Boolean, Number],
-            default: '',
+            default: "",
         },
         onInput: {
             type: Function,
-            default: () => { }
-        }
+            default: () => {},
+        },
     },
     methods: {
         inputHandler(e) {
-            this.onInput(e)
+            this.onInput(e);
 
             const MASKDEFINITIONS = {
                 "#": { pattern: /\d/ },
                 X: { pattern: /[0-9a-zA-Z]/ },
                 S: { pattern: /[a-zA-Z]/ },
-                A: { pattern: /[a-zA-Z]/, transform: (v) => v.toLocaleUpperCase() },
-                a: { pattern: /[a-zA-Z]/, transform: (v) => v.toLocaleLowerCase() },
+                A: {
+                    pattern: /[a-zA-Z]/,
+                    transform: (v) => v.toLocaleUpperCase(),
+                },
+                a: {
+                    pattern: /[a-zA-Z]/,
+                    transform: (v) => v.toLocaleLowerCase(),
+                },
                 "!": { escape: true },
-            }
+            };
 
             const maskedValue = [];
-            let value = e.target.value
+            let value = e.target.value;
             let unmaskedIndex = 0;
             let maskIndex = 0;
 
-            while (unmaskedIndex < value.length && maskIndex < this.mask.length) {
+            while (
+                unmaskedIndex < value.length &&
+                maskIndex < this.mask.length
+            ) {
                 const maskChar = this.mask[maskIndex];
                 const unmaskedChar = value[unmaskedIndex];
                 const maskDefinition = MASKDEFINITIONS[maskChar];
@@ -65,19 +74,18 @@ export default {
                 maskIndex++;
             }
 
-            let formattedValue = maskedValue.join('')
-            console.log(formattedValue);
+            let formattedValue = maskedValue.join("");
 
             e.target.value = formattedValue;
-            this.current_value = formattedValue
+            this.current_value = formattedValue;
         },
     },
     data() {
         return {
             current_value: this.value,
-        }
-    }
-}
+        };
+    },
+};
 </script>
 
 <template>

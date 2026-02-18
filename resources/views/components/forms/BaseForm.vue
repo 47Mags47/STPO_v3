@@ -1,47 +1,46 @@
 <script>
-import { Form } from '@inertiajs/vue3';
+import { Form } from "@inertiajs/vue3";
 
 export default {
     components: {
-        Form
+        Form,
     },
-    slots: [
-        'header',
-        'content',
-        'footer',
-    ],
+    slots: ["header", "content", "footer"],
     props: {
         classes: {
             type: [String, Array, Object],
-            default: null
+            default: null,
         },
         containerClasses: {
             type: [String, Array, Object],
-            default: 'form-container'
+            default: "form-container",
         },
         header: {
             type: String,
-            default: null
+            default: null,
         },
 
         action: {
-            type: Function | String,
+            type: [Function, String],
+            default: () => {},
         },
         method: {
             type: String,
-            default: 'POST',
+            default: "POST",
             validator(value) {
-                return ['GET', 'POST', 'PUT', 'DELETE'].includes(value.toUpperCase())
-            }
-        }
+                return ["GET", "POST", "PUT", "DELETE"].includes(
+                    value.toUpperCase(),
+                );
+            },
+        },
     },
     methods: {
         transform(data) {
-            if (method.toUpperCase() !== 'GET')
-                data._method = method.toUpperCase()
-        }
+            if (this.method.toUpperCase() !== "GET")
+                data._method = this.method.toUpperCase();
+        },
     },
-}
+};
 </script>
 
 <template>
@@ -50,6 +49,7 @@ export default {
             :class="classes"
             :method="method.toUpperCase() === 'GET' ? 'GET' : 'POST'"
             :transform
+            :action
         >
             <div class="form-header-container">
                 <template v-if="'header' in $slots">
@@ -78,4 +78,6 @@ export default {
             .form-header-container
                 text-align: center
                 font-weight: bold
+            .form-footer-container
+                margin-top: 10px
 </style>
