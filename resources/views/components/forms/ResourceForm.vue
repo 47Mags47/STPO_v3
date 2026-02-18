@@ -1,15 +1,17 @@
 <script>
-import VerticalForm from './VerticalForm.vue';
-import StringInput from '../inputs/StringInput.vue';
-import FormItem from '../FormItem.vue'
-import Select from '../inputs/Select.vue';
-import PhoneInput from '../inputs/PhoneInput.vue';
-import PhoneHasDobInput from '../inputs/PhoneHasDobInput.vue';
-import EmailInput from '../inputs/EmailInput.vue';
-import PasswordInput from '../inputs/PasswordInput.vue';
+import VerticalForm from "./VerticalForm.vue";
+import StringInput from "../inputs/StringInput.vue";
+import FormItem from "../FormItem.vue";
+import Select from "../inputs/Select.vue";
+import PhoneInput from "../inputs/PhoneInput.vue";
+import PhoneHasDobInput from "../inputs/PhoneHasDobInput.vue";
+import EmailInput from "../inputs/EmailInput.vue";
+import PasswordInput from "../inputs/PasswordInput.vue";
+import BlueButton from "../buttons/BlueButton.vue";
+import CheckBox from "../inputs/CheckBox.vue";
 
 export default {
-    components:{
+    components: {
         VerticalForm,
         FormItem,
         StringInput,
@@ -18,51 +20,61 @@ export default {
         EmailInput,
         PasswordInput,
         Select,
+        BlueButton,
+        CheckBox,
     },
-    props:{
+    props: {
         inputs: {
             type: Array,
-            default(){
-                return []
+            default() {
+                return [];
             },
-            validator(value){
+            validator(value) {
                 let hasInvalidType = value.filter((input) => {
                     return ![
-                        'string',
-                        'number',
-                        'email',
-                        'phone',
-                        'phoneHasDob',
-                        'password',
-                        'text',
-                        'select',
-                    ].includes(input.type)
+                        "string",
+                        "number",
+                        "email",
+                        "phone",
+                        "phoneHasDob",
+                        "password",
+                        "text",
+                        "select",
+                        "checkbox",
+                    ].includes(input.type);
                 });
 
-                if(hasInvalidType.length !== 0){
-                    hasInvalidType.forEach(input => {
-                        throw new Error(`Недействительный тип "${input.type}"!`)
+                if (hasInvalidType.length !== 0) {
+                    hasInvalidType.forEach((input) => {
+                        throw new Error(
+                            `Недействительный тип "${input.type}"!`,
+                        );
                     });
 
-                    return false
+                    return false;
                 }
 
-                return true
-            }
-        }
+                return true;
+            },
+        },
+        sbm: {
+            type: String,
+            default: "Сохранить",
+        },
     },
-    slots: [
-        'default'
-    ],
-    methods:{
-        prepareProps(input){
-            delete input.type
-            delete input.label
+    slots: ["default"],
+    methods: {
+        prepareProps(input) {
+            delete input.type;
+            delete input.label;
 
-            return input
-        }
-    }
-}
+            return input;
+        },
+        getFormItemOrientation(input) {
+            if (input.type === "checkbox") return "horizontal-reverse";
+        },
+    },
+};
 </script>
 
 <template>
@@ -72,17 +84,42 @@ export default {
         </template>
 
         <template v-if="!('content' in $slots)" #content>
-            <FormItem v-for="input in inputs"
+            <FormItem
+                v-for="input in inputs"
                 :label="input.label"
                 :for="input.id ?? input.name"
+                :orientation="getFormItemOrientation(input)"
             >
-                <StringInput        v-if="input.type === 'string'"      v-bind="prepareProps(input)"/>
-                <PhoneInput         v-if="input.type === 'phone'"       v-bind="prepareProps(input)"/>
-                <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'" v-bind="prepareProps(input)"/>
-                <EmailInput         v-if="input.type === 'email'"       v-bind="prepareProps(input)"/>
-                <PasswordInput      v-if="input.type === 'password'"    v-bind="prepareProps(input)"/>
-                <Select             v-if="input.type === 'select'"      v-bind="prepareProps(input)"/>
+                <StringInput
+                    v-if="input.type === 'string'"
+                    v-bind="prepareProps(input)"
+                />
+                <PhoneInput
+                    v-if="input.type === 'phone'"
+                    v-bind="prepareProps(input)"
+                />
+                <PhoneHasDobInput
+                    v-if="input.type === 'phoneHasDob'"
+                    v-bind="prepareProps(input)"
+                />
+                <EmailInput
+                    v-if="input.type === 'email'"
+                    v-bind="prepareProps(input)"
+                />
+                <PasswordInput
+                    v-if="input.type === 'password'"
+                    v-bind="prepareProps(input)"
+                />
+                <Select
+                    v-if="input.type === 'select'"
+                    v-bind="prepareProps(input)"
+                />
+                <CheckBox
+                    v-if="input.type === 'checkbox'"
+                    v-bind="prepareProps(input)"
+                />
             </FormItem>
+            <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>
     </VerticalForm>
 </template>

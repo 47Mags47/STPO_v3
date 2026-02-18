@@ -2,6 +2,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import "./helpers";
 import * as derectives from "./derectives";
+import { ZiggyVue } from "ziggy-js";
 
 const app = createInertiaApp({
     resolve: (name) => {
@@ -12,7 +13,8 @@ const app = createInertiaApp({
         const app = createApp({ render: () => h(App, props) });
 
         app.use(plugin);
-        app.directive('outsideClick', derectives.outsideClick)
+        app.use(ZiggyVue, Ziggy);
+        app.directive("outsideClick", derectives.outsideClick);
         app.mount(el);
     },
 });

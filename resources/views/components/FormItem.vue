@@ -3,21 +3,31 @@ export default {
     props: {
         label: {
             type: String,
-            default: ''
+            default: "",
         },
         for: {
             type: String,
-            default: ''
-        }
+            default: "",
+        },
+        orientation: {
+            type: String,
+            default: "vertical",
+            validator(value) {
+                return [
+                    "horizontal",
+                    "vertical",
+                    "vertical-reverse",
+                    "horizontal-reverse",
+                ].includes(value);
+            },
+        },
     },
-    slots: [
-        'default'
-    ]
-}
+    slots: ["default"],
+};
 </script>
 
 <template>
-    <div class="form-item-container">
+    <div class="form-item-container" :data-orientation="orientation">
         <label :for>{{ label }}</label>
         <slot name="default" />
     </div>
@@ -25,12 +35,35 @@ export default {
 
 <style lang="sass" scoped>
 .form-item-container
-    display: flex
-    gap: 3px
-    flex-direction: column
-    :deep()
+    label
+        padding-left: 7px
+        color: #333
+        font-weight: bold
+
+    &[data-orientation="vertical"]
+        display: flex
+        flex-direction: column
+        gap: 5px
+
+    &[data-orientation="horizontal"]
+        height: $input-height
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        flex-direction: row
         label
-            padding-left: 7px
-            color: #333
-            font-weight: 600
+            width: 100%
+    &[data-orientation="vertical-reverse"]
+        display: flex
+        flex-direction: column-reverse
+        gap: 5px
+
+    &[data-orientation="horizontal-reverse"]
+        height: $input-height
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        flex-direction: row-reverse
+        label
+            width: 100%
 </style>
