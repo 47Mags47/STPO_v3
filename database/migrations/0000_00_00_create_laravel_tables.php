@@ -12,20 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         ### CACHE
-        Schema::create('laravel_cache', function (Blueprint $table) {
+        Schema::create('laravel__cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->integer('expiration')->index();
         });
 
-        Schema::create('laravel_cache_locks', function (Blueprint $table) {
+        Schema::create('laravel__cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration')->index();
         });
 
         ### JOBS
-        Schema::create('laravel_jobs', function (Blueprint $table) {
+        Schema::create('laravel__jobs', function (Blueprint $table) {
             $table->id();
             $table->string('queue')->index();
             $table->longText('payload');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedInteger('created_at');
         });
 
-        Schema::create('laravel_job_batches', function (Blueprint $table) {
+        Schema::create('laravel__job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');
             $table->integer('total_jobs');
@@ -48,7 +48,7 @@ return new class extends Migration
             $table->integer('finished_at')->nullable();
         });
 
-        Schema::create('laravel_failed_jobs', function (Blueprint $table) {
+        Schema::create('laravel__failed_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
             $table->text('connection');
@@ -64,10 +64,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laravel_failed_jobs');
-        Schema::dropIfExists('laravel_job_batches');
-        Schema::dropIfExists('laravel_jobs');
-        Schema::dropIfExists('laravel_cache_locks');
-        Schema::dropIfExists('laravel_cache');
+        Schema::dropIfExists('laravel__failed_jobs');
+        Schema::dropIfExists('laravel__job_batches');
+        Schema::dropIfExists('laravel__jobs');
+        Schema::dropIfExists('laravel__cache_locks');
+        Schema::dropIfExists('laravel__cache');
     }
 };
