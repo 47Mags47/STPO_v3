@@ -14,6 +14,6 @@ class LocalSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call(Local\DivisionSeeder::class);
     }
 }
