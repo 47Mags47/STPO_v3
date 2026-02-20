@@ -7,6 +7,8 @@ use App\Http\Requests\Base\TemplateStoreRequest;
 use App\Http\Requests\Base\TemplateUpdateRequest;
 use App\Models\File;
 use App\Models\Template;
+use App\Models\TemplateStyle;
+use App\Models\TemplateType;
 use Inertia\Inertia;
 
 class TemplateController extends Controller
@@ -20,7 +22,10 @@ class TemplateController extends Controller
 
     public function create()
     {
-        return Inertia::render('base/templates/create');
+        return Inertia::render('base/templates/create', [
+            'templateTypes' => fn() => TemplateType::getResource(),
+            'templateStyles' => fn() => TemplateStyle::getResource(),
+        ]);
     }
 
     public function store(TemplateStoreRequest $request)
@@ -42,6 +47,8 @@ class TemplateController extends Controller
     {
         return Inertia::render('base/templates/edit', [
             'template' => fn() => $template,
+            'templateTypes' => fn() => TemplateType::getResource(),
+            'templateStyles' => fn() => TemplateStyle::getResource(),
         ]);
     }
 
