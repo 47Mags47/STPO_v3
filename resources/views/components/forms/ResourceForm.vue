@@ -65,10 +65,8 @@ export default {
     slots: ["default"],
     methods: {
         prepareProps(input) {
-            delete input.type;
-            delete input.label;
-
-            return input;
+            const { type, label, ...rest } = input;
+            return rest;
         },
         getFormItemOrientation(input) {
             if (input.type === "checkbox") return "horizontal-reverse";

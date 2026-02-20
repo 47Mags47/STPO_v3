@@ -1,1 +1,1 @@
-import './Object'
+import "./Object";

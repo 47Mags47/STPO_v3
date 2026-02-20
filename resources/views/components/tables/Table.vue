@@ -12,7 +12,7 @@ export default {
 <template>
     <div class="table-container">
         <div class="table-header">
-            <div class="header" v-if="header === null">
+            <div class="header" v-if="!(header === null)">
                 <h3>
                     {{ header }}
                 </h3>
@@ -47,72 +47,45 @@ export default {
 
 <style lang="sass">
 .table-container
-  width: 100%
-  display: flex
-  flex-direction: column
-  gap: 1rem
-  padding: 1.25rem
-  border-radius: 12px
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 1rem
+    padding: 1.25rem
+    border-radius: 12px
 
     .header
-    font-size: 1.25rem
-    font-weight: 600
-    color: $table-color
-    line-height: 1.3
-
-    .toolbar
-    display: flex
-    justify-content: space-between
-    align-items: center
-    gap: 1rem
-
-    .table-border-wrapper
-    border: $table-border
-    border-radius: 10px
-    overflow: hidden
-
-    .table
-    width: 100%
-    border-collapse: separate
-    border-spacing: 0
-    font-size: 0.875rem
-    color: $table-color
-    min-width: 600px
-
-    thead
-        background: $table-thead-background
-
-        th
-        padding: 14px 16px
-        font-size: 0.75rem
         font-weight: 600
-        text-transform: uppercase
-        letter-spacing: 0.04em
-        color: $table-color
-        text-align: left
-        border-bottom: $table-border
-        position: sticky
-        top: 0
-        z-index: 2
+        color: #1f2937
+        line-height: 1.3
 
-    tbody
-        tr
-        transition: background 0.15s ease
+        .toolbar
+            display: flex
+            justify-content: space-between
+            align-items: center
+            gap: 1rem
 
-        &:nth-child(even)
-            background: $table-background
+    .table-content
+        border: $table-border
+        border-radius: 10px
+        overflow: hidden
 
-        &:hover
-            background: $table-background-hover
+        table
+            width: 100%
+            border-collapse: separate
+            border-spacing: 0
+            color: #374151
+            min-width: 600px
+            tbody
+                tr
+                    transition: background 0.15s ease
 
-        td
-            padding: 14px 16px
-            border-bottom:  $table-border
-            vertical-align: middle
-            white-space: nowrap
-            overflow: hidden
-            text-overflow: ellipsis
+                    &:nth-child(even)
+                        background: #f9fafb
 
-    tbody tr:last-child td
-        border-bottom: none
+                    &:hover
+                        background: #eef2ff
+
+            tbody tr:last-child td
+                border-bottom: none
 </style>
