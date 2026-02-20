@@ -25,8 +25,13 @@ class Template extends BaseModel
 
     ### Связи
     ##################################################
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(TemplateType::class, 'type_id');
+    }
+
     public function style(): BelongsTo
     {
-        return $this->belongsTo(TemplateStyle::class, 'type_id');
+        return $this->belongsTo(TemplateStyle::class, 'style_id');
     }
 }
