@@ -17,3 +17,35 @@
 
 
 ### BACK-END
+- [x] b_1 - Добавить ModulGroupController (Контроллер групп пунктов меню)
+    - [x] b_1_1 - Controller
+    - [x] b_1_2 - Store Request
+    - [x] b_1_3 - Update Request
+    - [x] b_1_4 - Resource
+    - [x] b_1_5 - Model
+    - [x] b_1_6 - Factory
+    - [x] b_1_7 - Migration
+    - [x] b_1_8 - Route
+    - [x] b_1_9 - Controller Test
+
+- [ ] Добавить ModulController (Контроллер пунктов меню)
+    - [ ] b_1_1 - Controller
+    - [ ] b_1_2 - Store Request
+    - [ ] b_1_3 - Update Request
+    - [ ] b_1_4 - Resource
+    - [ ] b_1_5 - Model
+    - [ ] b_1_6 - Factory
+    - [ ] b_1_7 - Migration
+    - [ ] b_1_8 - Route
+    - [ ] b_1_9 - Controller Test
+
+- [ ] b_2 - Добавить Appeal (Контроллер групп пунктов меню)
+    - [ ] b_2_1 - Controller
+    - [ ] b_2_2 - Store Request
+    - [ ] b_2_3 - Update Request
+    - [ ] b_2_4 - Resource
+    - [ ] b_2_5 - Model
+    - [ ] b_2_6 - Factory
+    - [ ] b_2_7 - Migration
+    - [ ] b_2_8 - Route
+    - [ ] b_2_9 - Controller Test
