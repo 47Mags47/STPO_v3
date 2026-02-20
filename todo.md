@@ -8,6 +8,11 @@
 - [x] f_7 - сделать компонент editButton
 - [x] f_8 - сделать компонент createButton
 - [x] f_9 - сделать компонент deleteButton
+- [ ] f_10 - сделать странички template
+    - [ ] f_10_1 - index
+    - [ ] f_10_2 - edit
+    - [ ] f_10_3 - create
+
 
 
 
