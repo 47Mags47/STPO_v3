@@ -40,10 +40,13 @@ trait TestInertiaUpdateMethod
     public function test_update_method_edit_record_in_the_database()
     {
         $record = $this->createRecord();
+
         $payload = $this->getPayload();
+        $fillable = (new $this->model)->getFillable();
+        $search = array_intersect_key($payload, array_flip($fillable));
 
         $this->sendUpdateRequest($record->id, $payload);
 
-        $this->assertDatabaseHas($this->model::getTableName(), $payload);
+        $this->assertDatabaseHas($this->model::getTableName(), $search);
     }
 }

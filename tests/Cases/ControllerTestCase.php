@@ -28,7 +28,7 @@ abstract class ControllerTestCase extends TestCase
         'destroy',
     ];
 
-    public function getPayload()
+    public function getPayload(): array
     {
         $fillable = (new $this->model)->getFillable();
         $data = $this->model::factory()->make()->toArray();

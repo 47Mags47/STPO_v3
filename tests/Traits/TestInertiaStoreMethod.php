@@ -29,6 +29,9 @@ trait TestInertiaStoreMethod
         $payload = $this->getPayload();
         $this->sendStoreRequest($payload);
 
-        $this->assertDatabaseHas($this->model::getTableName(), $payload);
+        $fillable = (new $this->model)->getFillable();
+        $search = array_intersect_key($payload, array_flip($fillable));
+
+        $this->assertDatabaseHas($this->model::getTableName(), $search);
     }
 }

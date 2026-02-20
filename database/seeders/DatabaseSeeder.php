@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
                 $this->call(LocalSeeder::class);
                 break;
 
-            case 'test':
+            case 'testing':
                 $this->call(Prod\ProdSeeder::class);
                 $this->call(TestSeeder::class);
                 break;

@@ -31,8 +31,10 @@ trait TestInertiaDestroyMethod {
 
     public function test_destroy_method_delete_record_in_the_database(){
         $record = $this->model::factory()->create();
+        $fillable = (new $this->model)->getFillable();
+        $search = array_intersect_key($record->toArray(), array_flip($fillable));
 
         $this->getDeleteResponse($record->id);
-        $this->assertDatabaseMissing($this->model::getTableName(), $record->toArray());
+        $this->assertDatabaseMissing($this->model::getTableName(), $search);
     }
 }
