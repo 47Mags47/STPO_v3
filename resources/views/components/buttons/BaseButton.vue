@@ -48,6 +48,10 @@ export default {
 
 <style lang="sass" scoped>
 .button
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 5px
     width: 100%
     height: 100%
     min-height: $input-height
