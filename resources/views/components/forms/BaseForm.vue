@@ -34,12 +34,6 @@ export default {
             },
         },
     },
-    methods: {
-        transform(data) {
-            if (this.method.toUpperCase() !== "GET")
-                data._method = this.method.toUpperCase();
-        },
-    },
 };
 </script>
 
@@ -48,8 +42,7 @@ export default {
         <Form
             :class="classes"
             :method="method.toUpperCase() === 'GET' ? 'GET' : 'POST'"
-            :transform
-            :action
+            :action="action"
         >
             <div class="form-header-container">
                 <template v-if="'header' in $slots">
@@ -76,6 +69,7 @@ export default {
     :deep()
         form
             .form-header-container
+                padding-bottom: 20px
                 text-align: center
                 font-weight: bold
             .form-footer-container
