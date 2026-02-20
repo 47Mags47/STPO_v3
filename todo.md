@@ -39,7 +39,7 @@
     - [ ] b_1_8 - Route
     - [ ] b_1_9 - Controller Test
 
-- [ ] b_2 - Добавить Appeal (Контроллер групп пунктов меню)
+- [ ] b_2 - Добавить AppealController (Обращения)
     - [ ] b_2_1 - Controller
     - [ ] b_2_2 - Store Request
     - [ ] b_2_3 - Update Request
@@ -49,3 +49,35 @@
     - [ ] b_2_7 - Migration
     - [ ] b_2_8 - Route
     - [ ] b_2_9 - Controller Test
+
+- [ ] b_base_template
+    - [ ] Template
+        - [ ] b_base_template_1 - Controller
+        - [ ] b_base_template_2 - Store Request
+        - [ ] b_base_template_3 - Update Request
+        - [ ] b_base_template_4 - Resource
+        - [ ] b_base_template_5 - Model
+        - [ ] b_base_template_6 - Factory
+        - [ ] b_base_template_7 - Migration
+        - [ ] b_base_template_8 - Route
+        - [ ] b_base_template_9 - Controller Test
+    - [ ] TemplateType
+        - [ ] b_base_templateType_1 - Controller
+        - [ ] b_base_templateType_2 - Store Request
+        - [ ] b_base_templateType_3 - Update Request
+        - [ ] b_base_templateType_4 - Resource
+        - [ ] b_base_templateType_5 - Model
+        - [ ] b_base_templateType_6 - Factory
+        - [ ] b_base_templateType_7 - Migration
+        - [ ] b_base_templateType_8 - Route
+        - [ ] b_base_templateType_9 - Controller Test
+    - [ ] TemplateStyle
+        - [ ] b_base_templateStyle_1 - Controller
+        - [ ] b_base_templateStyle_2 - Store Request
+        - [ ] b_base_templateStyle_3 - Update Request
+        - [ ] b_base_templateStyle_4 - Resource
+        - [ ] b_base_templateStyle_5 - Model
+        - [ ] b_base_templateStyle_6 - Factory
+        - [ ] b_base_templateStyle_7 - Migration
+        - [ ] b_base_templateStyle_8 - Route
+        - [ ] b_base_templateStyle_9 - Controller Test
