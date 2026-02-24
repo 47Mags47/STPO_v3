@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Local;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,6 +14,7 @@ class LocalSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(Local\DivisionSeeder::class);
+        $this->call(Base\DivisionSeeder::class);
+        $this->call(Base\TemplateSeeder::class);
     }
 }

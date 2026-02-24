@@ -17,6 +17,9 @@ class ProdSeeder extends Seeder
         $this->call(Base\TemplateStyleSeeder::class);
         $this->call(Base\TemplateTypeSeeder::class);
 
+        $this->call(Base\ModulGroupSeeder::class);
+        $this->call(Base\ModulSeeder::class);
+
         $this->call(Auth\UserSeeder::class);
     }
 }

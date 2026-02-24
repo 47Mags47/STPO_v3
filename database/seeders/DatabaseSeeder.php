@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
                 break;
             case 'local':
                 $this->call(Prod\ProdSeeder::class);
-                $this->call(LocalSeeder::class);
+                $this->call(Local\LocalSeeder::class);
                 break;
 
             case 'testing':
