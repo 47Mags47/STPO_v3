@@ -28,16 +28,16 @@
     - [x] b_1_8 - Route
     - [x] b_1_9 - Controller Test
 
-- [ ] Добавить ModulController (Контроллер пунктов меню)
-    - [ ] b_1_1 - Controller
-    - [ ] b_1_2 - Store Request
-    - [ ] b_1_3 - Update Request
-    - [ ] b_1_4 - Resource
-    - [ ] b_1_5 - Model
-    - [ ] b_1_6 - Factory
-    - [ ] b_1_7 - Migration
-    - [ ] b_1_8 - Route
-    - [ ] b_1_9 - Controller Test
+- [x] Добавить ModulController (Контроллер пунктов меню)
+    - [x] b_1_1 - Controller
+    - [x] b_1_2 - Store Request
+    - [x] b_1_3 - Update Request
+    - [x] b_1_4 - Resource
+    - [x] b_1_5 - Model
+    - [x] b_1_6 - Factory
+    - [x] b_1_7 - Migration
+    - [x] b_1_8 - Route
+    - [x] b_1_9 - Controller Test
 
 - [ ] b_2 - Добавить AppealController (Обращения)
     - [ ] b_2_1 - Controller
