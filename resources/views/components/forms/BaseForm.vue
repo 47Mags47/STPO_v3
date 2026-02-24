@@ -39,11 +39,7 @@ export default {
 
 <template>
     <div :class="containerClasses">
-        <Form
-            :class="classes"
-            :method="method.toUpperCase() === 'GET' ? 'GET' : 'POST'"
-            :action="action"
-        >
+        <Form :class="classes" :method="method.toUpperCase()" :action="action">
             <div class="form-header-container">
                 <template v-if="'header' in $slots">
                     <slot name="header" />

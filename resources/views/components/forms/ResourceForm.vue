@@ -9,6 +9,8 @@ import EmailInput from "../inputs/EmailInput.vue";
 import PasswordInput from "../inputs/PasswordInput.vue";
 import BlueButton from "../buttons/BlueButton.vue";
 import CheckBox from "../inputs/CheckBox.vue";
+import NumberInput from "../inputs/NumberInput.vue";
+import FileInput from "../inputs/FileInput.vue";
 
 export default {
     components: {
@@ -22,6 +24,8 @@ export default {
         Select,
         BlueButton,
         CheckBox,
+        NumberInput,
+        FileInput,
     },
     props: {
         inputs: {
@@ -41,6 +45,7 @@ export default {
                         "text",
                         "select",
                         "checkbox",
+                        "file",
                     ].includes(input.type);
                 });
 
@@ -90,6 +95,14 @@ export default {
             >
                 <StringInput
                     v-if="input.type === 'string'"
+                    v-bind="prepareProps(input)"
+                />
+                <NumberInput
+                    v-if="input.type === 'number'"
+                    v-bind="prepareProps(input)"
+                />
+                <FileInput
+                    v-if="input.type === 'file'"
                     v-bind="prepareProps(input)"
                 />
                 <PhoneInput

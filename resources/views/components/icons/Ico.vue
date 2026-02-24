@@ -3,6 +3,7 @@ import { defineAsyncComponent } from "vue";
 
 export default {
     components: {
+        // DEV Привести к единству
         ChevronDownIco: defineAsyncComponent(
             () => import("./ChevronDownIco.vue"),
         ),
@@ -17,6 +18,7 @@ export default {
         ChevronDoubleRightIco: defineAsyncComponent(
             () => import("./ChevronDoubleRightIco.vue"),
         ),
+        XIco: defineAsyncComponent(() => import("./XIco.vue")),
     },
     props: {
         type: {
@@ -31,6 +33,7 @@ export default {
                     "database-x",
                     "chevron-double-left",
                     "chevron-double-right",
+                    "x",
                 ];
 
                 if (!allowedTypes.includes(value)) {
@@ -48,7 +51,8 @@ export default {
     <PenIco v-if="type === 'pen'" />
     <PlusIco v-if="type === 'plus'" />
     <GoToIco v-if="type === 'goto'" />
-    <DatabaseXIco v-if="type === 'database-x'" class="database-ico" />
+    <DatabaseXIco v-if="type === 'database-x'" />
     <ChevronDoubleLeftIco v-if="type === 'chevron-double-left'" />
     <ChevronDoubleRightIco v-if="type === 'chevron-double-right'" />
+    <XIco v-if="type === 'x'" />
 </template>

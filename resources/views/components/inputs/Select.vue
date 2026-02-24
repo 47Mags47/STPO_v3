@@ -37,9 +37,17 @@ export default {
             open: false,
             search: "",
             activeIndex: -1,
-            selected: this.value,
+            selected: null,
             backspaced: false,
         };
+    },
+    watch: {
+        value: {
+            immediate: true,
+            handler(val) {
+                this.setSelectedByValue(val);
+            },
+        },
     },
 
     computed: {
@@ -72,6 +80,15 @@ export default {
     },
 
     methods: {
+        setSelectedByValue(val) {
+            if (!val) {
+                this.selected = null;
+                return;
+            }
+
+            const found = this.list.find((o) => o.value === val);
+            this.selected = found || null;
+        },
         openList() {
             this.open = true;
             this.setInitialActive();
@@ -185,7 +202,7 @@ export default {
             />
 
             <div class="ico-container" :class="{ rotated: open }">
-                <Ico type="ChevronDown" />
+                <Ico type="chevronDown" />
             </div>
         </div>
 
