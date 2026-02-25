@@ -89,7 +89,7 @@
         - [x] b_base_template_8 - Route
         - [x] b_base_template_9 - Controller Test
 
-- [ ] b_2 - Добавить Appeal`s (Обращения)
+- [x] b_2 - Добавить Appeal`s (Обращения)
     - [x] Добавить AppealThemGroup`s (группы тем)
         - [x] b_2_1 - Controller
         - [x] b_2_2 - Store Request
@@ -100,23 +100,23 @@
         - [x] b_2_7 - Migration
         - [x] b_2_8 - Route
         - [x] b_2_9 - Controller Test
-    - [ ] Добавить AppealThem`s (темы)
-        - [ ] b_2_1 - Controller
-        - [ ] b_2_2 - Store Request
-        - [ ] b_2_3 - Update Request
-        - [ ] b_2_4 - Resource
-        - [ ] b_2_5 - Model
-        - [ ] b_2_6 - Factory
-        - [ ] b_2_7 - Migration
-        - [ ] b_2_8 - Route
-        - [ ] b_2_9 - Controller Test
-    - [ ] Добавить Appeal`s (обращения)
-        - [ ] b_2_1 - Controller
-        - [ ] b_2_2 - Store Request
-        - [ ] b_2_3 - Update Request
-        - [ ] b_2_4 - Resource
-        - [ ] b_2_5 - Model
-        - [ ] b_2_6 - Factory
-        - [ ] b_2_7 - Migration
-        - [ ] b_2_8 - Route
-        - [ ] b_2_9 - Controller Test
+    - [x] Добавить AppealThem`s (темы)
+        - [x] b_2_1 - Controller
+        - [x] b_2_2 - Store Request
+        - [x] b_2_3 - Update Request
+        - [x] b_2_4 - Resource
+        - [x] b_2_5 - Model
+        - [x] b_2_6 - Factory
+        - [x] b_2_7 - Migration
+        - [x] b_2_8 - Route
+        - [x] b_2_9 - Controller Test
+    - [x] Добавить Appeal`s (обращения)
+        - [x] b_2_1 - Controller
+        - [x] b_2_2 - Store Request
+        - [x] b_2_3 - Update Request
+        - [x] b_2_4 - Resource
+        - [x] b_2_5 - Model
+        - [x] b_2_6 - Factory
+        - [x] b_2_7 - Migration
+        - [x] b_2_8 - Route
+        - [x] b_2_9 - Controller Test
