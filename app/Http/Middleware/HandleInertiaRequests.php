@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\CurrentUserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,6 +39,9 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'currentUser' => Auth::user() !== null
+                ? CurrentUserResource::make(Auth::user())
+                : null,
             //
         ];
     }
