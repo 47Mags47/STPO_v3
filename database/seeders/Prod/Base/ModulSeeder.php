@@ -16,5 +16,7 @@ class ModulSeeder extends Seeder
         Modul::create(['name' => 'Список групп модулей',    'route_name' => 'modul-groups', 'group_id' => ModulGroup::byCode('administrate')->id, 'creator_id' => null]);
         Modul::create(['name' => 'Список модулей',          'route_name' => 'moduls',       'group_id' => ModulGroup::byCode('administrate')->id, 'creator_id' => null]);
         Modul::create(['name' => 'Список организаций',      'route_name' => 'divisions',    'group_id' => ModulGroup::byCode('administrate')->id, 'creator_id' => null]);
+        Modul::create(['name' => 'Список пользователей',    'route_name' => 'users',        'group_id' => ModulGroup::byCode('administrate')->id, 'creator_id' => null]);
+        Modul::create(['name' => 'Список шаблонов',         'route_name' => 'templates',    'group_id' => ModulGroup::byCode('administrate')->id, 'creator_id' => null]);
     }
 }

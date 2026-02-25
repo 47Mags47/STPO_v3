@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\CurrentUserResource;
+use App\Http\Resources\MenuResource;
+use App\Models\ModulGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -42,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             'currentUser' => Auth::user() !== null
                 ? CurrentUserResource::make(Auth::user())
                 : null,
-            //
+            'menu' => MenuResource::collection(ModulGroup::all()),
         ];
     }
 }
