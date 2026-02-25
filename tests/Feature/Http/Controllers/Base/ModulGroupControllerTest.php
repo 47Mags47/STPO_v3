@@ -18,7 +18,6 @@ use Tests\Traits\TestInertiaDestroyMethod;
 
 class ModulGroupControllerTest extends ControllerTestCase
 {
-
     use
         TestInertiaIndexMethod,
         TestInertiaCreateMethod,

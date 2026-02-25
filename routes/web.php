@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/test', function () {
-    return Inertia::render('pages/test');
+    return Inertia::render('test');
 });
 
 Route::get('/', fn() => 'home page')->name('home');

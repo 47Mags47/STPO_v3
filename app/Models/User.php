@@ -58,10 +58,6 @@ class User extends BaseModel implements
         ];
     }
 
-     ### Методы
-    ##################################################
-    //
-
     ### Связи
     ##################################################
     public function divisions(): BelongsToMany

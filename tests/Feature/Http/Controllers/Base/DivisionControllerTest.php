@@ -17,7 +17,6 @@ use Tests\Traits\TestInertiaDestroyMethod;
 
 class DivisionControllerTest extends ControllerTestCase
 {
-
     use
         TestInertiaIndexMethod,
         TestInertiaCreateMethod,

@@ -2,8 +2,6 @@
 
 namespace Tests\Traits;
 
-use Illuminate\Support\Str;
-
 trait TestInertiaUpdateMethod
 {
     public function createRecord()

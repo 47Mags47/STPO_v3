@@ -4,7 +4,6 @@ namespace Database\Seeders\Prod\Base;
 
 use App\Models\TemplateStyle;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class TemplateStyleSeeder extends Seeder
 {

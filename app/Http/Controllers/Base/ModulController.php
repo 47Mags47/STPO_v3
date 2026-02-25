@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Base\ModulStoreRequest;
 use App\Http\Requests\Base\ModulUpdateRequest;
 use App\Models\Modul;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ModulController extends Controller
