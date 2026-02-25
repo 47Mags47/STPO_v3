@@ -13,7 +13,14 @@
     - [x] f_10_2 - edit
     - [x] f_10_3 - create
 - [ ] f_11 - прееделать логику стилей кнопок(убрать min-haight сделать так чтобы контейнер определял высоту кнопок)
-
+- [ ] f_12 - сделать странички modul-groups
+    - [ ] f_12_1 - index
+    - [ ] f_12_2 - edit
+    - [ ] f_12_3 - create
+- [ ] f_13 - сделать странички modul
+    - [ ] f_13_1 - index
+    - [ ] f_13_2 - edit
+    - [ ] f_13_3 - create
 
     
 
@@ -107,3 +114,4 @@
         - [ ] b_2_7 - Migration
         - [ ] b_2_8 - Route
         - [ ] b_2_9 - Controller Test
+- [ ] base/modulController create/edit добавить пропс модульгрупп
