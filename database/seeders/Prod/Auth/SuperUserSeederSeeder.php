@@ -2,18 +2,19 @@
 
 namespace Database\Seeders\Prod\Auth;
 
+use App\Models\Auth\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class SuperUserSeederSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        User::create([
+        $superuser = User::create([
             'first_name'        => 'root',
             'last_name'         => null,
             'middle_name'       => null,
@@ -24,5 +25,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password_expired'  => false,
         ]);
+
+        $superuser->roles()->attach(Role::byCode('system_user')->id);
     }
 }

@@ -20,6 +20,7 @@ class ProdSeeder extends Seeder
         $this->call(Base\ModulGroupSeeder::class);
         $this->call(Base\ModulSeeder::class);
 
-        $this->call(Auth\UserSeeder::class);
+        $this->call(Auth\RolesAndPermissionsSeeder::class);
+        $this->call(Auth\SuperUserSeederSeeder::class);
     }
 }
