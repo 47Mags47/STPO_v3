@@ -21,5 +21,8 @@ class ProdSeeder extends Seeder
         $this->call(Base\ModulSeeder::class);
 
         $this->call(Auth\UserSeeder::class);
+
+        $this->call(Appeal\ThemSeeder::class);
+        $this->call(Appeal\StatusSeeder::class);
     }
 }

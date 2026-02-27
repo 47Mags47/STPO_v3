@@ -16,5 +16,6 @@ class LocalSeeder extends Seeder
     {
         $this->call(Base\DivisionSeeder::class);
         $this->call(Base\TemplateSeeder::class);
+        $this->call(Appeal\AppealSeeder::class);
     }
 }

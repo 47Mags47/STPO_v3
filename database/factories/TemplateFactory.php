@@ -20,7 +20,7 @@ class TemplateFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => '$this->faker->word()',
             'file_id' => File::factory()->create([
                 'disk' => 'templates',
             ]),

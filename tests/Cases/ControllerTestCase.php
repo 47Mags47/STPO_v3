@@ -2,6 +2,7 @@
 
 namespace Tests\Cases;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -10,6 +11,7 @@ abstract class ControllerTestCase extends TestCase
 {
     use RefreshDatabase;
     protected $seed = true;
+    public bool $auth = false;
 
     public string $controller;
     public string $routeName;
@@ -17,6 +19,7 @@ abstract class ControllerTestCase extends TestCase
     public string $routeKey;
     public string $pageComponentPath;
     public string $propKey;
+    public $response;
 
     public $methods = [
         'index',
@@ -27,6 +30,14 @@ abstract class ControllerTestCase extends TestCase
         'update',
         'destroy',
     ];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if ($this->auth)
+            $this->actingAs($this->getUser());
+    }
 
     public function getPayload(): array
     {
@@ -114,5 +125,8 @@ abstract class ControllerTestCase extends TestCase
         return $this->sendDeleteRequest($recordKeyValue);
     }
 
-
+    public function getUser(): User
+    {
+        return User::whereKey(1)->first();
+    }
 }
