@@ -35,7 +35,7 @@ export default {
 
 <template>
     <ResourceTable
-        header="Организации"
+        header="Шаблоны"
         :columns
         :data="templates"
         :hasDelete="true"

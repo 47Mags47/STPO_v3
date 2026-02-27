@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Base\ModulStoreRequest;
 use App\Http\Requests\Base\ModulUpdateRequest;
 use App\Models\Modul;
+use App\Models\ModulGroup;
 use Inertia\Inertia;
 
 class ModulController extends Controller
@@ -19,7 +20,9 @@ class ModulController extends Controller
 
     public function create()
     {
-        return Inertia::render('base/moduls/create');
+        return Inertia::render('base/moduls/create', [
+            'modulGroups' => ModulGroup::getResource(),
+        ]);
     }
 
     public function store(ModulStoreRequest $request)
@@ -33,6 +36,7 @@ class ModulController extends Controller
     {
         return Inertia::render('base/moduls/edit', [
             'modul' => fn() => $modul->toResource(),
+            'modulGroups' => ModulGroup::getResource(),
         ]);
     }
 

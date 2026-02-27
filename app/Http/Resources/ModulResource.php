@@ -15,13 +15,17 @@ class ModulResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'route_name' => $this->route_name,
-            'creator' => [
-                'full_name' => $this->creator?->full_name
-            ],
+            'creator' => $this->creator !== null
+                ? [
+                    'full_name' => $this->creator->full_name
+                ]
+                : null,
             'group' => [
                 'id' => $this->group->id,
+                'name' => $this->group->name,
             ]
         ];
     }

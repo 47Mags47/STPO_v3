@@ -202,7 +202,7 @@ export default {
             />
 
             <div class="ico-container" :class="{ rotated: open }">
-                <Ico type="chevronDown" />
+                <Ico type="chevron-down" />
             </div>
         </div>
 
