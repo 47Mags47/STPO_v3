@@ -62,7 +62,7 @@ export default {
             type: [Function, Boolean],
             default: false,
         },
-        hasСreate: {
+        hasCreate: {
             type: [Function, Boolean],
             default: false,
         },
@@ -148,6 +148,7 @@ export default {
 </script>
 
 <template>
+    {{ console.log(hasCreate) }}
     <Table class="resource-table" :header="header">
         <template #toolbar>
             <div class="table-options-container">
@@ -164,9 +165,9 @@ export default {
                     <slot name="actions" />
                     <CreateButton
                         v-if="
-                            typeof hasСreate === 'function'
-                                ? hasСreate(row)
-                                : hasСreate
+                            typeof hasCreate === 'function'
+                                ? hasCreate(row)
+                                : hasCreate
                         "
                         :onClick="() => createButtonClickHandler(e)"
                     />
