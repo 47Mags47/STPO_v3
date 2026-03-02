@@ -17,6 +17,7 @@ class AppealResource extends JsonResource
         return [
             'id' => $this->id,
             'office' => $this->office,
+            'comment' => $this->comment,
             'them' => [
                 'id' => $this->them->id,
                 'name' => $this->them->name,
