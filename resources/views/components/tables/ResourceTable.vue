@@ -62,6 +62,10 @@ export default {
             type: [Function, Boolean],
             default: false,
         },
+        hasСreate: {
+            type: [Function, Boolean],
+            default: false,
+        },
         OnCreateButtonClick: {
             type: Function,
             default: null,
@@ -159,6 +163,11 @@ export default {
                 <div class="table-actions-container">
                     <slot name="actions" />
                     <CreateButton
+                        v-if="
+                            typeof hasСreate === 'function'
+                                ? hasСreate(row)
+                                : hasСreate
+                        "
                         :onClick="() => createButtonClickHandler(e)"
                     />
                 </div>
