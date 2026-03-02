@@ -4,11 +4,15 @@ namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
 use App\Models\User;
+use App\Traits\ThisFileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends BaseModel
 {
+    use HasFactory, ThisFileModel, SoftDeletes;
+
     ### Настройки
     ##################################################
     protected $table = 'appeal__messages';
@@ -16,6 +20,7 @@ class Message extends BaseModel
     protected $fillable = [
         'message',
         'readed',
+        'file_id',
         'appeal_id',
         'sender_id',
     ];
@@ -34,8 +39,8 @@ class Message extends BaseModel
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function files(): HasMany
+    public function appeal(): BelongsTo
     {
-        return $this->hasMany(MessageFile::class, 'message_id');
+        return $this->belongsTo(Appeal::class, 'appeal_id');
     }
 }

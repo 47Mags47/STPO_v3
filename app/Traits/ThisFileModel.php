@@ -34,7 +34,7 @@ trait ThisFileModel
         );
     }
 
-    protected function origin_name(): Attribute
+    protected function originName(): Attribute
     {
         return new Attribute(
             get: fn() => $this->file->origin_name,

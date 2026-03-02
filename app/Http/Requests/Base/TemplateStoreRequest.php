@@ -17,7 +17,7 @@ class TemplateStoreRequest extends FormRequest
     {
         return [
             'name'      => ['required', 'string', 'min:1', 'max:255'],
-            'file'      => ['required', 'file', 'max:2048', 'encoding:utf-8'],
+            'file'      => ['required', 'file', 'max:2048'],
             'style_id'  => ['required', 'exists:'. TemplateStyle::class .',id'],
             'type_id'  => ['required', 'exists:'. TemplateType::class .',id'],
             'chunk'     => ['nullable', 'integer'],

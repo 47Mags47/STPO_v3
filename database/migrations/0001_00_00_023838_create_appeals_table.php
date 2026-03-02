@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Appeal\Appeal;
-use App\Models\Appeal\Message;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
@@ -62,18 +61,15 @@ return new class extends Migration
             $table->id();
 
             $table->text('message');
-            $table->boolean('readed');
+
+            $table->boolean('readed')->default(false);
+
+            $table->foreignId('file_id')->nullable()->default(null)->constrained(File::getTableName());
             $table->foreignId('appeal_id')->constrained(Appeal::getTableName());
             $table->foreignId('sender_id')->constrained(User::getTableName());
 
             $table->timestamps();
-        });
-
-        Schema::create('appeal__message_files', function (Blueprint $table) {
-            $table->id();
-
-            $table->foreignId('message_id')->constrained(Message::getTableName());
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->softDeletes();
         });
     }
 
@@ -82,7 +78,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appeal__message_files');
         Schema::dropIfExists('appeal__messages');
         Schema::dropIfExists('appeal__appeals');
         Schema::dropIfExists('appeal__statuses');
