@@ -77,6 +77,9 @@ abstract class BaseModel extends Model
 
     private static function getClassKnowingFolderAndEnding(string $namespace, string $class, string $ending = ''): string|bool
     {
+        if(!file_exists(base_path($namespace . '\\' . $class . $ending)))
+            return false;
+
         if (class_exists($namespace . '\\' . $class . $ending))
             return $namespace . '\\' . $class . $ending;
 
