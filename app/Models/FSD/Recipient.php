@@ -16,11 +16,14 @@ class Recipient extends BaseModel
     public $timestamps = false;
 
     protected $fillable = [
-        'file_id',
+        'division_code',
         'first_name',
         'last_name',
         'middle_name',
         'SNILS',
+
+        'file_id',
+        'status_id',
     ];
 
     ### Связи

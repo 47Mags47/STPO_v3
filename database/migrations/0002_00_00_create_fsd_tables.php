@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\File;
+use App\Models\FSD\Recipient;
 use App\Models\FSD\RecipientStatus;
 use App\Models\FSD\SFRFile;
 use Illuminate\Database\Migrations\Migration;
@@ -39,16 +40,15 @@ return new class extends Migration
         Schema::create('fsd__recipients', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(SFRFile::getTableName());
-
+            $table->string('division_code');
             $table->string('first_name');
             $table->string('last_name')->default('');
             $table->string('middle_name')->default('');
             $table->string('SNILS');
 
+            $table->foreignId('file_id')->constrained(SFRFile::getTableName());
             $table->foreignId('status_id')->constrained(RecipientStatus::getTableName());
         });
-
     }
 
     /**

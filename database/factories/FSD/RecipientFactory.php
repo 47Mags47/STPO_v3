@@ -27,6 +27,7 @@ class RecipientFactory extends Factory
         $middle_name = $this->faker->firstName('male') . ($gender === 'male' ? 'ов' : 'ова');
 
         return [
+            'division_code'     => '0' . str_pad(rand(1, 46), 2, '0', STR_PAD_LEFT),
             'first_name'        => $first_name,
             'last_name'         => $last_name,
             'middle_name'       => $middle_name,
