@@ -148,7 +148,6 @@ export default {
 </script>
 
 <template>
-    {{ console.log(hasCreate) }}
     <Table class="resource-table" :header="header">
         <template #toolbar>
             <div class="table-options-container">
