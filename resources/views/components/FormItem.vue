@@ -1,7 +1,16 @@
 <script>
+import FormError from "./FormError.vue";
+
 export default {
+    components: {
+        FormError,
+    },
     props: {
         label: {
+            type: String,
+            default: "",
+        },
+        name: {
             type: String,
             default: "",
         },
@@ -28,6 +37,7 @@ export default {
 
 <template>
     <div class="form-item-container" :data-orientation="orientation">
+        <FormError :name="name" />
         <label :for>{{ label }}</label>
         <slot name="default" />
     </div>
