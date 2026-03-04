@@ -24,5 +24,7 @@ class ProdSeeder extends Seeder
 
         $this->call(Appeal\ThemSeeder::class);
         $this->call(Appeal\StatusSeeder::class);
+
+        $this->call(FSD\RecipientStatusSeeder::class);
     }
 }

@@ -22,6 +22,10 @@ class SFRFileResource extends JsonResource
             'file' => [
                 'name' => $this->file->origin_name,
                 'errors' => $this->file->errors,
+            ],
+            'recipients'=> [
+                'count' => $this->recipients->count(),
+                'checked' => $this->recipients->where('status_id', 3)->count(),
             ]
         ];
     }

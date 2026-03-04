@@ -19,14 +19,14 @@ class SFRFileFactory extends Factory
     public function definition(): array
     {
         return [
+            'region_code' => '052',
+            'sign_code' => 3,
+            'in_date' => Carbon::create(2026, 1),
+            'npp_for_month' => 1,
             'file_id' => File::factory()->create([
                 'disk' => 'fsd',
                 'origin_name' => $this->faker->numerify('0523#' . rand(1, 12) . '#.000')
             ]),
-            'region_code' => '052',
-            'sign_code' => 3,
-            'in_date' => Carbon::create(2026, 1),
-            'npp_for_month' => 1
         ];
     }
 }

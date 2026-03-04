@@ -29,5 +29,6 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 });
 
 Route::name('fsd.')->prefix('/fsd')->group(function () {
-    Route::resource('/files',           App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/files',                   App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/files/{file}/recipients', App\Http\Controllers\FSD\RecipientController::class)->only(['index']);
 });
