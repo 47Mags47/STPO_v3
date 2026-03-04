@@ -21,6 +21,7 @@ class SFRFileFactory extends Factory
         return [
             'file_id' => File::factory()->create([
                 'disk' => 'fsd',
+                'origin_name' => $this->faker->numerify('0523#' . rand(1, 12) . '#.000')
             ]),
             'region_code' => '052',
             'sign_code' => 3,
