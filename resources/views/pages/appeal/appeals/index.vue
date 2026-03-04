@@ -43,6 +43,5 @@ export default {
         :columns
         :data="appeals"
         :hasCreate="true"
-        :hasPaginate="true"
     />
 </template>
