@@ -1,9 +1,10 @@
 <script>
 import Ico from "../icons/Ico.vue";
 import Baseinput from "./Baseinput.vue";
+import SelectList from "./Select/SelectList.vue";
 
 export default {
-    components: { Baseinput, Ico },
+    components: { Baseinput, Ico, SelectList },
 
     props: {
         name: {
@@ -29,7 +30,10 @@ export default {
                 data: [],
             }),
         },
-        onSelect: { type: Function, default: () => {} },
+        onSelect: {
+            type: Function,
+            default: () => {},
+        },
     },
 
     data() {
@@ -41,6 +45,7 @@ export default {
             backspaced: false,
         };
     },
+
     watch: {
         value: {
             immediate: true,
@@ -56,25 +61,67 @@ export default {
             let data = this.options?.data || [];
             if (typeof data === "function") data = data();
 
-            return data.map((item) => ({
-                label: item[labelKey],
-                value: item[valueKey],
-                raw: item,
-            }));
+            const normalize = (items) => {
+                return items.map((item) => {
+                    if (Array.isArray(item.childs)) {
+                        return {
+                            group: item.group.name,
+                            rawGroup: item,
+                            childs: normalize(item.childs),
+                        };
+                    }
+
+                    return {
+                        label: item[labelKey] || item.name,
+                        value: item[valueKey] ?? item.id,
+                        raw: item,
+                    };
+                });
+            };
+
+            return normalize(data);
         },
 
         filtered() {
             if (!this.open) return this.list;
-            return this.list.filter((o) =>
-                o.label?.toLowerCase().includes(this.search.toLowerCase()),
-            );
+
+            const search = this.search.toLowerCase();
+
+            const filterRecursive = (items) => {
+                return items
+                    .map((item) => {
+                        if (item.childs) {
+                            const filteredChildren = filterRecursive(
+                                item.childs,
+                            );
+                            if (filteredChildren.length) {
+                                return {
+                                    ...item,
+                                    childs: filteredChildren,
+                                };
+                            }
+                            return null;
+                        }
+
+                        if (item.label?.toLowerCase().includes(search)) {
+                            return item;
+                        }
+
+                        return null;
+                    })
+                    .filter(Boolean);
+            };
+
+            return filterRecursive(this.list);
         },
 
         selectedLabel() {
             if (this.backspaced) return "";
+
             if (this.open && this.filtered[this.activeIndex]) {
                 return this.filtered[this.activeIndex].label;
             }
+
             return this.selected?.label || "";
         },
     },
@@ -89,10 +136,13 @@ export default {
             const found = this.list.find((o) => o.value === val);
             this.selected = found || null;
         },
+
         openList() {
             this.open = true;
             this.setInitialActive();
-            this.$nextTick(this.scrollToActive);
+            this.$nextTick(() => {
+                this.$refs.selectList?.scrollToActive();
+            });
         },
 
         closeList() {
@@ -105,10 +155,6 @@ export default {
                 const inputEl = this.$el.querySelector("input[type='text']");
                 if (inputEl) inputEl.blur();
             });
-        },
-
-        toggle() {
-            this.open ? this.closeList() : this.openList();
         },
 
         setInitialActive() {
@@ -126,6 +172,11 @@ export default {
         },
 
         handleKeydown(e) {
+            if (!this.open && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+                this.openList();
+                return;
+            }
+
             const max = this.filtered.length - 1;
 
             switch (e.key) {
@@ -163,15 +214,9 @@ export default {
                     break;
             }
 
-            this.$nextTick(this.scrollToActive);
-        },
-
-        scrollToActive() {
-            const list = this.$refs.list;
-            if (!list) return;
-
-            const el = list.children[this.activeIndex];
-            if (el) el.scrollIntoView({ block: "nearest" });
+            this.$nextTick(() => {
+                this.$refs.selectList?.scrollToActive();
+            });
         },
     },
 };
@@ -206,110 +251,58 @@ export default {
             </div>
         </div>
 
-        <div v-if="open" class="list-container">
-            <div class="search-input-container">
-                <Baseinput
-                    type="text"
-                    placeholder="Поиск..."
-                    :value="search"
-                    @input="(e) => (search = e.target.value)"
-                    :name="null"
-                />
-            </div>
-
-            <ul ref="list">
-                <li
-                    v-for="(o, i) in filtered"
-                    :key="o.value"
-                    @click="select(o)"
-                    :class="{
-                        selected: o.value === selected?.value,
-                        active: i === activeIndex,
-                    }"
-                >
-                    {{ o.label }}
-                </li>
-            </ul>
-        </div>
+        <SelectList
+            ref="selectList"
+            :open="open"
+            :filtered="filtered"
+            :selected="selected"
+            :activeIndex="activeIndex"
+            :search="search"
+            @update:search="search = $event"
+            @select="select"
+        />
     </div>
 </template>
 
 <style lang="sass" scoped>
 .custom-select-box
-  position: relative
+    position: relative
 
-  &[data-list-open="true"]
+    &[data-list-open="true"]
+        :deep()
+            .input-container input[type="text"]
+                border-radius: $input-border-radius $input-border-radius 0 0
+
     :deep()
-      .input-container input[type="text"]
-        border-radius: $input-border-radius $input-border-radius 0 0
+        .input-container input[type="text"]
+            cursor: pointer
+            position: relative
+            transition: none
 
-  :deep()
-    .input-container input[type="text"]
-      cursor: pointer
-      position: relative
-      transition: none
+    .input-container
+        position: relative
 
-    .list-container
-      width: 100%
-      position: absolute
-      left: 0
-      top: 100%
-      z-index: 9
-      background: $input-background
-      border: $input-border
-      border-top: none
-      border-radius: 0 0 $input-border-radius $input-border-radius
-      overflow: hidden
+        input[type="text"]
+            width: 100%
+            padding-right: 35px
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+            cursor: pointer
 
-      .search-input-container
-        padding: 10px
-        border-bottom: $input-border
-      ul
-        max-height: 250px
-        overflow: auto
-        @include scroll
+        .ico-container
+            position: absolute
+            top: 50%
+            right: 10px
+            transform: translateY(-50%)
+            width: 18px
+            height: 18px
+            display: flex
+            align-items: center
+            justify-content: center
+            pointer-events: none
+            transition: transform 0.3s ease
 
-        li
-          padding: 5px 15px
-          cursor: pointer
-          transition: .2s
-
-          &:hover
-            background: $option-background-hover
-
-          &.active
-            background: $option-background-hover
-
-          &.selected
-            background: $option-background-selected
-
-          &.selected.active
-            background: $option-background-hover
-
-.input-container
-  position: relative
-
-  input[type="text"]
-    width: 100%
-    padding-right: 35px
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
-    cursor: pointer
-
-  .ico-container
-    position: absolute
-    top: 50%
-    right: 10px
-    transform: translateY(-50%)
-    width: 18px
-    height: 18px
-    display: flex
-    align-items: center
-    justify-content: center
-    pointer-events: none
-    transition: transform 0.3s ease
-
-    &.rotated
-      transform: translateY(-50%) rotate(180deg)
+            &.rotated
+                transform: translateY(-50%) rotate(180deg)
 </style>
