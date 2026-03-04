@@ -16,7 +16,7 @@ class ThemGROUPBYGroupResource extends JsonResource
     {
         return [
             'group' => $this->toResource(),
-            'thems' => $this->thems->toResourceCollection()
+            'childs' => $this->thems->toResourceCollection()
         ];
     }
 }
