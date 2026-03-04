@@ -5,8 +5,14 @@ export default {
     components: { Ico },
 
     props: {
-        item: { type: Object, required: true },
-        onItemClick: { type: Function, default: null },
+        item: {
+            type: Object,
+            required: true,
+        },
+        onItemClick: {
+            type: Function,
+            default: null,
+        },
     },
 
     data() {
@@ -34,6 +40,8 @@ export default {
         },
 
         handleClick() {
+            if (this.hasChildren) return;
+
             if (typeof this.onItemClick === "function") {
                 this.onItemClick(this.item);
             }
@@ -48,23 +56,25 @@ export default {
             v-if="hasChildren"
             class="group"
             :class="{ clickable: isToggleable }"
-            @click="toggle"
         >
-            <span v-if="item.group">{{ item.group }}</span>
-            <span>{{ item.title || "" }}</span>
+            <div class="group-header" @click="toggle">
+                <span v-if="item.group">{{ item.group }}</span>
+                <span>{{ item.title || "" }}</span>
+            </div>
 
             <div
                 v-if="isToggleable"
                 class="ico-container"
                 :class="{ rotated: open }"
+                @click="toggle"
             >
                 <Ico type="chevron-right" />
             </div>
         </div>
 
         <slot v-else name="header" :item="item" :onClick="handleClick">
-            <div class="group" @click="handleClick">
-                <span>{{ item.title }}</span>
+            <div class="list-item" @click="handleClick">
+                {{ item.title }}
             </div>
         </slot>
 
@@ -92,18 +102,37 @@ export default {
         display: flex
         align-items: center
         justify-content: space-between
-        gap: 8px
         padding: 8px 14px
-        border-radius: 6px
+        cursor: pointer
 
-        &.clickable
-            cursor: pointer
+        .group-header
+            flex: 1
+            display: flex
+            align-items: center
+            gap: 8px
+
+            &.clickable
+                cursor: pointer
 
         .ico-container
+            cursor: pointer
             transition: transform 0.2s ease
+            width: 20px
+            height: 20px
+            display: flex
+            align-items: center
+            justify-content: center
 
             &.rotated
                 transform: rotate(90deg)
+
+    .list-item
+        padding: 8px 14px
+        cursor: pointer
+        transition: .2s
+
+        &:hover
+            background: $option-background-hover
 
     .children
         display: flex

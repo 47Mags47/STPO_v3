@@ -1,5 +1,4 @@
 <script>
-import { usePage } from "@inertiajs/vue3";
 import ListItem from "./ListItem.vue";
 
 export default {
@@ -8,10 +7,13 @@ export default {
         items: {
             type: Object,
         },
+        onItemClick: {
+            type: Function,
+        },
     },
 };
 </script>
 
 <template>
-    <ListItem v-for="(item, index) in items" :key="index" :item="item" />
+    <ListItem v-for="(item, index) in items" :key="index" :item="item" :onItemClick="onItemClick"/>
 </template>
