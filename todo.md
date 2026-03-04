@@ -1,4 +1,5 @@
-- ThemGroups - Группы тем
-- Thems - Темы
-- Appeals - Обращения
-- Messages - Сообщения
+- ThemGroups    - Группы тем
+- Thems         - Темы
+- Appeals       - Обращения
+- Messages      - Сообщения
+- fsd -         - Регистры ФСД
