@@ -1,31 +1,25 @@
 <script>
+import { defineAsyncComponent } from "vue";
+
 import VerticalForm from "./VerticalForm.vue";
-import StringInput from "../inputs/StringInput.vue";
 import FormItem from "../FormItem.vue";
-import Select from "../inputs/Select.vue";
-import PhoneInput from "../inputs/PhoneInput.vue";
-import PhoneHasDobInput from "../inputs/PhoneHasDobInput.vue";
-import EmailInput from "../inputs/EmailInput.vue";
-import PasswordInput from "../inputs/PasswordInput.vue";
 import BlueButton from "../buttons/BlueButton.vue";
-import CheckBox from "../inputs/CheckBox.vue";
-import NumberInput from "../inputs/NumberInput.vue";
-import FileInput from "../inputs/FileInput.vue";
 
 export default {
     components: {
         VerticalForm,
         FormItem,
-        StringInput,
-        PhoneInput,
-        PhoneHasDobInput,
-        EmailInput,
-        PasswordInput,
-        Select,
         BlueButton,
-        CheckBox,
-        NumberInput,
-        FileInput,
+        StringInput: defineAsyncComponent(      () => import("../inputs/StringInput.vue")),
+        PhoneInput: defineAsyncComponent(       () => import("../inputs/PhoneInput.vue")),
+        PhoneHasDobInput: defineAsyncComponent( () => import("../inputs/PhoneHasDobInput.vue")),
+        EmailInput: defineAsyncComponent(       () => import("../inputs/EmailInput.vue")),
+        PasswordInput: defineAsyncComponent(    () => import("../inputs/PasswordInput.vue")),
+        Select: defineAsyncComponent(           () => import("../inputs/Select.vue")),
+        CheckBox: defineAsyncComponent(         () => import("../inputs/CheckBox.vue")),
+        NumberInput: defineAsyncComponent(      () => import("../inputs/NumberInput.vue")),
+        FileInput: defineAsyncComponent(        () => import("../inputs/FileInput.vue")),
+        TextArea: defineAsyncComponent(         () => import("../inputs/TextArea.vue")),
     },
     props: {
         inputs: {
@@ -46,6 +40,7 @@ export default {
                         "select",
                         "checkbox",
                         "file",
+                        "textarea",
                     ].includes(input.type);
                 });
 
@@ -127,6 +122,10 @@ export default {
                 />
                 <CheckBox
                     v-if="input.type === 'checkbox'"
+                    v-bind="prepareProps(input)"
+                />
+                <TextArea
+                    v-if="input.type === 'textarea'"
                     v-bind="prepareProps(input)"
                 />
             </FormItem>
