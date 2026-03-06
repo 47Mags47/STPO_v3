@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\File;
-use App\Models\User;
+use App\Models\Base\File;
+use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;

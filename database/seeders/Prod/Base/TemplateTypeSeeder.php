@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Prod\Base;
 
-use App\Models\TemplateType;
+use App\Models\Base\TemplateType;
 use Illuminate\Database\Seeder;
 
 class TemplateTypeSeeder extends Seeder

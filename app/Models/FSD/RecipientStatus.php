@@ -11,6 +11,8 @@ class RecipientStatus extends BaseModel
 
     ### Настройки
     ##################################################
+    public $timestamps = false;
+
     protected $table = 'fsd__recipient_statuses';
 
     protected $fillable = [

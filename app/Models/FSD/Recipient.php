@@ -12,8 +12,9 @@ class Recipient extends BaseModel
 
     ### Настройки
     ##################################################
-    protected $table = 'fsd__recipients';
     public $timestamps = false;
+
+    protected $table = 'fsd__recipients';
 
     protected $fillable = [
         'division_code',

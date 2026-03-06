@@ -4,7 +4,7 @@ namespace Database\Factories\Appeal;
 
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
-use App\Models\User;
+use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

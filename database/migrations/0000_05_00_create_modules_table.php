@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\ModulGroup;
-use App\Models\User;
+use App\Models\Administrate\ModulGroup;
+use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('base__modul_groups', function (Blueprint $table) {
+        Schema::create('administrate__modul_groups', function (Blueprint $table) {
             $table->id();
 
             $table->string('code');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('base__modules', function (Blueprint $table) {
+        Schema::create('administrate__modules', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
@@ -39,7 +39,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('base__modules');
-        Schema::dropIfExists('base__modul_groups');
+        Schema::dropIfExists('administrate__modules');
+        Schema::dropIfExists('administrate__modul_groups');
     }
 };

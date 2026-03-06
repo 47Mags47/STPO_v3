@@ -14,8 +14,8 @@ class LocalSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(Base\DivisionSeeder::class);
-        $this->call(Base\TemplateSeeder::class);
+        $this->call(Administrate\DivisionSeeder::class);
+        $this->call(Administrate\TemplateSeeder::class);
 
         $this->call(Appeal\AppealSeeder::class);
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\FSD;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FSD\SFRFileStoreRequest;
-use App\Models\File;
+use App\Models\Base\File;
 use App\Models\FSD\SFRFile;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
@@ -12,14 +12,14 @@ use Inertia\Inertia;
 class SFRFileController extends Controller
 {
     public function index(){
-        return Inertia::render('fsd/SFRFiles/index', [
+        return Inertia::render('fsd/sfr-files/index', [
             'files' => fn() => SFRFile::getResource(),
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('fsd/SFRFiles/create');
+        return Inertia::render('fsd/sfr-files/create');
     }
 
     public function store(SFRFileStoreRequest $request)
@@ -28,7 +28,7 @@ class SFRFileController extends Controller
 
         $file = File::factory()->create([
             'disk' => 'fsd',
-            'path' => '',
+            'path' => 'sfr',
             'origin_name' => $fileName,
         ]);
 
@@ -42,6 +42,6 @@ class SFRFileController extends Controller
             'npp_for_month'  => substr($fileName, 7, 1),
         ]);
 
-        return redirect()->route('fsd.files.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('fsd.sfr-files.index')->with('succes', 'Запись успешно создана');
     }
 }

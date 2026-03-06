@@ -2,7 +2,7 @@
 
 namespace Database\Factories\FSD;
 
-use App\Models\File;
+use App\Models\Base\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 

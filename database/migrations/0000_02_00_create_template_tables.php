@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\File;
-use App\Models\TemplateStyle;
-use App\Models\TemplateType;
+use App\Models\Base\File;
+use App\Models\Base\TemplateStyle;
+use App\Models\Base\TemplateType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('base__templates', function (Blueprint $table) {
+        Schema::create('administrate__templates', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
@@ -50,7 +50,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('base__templates');
+        Schema::dropIfExists('administrate__templates');
         Schema::dropIfExists('base__template_types');
         Schema::dropIfExists('base__template_styles');
     }

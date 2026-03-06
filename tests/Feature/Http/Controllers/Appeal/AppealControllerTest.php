@@ -6,17 +6,15 @@ use App\Http\Controllers\Appeal\AppealController;
 use App\Http\Requests\Appeal\AppealStoreRequest;
 use App\Models\Appeal\Appeal;
 use Tests\Cases\ControllerTestCase;
-use Tests\Traits\TestFormRequestRules;
 use Tests\Traits\TestInertiaCreateMethod;
 use Tests\Traits\TestInertiaIndexMethod;
 use Tests\Traits\TestInertiaStoreMethod;
 
 class AppealControllerTest extends ControllerTestCase
 {
-    use
-        TestInertiaIndexMethod,
-        TestInertiaCreateMethod,
-        TestInertiaStoreMethod;
+    use TestInertiaIndexMethod;
+    use TestInertiaCreateMethod;
+    use TestInertiaStoreMethod;
 
     public bool $auth = true;
 
