@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\File;
-use App\Models\FSD\Recipient;
 use App\Models\FSD\RecipientStatus;
 use App\Models\FSD\SFRFile;
 use Illuminate\Database\Migrations\Migration;
@@ -49,6 +48,12 @@ return new class extends Migration
             $table->foreignId('file_id')->constrained(SFRFile::getTableName());
             $table->foreignId('status_id')->constrained(RecipientStatus::getTableName());
         });
+
+        Schema::create('fsd__payment_files', function (Blueprint $table) {
+            $table->foreignId('file_id')->constrained(File::getTableName());
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -56,6 +61,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('fsd__payment_files');
         Schema::dropIfExists('fsd__recipients');
         Schema::dropIfExists('fsd__recipient_statuses');
         Schema::dropIfExists('fsd__sfr_files');
