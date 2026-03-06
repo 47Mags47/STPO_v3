@@ -12,10 +12,9 @@ use Tests\Traits\TestInertiaStoreMethod;
 
 class AppealControllerTest extends ControllerTestCase
 {
-    use
-        TestInertiaIndexMethod,
-        TestInertiaCreateMethod,
-        TestInertiaStoreMethod;
+    use TestInertiaIndexMethod;
+    use TestInertiaCreateMethod;
+    use TestInertiaStoreMethod;
 
     public bool $auth = true;
 

@@ -53,6 +53,12 @@ return [
             'throw' => true,
         ],
 
+        'fsd' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/fsd'),
+            'throw' => true,
+        ],
+
     ],
 
     /*

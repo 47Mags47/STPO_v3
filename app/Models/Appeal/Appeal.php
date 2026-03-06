@@ -3,7 +3,7 @@
 namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
-use App\Models\User;
+use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;

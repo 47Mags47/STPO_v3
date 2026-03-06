@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\CurrentUserResource;
 use App\Http\Resources\MenuResource;
-use App\Models\ModulGroup;
+use App\Models\Administrate\ModulGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
