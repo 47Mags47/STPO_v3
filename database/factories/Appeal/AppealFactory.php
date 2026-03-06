@@ -21,7 +21,7 @@ class AppealFactory extends Factory
     {
         return [
             'office' => $this->faker->numerify('###'),
-            'comment' => $this->faker->paragraph(),
+            'comment' => $this->faker->text(255),
 
             'sender_id' => User::randomOrCreate()->id,
             'them_id' => Them::randomOrCreate()->id,
