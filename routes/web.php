@@ -27,10 +27,12 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
     Route::resource('/them-groups',                 App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
     Route::resource('/thems',                       App\Http\Controllers\Appeal\ThemController::class)->except('show');
     Route::resource('/appeals',                     App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
+    Route::resource('/appeals/{appeal}/messages',   App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
+
 });
 
 Route::name('fsd.')->prefix('/fsd')->group(function () {
-    Route::resource('/sfr-files',                   App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
-    Route::resource('/sfr-files/{file}/recipients', App\Http\Controllers\FSD\RecipientController::class)->only(['index']);
-    Route::resource('/payment-files',               App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/them-groups',                 App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
+    Route::resource('/thems',                       App\Http\Controllers\Appeal\ThemController::class)->except('show');
+    Route::resource('/appeals',                     App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
 });

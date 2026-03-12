@@ -59,6 +59,11 @@ return [
             'throw' => true,
         ],
 
+        'appeals' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/appeals'),
+            'throw' => true,
+        ],
     ],
 
     /*

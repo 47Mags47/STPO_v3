@@ -14,8 +14,8 @@ class FileFactory extends Factory
         return [
             'disk' => config('filesystems.default'),
             'path' => '',
-            'name' => Str::random(40),
-            'origin_name' => 'test_' . Str::random(10),
+            'name' => Str::random(40) . '.txt',
+            'origin_name' => 'test_' . Str::random(10) . '.txt',
             'errors' => rand(0, 5)
                 ? []
                 : ['Файл содержит ошибки (тестовое сообщение)'],
