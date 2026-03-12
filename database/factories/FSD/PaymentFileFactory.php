@@ -3,6 +3,7 @@
 namespace Database\Factories\FSD;
 
 use App\Models\Base\File;
+use App\Models\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class PaymentFileFactory extends Factory
                 'disk' => 'fsd',
                 'path' => 'payment'
             ]),
+            'sfr_file_id' => SFRFile::randomOrCreate()->id,
         ];
     }
 }

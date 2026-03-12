@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Base\File;
+use App\Models\FSD\PaymentFile;
+use App\Models\FSD\Recipient;
 use App\Models\FSD\RecipientStatus;
 use App\Models\FSD\SFRFile;
 use Illuminate\Database\Migrations\Migration;
@@ -48,25 +50,31 @@ return new class extends Migration
         });
 
         Schema::create('fsd__payment_files', function (Blueprint $table) {
+            $table->id();
+
             $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('sfr_file_id')->constrained(SFRFile::getTableName());
 
             $table->timestamps();
         });
 
-        // Schema::create('fsd__payments', function (Blueprint $table) {
-        //     $table->date('raport_date');
-        //     $table->integer('type_number');
-        //     $table->integer('type_name');
+        Schema::create('fsd__payments', function (Blueprint $table) {
+            $table->id();
+            $table->date('raport_date');
+            $table->integer('type_number');
+            $table->string('type_name');
 
-        //     $table->decimal('amount', 6, 2);
-        //     $table->decimal('amount_other', 6, 2)->default(0.00);
+            $table->decimal('amount', 8, 2);
+            $table->decimal('amount_other', 8, 2)->default(0.00);
 
-        //     $table->date('start_date');
-        //     $table->date('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
 
-        //     $table->foreignId('file_id')->constrained(PaymentFile::getTableName());
-        //     $table->foreignId('recipient_id')->constrained(Recipient::getTableName());
-        // });
+            $table->foreignId('file_id')->constrained(PaymentFile::getTableName());
+            $table->foreignId('recipient_id')->nullable()->constrained(Recipient::getTableName());
+
+            $table->string('SNILS');
+        });
     }
 
     /**
@@ -74,7 +82,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::dropIfExists('fsd__payments');
+        Schema::dropIfExists('fsd__payments');
         Schema::dropIfExists('fsd__payment_files');
         Schema::dropIfExists('fsd__recipients');
         Schema::dropIfExists('fsd__recipient_statuses');

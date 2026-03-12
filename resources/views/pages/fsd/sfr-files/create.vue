@@ -12,7 +12,7 @@ export default {
     <ResourceForm
         header="Новая запись (Файл)"
         sbm="Добавить"
-        :action="route('fsd.files.store')"
+        :action="route('fsd.sfr-files.store')"
         :inputs="[
             {
                 type: 'file',

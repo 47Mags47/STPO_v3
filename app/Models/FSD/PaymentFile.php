@@ -5,6 +5,8 @@ namespace App\Models\FSD;
 use App\Classes\BaseModel;
 use App\Traits\ThisFileModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PaymentFile extends BaseModel
 {
@@ -16,6 +18,7 @@ class PaymentFile extends BaseModel
 
     protected $fillable = [
         'file_id',
+        'sfr_file_id'
     ];
 
     ### Методы
@@ -24,5 +27,13 @@ class PaymentFile extends BaseModel
 
     ### Связи
     ##################################################
-    //
+    public function SFRFile(): BelongsTo
+    {
+        return $this->belongsTo(SFRFile::class, 'sfr_file_id');
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'file_id');
+    }
 }

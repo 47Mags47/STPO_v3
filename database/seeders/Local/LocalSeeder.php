@@ -21,5 +21,7 @@ class LocalSeeder extends Seeder
 
         $this->call(FSD\SFRFileSeeder::class);
         $this->call(FSD\RecipientSeeder::class);
+        $this->call(FSD\PaymentFileSeeder::class);
+        $this->call(FSD\PaymentSeeder::class);
     }
 }
