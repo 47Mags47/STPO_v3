@@ -89,6 +89,7 @@ export default {
         <template v-if="!('content' in $slots)" #content>
             <FormItem
                 v-for="input in inputs"
+                :name="input.name"
                 :label="input.label"
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
