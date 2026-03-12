@@ -14,9 +14,11 @@ class ProdSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(Auth\RolesAndPermissionsSeeder::class);
+        $this->call(Auth\SuperUserSeederSeeder::class);
+
         $this->call(Base\TemplateStyleSeeder::class);
         $this->call(Base\TemplateTypeSeeder::class);
-        $this->call(Base\UserSeeder::class);
 
         $this->call(Administrate\ModulGroupSeeder::class);
         $this->call(Administrate\ModulSeeder::class);

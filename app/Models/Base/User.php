@@ -4,6 +4,7 @@ namespace App\Models\Base;
 
 use App\Classes\BaseModel;
 use App\Models\Administrate\Division;
+use App\Traits\RolesAndPermissions;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -22,6 +23,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use MustVerifyEmail;
 
     use HasFactory;
+    use RolesAndPermissions;
 
     ### Настройки
     ##################################################
