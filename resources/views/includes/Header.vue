@@ -1,7 +1,7 @@
 <script>
 import { Link, usePage } from "@inertiajs/vue3";
 import RedButton from "./../components/buttons/RedButton.vue";
-import Ico from "./../components/icons/Ico.vue";
+import Ico from "./../components/Ico.vue";
 import Menu from "./menu/Menu.vue";
 
 export default {
@@ -15,64 +15,54 @@ export default {
 
 <template>
     <div class="header-container">
-        <div class="left">LOGO</div>
 
-        <div class="right">
-            <Link href="/" class="user">
-                <Ico type="person" />
-                <span>{{ current_user?.full_name || "Иванов И.И." }}</span>
-            </Link>
-
-            <div class="notification">
-                <Ico type="bell" />
-            </div>
-
-            <Menu />
+        <div class="logo-container">
+            <h3>СТПО</h3>
         </div>
+
+        <div class="user-info-container" v-if="current_user !== null">
+            <div class="user-logo">
+                <Ico type="faUser" />
+            </div>
+            <div class="user-name">
+                <span>{{ current_user?.full_name }}</span>
+            </div>
+        </div>
+
+        <Menu />
     </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .header-container
-    color: $meny-color
-    background: $meny-background
+    position: relative
+    height: $meny-height
+    padding: 0 20px
+
     display: flex
     align-items: center
     justify-content: space-between
-    padding: 0 20px
-    height: $meny-height
 
-    .right
+    color: $meny-color
+    background: $meny-background
+
+    .ico-container
+        width: 25px
+        height: 25px
+
+    .logo-container
+        flex: 1
+        font-weight: bold
+
+    .user-info-container
         display: flex
         align-items: center
-        gap: 15px
-        position: relative
+        gap: 10px
 
-        .user
-            display: flex
-            align-items: center
-            gap: 8px
-
-            padding: 5px 10px
-            border: 1px solid white
-            border-radius: 6px
-
-            color: inherit
-            font-weight: 600
-            text-decoration: none
-            cursor: pointer
-
-            .ico
-                width: 25px
-                height: 25px
-
-        .notification
-            display: flex
-            align-items: center
-            justify-content: center
-            cursor: pointer
-
-            .ico
-                width: 20px
-                height: 20px
+        padding: 7px 10px
+        border: 2px solid white
+        border-radius: 7px
+        .user-name
+            font-size: 1.2rem
+            font-weight: bold
 </style>
