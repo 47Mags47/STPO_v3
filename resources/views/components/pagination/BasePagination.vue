@@ -1,6 +1,6 @@
 <script>
 import { Link } from "@inertiajs/vue3";
-import { default as Ico } from "../icons/Ico.vue";
+import { default as Ico } from "../Ico.vue";
 
 export default {
     components: {
@@ -43,7 +43,7 @@ export default {
         <ul>
             <Link v-if="current >= 4" :href="generateURL(1)">
                 <li class="pagination-item">
-                    <Ico type="chevron-double-left" />
+                    <Ico type="faChevronDoubleLeft" />
                 </li>
             </Link>
 

@@ -1,7 +1,7 @@
 <script>
 import BaseButton from "../buttons/BaseButton.vue";
 import BlueButton from "../buttons/BlueButton.vue";
-import Ico from "../icons/Ico.vue";
+import Ico from "../Ico.vue";
 
 export default {
     components: { Ico, BaseButton, BlueButton },
@@ -102,7 +102,7 @@ export default {
                     class="clear-btn"
                     @click.stop="clear"
                 >
-                    <Ico type="x" />
+                    <Ico type="faX" />
                 </BaseButton>
 
                 <BlueButton class="select-btn" @click.stop="trigger">

@@ -1,6 +1,6 @@
 <script>
 import { default as RedButton } from "../../buttons/RedButton.vue";
-import Ico from "../../icons/Ico.vue";
+import Ico from "../../Ico.vue";
 
 export default {
     components: {
@@ -27,6 +27,6 @@ export default {
 
 <template>
     <RedButton @click.prevent="clickHandler">
-        <Ico type="trash" />
+        <Ico type="faTrash" />
     </RedButton>
 </template>

@@ -1,5 +1,5 @@
 <script>
-import Ico from "../icons/Ico.vue";
+import Ico from "../Ico.vue";
 import Baseinput from "./Baseinput.vue";
 
 export default {
@@ -202,7 +202,7 @@ export default {
             />
 
             <div class="ico-container" :class="{ rotated: open }">
-                <Ico type="chevron-down" />
+                <Ico type="faChevronDown" />
             </div>
         </div>
 

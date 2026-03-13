@@ -1,5 +1,5 @@
 <script>
-import Ico from "../../icons/Ico.vue";
+import Ico from "../../Ico.vue";
 import BlueButton from "../../buttons/BlueButton";
 
 export default {
@@ -24,6 +24,6 @@ export default {
 
 <template>
     <BlueButton @click="clickHandler" class="button blue-button">
-        <Ico type="goto" />
+        <Ico type="faGoto" />
     </BlueButton>
 </template>

@@ -12,7 +12,7 @@ export default {
         TableRow,
         TableTh,
         TableTd,
-        Ico: defineAsyncComponent(() => import("./../icons/Ico.vue")),
+        Ico: defineAsyncComponent(() => import("./../Ico.vue")),
         SearchInput: defineAsyncComponent(
             () => import("./../inputs/SearchInput.vue"),
         ),
@@ -232,7 +232,7 @@ export default {
                     horizontal="center"
                     vertical="center"
                 >
-                    <Ico type="database-x" />
+                    <Ico type="faDatabase" />
                     <span class="text">Данных нет :(</span>
                 </TableTd>
             </TableRow>

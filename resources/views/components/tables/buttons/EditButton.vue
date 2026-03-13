@@ -1,6 +1,6 @@
 <script>
 import BlueButton from "./../../buttons/BlueButton.vue";
-import Ico from "../../icons/Ico.vue";
+import Ico from "../../Ico.vue";
 
 export default {
     components: {
@@ -23,6 +23,6 @@ export default {
 
 <template>
     <BlueButton @click="clickHandler" class="button blue-button">
-        <Ico type="pen" />
+        <Ico type="faPen" />
     </BlueButton>
 </template>
