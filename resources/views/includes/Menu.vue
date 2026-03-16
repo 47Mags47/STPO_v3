@@ -49,13 +49,16 @@ export default {
         },
         togleOpen() {
             this.isOpen = !this.isOpen
+        },
+        outsideClickHandler(){
+            this.isOpen = false
         }
     }
 };
 </script>
 
 <template>
-    <div class="menu-container">
+    <div class="menu-container" v-outsideClick="outsideClickHandler">
         <div class="button-container" @click="togleOpen">
             <Ico type="faBars" />
         </div>
