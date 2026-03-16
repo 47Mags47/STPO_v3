@@ -27,8 +27,11 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('route_name');
-            $table->foreignId('group_id')->constrained(ModulGroup::getTableName());
+
+            $table->foreignId('group_id')->nullable()->constrained(ModulGroup::getTableName());
             $table->foreignId('creator_id')->nullable()->constrained(User::getTableName());
+
+            $table->boolean('in_production')->default(false);
 
             $table->timestamps();
         });

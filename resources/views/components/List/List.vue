@@ -1,17 +1,52 @@
 <script>
-import { usePage } from "@inertiajs/vue3";
 import ListItem from "./ListItem.vue";
+import ListGroup from "./ListGroup.vue";
 
 export default {
-    components: { ListItem },
+    components: {
+        ListItem,
+        ListGroup,
+    },
     props: {
         items: {
-            type: Object,
+            type: Array,
+            default: []
         },
+
+        onItemClick:{
+            type: Function,
+            default: (item) => {}
+        }
     },
+
+    methods:{
+        itemClickHandler(item){
+            this.onItemClick(item)
+        }
+    }
 };
 </script>
 
 <template>
-    <ListItem v-for="(item, index) in items" :key="index" :item="item" />
+    <div class="list-container">
+        <template v-for="item in items">
+            <ListGroup
+                v-if="'childs' in item"
+                :label="item.label"
+                :items="item.childs"
+                :onItemClick="itemClickHandler"
+            />
+            <ListItem
+                v-else
+                v-bind="item"
+                @Click="() => itemClickHandler(item)"
+            />
+        </template>
+    </div>
 </template>
+
+<style lang="sass" scope>
+.list-container
+    display: flex
+    flex-direction: column
+</style>

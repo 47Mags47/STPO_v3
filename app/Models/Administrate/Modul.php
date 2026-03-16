@@ -20,6 +20,7 @@ class Modul extends BaseModel
         'route_name',
         'group_id',
         'creator_id',
+        'in_production',
     ];
 
     ### Связи

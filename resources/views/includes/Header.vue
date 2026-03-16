@@ -1,11 +1,13 @@
 <script>
-import { Link, usePage } from "@inertiajs/vue3";
-import RedButton from "./../components/buttons/RedButton.vue";
+import { usePage } from "@inertiajs/vue3";
 import Ico from "./../components/Ico.vue";
-import Menu from "./menu/Menu.vue";
+import Menu from "./Menu.vue";
 
 export default {
-    components: { RedButton, Ico, Link, Menu },
+    components: {
+        Ico,
+        Menu
+    },
 
     computed: {
         current_user: () => usePage().props.currentUser,

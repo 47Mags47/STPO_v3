@@ -33,13 +33,17 @@ export default {
     width: 100%
     height: 100%
 
-    display: flex
-    justify-content: center
-    align-items: center
+    position: relative
 
-    font-size: 1rem
-
+    overflow: hidden
     svg
+        position: absolute
+        top: 50%
+        left: 50%
+        height: 50%
+
+        transform: translate(-50%, -50%)
+
         width: 100%
         height: 100%
 </style>

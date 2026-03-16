@@ -23,10 +23,12 @@ class ModulResource extends JsonResource
                     'full_name' => $this->creator->full_name
                 ]
                 : null,
-            'group' => [
-                'id' => $this->group->id,
-                'name' => $this->group->name,
-            ]
+            'group' => $this->group !== null
+                ? [
+                    'id' => $this->group->id,
+                    'name' => $this->group->name,
+                ]
+                : null
         ];
     }
 }

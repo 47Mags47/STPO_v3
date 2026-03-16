@@ -24,6 +24,6 @@ class ModulGroup extends BaseModel
     ##################################################
     public function moduls(): HasMany
     {
-        return $this->hasMany(Modul::class, 'group_id');
+        return $this->hasMany(Modul::class, 'group_id')->where('in_production', true);
     }
 }
