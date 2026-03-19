@@ -3,8 +3,6 @@ import { DateTime } from "luxon";
 import { defineAsyncComponent } from "vue";
 
 export default {
-    inheritAttrs: false,
-
     components:{
         CellRender: defineAsyncComponent(() => import("./CellRender.vue")),
     },
