@@ -66,6 +66,6 @@ class MessageController extends Controller
     {
         $message->delete();
 
-        return redirect()->route('appeal.thems.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

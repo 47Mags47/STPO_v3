@@ -10,7 +10,7 @@ export default {
     },
 
     computed: {
-        current_user: () => usePage().props.currentUser,
+        current_user: () => usePage().props.current_user,
     },
 };
 </script>

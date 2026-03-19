@@ -5,6 +5,7 @@ import { router } from '@inertiajs/vue3';
 import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
+import { h } from 'vue';
 
 export default {
     components: {
@@ -117,12 +118,44 @@ export default {
                 ? this.hasDeleteButton(row)
                 : this.hasDeleteButton
         },
+
+        // Check
+        checkCellVisible(row, collumn) {
+            let visible = collumn.visible ?? true
+
+            return typeof visible === 'function'
+                ? visible(row)
+                : visible ?? true
+        },
+
+        // Math
+        getCellValue(row, collumn){
+            if('render' in collumn) {
+                let renderData = collumn.render(row)
+
+                let props = {
+                    ...renderData.props,
+                    onClick: () => renderData.props.onClick(row)
+                }
+
+                return () => h(renderData.component ?? 'div', {...props});
+            }
+
+            if(typeof collumn.value == 'function')
+                return collumn.value(row)
+
+            return Object.get(row, collumn.dataIndex)
+        }
     }
 }
 </script>
 
 <template>
     <Table class="resource-table">
+        <template #colgroup>
+            <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+        </template>
+
         <template #toolbar>
             <div class="table-search-container">
 
@@ -152,7 +185,12 @@ export default {
 
         <template #tbody>
             <TableRow v-if="data.length > 0" v-for="row in data">
-                <TableTd v-for="collumn in collumns" :value="row[collumn.dataIndex]" />
+                <template v-for="collumn in collumns">
+                    <TableTd
+                        v-if="checkCellVisible(row, collumn)"
+                        v-bind="{...collumn, value: getCellValue(row, collumn)}"
+                    />
+                </template>
 
                 <TableTd v-if="checkRowHasDeleteButton(row)"><DeleteButton @click="() => deleteButtonClickHandler(row)" /></TableTd>
                 <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
@@ -174,12 +212,15 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
-    .table-content .not-data-cell :deep() .table-cell-container
-        height: 250px
+    :deep()
+        .table-header
+            padding: 0 15px
+        .table-content .not-data-cell .table-cell-container
+            height: 250px
 
-        display: flex
-        flex-direction: column
-        gap: 25px
+            display: flex
+            flex-direction: column
+            gap: 25px
 
-        font-size: 1.2rem
+            font-size: 1.2rem
 </style>

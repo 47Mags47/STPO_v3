@@ -25,6 +25,10 @@ export default {
 
         <div class="table-content">
             <table>
+                <colgroup v-if="'colgroup' in $slots">
+                    <slot name="colgroup" />
+                </colgroup>
+
                 <thead>
                     <template v-if="'thead' in $slots">
                         <slot name="thead" />
@@ -51,8 +55,7 @@ export default {
     display: flex
     flex-direction: column
     gap: 1rem
-    padding: 1.25rem
-    border-radius: 12px
+    padding: 15px 0
     .table-header
         display: flex
         flex-direction: column
@@ -68,7 +71,6 @@ export default {
 
     .table-content
         border: $table-border
-        border-radius: 10px
         overflow: hidden
 
         table

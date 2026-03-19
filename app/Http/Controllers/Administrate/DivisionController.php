@@ -46,6 +46,6 @@ class DivisionController extends Controller
     public function destroy(Division $division) {
         $division->delete();
 
-        return redirect()->route('administrate.divisions.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

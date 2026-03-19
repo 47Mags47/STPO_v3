@@ -3,9 +3,9 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import "./helpers";
 import * as derectives from "./derectives";
 import { ZiggyVue } from "ziggy-js";
-import MainLayout from "../views/layouts/MainLayout.vue";
+import Baselayout from "../views/layouts/AuthLayout.vue";
 
-const app = createInertiaApp({
+createInertiaApp({
     resolve: async (name) => {
         const pages = import.meta.glob("../views/pages/**/*.vue");
 
@@ -13,7 +13,7 @@ const app = createInertiaApp({
 
         const page = await importPage();
 
-        page.default.layout = MainLayout;
+        page.default.layout = Baselayout;
 
         return page;
     },

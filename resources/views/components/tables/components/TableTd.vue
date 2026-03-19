@@ -1,27 +1,29 @@
 <script>
 import { DateTime } from "luxon";
+import { defineAsyncComponent } from "vue";
 
 export default {
+    inheritAttrs: false,
+
+    components:{
+        CellRender: defineAsyncComponent(() => import("./CellRender.vue")),
+    },
+
     props: {
-        visible: {
-            type: Boolean,
-            default: true,
-        },
+        // Content
         type: {
             type: String,
             default: 'string',
             validator(value) {
-                return ["string", "date"].includes(value);
+                return ['string', 'date', 'render'].includes(value);
             },
         },
-        vertical: {
-            type: String,
-            default: "top",
+        value: {
+            type: [String, Number, Function],
+            default: "",
         },
-        horizontal: {
-            type: String,
-            default: "left",
-        },
+
+        // Style
         colspan: {
             type: [Number, Function],
             default: null,
@@ -30,63 +32,57 @@ export default {
             type: [Number, Function],
             default: null,
         },
-        value: {
-            type: [String, Number],
-            default: "",
+        position: {
+            type: String,
+            default: "center-left",
+            validator(val) {
+                return [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+
+                    "center-left",
+                    "center-center",
+                    "center-right",
+
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                ].includes(val);
+            },
         },
-        class: {
-            type: [String, Object],
-            default: null,
+        visible: {
+            type: [Boolean, Function],
+            default: true,
         },
     },
 
     computed: {
-        styles() {
-            let styles = {};
-
-            let positions = {
-                vertical: {
-                    top: "flex-start",
-                    center: "center",
-                    bottom: "flex-end",
-                },
-                horizontal: {
-                    left: "flex-start",
-                    center: "center",
-                    right: "flex-end",
-                },
-            };
-
-            styles["align-items"] = positions.vertical[this.vertical];
-            styles["justify-content"] = positions.horizontal[this.horizontal];
-
-            return styles;
-        },
-        normalizeValue() {
-            if (this.type == "string") return this.value;
+        normalizedValue() {
+            if (this.type == "string")
+                return this.value;
             if (this.type == "date")
                 return DateTime.fromISO(this.value).toFormat("dd.MM.yyyy");
-        },
-        getClasses() {
-            let classes = {};
-
-            if (typeof this.class === "object") classes = this.class;
-
-            if (typeof this.class === "string") classes[this.class] = true;
-
-            return classes;
         },
     },
 };
 </script>
 
 <template>
-    <td v-if="visible" :colspan :rowspan :class="getClasses" v-bind="$attrs">
-        <div class="table-cell-container" :style="styles">
+    <td v-if="visible"
+        :colspan
+        :rowspan
+    >
+        <div :class="['table-cell-container', position]">
             <template v-if="'default' in $slots">
                 <slot />
             </template>
-            <template v-else>{{ normalizeValue }}</template>
+            <template v-else-if="typeof value === 'function'">
+                <CellRender :how="value"/>
+            </template>
+            <template v-else>
+                <p v-html="normalizedValue" />
+            </template>
         </div>
     </td>
 </template>
@@ -104,9 +100,35 @@ table
                 border-left: none
             &:last-child
                 border-right: none
-            .table-cell-container
-                width: 100%
-                height: 100%
-                padding: 10px
-                text-align: left
+.table-cell-container
+    padding: 10px
+
+    display: flex
+    &.top-left
+        justify-content: flex-start
+        align-items: center
+    &.top-center
+        justify-content: center
+        align-items: center
+    &.top-right
+        justify-content: flex-end
+        align-items: center
+    &.center-left
+        justify-content: flex-start
+        align-items: center
+    &.center-center
+        justify-content: center
+        align-items: center
+    &.center-right
+        justify-content: flex-end
+        align-items: center
+    &.bottom-left
+        justify-content: flex-start
+        align-items: center
+    &.bottom-center
+        justify-content: center
+        align-items: center
+    &.bottom-right
+        justify-content: flex-end
+        align-items: center
 </style>

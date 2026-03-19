@@ -46,6 +46,6 @@ class ThemGroupController extends Controller
     public function destroy(ThemGroup $themGroup) {
         $themGroup->delete();
 
-        return redirect()->route('appeal.them-groups.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

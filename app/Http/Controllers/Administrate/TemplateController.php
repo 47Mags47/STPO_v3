@@ -63,6 +63,6 @@ class TemplateController extends Controller
     {
         $template->delete();
 
-        return redirect()->route('administrate.templates.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

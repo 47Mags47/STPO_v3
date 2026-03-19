@@ -27,7 +27,6 @@ export default {
 
     .content
         flex: 1
-        padding: 10px 15px
         overflow: auto
         scrollbar-gutter: stable
         @include scroll()

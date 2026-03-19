@@ -51,6 +51,6 @@ class ModulController extends Controller
     {
         $modul->delete();
 
-        return redirect()->route('administrate.moduls.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

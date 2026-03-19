@@ -41,19 +41,41 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
-            'currentUser' => Auth::user() !== null
-                ? CurrentUserResource::make(Auth::user())
-                : null,
-            'menu' => collect(
-                Modul::whereNull('group_id')->where('in_production', true)
-                    ->get()
-                    ->map(fn($modul) => MenuItemResource::make($modul)->toArray(request()))
-            )->merge(
-                ModulGroup::all()
-                    ->map(fn($group) => MenuGroupResource::make($group)->toArray(request()))
-            )
-        ];
+        $shared = parent::share($request);
+
+        // Flash
+        $shared['flash'] = [];
+        if ($request->session()->has('message'))
+            $shared['flash']['success'] = $request->session()->get('message');
+
+        if ($request->session()->has('error'))
+            $shared['flash']['error'] = $request->session()->get('error');
+
+        if ($request->session()->has('info'))
+            $shared['flash']['info'] = $request->session()->get('info');
+
+        if ($request->session()->has('warning'))
+            $shared['flash']['warning'] = $request->session()->get('warning');
+
+        if ($request->session()->has('loading'))
+            $shared['flash']['loading'] = $request->session()->get('loading');
+
+        // User
+        $shared['current_user'] = Auth::user() !== null
+            ? CurrentUserResource::make(Auth::user())
+            : null;
+
+        // Menu
+        $shared['menu'] = collect(
+            Modul::whereNull('group_id')->where('in_production', true)
+                ->get()
+                ->map(fn($modul) => MenuItemResource::make($modul)->toArray(request()))
+        )->merge(
+            ModulGroup::all()
+                ->map(fn($group) => MenuGroupResource::make($group)->toArray(request()))
+        );
+
+
+        return $shared;
     }
 }

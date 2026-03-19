@@ -19,6 +19,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('login')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }

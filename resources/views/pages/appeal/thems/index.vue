@@ -33,8 +33,8 @@ export default {
         :hasDeleteButton="true"
         :hasEditButton="true"
 
-        :data="templates.data"
-        :meta="divisions.meta"
+        :data="thems.data"
+        :meta="thems.meta"
         :collumns="[
             {
                 title: 'Наименование',

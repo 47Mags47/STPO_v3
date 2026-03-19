@@ -47,6 +47,6 @@ class ModulGroupController extends Controller
     {
         $modulGroup->delete();
 
-        return redirect()->route('administrate.modul-groups.index')->with('succes', 'Запись удалена');
+        return back()->with('succes', 'Запись удалена');
     }
 }
