@@ -19,7 +19,7 @@ export default {
     <ResourceForm
         header="Новая запись (Шаблон)"
         sbm="Добавить"
-        :action="route('templates.store')"
+        :action="route('administrate.templates.store')"
         :inputs="[
             {
                 type: 'string',

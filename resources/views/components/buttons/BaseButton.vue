@@ -19,6 +19,12 @@ export default {
                 return ["button", "submit", "reset"].includes(value);
             },
         },
+        active: {
+            type: Boolean,
+            default: false,
+        },
+
+        // Actions
         onClick: {
             type: Function,
             required: true,
@@ -32,6 +38,7 @@ export default {
             };
 
             if (this.color !== null) classes[`${this.color}-button`] = true;
+            if (this.active) classes['active'] = true;
 
             if (this.class !== null) classes[this.class] = true;
 

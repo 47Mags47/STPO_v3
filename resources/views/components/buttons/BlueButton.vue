@@ -24,7 +24,7 @@ export default {
 <style lang="sass" scoped>
 .blue-button
     background: $blue-button-background
-    &:hover
+    &:hover, &.active
         background: $blue-button-backgroun-hover
         box-shadow: $blue-button-shadow
 </style>

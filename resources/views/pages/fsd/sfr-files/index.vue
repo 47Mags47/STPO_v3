@@ -21,6 +21,7 @@ export default {
         :hasEditButton="true"
 
         :data="files.data"
+        :meta="divisions.meta"
         :collumns="[
             {
                 title: 'Файл',

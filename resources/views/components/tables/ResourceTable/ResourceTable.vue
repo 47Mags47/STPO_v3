@@ -79,6 +79,10 @@ export default {
         data: {
             type: Array,
             default: () => []
+        },
+        meta: {
+            type: Object,
+            default: () => ({ current_page: 1, last_page: 1 })
         }
     },
 
@@ -98,17 +102,17 @@ export default {
         },
 
         // Check
-        checkRowHasShowButton(row){
+        checkRowHasShowButton(row) {
             return typeof this.hasShowButton === 'function'
                 ? this.hasShowButton(row)
                 : this.hasShowButton
         },
-        checkRowHasEditButton(row){
+        checkRowHasEditButton(row) {
             return typeof this.hasEditButton === 'function'
                 ? this.hasEditButton(row)
                 : this.hasEditButton
         },
-        checkRowHasDeleteButton(row){
+        checkRowHasDeleteButton(row) {
             return typeof this.hasDeleteButton === 'function'
                 ? this.hasDeleteButton(row)
                 : this.hasDeleteButton
@@ -122,6 +126,9 @@ export default {
         <template #toolbar>
             <div class="table-search-container">
 
+            </div>
+            <div class="table-paginate-container">
+                <Paginator v-if="meta.last_page > 1" v-bind="meta" />
             </div>
             <div class="table-actions-container">
                 <slot name="actions" />
@@ -145,49 +152,34 @@ export default {
 
         <template #tbody>
             <TableRow v-if="data.length > 0" v-for="row in data">
-                <TableTd v-for="collumn in collumns" :value="row[collumn.dataIndex]"/>
+                <TableTd v-for="collumn in collumns" :value="row[collumn.dataIndex]" />
 
-                <TableTd v-if="checkRowHasDeleteButton(row)"><DeleteButton @click="() => deleteButtonClickHandler(row)"/></TableTd>
-                <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)"/></TableTd>
-                <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)"/></TableTd>
+                <TableTd v-if="checkRowHasDeleteButton(row)"><DeleteButton @click="() => deleteButtonClickHandler(row)" /></TableTd>
+                <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
+                <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)" /></TableTd>
             </TableRow>
             <tr v-else>
-                <td :colspan="collumns.length" class="not-data-cell">
+                <TableTd :colspan="collumns.length" vertical="center" horizontal="center" class="not-data-cell">
                     <Ico type="faDatabase" />
                     <span class="text">Данных нет :(</span>
-                </td>
+                </TableTd>
             </tr>
+        </template>
+
+        <template v-if="meta.last_page > 1" #pagination>
+            <Paginator v-bind="meta" />
         </template>
     </Table>
 </template>
 
 <style lang="sass" scoped>
 .resource-table
-    .table-header .toolbar
-        display: flex
-        justify-content: space-between
-        .table-search-container
-            width: 350px
-        .table-actions-container
-            .button
-                width: 35px
-                height: 35px
-    .table-content
-        .not-data-cell
-            display: flex
-            flex-direction: column
-            gap: 10px
-            text-align: center
+    .table-content .not-data-cell :deep() .table-cell-container
+        height: 250px
 
-            padding: 15px
-            .ico-container
-                font-size: 5rem
-            span
-                font-size: 1.2rem
-                font-weight: bold
-    :deep()
-        .ico-button .ico-container
-            display: flex
-            justify-content: center
-            align-items: center
+        display: flex
+        flex-direction: column
+        gap: 25px
+
+        font-size: 1.2rem
 </style>

@@ -19,6 +19,7 @@ export default {
         :hasDeleteButton="true"
 
         :data="users.data"
+        :meta="divisions.meta"
         :collumns="[
             {
                 title: 'Имя',

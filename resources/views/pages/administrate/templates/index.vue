@@ -21,6 +21,7 @@ export default {
         :hasEditButton="true"
 
         :data="templates.data"
+        :meta="divisions.meta"
         :collumns="[
             {
                 title: 'Наименование',

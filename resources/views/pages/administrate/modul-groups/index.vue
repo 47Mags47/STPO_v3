@@ -21,6 +21,7 @@ export default {
         :hasEditButton="true"
 
         :data="modulGroups.data"
+        :meta="divisions.meta"
         :collumns="[
             {
                 title: 'Код',

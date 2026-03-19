@@ -30,6 +30,7 @@ export default {
         :hasEditButton="true"
 
         :data="divisions.data"
+        :meta="divisions.meta"
         :collumns="[
             {
                 title: 'Наименование',
