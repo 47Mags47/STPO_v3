@@ -3,8 +3,8 @@
 namespace Database\Factories\Appeal;
 
 use App\Models\Appeal\Appeal;
-use App\Models\File;
-use App\Models\User;
+use App\Models\Base\File;
+use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

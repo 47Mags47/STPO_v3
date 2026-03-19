@@ -18,7 +18,7 @@ export default defineConfig({
                 'resources/sass/app.sass',
                 'resources/js/app.js'
             ],
-            refresh: true,
+            refresh: false,
         }),
         vue(),
     ],

@@ -12,7 +12,7 @@ export default {
     <ResourceForm
         header="Новая запись (Группа модулей)"
         sbm="Добавить"
-        :action="route('modul-groups.store')"
+        :action="route('administrate.modul-groups.store')"
         :inputs="[
             {
                 type: 'string',

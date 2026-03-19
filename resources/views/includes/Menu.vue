@@ -46,6 +46,7 @@ export default {
     methods: {
         menuItemClickHandler(item) {
             router.visit(route(item.route))
+            this.isOpen = false
         },
         togleOpen() {
             this.isOpen = !this.isOpen

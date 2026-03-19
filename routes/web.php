@@ -7,7 +7,7 @@ Route::get('/test', function () {
     return Inertia::render('test');
 });
 
-Route::get('/', fn() => 'home page')->name('home');
+Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home');
 Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 
@@ -15,7 +15,7 @@ Route::name('auth.')->group(function () {
     Route::resource('/users',                       App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update']);
 });
 
-Route::name('administrate.')->group(function () {
+Route::name('administrate.')->prefix('/administrate')->group(function () {
     Route::resource('/users',                       App\Http\Controllers\Administrate\UserController::class)->only(['index', 'destroy']);
     Route::resource('/templates',                   App\Http\Controllers\Administrate\TemplateController::class)->except('show');
     Route::resource('/moduls',                      App\Http\Controllers\Administrate\ModulController::class)->except('show');

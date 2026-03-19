@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Administrate\Division;
+use App\Models\Administrate\Modul;
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
-use App\Models\Division;
-use App\Models\Modul;
-use App\Models\User;
+use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
