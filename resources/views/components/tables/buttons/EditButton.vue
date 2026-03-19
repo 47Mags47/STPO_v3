@@ -11,6 +11,7 @@ export default {
     props: {
         onClick: {
             type: Function,
+            default: () => { console.error('onClick не задан') }
         },
     },
     methods: {
@@ -22,7 +23,7 @@ export default {
 </script>
 
 <template>
-    <BlueButton @click="clickHandler" class="button blue-button">
+    <BlueButton @click="clickHandler" class="ico-button">
         <Ico type="faPen" />
     </BlueButton>
 </template>

@@ -1,6 +1,6 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import ResourceTable from "../../../components/tables/ResourceTable.vue";
+import { ResourceTable } from '@components'
 
 export default {
     components: {
@@ -23,11 +23,18 @@ export default {
 
 <template>
     <ResourceTable
-        header="Организации"
-        :data="divisions"
-        :columns
-        :hasDelete="true"
-        :hasEdit="true"
-        :hasPaginate="true"
+        caption="Организации"
+
+        :hasCreateButton="true"
+        :hasDeleteButton="true"
+        :hasEditButton="true"
+
+        :data="divisions.data"
+        :collumns="[
+            {
+                title: 'Наименование',
+                dataIndex: 'name',
+            }
+        ]"
     />
 </template>

@@ -9,6 +9,7 @@ export default {
         },
         type: {
             type: String,
+            default: 'string',
             validator(value) {
                 return ["string", "date"].includes(value);
             },
@@ -98,6 +99,7 @@ table
         td
             border-top: $table-border
             border-right: $table-border
+            position: relative
             &:first-child
                 border-left: none
             &:last-child
@@ -105,6 +107,6 @@ table
             .table-cell-container
                 width: 100%
                 height: 100%
-                padding: 15px 10px
+                padding: 10px
                 text-align: left
 </style>

@@ -11,7 +11,7 @@ export default {
     props: {
         onClick: {
             type: Function,
-            required: true,
+            default: () => { console.error('onClick не задан') }
         },
     },
 
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <template>
-    <RedButton @click.prevent="clickHandler">
+    <RedButton @click.prevent="clickHandler" class="ico-button">
         <Ico type="faTrash" />
     </RedButton>
 </template>

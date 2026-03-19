@@ -1,7 +1,7 @@
 <script>
 export default {
     props: {
-        header: {
+        caption: {
             type: String,
             default: null,
         },
@@ -12,9 +12,9 @@ export default {
 <template>
     <div class="table-container">
         <div class="table-header">
-            <div class="header" v-if="!(header === null)">
+            <div class="header" v-if="caption !== null">
                 <h3>
-                    {{ header }}
+                    {{ caption }}
                 </h3>
             </div>
 
@@ -53,12 +53,13 @@ export default {
     gap: 1rem
     padding: 1.25rem
     border-radius: 12px
-
-    .header
-        font-weight: 600
-        color: #1f2937
-        line-height: 1.3
-
+    .table-header
+        display: flex
+        flex-direction: column
+        .header
+            font-weight: 600
+            color: #1f2937
+            line-height: 1.3
         .toolbar
             display: flex
             justify-content: space-between

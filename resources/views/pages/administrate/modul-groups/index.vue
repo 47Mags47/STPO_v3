@@ -1,6 +1,6 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import ResourceTable from "../../../components/tables/ResourceTable.vue";
+import { ResourceTable } from "@components";
 
 export default {
     components: {
@@ -9,29 +9,27 @@ export default {
     computed: {
         modulGroups: () => usePage().props.modulGroups,
     },
-    setup() {
-        const columns = [
-            {
-                title: "Код",
-                dataIndex: "code",
-            },
-            {
-                title: "Наименование",
-                dataIndex: "name",
-            },
-        ];
-        return { columns };
-    },
 };
 </script>
 
 <template>
     <ResourceTable
-        header="Группы модулей"
-        :columns
-        :data="modulGroups"
-        :hasDelete="true"
-        :hasEdit="true"
-        :hasPaginate="true"
+        caption="Группы модулей"
+
+        :hasCreateButton="true"
+        :hasDeleteButton="true"
+        :hasEditButton="true"
+
+        :data="modulGroups.data"
+        :collumns="[
+            {
+                title: 'Код',
+                dataIndex: 'code',
+            },
+            {
+                title: 'Наименование',
+                dataIndex: 'name',
+            },
+        ]"
     />
 </template>

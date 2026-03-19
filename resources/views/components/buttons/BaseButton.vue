@@ -21,6 +21,7 @@ export default {
         },
         onClick: {
             type: Function,
+            required: true,
         },
     },
     slots: ["default"],
@@ -59,7 +60,7 @@ export default {
     border: none
     background: none
 
-    padding: 5px 10px
+    padding: 5px
 
     border-radius: $default-border-radius
 
@@ -70,4 +71,8 @@ export default {
     cursor: pointer
 
     transition: .5s
+    &.ico-button
+        width: 35px
+        height: 35px
+        padding: 10px
 </style>

@@ -1,6 +1,6 @@
 <script>
+import BlueButton from "./../../buttons/BlueButton.vue";
 import Ico from "../../Ico.vue";
-import BlueButton from "../../buttons/BlueButton";
 
 export default {
     components: {
@@ -11,6 +11,7 @@ export default {
     props: {
         onClick: {
             type: Function,
+            default: () => { console.error('onClick не задан') }
         },
     },
 
@@ -23,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <BlueButton @click="clickHandler" class="button blue-button">
-        <Ico type="faGoto" />
+    <BlueButton @click="clickHandler" class="ico-button">
+        <Ico type="faArrowRightToBracket" />
     </BlueButton>
 </template>

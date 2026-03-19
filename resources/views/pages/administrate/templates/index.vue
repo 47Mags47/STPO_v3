@@ -1,6 +1,6 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import ResourceTable from "../../../components/tables/ResourceTable.vue";
+import { ResourceTable } from "@components";
 
 export default {
     components: {
@@ -9,37 +9,35 @@ export default {
     computed: {
         templates: () => usePage().props.templates,
     },
-    setup() {
-        const columns = [
-            {
-                title: "Наименование",
-                dataIndex: "name",
-            },
-            {
-                title: "Вид",
-                dataIndex: "style.name",
-            },
-            {
-                title: "Тип",
-                dataIndex: "type.name",
-            },
-            {
-                title: "Разбивать",
-                dataIndex: "chunk",
-            },
-        ];
-        return { columns };
-    },
 };
 </script>
 
 <template>
     <ResourceTable
-        header="Шаблоны"
-        :columns
-        :data="templates"
-        :hasDelete="true"
-        :hasEdit="true"
-        :hasPaginate="true"
+        caption="Шаблоны"
+
+        :hasCreateButton="true"
+        :hasDeleteButton="true"
+        :hasEditButton="true"
+
+        :data="templates.data"
+        :collumns="[
+            {
+                title: 'Наименование',
+                dataIndex: 'name',
+            },
+            {
+                title: 'Вид',
+                dataIndex: 'style.name',
+            },
+            {
+                title: 'Тип',
+                dataIndex: 'type.name',
+            },
+            {
+                title: 'Разбивать',
+                dataIndex: 'chunk',
+            },
+        ]"
     />
 </template>

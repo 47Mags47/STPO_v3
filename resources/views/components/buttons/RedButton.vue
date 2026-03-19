@@ -6,9 +6,6 @@ export default {
         text: {
             type: String,
         },
-        onClick: {
-            type: Function,
-        },
     },
     components: {
         BaseButton,
@@ -18,7 +15,7 @@ export default {
 </script>
 
 <template>
-    <BaseButton color="red" @click="onClick">
+    <BaseButton color="red">
         <template v-if="$slots.default"><slot name="default" /></template>
         <template v-else>{{ text }}</template>
     </BaseButton>
