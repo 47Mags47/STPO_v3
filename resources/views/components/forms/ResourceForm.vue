@@ -1,31 +1,23 @@
 <script>
 import VerticalForm from "./VerticalForm.vue";
-import StringInput from "../inputs/StringInput.vue";
-import FormItem from "../FormItem.vue";
-import Select from "../inputs/Select.vue";
-import PhoneInput from "../inputs/PhoneInput.vue";
-import PhoneHasDobInput from "../inputs/PhoneHasDobInput.vue";
-import EmailInput from "../inputs/EmailInput.vue";
-import PasswordInput from "../inputs/PasswordInput.vue";
 import BlueButton from "../buttons/BlueButton.vue";
-import CheckBox from "../inputs/CheckBox.vue";
-import NumberInput from "../inputs/NumberInput.vue";
-import FileInput from "../inputs/FileInput.vue";
+import { defineAsyncComponent } from "vue";
 
 export default {
     components: {
         VerticalForm,
-        FormItem,
-        StringInput,
-        PhoneInput,
-        PhoneHasDobInput,
-        EmailInput,
-        PasswordInput,
-        Select,
         BlueButton,
-        CheckBox,
-        NumberInput,
-        FileInput,
+
+        FormItem:           defineAsyncComponent(() => import('../FormItem.vue')),
+        StringInput:        defineAsyncComponent(() => import('../inputs/StringInput.vue')),
+        PhoneInput:         defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
+        PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
+        EmailInput:         defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
+        PasswordInput:      defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
+        Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
+        CheckBox:           defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
+        NumberInput:        defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
+        FileInput:          defineAsyncComponent(() => import('../inputs/FileInput.vue')),
     },
     props: {
         inputs: {
@@ -94,42 +86,15 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput
-                    v-if="input.type === 'string'"
-                    v-bind="prepareProps(input)"
-                />
-                <NumberInput
-                    v-if="input.type === 'number'"
-                    v-bind="prepareProps(input)"
-                />
-                <FileInput
-                    v-if="input.type === 'file'"
-                    v-bind="prepareProps(input)"
-                />
-                <PhoneInput
-                    v-if="input.type === 'phone'"
-                    v-bind="prepareProps(input)"
-                />
-                <PhoneHasDobInput
-                    v-if="input.type === 'phoneHasDob'"
-                    v-bind="prepareProps(input)"
-                />
-                <EmailInput
-                    v-if="input.type === 'email'"
-                    v-bind="prepareProps(input)"
-                />
-                <PasswordInput
-                    v-if="input.type === 'password'"
-                    v-bind="prepareProps(input)"
-                />
-                <Select
-                    v-if="input.type === 'select'"
-                    v-bind="prepareProps(input)"
-                />
-                <CheckBox
-                    v-if="input.type === 'checkbox'"
-                    v-bind="prepareProps(input)"
-                />
+                <StringInput        v-if="input.type === 'string'"      v-bind="prepareProps(input)" />
+                <NumberInput        v-if="input.type === 'number'"      v-bind="prepareProps(input)" />
+                <FileInput          v-if="input.type === 'file'"        v-bind="prepareProps(input)" />
+                <PhoneInput         v-if="input.type === 'phone'"       v-bind="prepareProps(input)" />
+                <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'" v-bind="prepareProps(input)" />
+                <EmailInput         v-if="input.type === 'email'"       v-bind="prepareProps(input)" />
+                <PasswordInput      v-if="input.type === 'password'"    v-bind="prepareProps(input)" />
+                <Select             v-if="input.type === 'select'"      v-bind="prepareProps(input)" />
+                <CheckBox           v-if="input.type === 'checkbox'"    v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>

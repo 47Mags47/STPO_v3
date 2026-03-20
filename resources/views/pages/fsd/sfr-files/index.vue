@@ -21,29 +21,18 @@ export default {
         :hasEditButton="true"
 
         :data="files.data"
-        :meta="divisions.meta"
+        :meta="files.meta"
         :collumns="[
             {
-                title: 'Файл',
+                title: 'Наименование',
                 dataIndex: 'file.name',
             },
             {
-                title: 'Код региона',
-                dataIndex: 'region_code',
-            },
-            {
-                title: 'Признак вида представления информации',
-                dataIndex: 'sign_code',
-            },
-            {
-                title: 'Дата формирования файла',
-                dataIndex: 'in_date',
-                type:'date'
-            },
-                        {
-                title: 'ПН файла',
-                dataIndex: 'npp_for_month',
-            },
+                title: 'Загружен',
+                type: 'date',
+                dataIndex: 'upload_at',
+                width: '100px'
+            }
         ]"
     />
 </template>

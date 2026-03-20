@@ -15,18 +15,11 @@ class SFRFileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'region_code'   => $this->region_code,
-            'sign_code'     => $this->sign_code,
-            'in_date'       => $this->in_date,
-            'npp_for_month' => $this->npp_for_month,
             'file' => [
                 'name' => $this->file->origin_name,
                 'errors' => $this->file->errors,
             ],
-            'recipients'=> [
-                'count' => $this->recipients->count(),
-                'checked' => $this->recipients->where('status_id', 3)->count(),
-            ]
+            'upload_at' => $this->created_at
         ];
     }
 }

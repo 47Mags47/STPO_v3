@@ -14,37 +14,43 @@ class ModulSeeder extends Seeder
     public function run(): void
     {
         Modul::create([
-            'in_production' => true,
             'name' => 'Обращения',
             'route_name' => 'appeal.appeals.index',
         ]);
 
         // Administrate
         Modul::create([
-            'name' => 'Список групп модулей',
-            'route_name' => 'administrate.modul-groups.index',
-            'group_id' => ModulGroup::byCode('administrate')->id,
+            'name'          => 'Список групп модулей',
+            'route_name'    => 'administrate.modul-groups.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
         Modul::create([
-            'name' => 'Список модулей',
-            'route_name' => 'administrate.moduls.index',
-            'group_id' => ModulGroup::byCode('administrate')->id,
+            'name'          => 'Список модулей',
+            'route_name'    => 'administrate.moduls.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
+        Modul::create([
+            'name'          => 'Список организаций',
+            'route_name'    => 'administrate.divisions.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+        Modul::create([
+            'name'          => 'Список пользователей',
+            'route_name'    => 'administrate.users.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+        Modul::create([
+            'name'          => 'Список шаблонов',
+            'route_name'    => 'administrate.templates.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+
+        // SFR
         Modul::create([
             'in_production' => true,
-            'name' => 'Список организаций',
-            'route_name' => 'administrate.divisions.index',
-            'group_id' => ModulGroup::byCode('administrate')->id,
-        ]);
-        Modul::create([
-            'name' => 'Список пользователей',
-            'route_name' => 'administrate.users.index',
-            'group_id' => ModulGroup::byCode('administrate')->id,
-        ]);
-        Modul::create([
-            'name' => 'Список шаблонов',
-            'route_name' => 'administrate.templates.index',
-            'group_id' => ModulGroup::byCode('administrate')->id,
+            'name'          => 'Федеральныя социальная доплата',
+            'route_name'    => 'fsd.sfr-files.index',
+            'group_id'      => ModulGroup::byCode('SFR')->id,
         ]);
     }
 }

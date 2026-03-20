@@ -12,6 +12,7 @@ class ModulGroupSeeder extends Seeder
      */
     public function run(): void
     {
-        ModulGroup::create(['code' => 'administrate', 'name' => 'Администрирование']);
+        ModulGroup::create(['code' => 'administrate',   'name' => 'Администрирование']);
+        ModulGroup::create(['code' => 'SFR',            'name' => 'СФР']);
     }
 }

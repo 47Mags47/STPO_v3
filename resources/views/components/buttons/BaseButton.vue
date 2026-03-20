@@ -27,7 +27,7 @@ export default {
         // Actions
         onClick: {
             type: Function,
-            required: true,
+            default: () => { }
         },
     },
     slots: ["default"],

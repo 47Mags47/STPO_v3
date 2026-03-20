@@ -53,9 +53,10 @@ abstract class BaseModel extends Model
             : new \App\Classes\Filter($builder)->apply();
     }
 
-    public static function getResource()
+    public static function getResource(?string $order = 'id', ?string $orderDesc = 'asc')
     {
         $query = self::Filter();
+        $query->orderBy($order, $orderDesc);
 
         $paginate = getRequestPaginate();
 

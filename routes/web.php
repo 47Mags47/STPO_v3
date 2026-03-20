@@ -31,7 +31,9 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 });
 
 Route::name('fsd.')->prefix('/fsd')->group(function () {
-    Route::resource('/them-groups',                 App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
-    Route::resource('/thems',                       App\Http\Controllers\Appeal\ThemController::class)->except('show');
-    Route::resource('/appeals',                     App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
+    // Route::resource('/them-groups',                 App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
+    // Route::resource('/thems',                       App\Http\Controllers\Appeal\ThemController::class)->except('show');
+    // Route::resource('/appeals',                     App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
+
+    Route::resource('/sfr-files',                   App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
 });

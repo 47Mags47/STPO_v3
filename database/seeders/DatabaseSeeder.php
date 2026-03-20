@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        exec('php artisan app:create-folders');
+
         switch (config('app.env')) {
             case 'production':
                 $this->call(Prod\ProdSeeder::class);
