@@ -148,7 +148,7 @@ export default {
     .actions
         display: flex
         align-items: center
-        gap: 4px
+        gap: 10px
         flex-shrink: 0
 
     .select-btn
@@ -158,8 +158,8 @@ export default {
         min-height: 24px
 
     .clear-btn
-        width: 20px
-        height: 20px
+        width: 10px
+        height: 10px
         padding: 0
         display: flex
         align-items: center

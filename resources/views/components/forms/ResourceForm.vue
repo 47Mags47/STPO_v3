@@ -9,15 +9,19 @@ export default {
         BlueButton,
 
         FormItem:           defineAsyncComponent(() => import('../FormItem.vue')),
+
         StringInput:        defineAsyncComponent(() => import('../inputs/StringInput.vue')),
         PhoneInput:         defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
-        PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
         EmailInput:         defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
         PasswordInput:      defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
-        Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
-        CheckBox:           defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
         NumberInput:        defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
+        DateInput:          defineAsyncComponent(() => import('../inputs/DateInput.vue')),
+        CheckBox:           defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
         FileInput:          defineAsyncComponent(() => import('../inputs/FileInput.vue')),
+
+        PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
+        Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
+        BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
     },
     props: {
         inputs: {
@@ -28,16 +32,18 @@ export default {
             validator(value) {
                 let hasInvalidType = value.filter((input) => {
                     return ![
-                        "string",
-                        "number",
-                        "email",
-                        "phone",
-                        "phoneHasDob",
-                        "password",
-                        "text",
-                        "select",
-                        "checkbox",
-                        "file",
+                        'string',
+                        'number',
+                        'email',
+                        'phone',
+                        'phoneHasDob',
+                        'password',
+                        'text',
+                        'select',
+                        'checkbox',
+                        'file',
+                        'bigFile',
+                        'date',
                     ].includes(input.type);
                 });
 
@@ -88,13 +94,15 @@ export default {
             >
                 <StringInput        v-if="input.type === 'string'"      v-bind="prepareProps(input)" />
                 <NumberInput        v-if="input.type === 'number'"      v-bind="prepareProps(input)" />
-                <FileInput          v-if="input.type === 'file'"        v-bind="prepareProps(input)" />
                 <PhoneInput         v-if="input.type === 'phone'"       v-bind="prepareProps(input)" />
                 <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'" v-bind="prepareProps(input)" />
                 <EmailInput         v-if="input.type === 'email'"       v-bind="prepareProps(input)" />
                 <PasswordInput      v-if="input.type === 'password'"    v-bind="prepareProps(input)" />
                 <Select             v-if="input.type === 'select'"      v-bind="prepareProps(input)" />
                 <CheckBox           v-if="input.type === 'checkbox'"    v-bind="prepareProps(input)" />
+                <FileInput          v-if="input.type === 'file'"        v-bind="prepareProps(input)" />
+                <BigFileInput       v-if="input.type === 'bigFile'"     v-bind="prepareProps(input)" />
+                <DateInput          v-if="input.type === 'date'"        v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>

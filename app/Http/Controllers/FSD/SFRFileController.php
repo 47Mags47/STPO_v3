@@ -5,7 +5,7 @@ namespace App\Http\Controllers\FSD;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FSD\SFRFileStoreRequest;
 use App\Jobs\FSD\ReadSFRFileJob;
-use App\Models\Base\File;
+use App\Models\Base\UploadFile;
 use App\Models\FSD\SFRFile;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
@@ -25,23 +25,18 @@ class SFRFileController extends Controller
 
     public function store(SFRFileStoreRequest $request)
     {
-        $fileName = $request->file('file')->getClientOriginalName();
-
-        $file = File::factory()->create([
-            'disk' => 'fsd',
-            'path' => 'sfr',
-            'origin_name' => $fileName,
-        ]);
-
-        $request->file('file')->storeAs($file->path, $file->name, $file->disk);
+        $uploadfile = UploadFile::whereKey($request->validated('upload_file_id'))->first();
+        $uploadfile->move('fsd', 'sfr');
 
         $SFRFile = SFRFile::create([
-            'file_id' => $file->id,
-            'region_code' => substr($fileName, 0, 3),
-            'sign_code'      => substr($fileName, 3, 1),
-            'in_date'        => Carbon::create('202' . substr($fileName, 4, 1), substr($fileName, 5, 2)),
-            'npp_for_month'  => substr($fileName, 7, 1),
+            'file_id' => $uploadfile->file->id,
+            'region_code' => substr($uploadfile->file->origin_name, 0, 3),
+            'sign_code'      => substr($uploadfile->file->origin_name, 3, 1),
+            'in_date'        => Carbon::create(substr(now()->format('YY'), 0, 3) . substr($uploadfile->file->origin_name, 4, 1), substr($uploadfile->file->origin_name, 5, 2)),
+            'npp_for_month'  => substr($uploadfile->file->origin_name, 7, 1),
         ]);
+
+        $uploadfile->delete();
 
         ReadSFRFileJob::dispatch($SFRFile);
 

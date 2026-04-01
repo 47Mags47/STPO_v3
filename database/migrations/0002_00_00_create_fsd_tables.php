@@ -45,6 +45,9 @@ return new class extends Migration
             $table->string('middle_name')->default('');
             $table->string('SNILS');
 
+            $table->date('date_start');
+            $table->date('date_end');
+
             $table->foreignId('file_id')->constrained(SFRFile::getTableName());
             $table->foreignId('status_id')->constrained(RecipientStatus::getTableName());
         });
@@ -55,20 +58,16 @@ return new class extends Migration
             $table->foreignId('file_id')->constrained(File::getTableName());
             $table->foreignId('sfr_file_id')->constrained(SFRFile::getTableName());
 
+            $table->date('date_start');
+            $table->date('date_end');
+
             $table->timestamps();
         });
 
         Schema::create('fsd__payments', function (Blueprint $table) {
             $table->id();
-            $table->date('raport_date');
-            $table->integer('type_number');
-            $table->string('type_name');
 
             $table->decimal('amount', 8, 2);
-            $table->decimal('amount_other', 8, 2)->default(0.00);
-
-            $table->date('start_date');
-            $table->date('end_date');
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName());
             $table->foreignId('recipient_id')->nullable()->constrained(Recipient::getTableName());

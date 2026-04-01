@@ -1,6 +1,16 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Files
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the settings related to files and their downloads
+    |
+    */
+
+    'max_file_size' => env('MAX_FILE_SIZE', '10M'),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,6 +60,12 @@ return [
         'templates' => [
             'driver' => 'local',
             'root' => storage_path('app/private/templates'),
+            'throw' => true,
+        ],
+
+        'uploads' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/uploads'),
             'throw' => true,
         ],
 

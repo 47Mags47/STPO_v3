@@ -60,7 +60,9 @@ export default {
             if (this.type == "string")
                 return this.value;
             if (this.type == "date")
-                return DateTime.fromISO(this.value).toFormat("dd.MM.yyyy");
+                return this.value !== null
+                    ? DateTime.fromISO(this.value).toFormat("dd.MM.yyyy")
+                    : ''
         },
     },
 };

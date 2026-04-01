@@ -32,6 +32,8 @@ class RecipientFactory extends Factory
             'last_name'         => $last_name,
             'middle_name'       => $middle_name,
             'SNILS'             => $this->faker->numerify('###-###-### ##'),
+            'date_start'        => now()->addDay(- rand(1, 60))->startOfMonth(),
+            'date_end'          => now()->addDay(rand(1, 60))->endOfMonth(),
 
             'file_id'           => SFRFile::randomOrCreate(),
             'status_id'         => RecipientStatus::all()->random()->id,

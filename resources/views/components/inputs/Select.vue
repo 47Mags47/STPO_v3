@@ -201,7 +201,7 @@ export default {
                 :name="null"
             />
 
-            <div class="ico-container" :class="{ rotated: open }">
+            <div class="select-ico-container" :class="{ rotated: open }">
                 <Ico type="faChevronDown" />
             </div>
         </div>
@@ -297,19 +297,17 @@ export default {
     white-space: nowrap
     cursor: pointer
 
-  .ico-container
+  .select-ico-container
     position: absolute
     top: 50%
     right: 10px
     transform: translateY(-50%)
-    width: 18px
-    height: 18px
-    display: flex
-    align-items: center
-    justify-content: center
+    width: 15px
+    height: 15px
+
     pointer-events: none
     transition: transform 0.3s ease
 
     &.rotated
-      transform: translateY(-50%) rotate(180deg)
+      transform: translateY(-50%) rotate(540deg)
 </style>

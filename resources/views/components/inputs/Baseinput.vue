@@ -11,7 +11,6 @@ export default {
         },
         name: {
             type: [String, null],
-            required: true,
         },
         placeholder: {
             type: [String, null],
@@ -30,16 +29,39 @@ export default {
             default: false,
         },
 
+        hidden: {
+            type: Boolean,
+            default: false,
+        },
+
         onInput: {
             type: Function,
             default: () => {},
         },
+        onClick: {
+            type: Function,
+            default: () => {},
+        },
+        onChange: {
+            type: Function,
+            default: () => {},
+        }
     },
 
     methods: {
         inputHandler(e) {
             this.onInput(e);
         },
+        clickHandler(e){
+            this.onClick(e);
+        },
+        changeHandler(e){
+            this.onChange(e);
+        },
+
+        getInputElement(){
+            return this.$refs.input
+        }
     },
 };
 
@@ -48,7 +70,8 @@ export default {
 
 <template>
     <input
-        class="base-input"
+        ref="input"
+        :class="{ 'base-input': true, 'hidden': hidden }"
         :type
         :id
         :name
@@ -57,21 +80,14 @@ export default {
         :autocomplete
         :value="modelValue"
         @input="inputHandler"
+        @click="clickHandler"
+        @change="changeHandler"
     />
 </template>
 
 <style lang="sass" scoped>
 .base-input
-    width: 100%
-    height: $input-height
-
-    padding: $input-padding
-
-    border: $input-border
-    border-radius: $input-border-radius
-
-    font-size: $input-font-size
-    color: #333
-
-    transition: .3s
+    @include input()
+    &.hidden
+        display: none
 </style>

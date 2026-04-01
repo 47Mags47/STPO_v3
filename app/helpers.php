@@ -32,3 +32,22 @@ if (! function_exists('getRequestPaginate')) {
         return 50;
     }
 }
+
+if (! function_exists('return_bytes')) {
+    function return_bytes(string $val)
+    {
+        $val = trim($val);
+        $number = substr($val, 0, -1);
+        $last = strtolower($val[strlen($val) - 1]);
+
+        switch ($last) {
+            case 'g':
+                $number *= 1024;
+            case 'm':
+                $number *= 1024;
+            case 'k':
+                $number *= 1024;
+        }
+        return $number;
+    }
+}

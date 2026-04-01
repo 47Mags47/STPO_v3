@@ -2,15 +2,14 @@
 
 namespace App\Models\FSD;
 
-use App\Classes\BaseModel;
-use App\Traits\ThisFileModel;
+use App\Classes\FileModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-class SFRFile extends BaseModel
+class SFRFile extends FileModel
 {
-    use ThisFileModel, HasFactory;
+    use HasFactory;
 
     ### Настройки
     ##################################################
@@ -30,6 +29,9 @@ class SFRFile extends BaseModel
             'in_date' => 'date',
         ];
     }
+
+    public string|null $StorageFileDisk = 'fsd';
+    public string|null $StorageFilePath = 'sfr';
 
     ### Связи
     ##################################################

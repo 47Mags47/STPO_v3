@@ -31,17 +31,10 @@ class File extends BaseModel
         ];
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::deleted(function ($model) {
-            $local_path = $model->path !== ''
-                ? $model->path . '/' . $model->name
-                : $model->name;
-
-            Storage::disk($model->disk)->delete($local_path);
-        });
+    ### Методы
+    ##################################################
+    public function deleteInStorage(){
+        return Storage::disk($this->disk)->delete($this->path . '/' . $this->name);
     }
 
     ### Аттрибуты

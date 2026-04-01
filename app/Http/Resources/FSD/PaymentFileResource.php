@@ -15,7 +15,14 @@ class PaymentFileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'created_at' => $this->created_at,
+            'file' => [
+                'name' => $this->file->origin_name,
+            ],
+            'payments' => [
+                'count' => $this->payments->count()
+            ],
+            'date_start' => $this->date_start,
+            'date_end' => $this->date_end,
         ];
     }
 }

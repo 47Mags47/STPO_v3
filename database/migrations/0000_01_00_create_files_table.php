@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Base\File;
+use App\Models\Base\UploadFile;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +26,27 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('base__file_uploads', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->integer('totalChunks');
+
+            $table->timestamps();
+        });
+
+        Schema::create('base__file_chunks', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('file_id')->constrained(File::getTableName());
+
+            $table->foreignId('total_file_id')->constrained(UploadFile::getTableName());
+            $table->boolean('uploaded')->default(false);
+            $table->integer('npp');
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -31,6 +54,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('base__file_chunks');
+        Schema::dropIfExists('base__file_uploads');
         Schema::dropIfExists('base__files');
     }
 };

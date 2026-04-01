@@ -14,13 +14,14 @@ export default {
         TableTh,
         TableTd,
 
-        CreateButton: defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
-        EditButton: defineAsyncComponent(() => import("../buttons/EditButton.vue")),
-        ShowButton: defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
-        DeleteButton: defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
+        CreateButton:   defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
+        EditButton:     defineAsyncComponent(() => import("../buttons/EditButton.vue")),
+        ShowButton:     defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
+        DeleteButton:   defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
 
-        Ico: defineAsyncComponent(() => import("../../Ico.vue")),
-        Paginator: defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
+        Ico:            defineAsyncComponent(() => import("../../Ico.vue")),
+        Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
+        BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
     },
 
     props: {
@@ -84,7 +85,13 @@ export default {
         meta: {
             type: Object,
             default: () => ({ current_page: 1, last_page: 1 })
-        }
+        },
+
+        //Other
+        rowLinks: {
+            type: Array,
+            default: [],
+        },
     },
 
     methods: {
@@ -119,7 +126,6 @@ export default {
                 : this.hasDeleteButton
         },
 
-        // Check
         checkCellVisible(row, collumn) {
             let visible = collumn.visible ?? true
 
@@ -180,11 +186,13 @@ export default {
                     <TableTh v-if="hasShowButton !== false" button />
                     <TableTh v-if="hasEditButton !== false" button />
                 </template>
+
+                <TableTh v-for="link in rowLinks" button />
             </TableRow>
         </template>
 
         <template #tbody>
-            <TableRow v-if="data.length > 0" v-for="row in data">
+            <TableRow v-if="data.length > 0" v-for="row in data" >
                 <template v-for="collumn in collumns">
                     <TableTd
                         v-if="checkCellVisible(row, collumn)"
@@ -195,9 +203,15 @@ export default {
                 <TableTd v-if="checkRowHasDeleteButton(row)"><DeleteButton @click="() => deleteButtonClickHandler(row)" /></TableTd>
                 <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
                 <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)" /></TableTd>
+
+                <TableTd v-for="link in rowLinks">
+                    <BlueButton :onclick="() => link.onClick(row)" class="ico-button">
+                        <Ico :type="link.ico" />
+                    </BlueButton>
+                </TableTd>
             </TableRow>
             <tr v-else>
-                <TableTd :colspan="collumns.length" vertical="center" horizontal="center" class="not-data-cell">
+                <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
                     <Ico type="faDatabase" />
                     <span class="text">Данных нет :(</span>
                 </TableTd>
@@ -217,6 +231,7 @@ export default {
             padding: 0 15px
         .table-content .not-data-cell .table-cell-container
             height: 250px
+            padding: 35px 0px
 
             display: flex
             flex-direction: column

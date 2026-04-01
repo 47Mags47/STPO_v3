@@ -1,5 +1,5 @@
 <script>
-import ResourceForm from "./../../../components/forms/ResourceForm.vue";
+import { ResourceForm } from "@components";
 
 export default {
     components: {
@@ -15,11 +15,10 @@ export default {
         :action="route('fsd.sfr-files.store')"
         :inputs="[
             {
-                type: 'file',
-                name: 'file',
+                type: 'bigFile',
+                name: 'upload_file_id',
                 label: 'Файл',
             },
         ]"
-    >
-    </ResourceForm>
+    />
 </template>
