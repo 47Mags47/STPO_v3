@@ -5,5 +5,6 @@ export default {
 </script>
 
 <template>
-    test
+    <div class="bg-red-400 h-1/2">
+    </div>
 </template>
