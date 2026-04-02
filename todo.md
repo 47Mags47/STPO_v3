@@ -42,7 +42,7 @@
         - [ ] Добавить заголовок для колонки с датами
         - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
 
-    - [ ] FixPaymentFileResource
+    - [x] sfr_fsd_a1_FixPaymentFileResource
         Исправить вывод кол-ва записей на странице payment-files/index
 
 - dev ( прочее )
