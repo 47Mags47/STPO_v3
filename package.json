@@ -23,6 +23,7 @@
         "@vitejs/plugin-vue": "^6.0.4",
         "luxon": "^3.7.2",
         "sass": "^1.97.3",
+        "vue3-datepicker": "^0.4.0",
         "ziggy-js": "^2.6.1"
     }
 }
