@@ -42,6 +42,9 @@
         - [ ] Добавить заголовок для колонки с датами
         - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
 
+    - [ ] FixPaymentFileResource
+        Исправить вывод кол-ва записей на странице payment-files/index
+
 - dev ( прочее )
     - pusher ( он же websocket )
         - [ ] dev_pusher_a1_InstallAndTest 
