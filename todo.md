@@ -33,14 +33,18 @@
             name        string      Наименование темы
 
 - sfr ( Он же FSD ) ( СФР )
-    - [ ] CreateJobsAlert
-        - [ ] Добавить прогресбар чтения FSDFile
-        - [ ] Добавить прогресбар чтения PaymentFile
+    - fsd   Федеральная Социальная Доплата
+        - [ ] CreateJobsAlert
+            - [ ] Добавить прогресбар чтения FSDFile
+            - [ ] Добавить прогресбар чтения PaymentFile
 
-    - [ ] FixTable
-        - [ ] Поправить ширину колонки с датами
-        - [ ] Добавить заголовок для колонки с датами
-        - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
+        - [ ] FixTable
+            - [ ] Поправить ширину колонки с датами
+            - [ ] Добавить заголовок для колонки с датами
+            - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
+
+        - [x] sfr_fsd_a1_FixPaymentFileResource
+            Исправить вывод кол-ва записей на странице payment-files/index
 
     - [x] sfr_fsd_a1_FixPaymentFileResource
         Исправить вывод кол-ва записей на странице payment-files/index
