@@ -1,7 +1,11 @@
+import './bootstrap'
+import "./helpers";
+
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import "./helpers";
+
 import * as derectives from "./derectives";
+
 import { ZiggyVue } from "ziggy-js";
 import Baselayout from "../views/layouts/AuthLayout.vue";
 

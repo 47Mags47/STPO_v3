@@ -19,7 +19,7 @@ class PaymentFileResource extends JsonResource
                 'name' => $this->file->origin_name,
             ],
             'payments' => [
-                'count' => $this->payments->count()
+                'count' => $this->payments()->count()
             ],
             'date_start' => $this->date_start,
             'date_end' => $this->date_end,
