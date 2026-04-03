@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     @vite('resources/sass/app.sass')
+    @vite('resources/css/main.css')
     @vite('resources/js/app.js')
 
     @inertiaHead
