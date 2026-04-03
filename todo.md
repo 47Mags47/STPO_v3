@@ -45,6 +45,8 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
+        - [ ] FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
 
 - dev ( прочее )
     - pusher ( он же websocket )
@@ -56,13 +58,16 @@
 
     - components ( компоненты )
         - [ ] FixIcoButton
-            - [ ] Вынести класс 'ico-button' в отдельный компонент
+            Вынести класс 'ico-button' в отдельный компонент
 
         - [ ] CreateDateInput
-            - [ ] Создать компонент DateInput
+            Создать компонент DateInput
 
         - [ ] CreateDateBetweenInput
-            - [ ] Создать компонент DateBetweenInput
+            Создать компонент DateBetweenInput
+
+        - [ ] CreateErrorPopUp
+            Создать компонент высплывающей ошибки
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
