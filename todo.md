@@ -48,8 +48,11 @@
 
 - dev ( прочее )
     - pusher ( он же websocket )
-        - [ ] dev_pusher_a1_InstallAndTest 
-            - [ ] Установить пушер
+        - [x] dev_pusher_a1_InstallAndTest 
+            - [x] Установить Larabel/reverb
+            - [x] Установить Laravel-echo
+            - [x] Установить Pusher-js
+            - [x] Создать тестовый event
 
     - components ( компоненты )
         - [ ] FixIcoButton
