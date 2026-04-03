@@ -58,13 +58,16 @@
 
     - components ( компоненты )
         - [ ] FixIcoButton
-            - [ ] Вынести класс 'ico-button' в отдельный компонент
+            Вынести класс 'ico-button' в отдельный компонент
 
         - [ ] CreateDateInput
-            - [ ] Создать компонент DateInput
+            Создать компонент DateInput
 
         - [ ] CreateDateBetweenInput
-            - [ ] Создать компонент DateBetweenInput
+            Создать компонент DateBetweenInput
+
+        - [ ] CreateErrorPopUp
+            Создать компонент высплывающей ошибки
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
