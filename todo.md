@@ -45,6 +45,8 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
+        - [ ] FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
 
 - dev ( прочее )
     - pusher ( он же websocket )
