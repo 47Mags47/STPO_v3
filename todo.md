@@ -45,8 +45,14 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
-        - [ ] FixUploadSfrFile
+        - [x] FixUploadSfrFile
             Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
+        - [ ] AddErrorHandler
+            Добавить валидацию данных из загружаемого файла (SFRFile)
+        
+        - [ ] AddUploadStatus
+            Добавить отображение статуса чтения SFRFile
+            Добавить отображение статуса чтения PaymentFile
 
     - [x] sfr_fsd_a1_FixPaymentFileResource
         Исправить вывод кол-ва записей на странице payment-files/index
@@ -68,7 +74,14 @@
 
         - [ ] CreateDateBetweenInput
             - [ ] Создать компонент DateBetweenInput
+            
+        - [ ] CreateAlert
+            Создать компонент предупреждения для пользователя (аля стандартный confirm)
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
+
+    - base
+        - [ ] FixUploadBigFile
+            Вынести процесс объеденения чанков (FileChunk) при загрузке больших фалов (UploadFile) в одельный процесс
