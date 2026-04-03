@@ -45,14 +45,19 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
+        - [ ] FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
 
     - [x] sfr_fsd_a1_FixPaymentFileResource
         Исправить вывод кол-ва записей на странице payment-files/index
 
 - dev ( прочее )
     - pusher ( он же websocket )
-        - [ ] dev_pusher_a1_InstallAndTest 
-            - [ ] Установить пушер
+        - [x] dev_pusher_a1_InstallAndTest 
+            - [x] Установить Larabel/reverb
+            - [x] Установить Laravel-echo
+            - [x] Установить Pusher-js
+            - [x] Создать тестовый event
 
     - components ( компоненты )
         - [ ] FixIcoButton

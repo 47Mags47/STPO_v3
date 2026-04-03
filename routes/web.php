@@ -6,6 +6,8 @@ use Inertia\Inertia;
 Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home');
 Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
+Route::get('/test', fn() => Inertia::render('test'));
+
 
 Route::name('auth.')->group(function () {
     Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update']);
