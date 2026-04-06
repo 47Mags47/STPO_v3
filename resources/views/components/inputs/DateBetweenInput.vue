@@ -3,18 +3,21 @@ import Datepicker from 'vue3-datepicker'
 import { ru } from 'date-fns/locale'
 
 import Ico from '../Ico.vue'
+import ErrorPopUpMsgQueue from '../ErrorPopUpMsgQueue.vue';
 
 export default {
   components: {
     Datepicker,
     Ico,
+    ErrorPopUpMsgQueue,
   },
   data() {
     return {
       pickedStartDate: new Date(),
       pickedEndDate: new Date(),
       locale: ru,
-      openState: { startPicker: false, endPicker: false }
+      openState: { startPicker: false, endPicker: false },
+      errors: [{ id: Date.now() + Math.random(), type: 'error', msg: 'Начало периода не может быть больше конца' }],
     }
   },
   computed: {
@@ -78,6 +81,7 @@ export default {
                 </div>
             </div>
 
+            <ErrorPopUpMsgQueue v-if="!isValidRange" :errors ='errors' />
             <!-- <transition
                 enter-active-class="transition duration-300"
                 enter-from-class="opacity-0"
