@@ -66,7 +66,7 @@
         - [ ] CreateDateBetweenInput
             Создать компонент DateBetweenInput
 
-        - [ ] dev_components_a1_CreateErrorPopUp
+        - [x] dev_components_a1_CreateErrorPopUp
             Создать компонент высплывающей ошибки
 
     - libs ( библиотеки, хелперы и тд )
