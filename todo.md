@@ -66,8 +66,8 @@
         - [ ] CreateDateBetweenInput
             Создать компонент DateBetweenInput
 
-        - [ ] dev_components_a1_refactErrorPopUp
-            Рефакт кода с классами в компоненте ErrorPopUp
+        - [ ] dev_components_a1_refactErrorPopUpMsg
+            Рефакт и улучшение кода в компонентах ErrorPopUpMsgm ErrorPopUpMsgQueue
 
         - [x] dev_components_a1_CreateErrorPopUp
             Создать компонент высплывающей ошибки
