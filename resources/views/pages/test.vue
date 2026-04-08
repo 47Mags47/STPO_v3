@@ -2,16 +2,16 @@
 import ResourceForm from "../components/forms/ResourceForm.vue";
 import DateBetweenInput from "../components/inputs/DateBetweenInput.vue"
 import Ico from "../components/Ico.vue";
-import ErrorPopUpMsgQueue from "../components/ErrorPopUpMsgQueue.vue";
-import ErrorPopUpMsg from "../components/ErrorPopUpMsg.vue";
+import Alert from "../components/Alert.vue";
+import ContainerAlert from "../components/ContainerAlert.vue";
 
 export default {
     components: {
         DateBetweenInput,
         ResourceForm,
         Ico,
-        ErrorPopUpMsgQueue,
-        ErrorPopUpMsg,
+        ContainerAlert,
+        Alert,
     },
     data() {
         return {
@@ -26,26 +26,40 @@ export default {
     methods: {
         removeErrFromArray(ErrorId) {
             this.errors = this.errors.filter(err => err.id !== ErrorId)
+        },
+        clearErrs() {
+            const interval = setInterval(() => {
+                if (this.errors.length > 0)
+                    this.errors.pop();
+                else
+                    clearInterval(interval);
+            }, 100);
         }
     }
 }
 </script>
 
 <template>
-    <!-- <button @click="console.log(errors)" class="bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> SHOW ERRS </button>
-    <button @click="errors.push({id: Date.now() + Math.random(), msg: 'Ошибка 4'})" class="bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> ADD ERR </button>
 
-    <ErrorPopUpMsgQueue :errors="errors"
+
+
+    <!-- <button @click="console.log(errors)" class=" border bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> SHOW ERRS </button>
+    <button @click="errors.push({id: Date.now() + Math.random(), msg: 'Ошибка 4'})" class="boder bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer">
+        ADD ERR
+    </button>
+    <button @click="clearErrs" class="bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> CLEAR ERRS </button>
+
+    <ContainerAlert :errors="errors"
               @removeErrFromArray="removeErrFromArray"/> -->
 
-    <!-- <ErrorPopUpMsg msg="Тест большой ошибки раз два три четыре пять шесть семь восемь девять десять
+    <!-- <Alert msg="Тест большой ошибки раз два три четыре пять шесть семь восемь девять десять
     одиннадцать двеннадцать треннадцать пятнадцать шестнадцать семнадцать 1 2 3 4 5 6 7 8 9 0 11 112 121 1231 12312
+    333333333333333333333333333333333333333333333333333
     "/> -->
 
-    <!-- <ErrorPopUpMsg msg="Тест маленькой ошибки раз два три четыре пять"/> -->
+    <!-- <Alert msg="Тест маленькой ошибки раз два три четыре пять"/> -->
 
     <!-- <DateBetweenInput/> -->
-    <!-- <Ico type="faPen" class="text-red-400" /> -->
     <ResourceForm
     :inputs="[
         {
@@ -65,6 +79,5 @@ export default {
         }
     ]"
     />
-
 
 </template>

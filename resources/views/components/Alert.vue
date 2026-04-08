@@ -25,33 +25,19 @@ export default {
     },
     methods: {
         closeErrAlert(){
-            // Ставим таймаут для удаления ошибки из массива в родителе с EMIT,
-            // чтобы успела сработать анимация её закрытия в этом компоненте
-            setTimeout(() => {
-                this.$emit('removeErrFromArray');
-            }, 550)
-            this.isErrAlertVisible = false;
+            this.$emit('removeErrFromArray');
         }
     },
-    mounted() {
-        setTimeout(() => {
-            this.isErrAlertVisible = true;
-        }, 10);
-    }
 }
 
 </script>
 
 <template>
-    <div class="rounded w-[256px] overflow-hidden
-        transition-all duration-500 ease-out transform"
-        :class="{
-            'translate-x-0 opacity-100': isErrAlertVisible,
-            'translate-x-full opacity-0 pointer-events-none': !isErrAlertVisible,
-        }">
+    <div class="rounded w-[300px] overflow-hidden
+        transition-all duration-500 ease-out transform">
 
         <!-- Окно с крестиком -->
-        <div class="w-full h-[14px] flex justify-end !p-[2px]"
+        <div class="w-full h-[18px] flex justify-end !p-[2px]"
         :class="{
             'bg-green-700/90': alertType === 'success',
             'bg-sky-700/90': alertType === 'info',
@@ -62,13 +48,19 @@ export default {
             @click="closeErrAlert"/>
         </div>
         <!-- Окно с ошибкой -->
-        <div class="bg-gray-300 !p-4 h-[72px] flex justify-center
-            overflow-y-auto custom-scrollbar">
-            <p class="break-words"
+        <div class="!p-4 h-[72px] flex justify-center
+            overflow-y-auto custom-scrollbar"
+            :class="{
+                'bg-green-100/90': alertType === 'success',
+                'bg-sky-100/90': alertType === 'info',
+                'bg-red-100': alertType === 'error',
+            }">
+            <p class="break-all !text-lg"
             :class="{
                 'text-green-700/90': alertType === 'success',
                 'text-sky-700/90': alertType === 'info',
                 'text-red-700': alertType === 'error',
+
             }"> {{ msg }} </p>
         </div>
 
