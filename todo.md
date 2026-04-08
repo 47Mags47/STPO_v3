@@ -69,8 +69,9 @@
         - [x] dev_components_a1_CreateErrorPopUp
             Создать компонент высплывающей ошибки
 
-        - [ ] dev_components_a2_CreateErrorPopUp
-            Рефакт и улучшение кода в компонентах ErrorPopUpMsgm ErrorPopUpMsgQueue
+        - [ ] dev_components_a2_CreateContainerAlert
+            Ренейм ErrorPopUpQueue на ContainerAlert,
+            Рефакт и улучшение кода в компонентах ErrorPopUpMsgm, ErrorPopUpMsgQueue
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
