@@ -65,6 +65,9 @@
 
         - [ ] CreateDateBetweenInput
             Создать компонент DateBetweenInput
+        
+        - [ ] CreateDatePicker
+            Создать компонент DatePicker
 
         - [x] dev_components_a1_CreateErrorPopUp
             Создать компонент высплывающей ошибки
