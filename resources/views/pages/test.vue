@@ -4,6 +4,8 @@ import DateBetweenInput from "../components/inputs/DateBetweenInput.vue"
 import Ico from "../components/Ico.vue";
 import Alert from "../components/Alert.vue";
 import ContainerAlert from "../components/ContainerAlert.vue";
+import DatePicker from "../components/datepicker/DatePicker.vue";
+import { DateTime } from "luxon";
 
 export default {
     components: {
@@ -12,6 +14,7 @@ export default {
         Ico,
         ContainerAlert,
         Alert,
+        DatePicker,
     },
     data() {
         return {
@@ -34,13 +37,19 @@ export default {
                 else
                     clearInterval(interval);
             }, 100);
+        },
+        test() {
+            const startOfMonth = DateTime.now().startOf('month').toString();
+            console.log(DateTime.now().day.toString())
         }
-    }
+    },
 }
 </script>
 
 <template>
+    <DatePicker />
 
+    <button class="bg-red-400 cursor-pointer w-64 h-32" @click="test">click</button>
 
 
     <!-- <button @click="console.log(errors)" class=" border bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> SHOW ERRS </button>
@@ -60,7 +69,7 @@ export default {
     <!-- <Alert msg="Тест маленькой ошибки раз два три четыре пять"/> -->
 
     <!-- <DateBetweenInput/> -->
-    <ResourceForm
+    <!-- <ResourceForm
     :inputs="[
         {
             type: 'string',
@@ -78,6 +87,6 @@ export default {
             label: 'Период'
         }
     ]"
-    />
+    /> -->
 
 </template>

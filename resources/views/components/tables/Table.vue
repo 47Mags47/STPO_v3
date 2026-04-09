@@ -78,7 +78,6 @@ export default {
             border-collapse: separate
             border-spacing: 0
             color: #374151
-            min-width: 600px
             tbody
                 tr
                     transition: background 0.15s ease
