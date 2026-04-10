@@ -40,7 +40,7 @@ export default {
         },
         test() {
             const startOfMonth = DateTime.now().startOf('month').toString();
-            console.log(DateTime.now().day.toString())
+            console.log(DateTime.now().startOf('month').weekday)
         }
     },
 }

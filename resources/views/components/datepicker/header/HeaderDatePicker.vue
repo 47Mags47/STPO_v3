@@ -13,9 +13,11 @@ export default {
 
 
 <template>
-    <header class="flex flex-col justify-around
+    <header class="flex flex-col justify-around border-x border-t rounded-t-lg
     bg-gradient-to-b from-[var(--meny-background)] to-cyan-100">
-        <HeaderMenu class=""/>
+        <HeaderMenu class=""
+        @month-left="$emit('monthLeft')"
+        @month-right="$emit('monthRight')"/>
         <DaysOfWeek class=""/>
     </header>
 </template>

@@ -2,7 +2,6 @@
 import DayPicker from "./DayPicker.vue";
 import MonthPicker from "./MonthPicker.vue";
 import YearPicker from "./YearPicker.vue";
-import { DateTime } from "luxon";
 import Table from "../../tables/Table.vue";
 
 export default {
@@ -12,13 +11,11 @@ export default {
         YearPicker,
         Table,
     },
+    props: {
+    },
     data() {
         return {
-            dateNow: DateTime.now(),
-            startOfMonth: DateTime.now().startOf("month"),
-            endOfMonth: DateTime.now().endOf("month"),
 
-            days: Array.from({ length: 30 }, (v, i) => i + 1),
         };
     },
 };
@@ -27,7 +24,7 @@ export default {
 <template>
     <div class="w-full h-full">
         <table class="table-fixed border-collapse w-full">
-            <DayPicker :days="days" />
+            <DayPicker />
         </table>
     </div>
 </template>
