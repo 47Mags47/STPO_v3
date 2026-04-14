@@ -20,7 +20,7 @@ export default {
                 <Ico type="faAngleLeft" class="text-black group-hover:text-white"/>
             </BaseButton>
         </div>
-        <span class="!text-xl hover:text-white cursor-pointer flex justify-center w-32" @click=""> {{ monthName }} </span>
+        <span class="!text-2xl !font-bold hover:text-white cursor-pointer flex justify-center w-32" @click=""> {{ monthName }} </span>
         <div class="h-10 group" @click="this.$emit('monthRight')">
             <BaseButton class="">
                 <Ico type="faAngleRight" class="text-black group-hover:text-white"/>

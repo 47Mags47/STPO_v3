@@ -22,8 +22,8 @@ export default {
 </script>
 
 <template>
-    <div class="w-full h-full">
-        <table class="table-fixed border-collapse w-full">
+    <div class="w-full h-full bg-cyan-100 rounded-b-3xl">
+        <table class="table-fixed w-full">
             <DayPicker />
         </table>
     </div>

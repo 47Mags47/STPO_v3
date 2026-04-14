@@ -13,7 +13,7 @@ export default {
 
 
 <template>
-    <header class="flex flex-col justify-around border-x border-t rounded-t-lg
+    <header class="flex flex-col justify-around rounded-t-lg
     bg-gradient-to-b from-[var(--meny-background)] to-cyan-100">
         <HeaderMenu class=""
         @month-left="$emit('monthLeft')"

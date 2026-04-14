@@ -26,9 +26,9 @@ export default {
 
 
 <template>
-    <div class="w-full border-t">
+    <div class="w-full">
         <TableRow class="grid grid-cols-7">
-            <tableTd class="w-full items-center"
+            <tableTd class="w-full items-center text-lg font-bold"
             position="center-center"
             :value="dayOfWeek"
             v-for="dayOfWeek in daysOfWeek" />

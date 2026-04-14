@@ -37,14 +37,15 @@ export default {
 
 
 <template>
-    <TableRow class="bg-cyan-100" v-for="(week, wIndex) in calendarGrid">
-        <Cell
+    <TableRow class="" v-for="week in calendarGrid">
+        <Cell tabindex="0"
         v-for="day in week"
         position="center-center"
-        class="w-full items-center border border-black w-[calc(100% / 7)])"
+        class="w-full items-center  w-[calc(100% / 7)]) rounded-full font-bold cursor-pointer
+        hover:ring-2 hover:ring-[var(--meny-background)] hover:text-[var(--meny-background)]
+        focus:bg-[var(--meny-background)] focus:text-white"
         :class="{
-            'bg-gray-300': day.month === baseDate.month ? false : true,
-            'text-red-500': [6, 7].includes(day.weekday)
+            'text-gray-500': day.month !== baseDate.month || [6, 7].includes(day.weekday),
         }"
         :item="day.day"/>
     </TableRow>
