@@ -1,40 +1,59 @@
 <script>
-import HeaderDatePicker from './header/HeaderDatePicker.vue';
-import Picker from './pickers/Picker.vue';
-import { DateTime } from "luxon";
-import { computed } from 'vue';
+import DayPicker from './pickers/DayPicker.vue';
 
 export default {
     components: {
-        HeaderDatePicker,
-        Picker
+        // HeaderDatePicker,
+        // Picker
+        DayPicker,
     },
-    data() {
-        return {
-            baseDate: DateTime.now()
-        };
+    props: {
+        useDayPicker: {
+            type: Boolean,
+            default: true,
+        },
+        useMonthPicker: {
+            type: Boolean,
+            default: true,
+        },
+        useYearPicker: {
+            type: Boolean,
+            default: true,
+        },
     },
-    provide() {
-        return {
-            baseDate: computed(() => this.baseDate),
-            monthName: computed(() => this.baseDate.setLocale('ru').monthLong),
-        }
-  }
-//   baseDate = baseDate.startOf('month').plus({ months: 1 })
-}
+    computed: {
+        pickerList() {
+            let list = [];
 
+            if (this.useDayPicker)
+                list.push("day");
+
+            if (this.useMonthPicker)
+                list.push("month");
+
+            if (this.useYearPicker)
+                list.push("year");
+
+            return list;
+        },
+
+        // currentPicker(){
+        //     return pickerList
+        // }
+    },
+};
 </script>
 
-
 <template>
-    <div class="w-[276px] overflow-hidden">
-        <HeaderDatePicker class="h-22"
-        @month-left="baseDate = baseDate.startOf('month').minus({ months: 1 })"
-        @month-right="baseDate = baseDate.startOf('month').plus({ months: 1 })"/>
-        <Picker />
+    <div class="date-picker-container">
+        <DayPicker v-if="pickerList.includes('day')"/>
+        <!-- <MonthPicker v-if="getCurrentPicker() =='month'" />
+        <YearPicker v-if="getCurrentPicker() =='year'" /> -->
     </div>
 </template>
 
-<style lang="scss" scoped>
-
+<style lang="sass" scoped>
+.date-picker-container
+    width: 276px
+    height: fit-content
 </style>
