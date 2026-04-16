@@ -14,6 +14,10 @@ export default {
             type: Function,
             default: (e) => { }
         },
+        onSwitcherClick: {
+            type: Function,
+            default: (e) => { }
+        },
         startMonthObject: {
             type: Object,
             default: DateTime.now()
@@ -22,7 +26,7 @@ export default {
     data() {
         return {
             focusDateobject: this.startMonthObject,
-            selectedDate: this.startMonthObject,
+            selectedDate: false,
         };
     },
     computed: {
@@ -68,6 +72,9 @@ export default {
         onDayClickhandler(e, selectedDate){
             this.selectedDate = selectedDate;
             this.onDayClick(e, selectedDate);
+        },
+        onSwitcherClickHandler() {
+            this.onSwitcherClick()
         }
     },
 };
@@ -77,9 +84,9 @@ export default {
     <BasePicker>
         <template #header>
             <div class="day-picker-header-container items-center">
-                <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" :onClick="prevMonth"/>
-                <span class="!font-bold !text-2xl cursor-pointer hover:text-white">{{ focusMonth }}</span>
-                <Ico class="cursor-pointer hover:text-white" type="faChevronRight" :onclick="nextMonth" />
+                <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevMonth"/>
+                <span class="!font-bold !text-2xl cursor-pointer hover:text-white" @click="onSwitcherClickHandler">{{ focusMonth }}</span>
+                <Ico class="cursor-pointer hover:text-white" type="faChevronRight" @click="nextMonth" />
             </div>
         </template>
 
@@ -103,9 +110,13 @@ export default {
                             <td class="" v-for="dayInterval in weekInterval.splitBy({ day: 1 })" @click="onDayClickhandler($event, dayInterval.start)">
                                 <div class="cursor-pointer w-full aspect-square flex items-center justify-center rounded-full"
                                 :class="{
+                                    // дни, не входящие в этот месяц и выходные (сб, вс)
                                     'text-gray-500': !dayInterval.start.hasSame(focusDateobject, 'month') || [6,7].includes(dayInterval.start.weekday),
-                                    'border border-2 border-blue-700 bg-gray-300': dayInterval.start.hasSame(selectedDate, 'day'),
+                                    // выбранный день (фокус)
+                                    'border border-2 border-[var(--meny-background)] bg-gray-300': dayInterval.start.hasSame(selectedDate, 'day'),
+                                    // при наведении курсора на выбранный день не менял стиль выбранного дня
                                     'hover:bg-gray-300': !dayInterval.start.hasSame(selectedDate, 'day'),
+                                    // сегодняший день (или день с пропса)
                                     'text-white bg-[var(--meny-background)]': dayInterval.start.hasSame(startMonthObject, 'day')
                                 }">
                                     {{ dayInterval.start.day }}
