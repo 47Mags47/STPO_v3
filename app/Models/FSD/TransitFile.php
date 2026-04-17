@@ -2,26 +2,17 @@
 
 namespace App\Models\FSD;
 
-use App\Classes\BaseModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Classes\FileModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Recipient extends BaseModel
+class TransitFile extends FileModel
 {
-    use HasFactory;
-
     ### Настройки
     ##################################################
-    public $timestamps = false;
-
-    protected $table = 'fsd__recipients';
+    protected $table = 'fsd__transit_files';
 
     protected $fillable = [
-        'birth',
-        'SNILS',
-
         'file_id',
-
         'date_start',
         'date_end',
     ];
@@ -34,10 +25,13 @@ class Recipient extends BaseModel
         ];
     }
 
+    public string|null $StorageFileDisk = 'fsd';
+    public string|null $StorageFilePath = 'transit';
+
     ### Связи
     ##################################################
-    public function payments(): HasMany
+    public function recipients(): HasMany
     {
-        return $this->hasMany(Payment::class, 'SNILS', 'SNILS');
+        return $this->hasMany(TransitRecipient::class, 'file_id');
     }
 }

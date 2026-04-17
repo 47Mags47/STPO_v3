@@ -2,15 +2,21 @@
 
 namespace App\Jobs\FSD;
 
+use App\Events\SFR\FSD\SFRFileChange;
 use App\Models\FSD\SFRFile;
+use Illuminate\Bus\Batch;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReadSFRFileJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Batchable;
 
-    const CHUNK_SIZE = 1000;
+    const CHUNK_SIZE = 5000;
 
     public function __construct(public SFRFile $file) {}
 
@@ -20,18 +26,28 @@ class ReadSFRFileJob implements ShouldQueue
 
         $count = 0;
         $lines = [];
+        $jobs = [];
         while (!feof($file)) {
             $count++;
             $lines[] = mb_convert_encoding(fgets($file), 'UTF-8', 'CP-866');
 
-            if($count >= $this::CHUNK_SIZE){
-                ReadSFRFileChunkJob::dispatch($this->file, $lines)->onQueue('fsd-sfrFile-readChunk');
+            if ($count >= $this::CHUNK_SIZE) {
+                $jobs[] = new ReadSFRFileChunkJob($this->file, $lines);
 
                 $count = 0;
                 $lines = [];
             }
         }
 
-        ReadSFRFileChunkJob::dispatch($this->file, $lines)->onQueue('fsd-sfrFile-readChunk');
+        $jobs[] = new ReadSFRFileChunkJob($this->file, $lines);
+
+        Bus::batch($jobs)
+            ->progress(function (Batch $batch) {
+                Log::info($batch->progress());
+            })
+            ->finally(function () {
+                SFRFileChange::dispatch();
+            })
+            ->dispatch();
     }
 }

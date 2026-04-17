@@ -1,10 +1,11 @@
 <script>
-export default {
 
+export default {
+    components: {
+
+    }
 }
 </script>
 
 <template>
-    <div class="bg-red-400 h-1/2">
-    </div>
 </template>

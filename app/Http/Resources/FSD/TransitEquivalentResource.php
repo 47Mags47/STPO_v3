@@ -5,7 +5,7 @@ namespace App\Http\Resources\FSD;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentFileResource extends JsonResource
+class TransitEquivalentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,13 +15,14 @@ class PaymentFileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'file' => [
-                'name' => $this->file->origin_name,
+            'id' => $this->id,
+            'equivalent' => $this->equivalent,
+            'date_start' => $this->date_start,
+            'date_end' => $this->date_end,
+            'category' => [
+                $this->category->id,
+                $this->category->name
             ],
-            'payments' => [
-                'count' => $this->payments()->count()
-            ],
-            'in_month' => $this->in_month->translatedFormat('F Y'),
         ];
     }
 }

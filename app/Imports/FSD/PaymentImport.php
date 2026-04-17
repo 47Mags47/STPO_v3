@@ -9,9 +9,8 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithSkipDuplicates;
 
-class PaymentImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithSkipDuplicates
+class PaymentImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading
 {
     use Importable;
 
@@ -24,7 +23,7 @@ class PaymentImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunk
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 3000;
     }
 
     public function model(array $row)

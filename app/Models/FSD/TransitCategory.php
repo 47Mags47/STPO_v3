@@ -3,21 +3,16 @@
 namespace App\Models\FSD;
 
 use App\Classes\BaseModel;
-use App\Traits\HasCode;
 
-class RecipientStatus extends BaseModel
+class TransitCategory extends BaseModel
 {
-    use HasCode;
-
     ### Настройки
     ##################################################
-    public $timestamps = false;
-
-    protected $table = 'fsd__recipient_statuses';
+    protected $table = 'fsd__transit_categories';
 
     protected $fillable = [
-        'code',
         'name',
+        'wp_category_id'
     ];
 
     ### Методы

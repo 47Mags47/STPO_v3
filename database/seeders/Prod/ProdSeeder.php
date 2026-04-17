@@ -17,6 +17,8 @@ class ProdSeeder extends Seeder
         $this->call(Auth\RolesAndPermissionsSeeder::class);
         $this->call(Auth\SuperUserSeederSeeder::class);
 
+        $this->call(Base\FileStatusSeeder::class);
+
         $this->call(Base\TemplateStyleSeeder::class);
         $this->call(Base\TemplateTypeSeeder::class);
 
@@ -26,6 +28,7 @@ class ProdSeeder extends Seeder
         $this->call(Appeal\ThemSeeder::class);
         $this->call(Appeal\StatusSeeder::class);
 
-        $this->call(FSD\RecipientStatusSeeder::class);
+        $this->call(FSD\PaymentTypeSeeder::class);
+        $this->call(FSD\TransitCategorySeeder::class);
     }
 }

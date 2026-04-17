@@ -2,9 +2,10 @@
 
 use App\Models\Base\File;
 use App\Models\FSD\PaymentFile;
-use App\Models\FSD\Recipient;
-use App\Models\FSD\RecipientStatus;
+use App\Models\FSD\PaymentType;
 use App\Models\FSD\SFRFile;
+use App\Models\FSD\TransitCategory;
+use App\Models\FSD\TransitFile;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -29,37 +30,41 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('fsd__recipient_statuses', function (Blueprint $table) {
+        Schema::create('fsd__sfr_file_results', function (Blueprint $table) {
             $table->id();
 
-            $table->string('code');
-            $table->string('name');
+            $table->foreignId('file_id')->constrained(File::getTableName());
+
+            $table->timestamps();
         });
 
         Schema::create('fsd__recipients', function (Blueprint $table) {
             $table->id();
 
-            $table->string('division_code');
-            $table->string('first_name');
-            $table->string('last_name')->default('');
-            $table->string('middle_name')->default('');
             $table->string('SNILS');
+            $table->date('birth');
 
             $table->date('date_start');
             $table->date('date_end');
 
             $table->foreignId('file_id')->constrained(SFRFile::getTableName());
-            $table->foreignId('status_id')->constrained(RecipientStatus::getTableName());
+        });
+
+        Schema::create('fsd__payment_types', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name');
+            $table->string('pay_code');
+            $table->string('pay_number');
         });
 
         Schema::create('fsd__payment_files', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
-            $table->foreignId('sfr_file_id')->constrained(SFRFile::getTableName());
+            $table->date('in_month');
 
-            $table->date('date_start');
-            $table->date('date_end');
+            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('type_id')->constrained(PaymentType::getTableName());
 
             $table->timestamps();
         });
@@ -68,11 +73,53 @@ return new class extends Migration
             $table->id();
 
             $table->decimal('amount', 8, 2);
+            $table->string('SNILS');
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName());
-            $table->foreignId('recipient_id')->nullable()->constrained(Recipient::getTableName());
+        });
+
+        Schema::create('fsd__transit_categories', function (Blueprint $table) {
+            $table->id();
+
+            $table->integer('wp_category_id');
+            $table->string('name');
+
+            $table->timestamps();
+        });
+
+        Schema::create('fsd__transit_equivalents', function (Blueprint $table) {
+            $table->id();
+
+            $table->decimal('equivalent', 8, 2);
+            $table->date('date_start');
+            $table->date('date_end')->nullable();
+
+            $table->foreignId('category_id')->constrained();
+
+            $table->timestamps();
+        });
+
+        Schema::create('fsd__transit_files', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->date('date_start');
+            $table->date('date_end');
+
+            $table->timestamps();
+        });
+
+        Schema::create('fsd__transit_recipients', function (Blueprint $table) {
+            $table->id();
 
             $table->string('SNILS');
+            $table->date('date_start');
+            $table->date('date_end');
+
+            $table->foreignId('wp_category_id')->default(1)->constrained(TransitCategory::getTableName());
+            $table->foreignId('file_id')->constrained(TransitFile::getTableName());
+
+            $table->timestamps();
         });
     }
 
@@ -81,6 +128,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('fsd__transit_equivalents');
+        Schema::dropIfExists('fsd__transit_categories');
         Schema::dropIfExists('fsd__payments');
         Schema::dropIfExists('fsd__payment_files');
         Schema::dropIfExists('fsd__recipients');

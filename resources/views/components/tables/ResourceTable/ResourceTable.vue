@@ -92,6 +92,11 @@ export default {
             type: Array,
             default: [],
         },
+
+        channels: {
+            type: Array,
+            default: []
+        }
     },
 
     methods: {
@@ -152,6 +157,13 @@ export default {
 
             return Object.get(row, collumn.dataIndex)
         }
+    },
+
+    mounted() {
+        this.channels.forEach((channel) => {
+            Echo.channel(channel. name)
+                .listen(channel.event, channel.onEvent)
+        })
     }
 }
 </script>

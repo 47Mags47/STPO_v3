@@ -3,6 +3,7 @@
 namespace App\Http\Requests\FSD;
 
 use App\Models\Base\UploadFile;
+use App\Models\FSD\PaymentType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaymentFileStoreRequest extends FormRequest
@@ -15,9 +16,9 @@ class PaymentFileStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'in_month'          => ['required', 'date'],
             'upload_file_id'    => ['required', 'exists:' . UploadFile::class . ',id'],
-            'date_start'        => ['required', 'date'],
-            'date_end'          => ['required', 'date'],
+            'type_id'           => ['required', 'exists:' . PaymentType::class . ',id'],
         ];
     }
 }

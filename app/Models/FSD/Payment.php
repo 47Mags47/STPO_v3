@@ -17,16 +17,9 @@ class Payment extends BaseModel
     protected $table = 'fsd__payments';
 
     protected $fillable = [
-        'raport_date',
-        'type_number',
-        'type_name',
         'amount',
-        'amount_other',
-        'start_date',
-        'end_date',
-        'file_id',
-        'recipient_id',
         'SNILS',
+        'file_id',
     ];
 
     ### Связи

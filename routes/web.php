@@ -8,7 +8,6 @@ Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 Route::get('/test', fn() => Inertia::render('test'));
 
-
 Route::name('auth.')->group(function () {
     Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update']);
 });
@@ -34,6 +33,8 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 });
 
 Route::name('fsd.')->prefix('/fsd')->group(function () {
-    Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
-    Route::resource('/sfr-files/{sfrFile}/payment-files',       App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
+    Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
 });

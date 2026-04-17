@@ -34,6 +34,16 @@
 
 - sfr ( Он же FSD ) ( СФР )
     - fsd   Федеральная Социальная Доплата
+        - [x] sfr_fsd_a1_FixPaymentFileResource
+            Исправить вывод кол-ва записей на странице payment-files/index
+
+        - [x] sfr_fsd_a2_FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
+
+        - [ ] sfr_fsd_a3_AddUploadStatus
+            Добавить отображение статуса чтения SFRFile
+            Добавить отображение статуса чтения PaymentFile
+
         - [ ] CreateJobsAlert
             - [ ] Добавить прогресбар чтения FSDFile
             - [ ] Добавить прогресбар чтения PaymentFile
@@ -43,16 +53,8 @@
             - [ ] Добавить заголовок для колонки с датами
             - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
 
-        - [x] sfr_fsd_a1_FixPaymentFileResource
-            Исправить вывод кол-ва записей на странице payment-files/index
-        - [x] FixUploadSfrFile
-            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
         - [ ] AddErrorHandler
             Добавить валидацию данных из загружаемого файла (SFRFile)
-        
-        - [ ] AddUploadStatus
-            Добавить отображение статуса чтения SFRFile
-            Добавить отображение статуса чтения PaymentFile
 
     - [x] sfr_fsd_a1_FixPaymentFileResource
         Исправить вывод кол-ва записей на странице payment-files/index

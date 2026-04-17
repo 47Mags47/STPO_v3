@@ -31,11 +31,12 @@ export default {
                 width: '100px',
                 position: 'center-right'
             },
+            // HACK выводить название месяца, а не дату
             {
-                type: 'render',
-                // HACK Поправить формат вывода даты на xx.xx.xxxx
-                render: (row) => ({ component:  'span', props: { innerHTML: `${row.date_start} - ${row.date_end}`} })
-            },
+                title: 'На месяц',
+                // type: 'date',
+                dataIndex: 'in_month',
+            }
         ]"
     />
 </template>
