@@ -30,5 +30,6 @@ class ProdSeeder extends Seeder
 
         $this->call(FSD\PaymentTypeSeeder::class);
         $this->call(FSD\TransitCategorySeeder::class);
+        $this->call(FSD\TransitEquivalentSeeder::class);
     }
 }

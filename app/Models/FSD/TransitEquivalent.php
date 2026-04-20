@@ -12,10 +12,10 @@ class TransitEquivalent extends BaseModel
     protected $table = 'fsd__transit_equivalents';
 
     protected $fillable = [
-        'category_id',
         'equivalent',
         'date_start',
         'date_end',
+        'category_id',
     ];
 
     ### Методы
