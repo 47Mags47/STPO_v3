@@ -5,6 +5,7 @@ use App\Models\FSD\PaymentFile;
 use App\Models\FSD\PaymentType;
 use App\Models\FSD\SFRFile;
 use App\Models\FSD\TransitCategory;
+use App\Models\FSD\TransitEquivalent;
 use App\Models\FSD\TransitFile;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -94,7 +95,7 @@ return new class extends Migration
             $table->date('date_start');
             $table->date('date_end')->nullable();
 
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->constrained(TransitEquivalent::getTableName());
 
             $table->timestamps();
         });
