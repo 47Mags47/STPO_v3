@@ -6,7 +6,7 @@ export default {
 
 <template>
     <div class="rounded-lg overflow-hidden select-none w-full h-full">
-        <div class="flex items-center bg-[var(--meny-background)] h-12">
+        <div class="flex flex-col justify-between p-2! bg-(--meny-background) h-26">
             <slot name="header"/>
         </div>
 

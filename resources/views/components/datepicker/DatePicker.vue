@@ -38,7 +38,8 @@ export default {
             : this.useYearPicker ? 'year'
             : null,
             datePickerOpen: false,
-            testDate: DateTime.now()
+
+            selectedDate: null,
         }
     },
 
@@ -49,7 +50,7 @@ export default {
             if (this.useMonthPicker) list.push('month');
             if (this.useYearPicker) list.push('year');
             return list;
-        }
+        },
     },
 
     methods: {
@@ -59,11 +60,23 @@ export default {
             if (pickers.length <= 1) return;
 
             // Берём индекс текущего пикера, прибавляем к нему 1,
-            // берём остаток от деления (если мы на пикере year это индекс = 2 + 1) для возвращения к 0 это day
+            // берём остаток от деления (если мы на пикере year это индекс = (2 + 1) % 3 = 0) для возвращения к 0 это day
             const currentPickerInd = pickers.indexOf(this.currentPicker);
             const nextPickerInd = (currentPickerInd + 1) % pickers.length;
 
             this.currentPicker = pickers[nextPickerInd];
+        },
+        selectDate(date, type) {
+            // первая инициализация selectedDate
+            !this.selectedDate ? this.selectedDate = DateTime.now() : null;
+
+            type === 'day' ? this.selectedDate = date : null;
+            type === 'month' ? this.selectedDate = this.selectedDate.set({ month: date.month }) : null;
+            type === 'year' ? this.selectedDate = this.selectedDate.set({ year: date.year }) : null;
+        },
+        dateInputHandler(e) {
+            const inputDate = DateTime.fromISO(e.target.value);
+            inputDate.isValid ? this.selectedDate = inputDate : null;
         }
     }
 };
@@ -72,13 +85,14 @@ export default {
 <template>
     <div class="w-[276px]">
         <DateInput @click="datePickerOpen = !datePickerOpen" type="date"
-        class="[&::-webkit-calendar-picker-indicator]:hidden !w-fit"
-        :model-value="testDate.toISODate()"/>
+        class="[&::-webkit-calendar-picker-indicator]:hidden !w-fit !mb-2"
+        :model-value="selectedDate ? selectedDate.toISODate() : ''"
+        @input="dateInputHandler"/>
 
         <div v-if="datePickerOpen" class="date-picker-container">
-            <DayPicker v-if="currentPicker === 'day'" :on-switcher-click="changePicker"/>
-            <MonthPicker v-if="currentPicker === 'month'" :on-switcher-click="changePicker"/>
-            <YearPicker v-if="currentPicker === 'year'" :on-switcher-click="changePicker"/>
+            <DayPicker v-if="currentPicker === 'day'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
+            <MonthPicker v-if="currentPicker === 'month'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
+            <YearPicker v-if="currentPicker === 'year'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
         </div>
     </div>
 </template>
@@ -86,5 +100,5 @@ export default {
 <style lang="sass" scoped>
 .date-picker-container
     width: 100%
-    height: 300px
+    height: fit-content
 </style>

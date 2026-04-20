@@ -18,18 +18,28 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        startYearObject: {
+        startDateObject: {
             type: Object,
             default: DateTime.now()
+        },
+        selectDate: {
+            type: Function,
+            default: (e) => { }
+        },
+        selectedDate: {
+            type: Object,
+            default: null,
         }
     },
     data() {
         return {
-            startOfInterval: this.startYearObject,
-            endOfInterval: this.startYearObject.plus({year: 12}),
-
-            selectedYear: false,
+            currentDate: this.startDateObject,
         };
+    },
+    watch: {
+        selectedDate(newDate) {
+            newDate ? this.currentDate = newDate : null;
+        }
     },
     computed: {
         yearsRows() {
@@ -43,21 +53,29 @@ export default {
 
             return rows
         },
+        startOfInterval() {
+            // Начало интервала — текущий год, округленный на ближайший диапазон 12-лет
+            const year = this.currentDate.year;
+            const baseYear = Math.floor(year / 12) * 12;
+            return this.currentDate.set({ year: baseYear });
+        },
+        endOfInterval() {
+            return this.currentDate.plus({year: 12});
+        }
     },
 
     methods: {
         nextSlide() {
-            this.startOfInterval = this.startOfInterval.plus({ year: 12 });
-            this.endOfInterval = this.endOfInterval.plus({ year: 12 });
+            this.currentDate = this.currentDate.plus({ year: 12 });
         },
         prevSlide() {
-            this.startOfInterval = this.startOfInterval.minus({ year: 12 });
-            this.endOfInterval = this.endOfInterval.minus({ year: 12 });
+            if (!this.currentDate.minus({ year: 12 }).year < 1)
+                this.currentDate = this.currentDate.minus({ year: 12 });
         },
 
-        onYearClickhandler(e, selectedDate){
-            this.selectedYear = selectedDate;
-            this.onYearClick(e, selectedDate);
+        onYearClickhandler(e, date){
+            this.selectDate(date, 'year');
+            this.onYearClick(e, date);
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -69,9 +87,18 @@ export default {
 <template>
     <BasePicker>
         <template #header>
+            <div class="flex flex-col w-full h-full">
+                <span class="text-gray-800">{{ startDateObject.setLocale('ru').toFormat('cccc') }}</span>
+                <span class="text-gray-900 font-bold! text-lg!">
+                    {{ startDateObject.setLocale('ru').toFormat('dd') }}
+                    {{ startDateObject.setLocale('ru').toFormat('MMMM') }}
+                    {{ startDateObject.setLocale('ru').toFormat('yyyy') }}
+                </span>
+            </div>
+
             <div class="day-picker-header-container items-center">
                 <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevSlide"/>
-                <span class="!font-bold !text-2xl cursor-pointer hover:text-white" @click="onSwitcherClickHandler"> годы </span>
+                <span class="font-bold! text-2xl! cursor-pointer hover:text-white" @click="onSwitcherClickHandler"> годы </span>
                 <Ico class="cursor-pointer hover:text-white" type="faChevronRight" @click="nextSlide" />
             </div>
         </template>
@@ -88,9 +115,9 @@ export default {
                                     @click="onYearClickhandler($event, year.start)"
                                     :class="{
                                         // выбранный год (фокус)
-                                        'border border-2 border-[var(--meny-background)] bg-gray-300': year.start.hasSame(selectedYear, 'year'),
+                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && year.start.hasSame(selectedDate, 'year'),
                                         // сегодняший год (или год с пропса)
-                                        'text-white bg-[var(--meny-background)]': year.start.hasSame(startYearObject, 'year')
+                                        'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year')
                                     }">
                                         {{ year.start.toFormat('yyyy') }}
                                     </div>

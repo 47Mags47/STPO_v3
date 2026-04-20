@@ -18,27 +18,39 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        startMonthObject: {
+        startDateObject: {
             type: Object,
             default: DateTime.now()
+        },
+        selectDate: {
+            type: Function,
+            default: (e) => { }
+        },
+        selectedDate: {
+            type: Object,
+            default: null,
         }
     },
     data() {
         return {
-            focusDateobject: this.startMonthObject,
-            selectedDate: false,
+            currentDate: this.selectedDate ? this.selectedDate : this.startDateObject,
         };
+    },
+    watch: {
+        selectedDate(newDate) {
+            newDate ? this.currentDate = newDate : null;
+        }
     },
     computed: {
         focusMonth() {
-            return this.focusDateobject.setLocale("ru").toFormat("LLLL");
+            return this.currentDate.setLocale("ru").toFormat("LLLL");
         },
 
         startOfMonth() {
-            return this.focusDateobject.startOf("month");
+            return this.currentDate.startOf("month");
         },
         endOfMonth() {
-            return this.focusDateobject.endOf("month");
+            return this.currentDate.endOf("month");
         },
 
         startOfInterval() {
@@ -63,14 +75,14 @@ export default {
 
     methods: {
         nextMonth() {
-            this.focusDateobject = this.focusDateobject.plus({ month: 1 });
+            this.currentDate = this.currentDate.plus({ month: 1 });
         },
         prevMonth() {
-            this.focusDateobject = this.focusDateobject.minus({ month: 1 });
+            this.currentDate = this.currentDate.minus({ month: 1 });
         },
 
         onDayClickhandler(e, selectedDate){
-            this.selectedDate = selectedDate;
+            this.selectDate(selectedDate, 'day');
             this.onDayClick(e, selectedDate);
         },
         onSwitcherClickHandler() {
@@ -83,9 +95,21 @@ export default {
 <template>
     <BasePicker>
         <template #header>
-            <div class="day-picker-header-container items-center">
+            <div class="flex flex-col w-full h-full">
+                <span class="text-gray-800">{{ startDateObject.setLocale('ru').toFormat('cccc') }}</span>
+                <span class="text-gray-900 font-bold! text-lg!">
+                    {{ startDateObject.setLocale('ru').toFormat('dd') }}
+                    {{ startDateObject.setLocale('ru').toFormat('MMMM') }}
+                    {{ startDateObject.setLocale('ru').toFormat('yyyy') }}
+                </span>
+            </div>
+
+            <div class="day-picker-header-container items-between">
                 <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevMonth"/>
-                <span class="!font-bold !text-2xl cursor-pointer hover:text-white" @click="onSwitcherClickHandler">{{ focusMonth }}</span>
+                <span class="font-bold! text-2xl! cursor-pointer hover:text-white"
+                @click="onSwitcherClickHandler">
+                    {{ focusMonth }}
+                </span>
                 <Ico class="cursor-pointer hover:text-white" type="faChevronRight" @click="nextMonth" />
             </div>
         </template>
@@ -111,13 +135,13 @@ export default {
                                 <div class="cursor-pointer w-full aspect-square flex items-center justify-center rounded-full"
                                 :class="{
                                     // дни, не входящие в этот месяц и выходные (сб, вс)
-                                    'text-gray-500': !dayInterval.start.hasSame(focusDateobject, 'month') || [6,7].includes(dayInterval.start.weekday),
+                                    'text-gray-500': !dayInterval.start.hasSame(currentDate, 'month') || [6,7].includes(dayInterval.start.weekday),
                                     // выбранный день (фокус)
-                                    'border border-2 border-[var(--meny-background)] bg-gray-300': dayInterval.start.hasSame(selectedDate, 'day'),
+                                    'border border-2 border-[var(--meny-background)] bg-gray-300': selectedDate && dayInterval.start.hasSame(selectedDate, 'day'),
                                     // при наведении курсора на выбранный день не менял стиль выбранного дня
-                                    'hover:bg-gray-300': !dayInterval.start.hasSame(selectedDate, 'day'),
+                                    'hover:bg-gray-300': selectedDate && !dayInterval.start.hasSame(selectedDate, 'day'),
                                     // сегодняший день (или день с пропса)
-                                    'text-white bg-[var(--meny-background)]': dayInterval.start.hasSame(startMonthObject, 'day')
+                                    'text-white bg-[var(--meny-background)]': startDateObject && dayInterval.start.hasSame(startDateObject, 'day')
                                 }">
                                     {{ dayInterval.start.day }}
                                 </div>
