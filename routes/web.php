@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home');
+Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
 Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 Route::get('/test', fn() => Inertia::render('test'));
