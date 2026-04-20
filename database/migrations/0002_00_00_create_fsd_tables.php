@@ -82,7 +82,7 @@ return new class extends Migration
         Schema::create('fsd__transit_categories', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('wp_category_id');
+            $table->integer('wp_category_id')->nullable();
             $table->string('name');
 
             $table->timestamps();
@@ -92,8 +92,8 @@ return new class extends Migration
             $table->id();
 
             $table->decimal('equivalent', 8, 2);
-            $table->date('date_start');
-            $table->date('date_end')->nullable();
+            $table->date('date_start')->index();
+            $table->date('date_end')->nullable()->index();
 
             $table->foreignId('category_id')->constrained(TransitEquivalent::getTableName());
 
@@ -104,8 +104,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('file_id')->constrained(File::getTableName());
-            $table->date('date_start');
-            $table->date('date_end');
+            $table->date('date_start')->index();
+            $table->date('date_end')->index();
 
             $table->timestamps();
         });
