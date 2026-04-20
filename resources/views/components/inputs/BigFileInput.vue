@@ -55,9 +55,9 @@ export default {
                 .then(function (response) {
                     this.uploadFileRecord = response.data.data
                     this.totalChunkCount = this.uploadFileRecord.chunks.length
-                }.bind(this))
 
-            this.uploadChunks()
+                    this.uploadChunks()
+                }.bind(this))
         },
         async uploadChunks() {
             for (let i = 0; i < this.uploadFileRecord.chunks.length; i++) {
