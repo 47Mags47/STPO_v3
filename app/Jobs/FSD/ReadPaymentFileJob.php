@@ -19,6 +19,8 @@ class ReadPaymentFileJob implements ShouldQueue
         Log::info('Загрузка файла: ' . $this->paymentFile->file->origin_name);
 
         (new PaymentImport($this->paymentFile))
-            ->import($this->paymentFile->getLocalPath(), $this->paymentFile->file->disk, \Maatwebsite\Excel\Excel::CSV);
+            ->import($this->paymentFile->getLocalPath(), $this->paymentFile->file->disk, \Maatwebsite\Excel\Excel::CSV)
+            ->onQueue('SFR-FSD-ReadPaymentFile')
+            ->allOnQueue('SFR-FSD-ReadPaymentFile');
     }
 }

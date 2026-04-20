@@ -9,7 +9,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ReadSFRFileJob implements ShouldQueue
@@ -48,6 +47,7 @@ class ReadSFRFileJob implements ShouldQueue
             ->finally(function () {
                 SFRFileChange::dispatch();
             })
+            ->onQueue('SFR-FSD-ReadSFRFile')
             ->dispatch();
     }
 }
