@@ -3,6 +3,7 @@
 namespace App\Models\FSD;
 
 use App\Classes\BaseModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TransitCategory extends BaseModel
 {
@@ -21,5 +22,8 @@ class TransitCategory extends BaseModel
 
     ### Связи
     ##################################################
-    //
+    public function equivalent(): HasOne
+    {
+        return $this->hasOne(TransitEquivalent::class, 'category_id');
+    }
 }

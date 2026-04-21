@@ -1,7 +1,6 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
 import { ResourceTable } from "@components";
-import { h } from "vue";
 
 export default {
     components: {
@@ -26,17 +25,27 @@ export default {
                 dataIndex: 'file.name',
             },
             {
+                title: 'Наименование выплаты',
+                dataIndex: 'type.name',
+                width: '1000px',
+            },
+            {
+                title: 'Тип',
+                dataIndex: 'type.pay_code',
+                width: '50px',
+            },
+            // HACK выводить название месяца, а не дату
+            {
+                title: 'Месяц',
+                dataIndex: 'in_month',
+                width: '150px',
+            },
+            {
                 title: 'Записей',
                 dataIndex: 'payments.count',
                 width: '100px',
                 position: 'center-right'
             },
-            // HACK выводить название месяца, а не дату
-            {
-                title: 'На месяц',
-                // type: 'date',
-                dataIndex: 'in_month',
-            }
         ]"
     />
 </template>

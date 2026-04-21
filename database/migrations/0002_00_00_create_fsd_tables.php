@@ -113,8 +113,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('SNILS');
-            $table->date('date_start');
-            $table->date('date_end');
+            $table->date('date_start')->index();
+            $table->date('date_end')->index();
 
             $table->foreignId('wp_category_id')->default(1)->constrained(TransitCategory::getTableName());
             $table->foreignId('file_id')->constrained(TransitFile::getTableName());

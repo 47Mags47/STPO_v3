@@ -25,7 +25,7 @@ class TransitCategorySeeder extends Seeder
         TransitCategory::create(['wp_category_id' => 11,     'name' => 'Участники войны']);                               // ?
         TransitCategory::create(['wp_category_id' => 12,     'name' => 'Жители блокадного Ленинграда']);
         TransitCategory::create(['wp_category_id' => 13,     'name' => 'Бывшие несовершеннолетние узники концлагерей']);
-        TransitCategory::create(['wp_category_id' => 14,     'name' => 'Члены семей погибших (умерших) граждан ВОВ']);    // ?
+        TransitCategory::create(['wp_category_id' => 14,     'name' => 'Члены семей погибших (умерших) граждан ВОВ']);
         TransitCategory::create(['wp_category_id' => 15,     'name' => 'Ветеран ст. 17']);                                // ?
         TransitCategory::create(['wp_category_id' => 16,     'name' => 'Ветераны б/д']);
         TransitCategory::create(['wp_category_id' => 17,     'name' => 'Лица, подвергшиеся воздействию радиации']);

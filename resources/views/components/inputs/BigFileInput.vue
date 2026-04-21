@@ -60,12 +60,13 @@ export default {
                 }.bind(this))
         },
         async uploadChunks() {
+            const chunkSize = this.uploadFileRecord.config.chunkSize
+
             for (let i = 0; i < this.uploadFileRecord.chunks.length; i++) {
                 // DEV  Добавить паралельную загрузку
-                const chunkSize = this.uploadFileRecord.config.chunkSize
                 let chunkContent = this.uploadFile.slice(i * chunkSize, (i + 1) * chunkSize)
 
-                await this.uploadChunk(chunkContent, this.uploadFileRecord.chunks[i].id)
+                this.uploadChunk(chunkContent, this.uploadFileRecord.chunks[i].id)
             }
         },
         async uploadChunk(chunk, npp) {

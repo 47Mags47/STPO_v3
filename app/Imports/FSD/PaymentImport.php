@@ -5,6 +5,7 @@ namespace App\Imports\FSD;
 use App\Models\FSD\Payment;
 use App\Models\FSD\PaymentFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -28,10 +29,15 @@ class PaymentImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunk
 
     public function model(array $row)
     {
-        return new Payment([
-            'amount'        => $row[4],
-            'SNILS'         => $row[5],
-            'file_id'       => $this->paymentFile->id
-        ]);
+        try {
+            return new Payment([
+                'amount'        => $row[4],
+                'SNILS'         => $row[5] ?? '',
+                'file_id'       => $this->paymentFile->id
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Ошибка при чтении файла' . $this->paymentFile->file->origin_name);
+            Log::error($th);
+        }
     }
 }

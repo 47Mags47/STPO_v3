@@ -5,6 +5,7 @@ namespace App\Jobs\FSD;
 use App\Models\FSD\Payment;
 use App\Models\FSD\SFRFile;
 use App\Models\FSD\SFRFileResult;
+use App\Models\FSD\TransitCategory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
@@ -22,6 +23,8 @@ class WriteSFRFileJob implements ShouldQueue
     private SFRFileResult $toFile;
     private $toFileCursor;
 
+    private float $defaultEquivalent;
+
 
     public function __construct(public SFRFile $sfrFile) {}
 
@@ -32,6 +35,9 @@ class WriteSFRFileJob implements ShouldQueue
 
         $this->toFile = SFRFileResult::create();
         $this->toFileCursor = fopen($this->toFile->getFullPath(), 'w');
+
+        $this->defaultEquivalent = TransitCategory::where('wp_category_id', null)->get()->first()
+            ->equivalent->equivalent;
 
         $paymentsGroupBySnils = $this->sfrFile->payments->groupBy('SNILS');
         $transitsGroupBySnils = $this->sfrFile->transits->groupBy('SNILS');
@@ -47,8 +53,10 @@ class WriteSFRFileJob implements ShouldQueue
 
             // Проверяем, что снилс есть хотя бы в одном списке
             $snils = mb_substr($recipientLine, 1, 14);
-            if (!$transitsGroupBySnils->has($snils) and !$paymentsGroupBySnils->has($snils))
-                $this->writeNullString($recipientLine);
+            if (!$transitsGroupBySnils->has($snils) and !$paymentsGroupBySnils->has($snils)) {
+                $this->writeDefault($recipientLine);
+            }
+
 
             // Пишем выплаты
             if ($paymentsGroupBySnils->has($snils))
@@ -61,6 +69,31 @@ class WriteSFRFileJob implements ShouldQueue
 
         fclose($this->fromFileCursor);
         fclose($this->toFileCursor);
+    }
+
+    public function writeDefault($recipientLine)
+    {
+        $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
+        $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
+
+        foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
+            $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
+            if ($birth->diff($month)->y >= 18) {
+                $line =
+                    'М' .
+                    $month->startOfMonth()->format('Y/m/d') .
+                    '3' .
+                    'ДЭР ' .
+                    mb_str_pad(number_format($this->defaultEquivalent, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
+                    mb_str_pad(number_format(00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
+                    $month->startOfMonth()->format('Y/m/d') .
+                    $month->endOfMonth()->format('Y/m/d') .
+                    "\n";
+
+                fwrite($this->toFileCursor, mb_convert_encoding($line, 'CP-866', 'UTF-8'));
+            } else
+                $this->writeNullString($recipientLine);
+        }
     }
 
     public function writeNullString($recipientLine)
@@ -89,17 +122,13 @@ class WriteSFRFileJob implements ShouldQueue
         $snils = mb_substr($recipientLine, 1, 14);
         $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
         $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
-        $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
 
         foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
-            if ($birth->diff($month)->y >= 18) {
-                foreach ($transitsGroupBySnils[$snils] as $transit) {
-                    if ($transit->date_start->toPeriod($transit->date_end)->contains($month)) {
-                        $this->writeTransit($month, $transit);
-                    }
+            foreach ($transitsGroupBySnils[$snils] as $transit) {
+                if ($transit->date_start->toPeriod($transit->date_end)->contains($month)) {
+                    $this->writeTransit($month, $transit);
                 }
-            } else
-                $this->writeNullString($recipientLine);
+            }
         }
     }
 

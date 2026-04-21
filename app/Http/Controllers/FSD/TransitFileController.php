@@ -28,7 +28,11 @@ class TransitFileController extends Controller
         $uploadfile = UploadFile::whereKey($request->validated('upload_file_id'))->first();
         $uploadfile->move('fsd', 'transit');
 
-        $transitFile = TransitFile::create(['file_id' => $uploadfile->file->id]);
+        $transitFile = TransitFile::create([
+            'file_id' => $uploadfile->file->id,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
+        ]);
         $uploadfile->delete();
 
         ReadTransitFileJob::dispatch($transitFile);

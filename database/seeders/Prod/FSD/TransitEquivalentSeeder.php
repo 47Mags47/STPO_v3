@@ -29,7 +29,7 @@ class TransitEquivalentSeeder extends Seeder
         TransitEquivalent::create(['category_id' => $this->getCategoryId(3),  'equivalent' => 704.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
         TransitEquivalent::create(['category_id' => $this->getCategoryId(4),  'equivalent' => 704.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
 
-        // Пенсионеры
+        // Многодетные матери
         TransitEquivalent::create(['category_id' => $this->getCategoryId(5),  'equivalent' => 689.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
 
         // Отдельных категорий приемных родителей
@@ -49,6 +49,9 @@ class TransitEquivalentSeeder extends Seeder
 
         // Бывшие несовершеннолетние узники концлагерей
         TransitEquivalent::create(['category_id' => $this->getCategoryId(13), 'equivalent' => 685.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
+
+        // Члены семей погибших (умерших) граждан ВОВ
+        TransitEquivalent::create(['category_id' => $this->getCategoryId(14), 'equivalent' => 685.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
 
         // Ветераны б/д
         TransitEquivalent::create(['category_id' => $this->getCategoryId(16), 'equivalent' => 605.00, 'date_start' => Carbon::create(2026, 1, 1), 'date_end' => NULL]);
