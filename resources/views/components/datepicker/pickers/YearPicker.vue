@@ -104,7 +104,7 @@ export default {
         </template>
 
         <template #content>
-            <div class="w-full h-full">
+            <div class="w-full h-full p-1!">
                 <table class="table-fixed w-full h-full">
                     <thead></thead>
                     <tbody class="">

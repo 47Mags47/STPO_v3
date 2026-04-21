@@ -115,8 +115,8 @@ export default {
         </template>
 
         <template #content>
-            <div class="day-picker-content-container">
-                <table class="table-fixed">
+            <div class="day-picker-content-container h-full w-full p-1!">
+                <table class="table-fixed h-full w-full">
                     <thead>
                         <tr>
                             <th>ПН</th>
@@ -128,20 +128,18 @@ export default {
                             <th>ВС</th>
                         </tr>
                     </thead>
-                    <tbody class="">
+                    <tbody class="h-full">
                         <tr v-for="weekInterval in interval.splitBy({ week: 1 })"
                         class="">
                             <td class="" v-for="dayInterval in weekInterval.splitBy({ day: 1 })" @click="onDayClickhandler($event, dayInterval.start)">
-                                <div class="cursor-pointer w-full aspect-square flex items-center justify-center rounded-full"
+                                <div class="cursor-pointer hover:bg-gray-300 w-full aspect-square flex items-center justify-center rounded-full"
                                 :class="{
                                     // дни, не входящие в этот месяц и выходные (сб, вс)
                                     'text-gray-500': !dayInterval.start.hasSame(currentDate, 'month') || [6,7].includes(dayInterval.start.weekday),
                                     // выбранный день (фокус)
-                                    'border border-2 border-[var(--meny-background)] bg-gray-300': selectedDate && dayInterval.start.hasSame(selectedDate, 'day'),
-                                    // при наведении курсора на выбранный день не менял стиль выбранного дня
-                                    'hover:bg-gray-300': selectedDate && !dayInterval.start.hasSame(selectedDate, 'day'),
+                                    'border-2 border-(--meny-background) bg-gray-300': selectedDate && dayInterval.start.hasSame(selectedDate, 'day'),
                                     // сегодняший день (или день с пропса)
-                                    'text-white bg-[var(--meny-background)]': startDateObject && dayInterval.start.hasSame(startDateObject, 'day')
+                                    'text-white bg-(--meny-background)': startDateObject && dayInterval.start.hasSame(startDateObject, 'day')
                                 }">
                                     {{ dayInterval.start.day }}
                                 </div>

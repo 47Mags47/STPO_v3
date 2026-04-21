@@ -5,12 +5,12 @@ export default {
 </script>
 
 <template>
-    <div class="rounded-lg overflow-hidden select-none w-full h-full">
-        <div class="flex flex-col justify-between p-2! bg-(--meny-background) h-26">
+    <div class="flex flex-col rounded-lg overflow-hidden select-none w-full h-full">
+        <div class="flex flex-col justify-between p-2! bg-(--meny-background) h-36">
             <slot name="header"/>
         </div>
 
-        <div class="bg-cyan-100 h-[calc(100%-3rem)] w-full">
+        <div class="h-full bg-cyan-100 w-full">
             <slot name="content"/>
         </div>
     </div>

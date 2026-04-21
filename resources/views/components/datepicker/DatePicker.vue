@@ -83,9 +83,9 @@ export default {
 </script>
 
 <template>
-    <div class="w-[276px]">
+    <div class="w-[200px]">
         <DateInput @click="datePickerOpen = !datePickerOpen" type="date"
-        class="[&::-webkit-calendar-picker-indicator]:hidden !w-fit !mb-2"
+        class="[&::-webkit-calendar-picker-indicator]:hidden w-fit! mb-2!"
         :model-value="selectedDate ? selectedDate.toISODate() : ''"
         @input="dateInputHandler"/>
 
@@ -100,5 +100,5 @@ export default {
 <style lang="sass" scoped>
 .date-picker-container
     width: 100%
-    height: fit-content
+    height: 340px
 </style>
