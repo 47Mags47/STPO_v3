@@ -104,7 +104,7 @@ export default {
                 </span>
             </div>
 
-            <div class="day-picker-header-container items-between">
+            <div class="day-picker-header-container">
                 <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevMonth"/>
                 <span class="font-bold! text-2xl! cursor-pointer hover:text-white"
                 @click="onSwitcherClickHandler">
@@ -156,8 +156,6 @@ export default {
 .day-picker-header-container
     width: 100%
     height: 25px
-
-    padding: 0 15px
 
     display: flex
     justify-content: space-between

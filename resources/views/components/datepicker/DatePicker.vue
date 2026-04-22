@@ -77,22 +77,67 @@ export default {
         dateInputHandler(e) {
             const inputDate = DateTime.fromISO(e.target.value);
             inputDate.isValid ? this.selectedDate = inputDate : null;
-        }
+        },
+        togglePicker() {
+            this.datePickerOpen = !this.datePickerOpen;
+        },
+
+        handleClickOutside(event) {
+            const input = this.$refs.dateInputRef?.$el;
+            const container = this.$refs.pickerContainer;
+
+            // Если клик НЕ по инпуту И НЕ внутри контейнера пикера — закрываем
+            if (
+                input && !input.contains(event.target) &&
+                container && !container.contains(event.target)
+            ) this.datePickerOpen = false;
+
+
+        },
+    },
+    mounted() {
+        // Вешаем событие на весь документ при инициализации
+        document.addEventListener('click', this.handleClickOutside);
+    },
+    beforeUnmount() {
+        // Важно! Удаляем слушатель при уничтожении компонента
+        document.removeEventListener('click', this.handleClickOutside);
     }
 };
 </script>
 
 <template>
     <div class="w-[200px]">
-        <DateInput @click="datePickerOpen = !datePickerOpen" type="date"
-        class="[&::-webkit-calendar-picker-indicator]:hidden w-fit! mb-2!"
+        <DateInput
+        ref="dateInputRef"
+        @click.stop="togglePicker"
+        type="date"
+        class="[&::-webkit-calendar-picker-indicator]:hidden w-fit! mb-2! relative z-50"
         :model-value="selectedDate ? selectedDate.toISODate() : ''"
         @input="dateInputHandler"/>
 
-        <div v-if="datePickerOpen" class="date-picker-container">
-            <DayPicker v-if="currentPicker === 'day'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
-            <MonthPicker v-if="currentPicker === 'month'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
-            <YearPicker v-if="currentPicker === 'year'" :on-switcher-click="changePicker" :select-date="selectDate" :selected-date="selectedDate"/>
+        <div
+        ref="pickerContainer"
+        v-if="datePickerOpen"
+        class="date-picker-container я-10"
+        @click.stop>
+            <DayPicker
+            v-if="currentPicker === 'day'"
+            :on-switcher-click="changePicker"
+            :select-date="selectDate"
+            :selected-date="selectedDate"/>
+
+            <MonthPicker
+            v-if="currentPicker === 'month'"
+            :on-switcher-click="changePicker"
+            :select-date="selectDate"
+            :selected-date="selectedDate"/>
+
+            <YearPicker
+            v-if="currentPicker === 'year'"
+            :on-switcher-click="changePicker"
+            :select-date="selectDate"
+            :selected-date="selectedDate"/>
         </div>
     </div>
 </template>
