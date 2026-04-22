@@ -131,8 +131,10 @@ export default {
                     <tbody class="h-full">
                         <tr v-for="weekInterval in interval.splitBy({ week: 1 })"
                         class="">
-                            <td class="" v-for="dayInterval in weekInterval.splitBy({ day: 1 })" @click="onDayClickhandler($event, dayInterval.start)">
-                                <div class="cursor-pointer hover:bg-gray-300 w-full aspect-square flex items-center justify-center rounded-full"
+                            <td class="" v-for="dayInterval in weekInterval.splitBy({ day: 1 })">
+                                <div
+                                @click="onDayClickhandler($event, dayInterval.start)"
+                                class="cursor-pointer hover:bg-gray-300 w-full aspect-square flex items-center justify-center rounded-full"
                                 :class="{
                                     // дни, не входящие в этот месяц и выходные (сб, вс)
                                     'text-gray-500': !dayInterval.start.hasSame(currentDate, 'month') || [6,7].includes(dayInterval.start.weekday),
