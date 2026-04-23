@@ -22,7 +22,9 @@ export default {
         PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
         Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
-        DateBetweenInput:   defineAsyncComponent(() => import('../inputs/DateBetweenInput.vue')),
+
+        DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
+        DateBetween:        defineAsyncComponent(() => import('../inputs/DateBetweenInput.vue')),
     },
     props: {
         inputs: {
@@ -45,7 +47,8 @@ export default {
                         'file',
                         'bigFile',
                         'date',
-                        'date-between'
+                        'datePicker',
+                        'dateBetween',
                     ].includes(input.type);
                 });
 
@@ -105,7 +108,8 @@ export default {
                 <FileInput          v-if="input.type === 'file'"            v-bind="prepareProps(input)" />
                 <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
                 <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
-                <DateBetweenInput   v-if="input.type === 'date-between'"    v-bind="prepareProps(input)" />
+                <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
+                <DateBetween        v-if="input.type === 'dateBetween'"     v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>
