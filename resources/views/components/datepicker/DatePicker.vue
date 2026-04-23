@@ -215,7 +215,7 @@ export default {
     <div class="relative w-fit" v-outsideClick="clickOutsideHandler">
         <!-- Кастомный датаинпут из трёх инпутов (дд мм гггг) -->
         <div
-        class="base-input w-fit! flex justify-between mb-2!"
+        class="base-input w-fit! flex justify-between items-center mb-2!"
         @click.stop="togglePicker">
             <input
             v-if="useDayPicker"
