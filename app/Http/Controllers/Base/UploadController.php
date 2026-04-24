@@ -16,9 +16,9 @@ class UploadController extends Controller
             'totalChunks' => (int) ceil((int) $request->input('file_size') / return_bytes(config('filesystems.max_file_size')))
         ]);
 
-        foreach (range(1, $uploadFile->totalChunks) as $i) {
+        for ($i = 1; $i <= $uploadFile->totalChunks; $i++) {
             FileChunk::create([
-                'total_file_id' => $uploadFile->id,
+                'upload_file_id' => $uploadFile->id,
                 'npp' => $i,
             ]);
         }
@@ -26,23 +26,25 @@ class UploadController extends Controller
         return $uploadFile->toResource();
     }
 
-    public function writeChunk(UploadWriteChunkRequest $request, UploadFile $file, FileChunk $chunk)
+    public function writeChunk(UploadWriteChunkRequest $request, FileChunk $chunk)
     {
         $chunk->setContent($request->file('file')->getContent());
         $chunk->update(['uploaded' => true]);
 
-        if ($file->chunks()->where('uploaded', true)->count() == $file->totalChunks) {
-            $uploadFile = fopen($file->getFullPath(), "wb");
+        // Сборка файла
+        $uploadFile = $chunk->uploadFile;
+        if ($uploadFile->chunks()->where('uploaded', true)->count() == $uploadFile->totalChunks) {
+            $uploadFileResource = fopen($uploadFile->getFullPath(), "wb");
 
-            $file->chunks()->orderBy('npp')->get()->each(function ($chunk) use ($uploadFile) {
-                $chunkFile = fopen($chunk->getFullPath(), "rb");
-                stream_copy_to_stream($chunkFile, $uploadFile);
-                fclose($chunkFile);
+            $uploadFile->chunks()->orderBy('npp')->get()->each(function ($chunk) use ($uploadFileResource) {
+                $chunkFileResource = fopen($chunk->getFullPath(), "rb");
+                stream_copy_to_stream($chunkFileResource, $uploadFileResource);
+                fclose($chunkFileResource);
 
                 $chunk->delete();
             });
 
-            fclose($uploadFile);
+            fclose($uploadFileResource);
         }
 
         return response()->json();

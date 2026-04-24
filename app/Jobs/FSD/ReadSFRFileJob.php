@@ -4,16 +4,13 @@ namespace App\Jobs\FSD;
 
 use App\Events\SFR\FSD\SFRFileChange;
 use App\Models\FSD\SFRFile;
-use Illuminate\Bus\Batch;
-use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Log;
 
 class ReadSFRFileJob implements ShouldQueue
 {
-    use Queueable, Batchable;
+    use Queueable;
 
     const CHUNK_SIZE = 5000;
 
@@ -41,9 +38,6 @@ class ReadSFRFileJob implements ShouldQueue
         $jobs[] = new ReadSFRFileChunkJob($this->file, $lines);
 
         Bus::batch($jobs)
-            ->progress(function (Batch $batch) {
-                Log::info($batch->progress());
-            })
             ->finally(function () {
                 SFRFileChange::dispatch();
             })

@@ -14,8 +14,8 @@ class SFRFileResult extends FileModel
         'file_id'
     ];
 
-    public string|null $StorageFileDisk = 'fsd';
-    public string|null $StorageFilePath = 'output';
+    public static string|null $StorageFileDisk = 'fsd';
+    public static string|null $StorageFilePath = 'output';
 
     ### Методы
     ##################################################

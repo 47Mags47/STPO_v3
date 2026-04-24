@@ -28,19 +28,26 @@ class PaymentFileController extends Controller
 
     public function store(PaymentFileStoreRequest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->validated('upload_file_id'))->first();
-        $uploadfile->move('fsd', 'payment');
+        foreach ($request->input('file_ids') as $uploadFileId) {
+            $uploadfile = UploadFile::whereKey($uploadFileId)->first();
 
-        $paymentFile = PaymentFile::create([
-            'in_month'      => $request->input('in_month'),
-            'file_id'       => $uploadfile->file->id,
-            'type_id'       => $request->input('type_id'),
-        ]);
+            if (PaymentFile::checkExist($uploadfile->file->origin_name, $request->input('type_id'), $request->input('in_month'))) {
+                $file_name = $uploadfile->file->origin_name;
+                return back()->withErrors([$file_name => 'Этот файл уже загружен']);
+            }
 
-        $uploadfile->delete();
+            $paymentFile = $uploadfile->moveToModel(PaymentFile::class, $request->validated());
 
-        ReadPaymentFileJob::dispatch($paymentFile);
+            ReadPaymentFileJob::dispatch($paymentFile)->onQueue('SFR-FSD-ReadPaymentFile');
+        }
 
         return redirect()->route('fsd.payment-files.index')->with('succes', 'Запись успешно создана');
+    }
+
+    public function destroy(PaymentFile $paymentFile)
+    {
+        $paymentFile->delete();
+
+        return back()->with('succes', 'Запись удалена');
     }
 }

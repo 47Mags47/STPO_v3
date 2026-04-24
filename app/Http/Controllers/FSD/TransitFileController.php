@@ -25,17 +25,16 @@ class TransitFileController extends Controller
 
     public function store(TransitFileStoreReqouest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->validated('upload_file_id'))->first();
-        $uploadfile->move('fsd', 'transit');
+        foreach ($request->input('file_ids') as $uploadFileId) {
+            $uploadfile = UploadFile::whereKey($uploadFileId)->first();
 
-        $transitFile = TransitFile::create([
-            'file_id' => $uploadfile->file->id,
-            'date_start' => $request->date_start,
-            'date_end' => $request->date_end,
-        ]);
-        $uploadfile->delete();
+            $transitFile = $uploadfile->moveToModel(TransitFile::class, [
+                'date_start' => $request->date_start,
+                'date_end' => $request->date_end,
+            ]);
 
-        ReadTransitFileJob::dispatch($transitFile);
+            ReadTransitFileJob::dispatch($transitFile);
+        }
 
         return redirect()->route('fsd.transit-files.index')->with('succes', 'Запись успешно создана');
     }

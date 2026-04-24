@@ -17,6 +17,7 @@ export default {
         caption="Федеральная социальная доплата (реестры выплат)"
 
         :hasCreateButton="true"
+        :hasDeleteButton="true"
         :data="files.data"
         :meta="files.meta"
         :collumns="[
@@ -27,7 +28,7 @@ export default {
             {
                 title: 'Наименование выплаты',
                 dataIndex: 'type.name',
-                width: '1000px',
+                width: '600px',
             },
             {
                 title: 'Тип',
@@ -38,12 +39,12 @@ export default {
             {
                 title: 'Месяц',
                 dataIndex: 'in_month',
-                width: '150px',
+                width: '100px',
             },
             {
                 title: 'Записей',
                 dataIndex: 'payments.count',
-                width: '100px',
+                width: '75px',
                 position: 'center-right'
             },
         ]"

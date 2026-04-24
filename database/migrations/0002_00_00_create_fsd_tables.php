@@ -33,7 +33,7 @@ return new class extends Migration
         Schema::create('fsd__sfr_file_results', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -47,7 +47,7 @@ return new class extends Migration
             $table->date('date_start');
             $table->date('date_end');
 
-            $table->foreignId('file_id')->constrained(SFRFile::getTableName());
+            $table->foreignId('file_id')->constrained(SFRFile::getTableName())->onDelete('cascade');
         });
 
         Schema::create('fsd__payment_types', function (Blueprint $table) {
@@ -75,7 +75,7 @@ return new class extends Migration
             $table->decimal('amount', 8, 2);
             $table->string('SNILS');
 
-            $table->foreignId('file_id')->constrained(PaymentFile::getTableName());
+            $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
         });
 
         Schema::create('fsd__transit_categories', function (Blueprint $table) {
@@ -117,7 +117,7 @@ return new class extends Migration
             $table->date('date_end')->index();
 
             $table->foreignId('wp_category_id')->default(1)->constrained(TransitCategory::getTableName());
-            $table->foreignId('file_id')->constrained(TransitFile::getTableName());
+            $table->foreignId('file_id')->constrained(TransitFile::getTableName())->onDelete('cascade');
 
             $table->timestamps();
         });

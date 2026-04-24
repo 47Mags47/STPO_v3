@@ -50,7 +50,7 @@ return new class extends Migration
 
             $table->foreignId('file_id')->constrained(File::getTableName());
 
-            $table->foreignId('total_file_id')->constrained(UploadFile::getTableName());
+            $table->foreignId('upload_file_id')->constrained(UploadFile::getTableName());
             $table->boolean('uploaded')->default(false);
             $table->integer('npp');
 

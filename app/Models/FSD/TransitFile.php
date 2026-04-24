@@ -25,8 +25,8 @@ class TransitFile extends FileModel
         ];
     }
 
-    public string|null $StorageFileDisk = 'fsd';
-    public string|null $StorageFilePath = 'transit';
+    public static string|null $StorageFileDisk = 'fsd';
+    public static string|null $StorageFilePath = 'transit';
 
     ### Связи
     ##################################################

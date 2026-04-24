@@ -5,7 +5,6 @@ namespace App\Classes;
 use App\Models\Base\File;
 use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,8 +12,8 @@ abstract class FileModel extends BaseModel
 {
     ### Настройки
     ##################################################
-    public string|null $StorageFileDisk = null;
-    public string|null $StorageFilePath = null;
+    public static string|null $StorageFileDisk = null;
+    public static string|null $StorageFilePath = null;
 
     public bool $createBase = true;
     public bool $createInStorage = true;
@@ -24,7 +23,7 @@ abstract class FileModel extends BaseModel
 
     public static function boot()
     {
-        parent::boot();
+        parent::boot(self::$StorageFileDisk);
 
         self::creating(function ($model) {
             // Создание базовой модели в БД
@@ -38,8 +37,8 @@ abstract class FileModel extends BaseModel
                     $originName = request()->input('origin_name');
 
                 $storageFile = File::factory()->create([
-                    'disk'          => $model->StorageFileDisk ?? 'local',
-                    'path'          => $model->StorageFilePath ?? '',
+                    'disk'          => $model::$StorageFileDisk ?? 'local',
+                    'path'          => $model::$StorageFilePath ?? '',
                     'name'          => Str::random(40),
                     'origin_name'   => $originName,
                 ]);
@@ -65,6 +64,14 @@ abstract class FileModel extends BaseModel
 
     ### Методы
     ##################################################
+    public static function getDisk(){
+        return self::$StorageFileDisk;
+    }
+
+    public static function getPath(){
+        return self::$StorageFilePath;
+    }
+
     public function getLocalPath()
     {
         return $this->file->path !== ''

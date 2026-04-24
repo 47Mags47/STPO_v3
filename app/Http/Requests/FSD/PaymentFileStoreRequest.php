@@ -17,7 +17,8 @@ class PaymentFileStoreRequest extends FormRequest
     {
         return [
             'in_month'          => ['required', 'date'],
-            'upload_file_id'    => ['required', 'exists:' . UploadFile::class . ',id'],
+            'file_ids'          => ['required', 'array'],
+            'file_ids.*'        => ['exists:' . UploadFile::class . ',id'],
             'type_id'           => ['required', 'exists:' . PaymentType::class . ',id'],
         ];
     }

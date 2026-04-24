@@ -15,6 +15,7 @@ class PaymentFileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'file' => [
                 'name' => $this->file->origin_name,
             ],

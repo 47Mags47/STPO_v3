@@ -1,6 +1,10 @@
 <script>
 export default {
     props: {
+        label: {
+            type: String,
+            default: null,
+        },
         procentage: {
             type: Number,
             default: 0,
@@ -23,6 +27,7 @@ export default {
 
 <template>
     <div class="progress-bar-container">
+        <span v-if="label !== null">{{ label }}</span>
         <div class="progress-bar">
             <div
                 :class="{'progress': true, 'finish' : isFinish}"
@@ -35,7 +40,8 @@ export default {
 <style lang="sass" scoped>
 .progress-bar-container
     display: flex
-    align-items: center
+    flex-direction: column
+    align-items: flex-end
 
     width: 100%
     height: 100%
