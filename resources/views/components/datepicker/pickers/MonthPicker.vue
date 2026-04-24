@@ -80,11 +80,11 @@ export default {
                         <tr v-for="monthRow in monthList">
                             <td class="h-fit" v-for="month in monthRow">
                                 <div class="flex justify-center items-center w-full h-fit">
-                                    <div class="flex hover:bg-gray-300 justify-center items-center cursor-pointer h-16 aspect-square rounded-full"
+                                    <div class="flex hover:bg-gray-300 outline-solid outline-2 outline-black justify-center items-center cursor-pointer h-[48px] aspect-square rounded-full"
                                     @click="onMonthClickhandler($event, month.start)"
                                     :class="{
                                         // выбранный месяц (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && month.start.month === selectedDate.month,
+                                        'outline-solid outline-2 outline-black bg-gray-300': selectedDate && month.start.month === selectedDate.month,
                                         // сегодняший месяц (или месяц с пропса)
                                         'text-white bg-(--meny-background)': startDateObject && month.start.month === startDateObject.month
                                     }">

@@ -2,11 +2,13 @@
 import { usePage } from "@inertiajs/vue3";
 import Ico from "./../components/Ico.vue";
 import Menu from "./Menu.vue";
+import Notifications from "./Notifications.vue";
 
 export default {
     components: {
         Ico,
-        Menu
+        Menu,
+        Notifications
     },
 
     computed: {
@@ -31,6 +33,7 @@ export default {
             </div>
         </div>
 
+        <Notifications />
         <Menu />
     </div>
 </template>
@@ -44,6 +47,7 @@ export default {
     display: flex
     align-items: center
     justify-content: space-between
+    gap: 15px
 
     color: $meny-color
     background: $meny-background
