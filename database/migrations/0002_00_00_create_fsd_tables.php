@@ -73,9 +73,11 @@ return new class extends Migration
             $table->id();
 
             $table->decimal('amount', 8, 2);
-            $table->string('SNILS')->index();
+            $table->string('SNILS');
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
+
+            $table->index(['SNILS', 'amount', 'file_id']);
         });
 
         Schema::create('fsd__transit_categories', function (Blueprint $table) {
