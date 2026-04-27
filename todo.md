@@ -60,10 +60,10 @@
         - [ ] FixIcoButton
             Вынести класс 'ico-button' в отдельный компонент
 
-        - [ ] CreateDateInput
+        - [x] CreateDateInput
             Создать компонент DateInput
 
-        - [ ] CreateDateBetweenInput
+        - [x] CreateDateBetweenInput
             Создать компонент DateBetweenInput
         
         - [x] CreateDatePicker
