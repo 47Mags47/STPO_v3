@@ -93,7 +93,7 @@ export default {
         },
         {
             type: 'dateBetween',
-            useDayPicker: false,
+            useDayPicker: true,
             name: 'dateBetween',
             label: 'Период'
         },
