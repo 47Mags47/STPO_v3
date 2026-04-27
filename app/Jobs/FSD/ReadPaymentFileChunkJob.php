@@ -28,6 +28,9 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     {
         $validationErrors = [];
         foreach ($this->lines as $line) {
+            if (strlen(trim($line)) == 0)
+                continue;
+
             if (!$this->checkValidLine($line)) {
                 $validationErrors[] = $line;
                 continue;
@@ -53,7 +56,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 Log::error('"' . str_replace(['\r', '\r\n'], '', $line) . '"');
             }
         }
-
     }
 
     public function checkValidLine(string $line)
@@ -66,11 +68,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             str_replace(['/', '\\'], '', self::AMOUNT_PATTERN),
             str_replace(['/', '\\'], '', self::SNILS_PATTERN),
         ]);
-
-        // Log::info((int) preg_match('/' . $line_pattern . '/u', $line));
-        // Log::info('"' . $line_pattern . '"');
-        // Log::info('"' . $line . '"');
-
 
         if (!preg_match('/' . $line_pattern . '/u', $line))
             return false;
