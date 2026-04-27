@@ -15,14 +15,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public $timeout = 300;
 
-    const LAST_NAME_PATTERN         = "/[а-яА-ЯёЁ -]{0,255}/";
-    const FIRST_NAME_PATTERN        = "/[а-яА-ЯёЁ -]{1,255}/";
-    const MIDDLE_NAME_PATTERN       = "/[а-яА-ЯёЁ -]{0,255}/";
-    const DATE_PATTERN              = "/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/";
-    const SNILS_PATTERN             = "/[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}/";
-    const AMOUNT_PATTERN            = "/[0-9]{1,6}\.[0-9]{2}/";
-
-    const CSV_SEPARATOR             = ';';
+    const CSV_SEPARATOR = ';';
 
     public function __construct(public PaymentFile $paymentFile, public array $lines) {}
 
@@ -49,13 +42,13 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
         if (count($validationErrors) > 1) {
             Log::error(
-                'При чтении файла: ' .
+                "\nПри чтении файла: " .
                     $this->paymentFile->file->origin_name .
-                    " пропущены строки (ошибка валидации): \n"
+                    ' пропущены строки (ошибка валидации):'
             );
 
             foreach ($validationErrors as $line) {
-                Log::error('"' . str_replace(['\r', '\r\n', '\n'], '', $line) . '"');
+                Log::error('"' . str_replace(["\r", "\r\n", "\n"], '', $line) . '"');
             }
         }
     }
@@ -63,12 +56,12 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     public function checkValidLine(string $line)
     {
         $line_pattern = implode('\\' . self::CSV_SEPARATOR, [
-            str_replace(['/', '\\'], '', self::LAST_NAME_PATTERN),
-            str_replace(['/', '\\'], '', self::FIRST_NAME_PATTERN),
-            str_replace(['/', '\\'], '', self::MIDDLE_NAME_PATTERN),
-            str_replace(['/', '\\'], '', self::DATE_PATTERN),
-            str_replace(['/', '\\'], '', self::AMOUNT_PATTERN),
-            str_replace(['/', '\\'], '', self::SNILS_PATTERN),
+            str_replace(['/', '\\'], '', PATTERNS('LAST_NAME')),
+            str_replace(['/', '\\'], '', PATTERNS('FIRST_NAME')),
+            str_replace(['/', '\\'], '', PATTERNS('MIDDLE_NAME')),
+            str_replace(['/', '\\'], '', PATTERNS('DOT_DATE')),
+            str_replace(['/', '\\'], '', PATTERNS('FLOAT')),
+            str_replace(['/', '\\'], '', PATTERNS('SNILS')),
         ]);
 
         if (!preg_match('/' . $line_pattern . '/u', $line))

@@ -73,7 +73,7 @@ return new class extends Migration
             $table->id();
 
             $table->decimal('amount', 8, 2);
-            $table->string('SNILS');
+            $table->string('SNILS')->index();
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
         });
