@@ -13,9 +13,9 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
-    const LAST_NAME_PATTERN         = "/[а-яА-Я ]*/";
-    const FIRST_NAME_PATTERN        = "/[а-яА-Я ]*/";
-    const MIDDLE_NAME_PATTERN       = "/[а-яА-Я ]*/";
+    const LAST_NAME_PATTERN         = "/[а-яА-ЯёЁ -]{0,255}/";
+    const FIRST_NAME_PATTERN        = "/[а-яА-ЯёЁ -]{1,255}/";
+    const MIDDLE_NAME_PATTERN       = "/[а-яА-ЯёЁ -]{0,255}/";
     const DATE_PATTERN              = "/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/";
     const SNILS_PATTERN             = "/[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}/";
     const AMOUNT_PATTERN            = "/[0-9]{1,6}\.[0-9]{2}/";
@@ -33,7 +33,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 continue;
             }
 
-
             $row = str_getcsv($line, self::CSV_SEPARATOR);
 
             Payment::create([
@@ -47,12 +46,11 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             Log::error(
                 'При чтении файла: ' .
                     $this->paymentFile->file->origin_name .
-                    " произошла ошибка\n" .
-                    "Пропущена строка: \n"
+                    " пропущены строки (ошибка валидации): \n"
             );
 
-            foreach ($line as $validationErrors) {
-                Log::error($line);
+            foreach ($validationErrors as $line) {
+                Log::error('"' . str_replace(['\r', '\r\n'], '', $line) . '"');
             }
         }
 
@@ -60,7 +58,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function checkValidLine(string $line)
     {
-        $line_pattern = implode(self::CSV_SEPARATOR, [
+        $line_pattern = implode('\\' . self::CSV_SEPARATOR, [
             str_replace(['/', '\\'], '', self::LAST_NAME_PATTERN),
             str_replace(['/', '\\'], '', self::FIRST_NAME_PATTERN),
             str_replace(['/', '\\'], '', self::MIDDLE_NAME_PATTERN),
@@ -69,7 +67,12 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             str_replace(['/', '\\'], '', self::SNILS_PATTERN),
         ]);
 
-        if (!preg_match('/' . $line_pattern . '/', $line))
+        // Log::info((int) preg_match('/' . $line_pattern . '/u', $line));
+        // Log::info('"' . $line_pattern . '"');
+        // Log::info('"' . $line . '"');
+
+
+        if (!preg_match('/' . $line_pattern . '/u', $line))
             return false;
 
         return true;

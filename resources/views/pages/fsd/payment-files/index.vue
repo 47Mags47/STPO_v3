@@ -39,7 +39,7 @@ export default {
             {
                 title: 'Месяц',
                 dataIndex: 'in_month',
-                width: '100px',
+                width: '150px',
             },
             {
                 title: 'Записей',
