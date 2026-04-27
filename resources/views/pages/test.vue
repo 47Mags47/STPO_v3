@@ -1,7 +1,7 @@
 <script>
 import ResourceForm from "../components/forms/ResourceForm.vue";
 // import Ico from "../components/Ico.vue";
-// import Alert from "../components/Alert.vue";
+import Alert from "../components/Alert.vue";
 // import ContainerAlert from "../components/ContainerAlert.vue";
 import { DateTime } from "luxon";
 import DatePicker from "../components/datepicker/DatePicker.vue";
@@ -13,7 +13,7 @@ export default {
         ResourceForm,
         DateBetweenInput,
         // ContainerAlert,
-        // Alert,
+        Alert,
         DatePicker,
     },
     data() {
@@ -73,13 +73,36 @@ export default {
     333333333333333333333333333333333333333333333333333
     "/> -->
 
-    <!-- <Alert msg="Тест маленькой ошибки раз два три четыре пять"/> -->
+    <!-- <Alert msg="Тест маленькой ошибки раз два три четыре пять" v-deleteOverlay=""/> -->
 
     <!-- <DateBetweenInput
         name="myDateBetween"
         :useDayPicker="false"
     /> -->
-    <ResourceForm
+    <!-- <ResourceForm
+    v-deleteOverlay=""
+    :inputs="[
+        {
+            type: 'string',
+            name: 'login',
+            label: 'Login'
+        },
+        {
+            type: 'string',
+            name: 'email',
+            label: 'Email'
+        },
+        {
+            type: 'dateBetween',
+            useDayPicker: false,
+            name: 'dateBetween',
+            label: 'Период'
+        },
+    ]"
+    /> -->
+
+    <!-- <MyDelete>
+        <ResourceForm
     :inputs="[
         {
             type: 'string',
@@ -99,5 +122,6 @@ export default {
         },
     ]"
     />
+    </MyDelete> -->
 
 </template>

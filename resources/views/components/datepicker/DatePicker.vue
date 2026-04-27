@@ -200,14 +200,6 @@ export default {
             }
         },
     },
-    mounted() {
-        // Вешаем событие на весь документ при инициализации
-        document.addEventListener('click', this.clickOutsideHandler);
-    },
-    beforeUnmount() {
-        // Важно! Удаляем слушатель при уничтожении компонента
-        document.removeEventListener('click', this.clickOutsideHandler);
-    }
 };
 </script>
 
@@ -256,7 +248,7 @@ export default {
             @click="(e) => e.target.select()"/>
 
             <Ico
-            class="ml-1! cursor-pointer"
+            class="ml-1! cursor-pointer hover:text-gray-400 transition"
             @click.stop="datePickerOpen = !datePickerOpen"
             type="faCalendar"/>
         </div>

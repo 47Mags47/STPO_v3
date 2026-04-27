@@ -31,7 +31,7 @@ export default {
     <div
     class="flex justify-between items-center w-full py-1! h-(--input-height)">
         <div class="flex gap-4 items-center w-fit">
-            <span> С </span>
+            <span class="font-bold! text-[#333]"> С </span>
             <DatePicker
             :name="`${name}[dateStart]`"
             :useDayPicker
@@ -39,10 +39,10 @@ export default {
             :useYearPicker/>
         </div>
 
-        <div class="h-full w-1 bg-black"></div>
+        <div class="h-full w-[1px] bg-black"></div>
 
         <div class="flex gap-4 items-center w-fit">
-            <span> ПО </span>
+            <span class="font-bold! text-[#333]"> ПО </span>
             <DatePicker
             :name="`${name}[dateEnd]`"
             :useDayPicker
