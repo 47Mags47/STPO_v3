@@ -12,6 +12,8 @@ class ReadPaymentFileJob implements ShouldQueue
 {
     use Queueable;
 
+    public $timeout = 300;
+
     const CHUNK_SIZE = 5000;
 
     public function __construct(public PaymentFile $paymentFile) {}

@@ -13,6 +13,8 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
+    public $timeout = 300;
+
     const LAST_NAME_PATTERN         = "/[а-яА-ЯёЁ -]{0,255}/";
     const FIRST_NAME_PATTERN        = "/[а-яА-ЯёЁ -]{1,255}/";
     const MIDDLE_NAME_PATTERN       = "/[а-яА-ЯёЁ -]{0,255}/";
