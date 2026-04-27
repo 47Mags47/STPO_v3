@@ -7,6 +7,7 @@ use App\Models\FSD\PaymentFile;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class ReadPaymentFileChunkJob implements ShouldQueue
 {
@@ -26,8 +27,17 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->lines as $line) {
-            if (!$this->checkValidLine($line))
+            if (!$this->checkValidLine($line)){
+                Log::error(
+                    'При чтении файла: ' .
+                    $this->paymentFile->file->origin_name .
+                    " произошла ошибка\n" .
+                    "Пропущена строка: \n" .
+                    $line
+                );
                 continue;
+            }
+
 
             $row = str_getcsv($line, self::CSV_SEPARATOR);
 
