@@ -26,15 +26,10 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function handle(): void
     {
+        $validationErrors = [];
         foreach ($this->lines as $line) {
-            if (!$this->checkValidLine($line)){
-                Log::error(
-                    'При чтении файла: ' .
-                    $this->paymentFile->file->origin_name .
-                    " произошла ошибка\n" .
-                    "Пропущена строка: \n" .
-                    $line
-                );
+            if (!$this->checkValidLine($line)) {
+                $validationErrors[] = $line;
                 continue;
             }
 
@@ -47,6 +42,20 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 'file_id'           => $this->paymentFile->id,
             ]);
         }
+
+        if (count($validationErrors) > 1) {
+            Log::error(
+                'При чтении файла: ' .
+                    $this->paymentFile->file->origin_name .
+                    " произошла ошибка\n" .
+                    "Пропущена строка: \n"
+            );
+
+            foreach ($line as $validationErrors) {
+                Log::error($line);
+            }
+        }
+
     }
 
     public function checkValidLine(string $line)
