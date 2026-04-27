@@ -53,7 +53,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             );
 
             foreach ($validationErrors as $line) {
-                Log::error('"' . str_replace(['\r', '\r\n'], '', $line) . '"');
+                Log::error('"' . str_replace(['\r', '\r\n', '\n'], '', $line) . '"');
             }
         }
     }
