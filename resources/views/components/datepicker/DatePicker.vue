@@ -6,6 +6,7 @@ import DateInput from '../inputs/DateInput.vue';
 import Ico from '../Ico.vue';
 
 import { DateTime } from 'luxon';
+import { Transition } from 'vue';
 
 export default {
     inheritAttrs: false,
@@ -260,33 +261,51 @@ export default {
         :value="selectedDate ? selectedDate : ''">
 
         <!-- Датапикер -->
-        <div
-        ref="pickerContainer"
-        v-if="datePickerOpen"
-        class="date-picker-container z-10"
-        @click.stop>
-            <DayPicker
-            v-if="currentPicker === 'day'"
-            :on-switcher-click="changePicker"
-            :select-date="selectDate"
-            :selected-date="selectedDate"/>
+        <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0 transform scale-90"
+        enter-to-class="opacity-100 transform scale-100"
+        leave-active-class="transition duration-300 ease-in"
+        leave-from-class="opacity-100 transform scale-100"
+        leave-to-class="opacity-0 transform scale-90"
+        name="fade">
+            <div
+            ref="pickerContainer"
+            v-show="datePickerOpen"
+            class="date-picker-container z-10"
+            @click.stop>
+                <DayPicker
+                v-if="currentPicker === 'day'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :selected-date="selectedDate"/>
 
-            <MonthPicker
-            v-if="currentPicker === 'month'"
-            :on-switcher-click="changePicker"
-            :select-date="selectDate"
-            :selected-date="selectedDate"/>
+                <MonthPicker
+                v-if="currentPicker === 'month'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :selected-date="selectedDate"/>
 
-            <YearPicker
-            v-if="currentPicker === 'year'"
-            :on-switcher-click="changePicker"
-            :select-date="selectDate"
-            :selected-date="selectedDate"/>
-        </div>
+                <YearPicker
+                v-if="currentPicker === 'year'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :selected-date="selectedDate"/>
+            </div>
+        </Transition>
     </div>
 </template>
 
 <style lang="sass" scoped>
+// .fade-enter-active,
+// .fade-leave-active
+//   @apply transition duration-300
+
+// .fade-enter-from,
+// .fade-leave-to
+//   @apply opacity-0
+
+
 .date-picker-container
     position: absolute
     width: 200px
