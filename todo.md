@@ -78,6 +78,9 @@
 
         - [ ] dev_components_CreateNotification
 
+        - [ ] dev_components_CreateDashboard
+            - [ ] dev_components_CreateDashBoard_CreateProfile
+
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
