@@ -7,47 +7,34 @@ import { DateTime } from "luxon";
 import DatePicker from "../components/datepicker/DatePicker.vue";
 import DateBetweenInput from "../components/inputs/DateBetweenInput.vue";
 
+import { router } from "@inertiajs/vue3";
+
 export default {
     components: {
-        // DateBetweenInput,
         ResourceForm,
         DateBetweenInput,
-        // ContainerAlert,
         Alert,
         DatePicker,
     },
     data() {
         return {
-            // errors: [
-            //     { id: Date.now() + Math.random(), type: 'error', msg: 'Ошибка 1' },
-            //     { id: Date.now() + Math.random(), type: 'success', msg: 'успех 2' },
-            //     { id: Date.now() + Math.random(), type: 'info',  msg: 'информация 3' },
-            // ],
-            // isErrVisible: false,
             testdate: DateTime.now(),
         }
     },
-    // methods: {
-    //     removeErrFromArray(ErrorId) {
-    //         this.errors = this.errors.filter(err => err.id !== ErrorId)
-    //     },
-    //     clearErrs() {
-    //         const interval = setInterval(() => {
-    //             if (this.errors.length > 0)
-    //                 this.errors.pop();
-    //             else
-    //                 clearInterval(interval);
-    //         }, 100);
-    //     },
-    //     test() {
-    //         const startOfMonth = DateTime.now().startOf('month').toString();
-    //         console.log(DateTime.now().startOf('month').weekday)
-    //     }
-    // },
+    methods: {
+        toDashboard(routeName) {
+            try {
+                router.visit(route(routeName));
+            } catch (error) {
+                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
+            }
+        }
+    },
 }
 </script>
 
 <template>
+    <button @click="toDashboard('dashboard')">route</button>
     <!-- <DatePicker
     name="123"
     :useDayPicker="true"
