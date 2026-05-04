@@ -19,6 +19,7 @@ Route::get('/test', function () {
 })->name('test');
 
 Route::get('/show', fn() => Inertia::render('ProfileUserdata'));
+Route::get('/edit', fn() => Inertia::render('ProfileUserdataEdit'));
 Route::get('/settings', fn() => Inertia::render('ProfileSettings'));
 Route::get('/admin', fn() => Inertia::render('ProfileAdmining'));
 
