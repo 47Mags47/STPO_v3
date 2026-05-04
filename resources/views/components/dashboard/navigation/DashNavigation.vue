@@ -62,11 +62,11 @@ export default {
             <template #content>
 
                 <div v-for="item in navItems" class="h-fit flex gap-3 items-center">
-                    <div class="size-[25px]">
+                    <div class="size-[20px]">
                         <Ico :type="item.ico" />
                     </div>
 
-                    <p class="text-gray-900 font-bold! text-2xl! cursor-pointer select-none transition
+                    <p class="text-gray-900 text-md! cursor-pointer select-none transition
                     hover:text-gray-500 text-shadow hover:text-shadow-gray-500
                     active:text-gray-800 active:text-shadow-gray-800"
                     :class="{ 'translate-x-2 text-gray-600!': chosenNavItem ? item.url === chosenNavItem.url : null }"
@@ -78,7 +78,7 @@ export default {
                         <div class="size-[25px]">
                             <Ico type="faRightFromBracket" class="text-red-600"/>
                         </div>
-                        <p class="text-red-600 font-bold! text-2xl! cursor-pointer select-none transition
+                        <p class="text-red-600 text-xl! cursor-pointer select-none transition
                         hover:text-red-400 text-shadow hover:text-shadow-red-400
                         active:text-red-600 active:text-shadow-red-600"
                         @click="exitClickHandler"> выход </p>

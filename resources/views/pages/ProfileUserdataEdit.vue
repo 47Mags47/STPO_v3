@@ -81,7 +81,7 @@ export default {
                      <div class="grid grid-cols-3 items-center">
                         <div></div>
                         <span class="text-3xl!"> данные </span>
-                        <span class="text-[#3d9ad1] cursor-pointer hover:text-sky-300 active:text-[#3d9ad1] select-none"> редактировать </span>
+                        <span class="text-[#3d9ad1] font-normal! cursor-pointer hover:text-sky-300 active:text-[#3d9ad1] select-none"> редактировать </span>
                      </div>
 
                 </template>

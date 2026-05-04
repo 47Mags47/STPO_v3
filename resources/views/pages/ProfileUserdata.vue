@@ -105,10 +105,8 @@ export default {
                 <template #header>
                      <div class="grid grid-cols-3 items-center">
                         <div></div>
-
                         <span class="text-3xl!"> данные </span>
-
-                        <span class="text-[#3d9ad1] cursor-pointer hover:text-sky-300 active:text-[#3d9ad1] select-none"
+                        <span class="text-[#3d9ad1] cursor-pointer font-normal! hover:text-sky-300 active:text-[#3d9ad1] select-none"
                         @click="routeTo('edit')">
                             редактировать
                         </span>
