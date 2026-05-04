@@ -76,7 +76,7 @@
             Ренейм ErrorPopUpQueue на ContainerAlert,
             Рефакт и улучшение кода в компонентах ErrorPopUpMsgm, ErrorPopUpMsgQueue
 
-        - [ ] dev_components_CreateNotification
+        - [x] dev_components_CreateNotification
 
         - [ ] dev_components_CreateDashboard
             - [ ] dev_components_CreateDashBoard_CreateProfile
