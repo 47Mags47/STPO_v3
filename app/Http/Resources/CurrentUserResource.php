@@ -15,7 +15,14 @@ class CurrentUserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'first_name'        => $this->first_name,
+            'last_name'         => $this->last_name,
+            'middle_name'       => $this->middle_name,
             'full_name'         => $this->full_name,
+            'phone'             => $this->phone,
+            'phone_dob'         => $this->phone_dob,
+            'login'             => $this->login,
+            'email'             => $this->email,
         ];
     }
 }

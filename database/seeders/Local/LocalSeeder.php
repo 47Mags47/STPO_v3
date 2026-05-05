@@ -17,6 +17,8 @@ class LocalSeeder extends Seeder
         $this->call(Administrate\DivisionSeeder::class);
         $this->call(Administrate\TemplateSeeder::class);
 
+        $this->call(Base\UserSeeder::class);
+
         $this->call(Appeal\AppealSeeder::class);
         $this->call(Appeal\MessageSeeder::class);
 

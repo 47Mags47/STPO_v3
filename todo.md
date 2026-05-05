@@ -53,7 +53,7 @@
         - [x] dev_pusher_a1_InstallAndTest 
             - [x] Установить Larabel/reverb
             - [x] Установить Laravel-echo
-            - [x] Установить Pusher-js
+            - [x] Установить PuАsher-js
             - [x] Создать тестовый event
 
     - components ( компоненты )

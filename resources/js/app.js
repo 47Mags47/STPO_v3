@@ -17,7 +17,7 @@ createInertiaApp({
 
         const page = await importPage();
 
-        page.default.layout = Baselayout;
+        // page.default.layout = Baselayout;
 
         return page;
     },
