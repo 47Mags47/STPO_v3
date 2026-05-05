@@ -6,28 +6,22 @@ import ResourceForm from '../components/forms/ResourceForm.vue';
 export default {
     components: {
         ResourceForm,
-        DashboardLayout
     },
     data() {
-        return {
-            content: 'settings'
-        }
+        return {}
     },
+    layout: DashboardLayout
 }
 </script>
 
 <template>
-    <DashboardLayout :content="content">
-        <template #userdata>
-            <ResourceForm
-            header="настройки"
-            :inputs="[
-                {
-                    type: 'string',
-                    name: 'first_name',
-                    label: 'настраивай'
-                },
-            ]"/>
-        </template>
-    </DashboardLayout>
+    <ResourceForm
+    header="настройки"
+    :inputs="[
+        {
+            type: 'string',
+            name: 'first_name',
+            label: 'настраивай'
+        },
+    ]"/>
 </template>

@@ -17,16 +17,19 @@ export default {
                     ico: 'faUser',
                     url: '/show',
                     name: 'данные',
+                    isHover: false,
                 },
                 {
                     ico: 'faUserGear',
                     url: '/admin',
-                    name: 'администрирование',
+                    name: 'админ-е',
+                    isHover: false,
                 },
                 {
                     ico: 'faGear',
                     url: '/settings',
                     name: 'настройки',
+                    isHover: false,
                 },
             ],
         }
@@ -49,39 +52,52 @@ export default {
         },
     },
 
+    // computed: {
+    //     chosenNavItem() {
+    //         return this.navItems.find(navItem => navItem.url === usePage().url)
+    //     }
+    // },
     created() {
         // по умолчанию выбранный элемент это объект, у которого свойство url = текущему url
         this.chosenNavItem = this.navItems.find(navItem => navItem.url === usePage().url)
-    }
+    },
 }
 </script>
 
 <template>
-    <div class="h-full w-fit">
+    <div class="h-fit w-full">
         <BaseDashNavigation>
             <template #content>
 
-                <div v-for="item in navItems" class="h-fit flex gap-3 items-center">
-                    <div class="size-[20px]">
-                        <Ico :type="item.ico" />
-                    </div>
+                <div v-for="(item, i) in navItems"
+                :key="i"
+                @click="navItemClickHandler(item)"
+                class="h-full aspect-square flex-none flex items-center rounded-xl p-1! cursor-pointer
+                hover:bg-gray-100 transition  overflow-hidden shadow-inner"
+                :class="chosenNavItem?.url === item.url ? 'bg-gray-200 shadow-inner' : null"
+                @mouseenter="item.isHover = true"
+                @mouseleave="item.isHover = false">
 
-                    <p class="text-gray-900 text-md! cursor-pointer select-none transition
-                    hover:text-gray-500 text-shadow hover:text-shadow-gray-500
-                    active:text-gray-800 active:text-shadow-gray-800"
-                    :class="{ 'translate-x-2 text-gray-600!': chosenNavItem ? item.url === chosenNavItem.url : null }"
-                    @click="navItemClickHandler(item)"> {{ item.name }}</p>
+                    <div class="relative h-[calc(100%-20px)] w-full flex items-center justify-center">
+                        <p class="absolute transition duration-300 pointer-events-none"
+                        :class="item.isHover ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'">
+                            {{ item.name }}
+                        </p>
+                        <Ico class="transition-all"
+                        :type="item.ico"
+                        :class="[
+                            item.isHover ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0',
+                            chosenNavItem?.url === item.url ? 'text-gray-600!' : null
+                        ]" />
+                    </div>
                 </div>
 
-                <div class="flex items-end h-full">
-                    <div class="bottom-0 flex items-center gap-3">
-                        <div class="size-[25px]">
+                <div class="size-full flex justify-end items-center ">
+                    <div class="h-full aspect-square flex-none flex items-center  cursor-pointer hover:brightness-150">
+                        <div
+                        class="h-[calc(100%-20px)] w-full">
                             <Ico type="faRightFromBracket" class="text-red-600"/>
                         </div>
-                        <p class="text-red-600 text-xl! cursor-pointer select-none transition
-                        hover:text-red-400 text-shadow hover:text-shadow-red-400
-                        active:text-red-600 active:text-shadow-red-600"
-                        @click="exitClickHandler"> выход </p>
                     </div>
                 </div>
 
