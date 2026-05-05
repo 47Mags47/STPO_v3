@@ -119,7 +119,7 @@ export default {
             </div>
         </div>
 
-        <div :class="{'notification-list-container': true, 'open': isOpen}">
+        <div class="z-1000" :class="{'notification-list-container': true, 'open': isOpen}">
             <!-- фильтрация + очистка -->
             <div
             class="notificaion-list-container-clear z-10 w-full h-6 bg-gray-600 flex justify-around items-center gap-3 px-[10px]!">
