@@ -72,9 +72,9 @@ export default {
                 <div v-for="(item, i) in navItems"
                 :key="i"
                 @click="navItemClickHandler(item)"
-                class="h-full aspect-square flex-none flex items-center rounded-xl p-1! cursor-pointer
+                class="h-full aspect-square flex-none flex items-center rounded-xl p-1! cursor-pointer bg-slate-100
                 hover:bg-gray-100 transition  overflow-hidden shadow-inner"
-                :class="chosenNavItem?.url === item.url ? 'bg-gray-200 shadow-inner' : null"
+                :class="chosenNavItem?.url === item.url ? 'bg-slate-200!' : null"
                 @mouseenter="item.isHover = true"
                 @mouseleave="item.isHover = false">
 
@@ -85,13 +85,12 @@ export default {
                         </p>
                         <Ico class="transition-all"
                         :type="item.ico"
-                        :class="[
-                            item.isHover ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0',
-                            chosenNavItem?.url === item.url ? 'text-gray-600!' : null
-                        ]" />
+                        :class="item.isHover ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'" />
                     </div>
                 </div>
 
+
+                <!-- Выход -->
                 <div class="size-full flex justify-end items-center ">
                     <div class="h-full aspect-square flex-none flex items-center  cursor-pointer hover:brightness-150">
                         <div
