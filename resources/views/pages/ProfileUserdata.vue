@@ -28,14 +28,15 @@ export default {
     },
     computed: {
         current_user: () => usePage().props.current_user.data,
-        propsdata: () => usePage().props
+        isEmailVerified() {
+            return this.current_user.is_email_verified
+        }
     },
     layout: DashboardLayout
 }
 </script>
 
 <template>
-    {{ console.log(propsdata) }}
     <ResourceForm
     :inputs="[
         {
@@ -104,14 +105,15 @@ export default {
     ]">
         <template #header>
                 <div class="grid grid-cols-3 items-center">
-
                     <div></div>
                     <span class="text-3xl!"> данные </span>
                     <span class="text-[#3d9ad1] cursor-pointer font-normal! hover:text-sky-300 active:text-[#3d9ad1] select-none"
                     @click="routeTo('edit')">
                         редактировать
                     </span>
-
+                </div>
+                <div class="w-full flex justify-start items-end gap-2">
+                    <span v-show="!isEmailVerified" class="font-normal! text-red-500"> * почта не подтверждена! </span>
                 </div>
         </template>
     </ResourceForm>

@@ -14,15 +14,13 @@ Route::get('/dashboard', function () {
     return Inertia::render('dashboard');
 })->name('dashboard');
 
+////////////////////////////////////////
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login'])->name('auth.users.login');
 Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, 'store'])->name('auth.users.store');
 
-
-////////////////////////////////////////
-// генерация ссылки в письме в почте и обработка нажатии кнопки
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill(); // Это пометит email как подтвержденный в БД
+    $request->fulfill();
     return redirect()->route('verification.success');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::get('/email/confirmed', fn() => Inertia::render('emailConfirmed'))->middleware(['auth'])->name('verification.success');

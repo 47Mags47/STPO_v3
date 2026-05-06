@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomVerifyEmail;
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -33,6 +34,19 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ### Настройки
     ##################################################
     protected $table = 'base__users';
+
+    public function sendEmailVerificationNotification()
+    {
+        // Генерируем стандартную ссылку верификации
+        $url = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $this->getKey(), 'hash' => sha1($this->getEmailForVerification())]
+        );
+
+        // Отправляем кастомное уведомление
+        $this->notify(new CustomVerifyEmail($url));
+    }
 
     protected $fillable = [
         'first_name',

@@ -40,7 +40,6 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
 
-        // Это событие "пинает" MustVerifyEmail, чтобы письмо улетело
         event(new Registered($user));
 
         Auth::login($user);
