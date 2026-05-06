@@ -2,6 +2,7 @@
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 
 import ResourceForm from '../components/forms/ResourceForm.vue';
+import Ico from "../components/Ico.vue";
 
 import { router, usePage } from "@inertiajs/vue3";
 import { readonly } from "vue";
@@ -9,6 +10,7 @@ import { readonly } from "vue";
 export default {
     components: {
         ResourceForm,
+        Ico
     },
     data() {
         return {
@@ -100,14 +102,15 @@ export default {
     ]">
         <template #header>
                 <div class="grid grid-cols-3 items-center">
-                <div></div>
-                <span class="text-3xl!"> данные </span>
-                <span class="text-[#3d9ad1] cursor-pointer font-normal! hover:text-sky-300 active:text-[#3d9ad1] select-none"
-                @click="routeTo('edit')">
-                    редактировать
-                </span>
-                </div>
 
+                    <div></div>
+                    <span class="text-3xl!"> данные </span>
+                    <span class="text-[#3d9ad1] cursor-pointer font-normal! hover:text-sky-300 active:text-[#3d9ad1] select-none"
+                    @click="routeTo('edit')">
+                        редактировать
+                    </span>
+
+                </div>
         </template>
     </ResourceForm>
 </template>

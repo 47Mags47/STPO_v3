@@ -22,7 +22,7 @@ export default {
                 {
                     ico: 'faUserGear',
                     url: '/admin',
-                    name: 'админ-е',
+                    name: 'администрирование',
                     isHover: false,
                 },
                 {
@@ -69,35 +69,16 @@ export default {
         <BaseDashNavigation>
             <template #content>
 
-                <div v-for="(item, i) in navItems"
+                <span v-for="(item, i) in navItems"
                 :key="i"
                 @click="navItemClickHandler(item)"
-                class="h-full aspect-square flex-none flex items-center rounded-xl p-1! cursor-pointer bg-slate-100
-                hover:bg-gray-100 transition  overflow-hidden shadow-inner"
-                :class="chosenNavItem?.url === item.url ? 'bg-slate-200!' : null"
-                @mouseenter="item.isHover = true"
-                @mouseleave="item.isHover = false">
+                class="rounded px-2! text-lg! hover:text-gray-600 active:text-black cursor-pointer select-none"
+                :class="chosenNavItem?.url === item.url ? 'text-gray-600' : null">
+                    {{ item.name }}
+                </span>
 
-                    <div class="relative h-[calc(100%-20px)] w-full flex items-center justify-center">
-                        <p class="absolute transition duration-300 pointer-events-none"
-                        :class="item.isHover ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'">
-                            {{ item.name }}
-                        </p>
-                        <Ico class="transition-all"
-                        :type="item.ico"
-                        :class="item.isHover ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'" />
-                    </div>
-                </div>
-
-
-                <!-- Выход -->
-                <div class="size-full flex justify-end items-center ">
-                    <div class="h-full aspect-square flex-none flex items-center  cursor-pointer hover:brightness-150">
-                        <div
-                        class="h-[calc(100%-20px)] w-full">
-                            <Ico type="faRightFromBracket" class="text-red-600"/>
-                        </div>
-                    </div>
+                <div class="h-full w-full flex justify-end items-center select-none">
+                    <span class="text-red-600 text-lg! rounded px-2! hover:text-red-400 active:text-red-600 cursor-pointer"> выход </span>
                 </div>
 
             </template>

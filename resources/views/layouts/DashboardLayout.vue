@@ -42,7 +42,7 @@ export default {
 
 <template>
     <AuthLayout>
-        <div class="size-full flex flex-col py-6! px-5!">
+        <div class="size-full flex flex-col ">
             <DashNavigation />
 
             <div v-if="isLoading" class="size-full flex justify-center items-center">
