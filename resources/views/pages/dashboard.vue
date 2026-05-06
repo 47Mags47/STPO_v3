@@ -6,20 +6,14 @@ import ResourceForm from '../components/forms/ResourceForm.vue';
 export default {
     components: {
         ResourceForm,
-        DashboardLayout
     },
     data() {
-        return {
-            content: 'main'
-        }
+        return {}
     },
+    layout: DashboardLayout
 }
 </script>
 
 <template>
-    <DashboardLayout :content="content">
-        <template #main>
-            <p class="size-full flex justify-center items-center text-4xl!"> главная страница dashboard </p>
-        </template>
-    </DashboardLayout>
+    <p class="size-full flex justify-center items-center text-4xl!"> главная страница dashboard </p>
 </template>

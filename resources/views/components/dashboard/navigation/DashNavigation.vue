@@ -17,16 +17,19 @@ export default {
                     ico: 'faUser',
                     url: '/show',
                     name: 'данные',
+                    isHover: false,
                 },
                 {
                     ico: 'faUserGear',
                     url: '/admin',
                     name: 'администрирование',
+                    isHover: false,
                 },
                 {
                     ico: 'faGear',
                     url: '/settings',
                     name: 'настройки',
+                    isHover: false,
                 },
             ],
         }
@@ -49,40 +52,33 @@ export default {
         },
     },
 
+    // computed: {
+    //     chosenNavItem() {
+    //         return this.navItems.find(navItem => navItem.url === usePage().url)
+    //     }
+    // },
     created() {
         // по умолчанию выбранный элемент это объект, у которого свойство url = текущему url
         this.chosenNavItem = this.navItems.find(navItem => navItem.url === usePage().url)
-    }
+    },
 }
 </script>
 
 <template>
-    <div class="h-full w-fit">
+    <div class="h-fit w-full">
         <BaseDashNavigation>
             <template #content>
 
-                <div v-for="item in navItems" class="h-fit flex gap-3 items-center">
-                    <div class="size-[20px]">
-                        <Ico :type="item.ico" />
-                    </div>
+                <span v-for="(item, i) in navItems"
+                :key="i"
+                @click="navItemClickHandler(item)"
+                class="rounded px-2! text-lg! hover:text-gray-600 active:text-black cursor-pointer select-none"
+                :class="chosenNavItem?.url === item.url ? 'text-gray-600' : null">
+                    {{ item.name }}
+                </span>
 
-                    <p class="text-gray-900 text-md! cursor-pointer select-none transition
-                    hover:text-gray-500 text-shadow hover:text-shadow-gray-500
-                    active:text-gray-800 active:text-shadow-gray-800"
-                    :class="{ 'translate-x-2 text-gray-600!': chosenNavItem ? item.url === chosenNavItem.url : null }"
-                    @click="navItemClickHandler(item)"> {{ item.name }}</p>
-                </div>
-
-                <div class="flex items-end h-full">
-                    <div class="bottom-0 flex items-center gap-3">
-                        <div class="size-[25px]">
-                            <Ico type="faRightFromBracket" class="text-red-600"/>
-                        </div>
-                        <p class="text-red-600 text-xl! cursor-pointer select-none transition
-                        hover:text-red-400 text-shadow hover:text-shadow-red-400
-                        active:text-red-600 active:text-shadow-red-600"
-                        @click="exitClickHandler"> выход </p>
-                    </div>
+                <div class="h-full w-full flex justify-end items-center select-none">
+                    <span class="text-red-600 text-lg! rounded px-2! hover:text-red-400 active:text-red-600 cursor-pointer"> выход </span>
                 </div>
 
             </template>

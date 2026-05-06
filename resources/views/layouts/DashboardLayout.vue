@@ -42,7 +42,7 @@ export default {
 
 <template>
     <AuthLayout>
-        <div class="size-full flex py-6! px-5!">
+        <div class="size-full flex flex-col ">
             <DashNavigation />
 
             <div v-if="isLoading" class="size-full flex justify-center items-center">
@@ -53,10 +53,11 @@ export default {
 
             <div v-else class="size-full">
                 <div class="size-full">
-                    <slot name="main" />
+                    <slot name="default" />
+                    <!-- <slot name="main" />
                     <slot name="userdata" />
                     <slot name="administrate" />
-                    <slot name="settings" />
+                    <slot name="settings" /> -->
                 </div>
             </div>
 
