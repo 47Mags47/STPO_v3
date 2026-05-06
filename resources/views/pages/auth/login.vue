@@ -14,6 +14,7 @@ export default {
     <ResourceForm
         header="Вход"
         sbm="Войти"
+        :action="route('auth.users.login')"
         :inputs="[
             {
                 type: 'string',
@@ -35,7 +36,7 @@ export default {
         ]"
     >
         <template #footer>
-            <Link :href="route('users.create')"> Зарегистрироваться </Link>
+            <Link :href="route('auth.users.create')"> Зарегистрироваться </Link>
         </template>
     </ResourceForm>
 </template>

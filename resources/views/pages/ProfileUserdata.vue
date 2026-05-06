@@ -28,12 +28,14 @@ export default {
     },
     computed: {
         current_user: () => usePage().props.current_user.data,
+        propsdata: () => usePage().props
     },
     layout: DashboardLayout
 }
 </script>
 
 <template>
+    {{ console.log(propsdata) }}
     <ResourceForm
     :inputs="[
         {

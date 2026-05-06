@@ -37,13 +37,20 @@ export default {
             this.updateFullName();
         },
     },
+    // computed: {
+    //     form() {
+    //         return ({
+    //             login: email
+    //         })
+    //     }
+    // }
 };
 </script>
 
 <template>
     <ResourceForm
         header="Регистрация"
-        :action="route('users.store')"
+        :action="route('auth.users.store')"
         :inputs="[
             {
                 type: 'string',
@@ -111,7 +118,7 @@ export default {
             },
             {
                 type: 'password',
-                name: 'password_confirmnation',
+                name: 'password_confirmation',
                 label: 'Повторите пароль',
                 required: true,
             },
