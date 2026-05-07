@@ -1,88 +1,82 @@
 <script>
-import Baseinput from './Baseinput.vue';
-import BlueButton from '../buttons/BlueButton.vue'
-import Ico from '../Ico.vue'
+import BlueButton from '../buttons/BlueButton.vue';
+import Ico from '../Ico.vue';
 import ProgressBar from '../ProgressBar.vue';
-import axios from 'axios';
-import { route } from 'ziggy-js';
+import UploadFile from '../UploadFile.vue';
+import StringInput from './StringInput.vue'
 
 export default {
     components: {
-        Baseinput,
-        BlueButton,
         Ico,
+        BlueButton,
+        UploadFile,
+        StringInput,
         ProgressBar,
     },
     props: {
         name: {
             type: String,
-            default: 'upload_file_id'
-        },
+        }
     },
     data() {
         return {
             isUploading: false,
-            totalChunkCount: 1,
-            uplodedChunkCount: 0,
-
-            uploadFile: {},
-            uploadFileRecord: {}
+            file: {},
+            serverConfig: {},
+            totalChunks: 1,
+            uploadedChunks: 0,
         }
     },
     methods: {
-        fuleButtonClickHandler() {
-            this.$refs.fileInput.getInputElement().click()
+        addFileButtonClickHandler() {
+            this.$refs.uploadInput.click()
         },
-        fileInputChangeHandler(e) {
-            this.uploadFile = e.target.files[0]
+        changeFileInputHandler() {
+            this.isUploading = false
+            this.uploadedChunks = 0
 
-            this.uplodedChunkCount = 0
+            this.file = this.$refs.uploadInput.files[0]
+            this.serverHandshake()
+        },
+        async serverHandshake() {
+            try {
+                const response = await axios.post(route('upload.startUpload'), {
+                    origin_name: this.file.name,
+                    file_size: this.file.size
+                })
+
+                this.serverConfig = response.data.data
+
+                this.fileId = this.serverConfig.id
+                this.totalChunks = this.serverConfig.chunks.length
+
+
+                this.uploadFile()
+            } catch (error) { }
+        },
+        uploadFile() {
             this.isUploading = true
+            let chunkSize = this.serverConfig.config.chunkSize
 
-            this.getUploadFileRecord()
+            this.serverConfig.chunks.forEach(chunk => {
+                let chunkContent = this.file.slice((chunk.npp - 1) * chunkSize, chunk.npp * chunkSize)
+                this.uploadChunk(chunk.id, chunkContent)
+            });
         },
-
-        // DEV Добавить обработку в случае ошибки запроса
-        async getUploadFileRecord() {
-            await axios({
-                url: route('upload.startUpload'),
-                method: 'GET',
-                params: {
-                    origin_name: this.uploadFile.name,
-                    file_size: this.uploadFile.size
-                },
-            })
-                .then(function (response) {
-                    this.uploadFileRecord = response.data.data
-                    this.totalChunkCount = this.uploadFileRecord.chunks.length
-                }.bind(this))
-
-            this.uploadChunks()
-        },
-        async uploadChunks() {
-            for (let i = 0; i < this.uploadFileRecord.chunks.length; i++) {
-                // DEV  Добавить паралельную загрузку
-                const chunkSize = this.uploadFileRecord.config.chunkSize
-                let chunkContent = this.uploadFile.slice(i * chunkSize, (i + 1) * chunkSize)
-
-                await this.uploadChunk(chunkContent, this.uploadFileRecord.chunks[i].id)
+        uploadChunk(chunkId, content, attempt = 0) {
+            if (attempt == 3) {
+                return
             }
-        },
-        async uploadChunk(chunk, npp) {
-            let formData = new FormData()
-            formData.append("file", chunk);
 
-            let response = await axios({
-                method: 'POST',
-                url: route('upload.writeChunk', {
-                    file: this.uploadFileRecord.id,
-                    chunk: npp
-                }),
-                data: formData
+            axios.postForm(route('upload.writeChunk', { chunk: chunkId }), {
+                file: content
             })
-
-            if(response.status === 200)
-                this.uplodedChunkCount = this.uplodedChunkCount + 1
+                .then(() => {
+                    this.uploadedChunks = this.uploadedChunks + 1
+                })
+                .catch(() => {
+                    this.uploadChunk(chunkId, content, attempt + 1)
+                })
         }
     },
 }
@@ -90,34 +84,13 @@ export default {
 
 <template>
     <div class="big-file-input-container">
-        <input
-            type="hidden"
-            :name
-            :value="uploadFileRecord.id"
-        >
-        <Baseinput
-            type="file"
-            hidden
-            ref="fileInput"
-            :onChange="fileInputChangeHandler"
-            readonly
-        />
-        <Baseinput
-            type="text"
-            class="file-name-input"
-            ref="fileNameInput"
-            :value="uploadFile.name ?? ''"
-            readonly
-        />
-        <BlueButton
-            class="big-file-ico-button"
-            :onclick="fuleButtonClickHandler"
-        >
+        <input type="hidden" :name :value="serverConfig.id">
+        <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler">
+        <StringInput class="file-name-input" :value="file.name ?? ''" readonly />
+        <BlueButton class="add-file-button" :onClick="addFileButtonClickHandler">
             <Ico type="faFile" />
         </BlueButton>
-        <div class="progress-container">
-            <ProgressBar v-if="isUploading" :procentage="uplodedChunkCount / totalChunkCount" />
-        </div>
+        <ProgressBar v-if="isUploading" :procentage="uploadedChunks / totalChunks" />
     </div>
 </template>
 
@@ -125,21 +98,15 @@ export default {
 .big-file-input-container
     display: grid
     grid-template-areas: 'A B' 'C C'
-    grid-template-rows: $input-height 5px
     grid-template-columns: auto 30px
-    gap: 5px 5px
-
+    grid-template-rows: 30px 10px
+    gap: 5px
+    .upload-input
+        display: none
     .file-name-input
         grid-area: A
-    .big-file-ico-button
+    .add-file-button
         grid-area: B
-        width: 30px
-        height: 30px
         padding: 7px
-    .progress-container
-        grid-area: C
-        display: flex
-        align-items: center
 
-        gap: 10px
 </style>

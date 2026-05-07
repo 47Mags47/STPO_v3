@@ -34,6 +34,16 @@
 
 - sfr ( Он же FSD ) ( СФР )
     - fsd   Федеральная Социальная Доплата
+        - [x] sfr_fsd_a1_FixPaymentFileResource
+            Исправить вывод кол-ва записей на странице payment-files/index
+
+        - [x] sfr_fsd_a2_FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
+
+        - [ ] sfr_fsd_a3_AddUploadStatus
+            Добавить отображение статуса чтения SFRFile
+            Добавить отображение статуса чтения PaymentFile
+
         - [ ] CreateJobsAlert
             - [ ] Добавить прогресбар чтения FSDFile
             - [ ] Добавить прогресбар чтения PaymentFile
@@ -45,15 +55,19 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
+
         - [ ] FixUploadSfrFile
             Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
 
+        - [ ] AddErrorHandler
+            Добавить валидацию данных из загружаемого файла (SFRFile)
+            
 - dev ( прочее )
     - pusher ( он же websocket )
         - [x] dev_pusher_a1_InstallAndTest 
             - [x] Установить Larabel/reverb
             - [x] Установить Laravel-echo
-            - [x] Установить PuАsher-js
+            - [x] Установить Pusher-js
             - [x] Создать тестовый event
 
     - components ( компоненты )
@@ -84,3 +98,7 @@
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
+
+    - base
+        - [ ] FixUploadBigFile
+            Вынести процесс объеденения чанков (FileChunk) при загрузке больших фалов (UploadFile) в одельный процесс

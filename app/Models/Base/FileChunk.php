@@ -4,6 +4,7 @@ namespace App\Models\Base;
 
 use App\Classes\FileModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FileChunk extends FileModel
 {
@@ -14,7 +15,7 @@ class FileChunk extends FileModel
     protected $table = 'base__file_chunks';
 
     protected $fillable = [
-        'total_file_id',
+        'upload_file_id',
         'file_id',
         'uploaded',
         'npp',
@@ -27,8 +28,8 @@ class FileChunk extends FileModel
         ];
     }
 
-    public string|null $StorageFileDisk = 'uploads';
-    public string|null $StorageFilePath = 'chunks';
+    public static string|null $StorageFileDisk = 'uploads';
+    public static string|null $StorageFilePath = 'chunks';
 
     ### Методы
     ##################################################
@@ -36,5 +37,8 @@ class FileChunk extends FileModel
 
     ### Связи
     ##################################################
-    //
+    public function uploadFile(): BelongsTo
+    {
+        return $this->belongsTo(UploadFile::class, 'upload_file_id');
+    }
 }

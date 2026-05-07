@@ -15,14 +15,18 @@ class PaymentFileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'file' => [
                 'name' => $this->file->origin_name,
             ],
             'payments' => [
                 'count' => $this->payments()->count()
             ],
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
+            'type' => [
+                'name' => $this->type->name,
+                'pay_code' => $this->type->pay_code,
+            ],
+            'in_month' => $this->in_month->translatedFormat('F Y'),
         ];
     }
 }

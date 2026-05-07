@@ -17,21 +17,40 @@ class Payment extends BaseModel
     protected $table = 'fsd__payments';
 
     protected $fillable = [
-        'raport_date',
-        'type_number',
-        'type_name',
         'amount',
-        'amount_other',
-        'start_date',
-        'end_date',
-        'file_id',
-        'recipient_id',
         'SNILS',
+        'file_id',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            // Проверка на наличие дубликата в файле
+            if (self::query()
+                ->where('SNILS', $model->SNILS)
+                ->where('amount', $model->amount)
+                ->where('file_id', $model->file_id)
+                ->exists()
+            )
+                return false;
+
+            // Проверка на наличие дубликата в рамках месяца
+            if (self::query()
+                ->where('SNILS', $model->SNILS)
+                ->where('amount', $model->amount)
+                ->whereHas('PaymentFile', fn($query) => $query->where('in_month', $model->PaymentFile->in_month))
+                ->exists()
+            )
+                return false;
+        });
+    }
 
     ### Связи
     ##################################################
-    public function PaymentFile(): BelongsTo{
+    public function PaymentFile(): BelongsTo
+    {
         return $this->belongsTo(PaymentFile::class, 'file_id');
     }
 }
