@@ -15,6 +15,7 @@ export default {
     data() {
         return {
             isEditable: false,
+            str: '1234',
         }
     },
     methods: {
@@ -30,6 +31,73 @@ export default {
         current_user: () => usePage().props.current_user.data,
         isEmailVerified() {
             return this.current_user.is_email_verified
+        },
+        inputsForm() {
+            return [
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'first_name',
+                    label: 'Имя',
+                    value: this.current_user.first_name,
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'last_name',
+                    label: 'Фамилия',
+                    value: this.current_user.last_name,
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'middle_name',
+                    label: 'Отчество',
+                    value: this.current_user.middle_name,
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'password',
+                    name: 'password',
+                    label: 'Пароль',
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'login',
+                    label: ' Логин',
+                    value: this.current_user.login,
+                    readonly: true
+                },
+                {
+                    class: "text-gray-400!",
+                    type: 'string',
+                    name: 'email',
+                    label: 'почта',
+                    value: this.current_user.email,
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'phone',
+                    label: 'Телефон',
+                    value: this.current_user.phone,
+                    readonly: true
+                },
+                {
+                    class: 'text-gray-400!',
+                    type: 'string',
+                    name: 'phone_dob',
+                    label: 'Доп. телефон',
+                    value: this.current_user.phone_dob,
+                    readonly: true
+                },
+            ]
         }
     },
     layout: DashboardLayout
@@ -38,71 +106,8 @@ export default {
 
 <template>
     <ResourceForm
-    :inputs="[
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'first_name',
-            label: 'Имя',
-            value: current_user.first_name,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'last_name',
-            label: 'Фамилия',
-            value: current_user.last_name,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'middle_name',
-            label: 'Отчество',
-            value: current_user.middle_name,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'password',
-            name: 'password',
-            label: 'Пароль',
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'login',
-            label: ' Логин',
-            value: current_user.login,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'email',
-            label: 'Почта',
-            value: current_user.email,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'phone',
-            label: 'Телефон',
-            value: current_user.phone,
-            readonly: true
-        },
-        {
-            class: 'text-gray-400!',
-            type: 'string',
-            name: 'phone_dob',
-            label: 'Доп. телефон',
-            value: current_user.phone_dob,
-            readonly: true
-        },
-    ]">
+    :inputs="inputsForm"
+    :classes="{ '[&_label[for=email]]:after:content-[\'_*_почта_не_подтверждена\'] [&_label[for=email]]:after:block [&_label[for=email]]:after:text-red-500!': true}">
         <template #header>
                 <div class="grid grid-cols-3 items-center">
                     <div></div>
