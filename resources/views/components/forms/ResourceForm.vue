@@ -24,6 +24,9 @@ export default {
 
         BigFilesInput:      defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
+
+        DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
+        DateBetween:        defineAsyncComponent(() => import('../inputs/DateBetweenInput.vue')),
     },
     props: {
         inputs: {
@@ -46,6 +49,8 @@ export default {
                         'file',
                         'bigFile',
                         'date',
+                        'datePicker',
+                        'dateBetween',
                     ].includes(input.type);
                 });
 
@@ -94,18 +99,20 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput        v-if="input.type === 'string'"      v-bind="prepareProps(input)" />
-                <NumberInput        v-if="input.type === 'number'"      v-bind="prepareProps(input)" />
-                <PhoneInput         v-if="input.type === 'phone'"       v-bind="prepareProps(input)" />
-                <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'" v-bind="prepareProps(input)" />
-                <EmailInput         v-if="input.type === 'email'"       v-bind="prepareProps(input)" />
-                <PasswordInput      v-if="input.type === 'password'"    v-bind="prepareProps(input)" />
-                <Select             v-if="input.type === 'select'"      v-bind="prepareProps(input)" />
-                <CheckBox           v-if="input.type === 'checkbox'"    v-bind="prepareProps(input)" />
-                <FileInput          v-if="input.type === 'file'"        v-bind="prepareProps(input)" />
-                <DateInput          v-if="input.type === 'date'"        v-bind="prepareProps(input)" />
-                <BigFileInput       v-if="input.type === 'bigFile'"     v-bind="prepareProps(input)" />
-                <BigFilesInput      v-if="input.type === 'bigFiles'"    v-bind="prepareProps(input)" />
+                <StringInput        v-if="input.type === 'string'"          v-bind="prepareProps(input)" />
+                <NumberInput        v-if="input.type === 'number'"          v-bind="prepareProps(input)" />
+                <PhoneInput         v-if="input.type === 'phone'"           v-bind="prepareProps(input)" />
+                <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'"     v-bind="prepareProps(input)" />
+                <EmailInput         v-if="input.type === 'email'"           v-bind="prepareProps(input)" />
+                <PasswordInput      v-if="input.type === 'password'"        v-bind="prepareProps(input)" />
+                <Select             v-if="input.type === 'select'"          v-bind="prepareProps(input)" />
+                <CheckBox           v-if="input.type === 'checkbox'"        v-bind="prepareProps(input)" />
+                <FileInput          v-if="input.type === 'file'"            v-bind="prepareProps(input)" />
+                <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
+                <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
+                <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
+                <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
+                <DateBetween        v-if="input.type === 'dateBetween'"     v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>

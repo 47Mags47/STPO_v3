@@ -53,12 +53,15 @@
             - [ ] Добавить заголовок для колонки с датами
             - [ ] Поправить вывод даты на формат xx.xx.xxxx - xx.xx.xxxx
 
+        - [x] sfr_fsd_a1_FixPaymentFileResource
+            Исправить вывод кол-ва записей на странице payment-files/index
+
+        - [ ] FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
+
         - [ ] AddErrorHandler
             Добавить валидацию данных из загружаемого файла (SFRFile)
-
-    - [x] sfr_fsd_a1_FixPaymentFileResource
-        Исправить вывод кол-ва записей на странице payment-files/index
-
+            
 - dev ( прочее )
     - pusher ( он же websocket )
         - [x] dev_pusher_a1_InstallAndTest 
@@ -69,16 +72,28 @@
 
     - components ( компоненты )
         - [ ] FixIcoButton
-            - [ ] Вынести класс 'ico-button' в отдельный компонент
+            Вынести класс 'ico-button' в отдельный компонент
 
-        - [ ] CreateDateInput
-            - [ ] Создать компонент DateInput
+        - [x] CreateDateInput
+            Создать компонент DateInput
 
-        - [ ] CreateDateBetweenInput
-            - [ ] Создать компонент DateBetweenInput
-            
-        - [ ] CreateAlert
-            Создать компонент предупреждения для пользователя (аля стандартный confirm)
+        - [x] CreateDateBetweenInput
+            Создать компонент DateBetweenInput
+        
+        - [x] CreateDatePicker
+            Создать компонент DatePicker
+
+        - [x] dev_components_a1_CreateErrorPopUp
+            Создать компонент высплывающей ошибки
+
+        - [ ] dev_components_a2_CreateContainerAlert
+            Ренейм ErrorPopUpQueue на ContainerAlert,
+            Рефакт и улучшение кода в компонентах ErrorPopUpMsgm, ErrorPopUpMsgQueue
+
+        - [x] dev_components_CreateNotification
+
+        - [ ] dev_components_CreateDashboard
+            - [ ] dev_components_CreateDashBoard_CreateProfile
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib

@@ -2,15 +2,34 @@
 import { usePage } from "@inertiajs/vue3";
 import Ico from "./../components/Ico.vue";
 import Menu from "./Menu.vue";
+import Notifications from "./Notifications.vue";
+import { router } from "@inertiajs/vue3";
 
 export default {
     components: {
         Ico,
-        Menu
+        Menu,
+        Notifications,
+    },
+
+    data() {
+        return {
+            // current_user: { full_name: 'Фамилия И.О.' }
+        }
+    },
+
+    methods: {
+        toDashboard() {
+            try {
+                router.visit('dashboard');
+            } catch (error) {
+                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
+            }
+        }
     },
 
     computed: {
-        current_user: () => usePage().props.current_user,
+        current_user: () => usePage().props.current_user.data,
     },
 };
 </script>
@@ -22,7 +41,8 @@ export default {
             <h3>СТПО</h3>
         </div>
 
-        <div class="user-info-container" v-if="current_user !== null">
+        <div class="user-info-container
+        cursor-pointer hover:brightness-75 active:brightness-50 select-none" v-if="current_user !== null" @click="toDashboard">
             <div class="user-logo">
                 <Ico type="faUser" />
             </div>
@@ -31,6 +51,7 @@ export default {
             </div>
         </div>
 
+        <Notifications />
         <Menu />
     </div>
 </template>
@@ -44,6 +65,7 @@ export default {
     display: flex
     align-items: center
     justify-content: space-between
+    gap: 15px
 
     color: $meny-color
     background: $meny-background

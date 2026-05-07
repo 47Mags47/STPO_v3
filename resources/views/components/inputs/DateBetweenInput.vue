@@ -1,24 +1,28 @@
 <script>
-import Datepicker from 'vue3-datepicker'
-import { ru } from 'date-fns/locale'
+import DatePicker from '../datepicker/DatePicker.vue';
 
 export default {
-  components: {
-    Datepicker
-  },
-  data() {
-    return {
-      pickedStartDate: new Date(),
-      pickedEndDate: new Date(),
-      locale: ru,
-      openState: { startPicker: false, endPicker: false }
+    components: {
+        DatePicker
+    },
+    props: {
+        useDayPicker: {
+            type: Boolean,
+            default: true,
+        },
+        useMonthPicker: {
+            type: Boolean,
+            default: true,
+        },
+        useYearPicker: {
+            type: Boolean,
+            default: true,
+        },
+        name: {
+            type: String,
+            default: ''
+        }
     }
-  },
-  computed: {
-    isValidRange() {
-        return this.pickedStartDate <= this.pickedEndDate
-    }
-  }
 }
 </script>
 
