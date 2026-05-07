@@ -34,7 +34,7 @@ export default {
                 label: 'На месяц',
             },
             {
-                type: 'bigFile',
+                type: 'bigFiles',
                 name: 'file_ids',
                 label: 'Файл',
             },

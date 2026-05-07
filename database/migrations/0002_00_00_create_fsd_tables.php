@@ -77,7 +77,7 @@ return new class extends Migration
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
 
-            $table->index(['SNILS', 'amount', 'file_id']);
+            $table->index(['file_id', 'SNILS', 'amount']);
         });
 
         Schema::create('fsd__transit_categories', function (Blueprint $table) {

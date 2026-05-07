@@ -64,8 +64,11 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             str_replace(['/', '\\'], '', PATTERNS('SNILS')),
         ]);
 
-        if (!preg_match('/' . $line_pattern . '/u', $line))
+        if (!preg_match('/' . $line_pattern . '/u', $line)) {
+            Log::driver('check')->info($line);
             return false;
+        }
+
 
         return true;
     }

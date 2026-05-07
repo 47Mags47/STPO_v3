@@ -27,18 +27,16 @@ class SFRFileController extends Controller
 
     public function store(SFRFileStoreRequest $request)
     {
-        foreach ($request->input('file_ids') as $uploadFileId) {
-            $uploadfile = UploadFile::whereKey($uploadFileId)->first();
+        $uploadfile = UploadFile::whereKey($request->input('upload_file_id'))->first();
 
-            $SFRFile = $uploadfile->moveToModel(SFRFile::class, [
-                'region_code' => substr($uploadfile->file->origin_name, 0, 3),
-                'sign_code'      => substr($uploadfile->file->origin_name, 3, 1),
-                'in_date'        => Carbon::create(substr(now()->format('YY'), 0, 3) . substr($uploadfile->file->origin_name, 4, 1), substr($uploadfile->file->origin_name, 5, 2)),
-                'npp_for_month'  => substr($uploadfile->file->origin_name, 7, 1),
-            ]);
+        $SFRFile = $uploadfile->moveToModel(SFRFile::class, [
+            'region_code'   => substr($uploadfile->file->origin_name, 0, 3),
+            'sign_code'     => substr($uploadfile->file->origin_name, 3, 1),
+            'in_date'       => Carbon::create(substr(now()->format('YY'), 0, 3) . substr($uploadfile->file->origin_name, 4, 1), substr($uploadfile->file->origin_name, 5, 2)),
+            'npp_for_month' => substr($uploadfile->file->origin_name, 7, 1),
+        ]);
 
-            ReadSFRFileJob::dispatch($SFRFile);
-        }
+        ReadSFRFileJob::dispatch($SFRFile);
 
         return redirect()->route('fsd.sfr-files.index')->with('succes', 'Запись успешно создана');
     }

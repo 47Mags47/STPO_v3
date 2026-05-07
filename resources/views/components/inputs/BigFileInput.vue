@@ -1,17 +1,17 @@
 <script>
 import BlueButton from '../buttons/BlueButton.vue';
-import RedButton from '../buttons/RedButton.vue';
-import DragAndDropZone from '../DragAndDropZone.vue';
 import Ico from '../Ico.vue';
+import ProgressBar from '../ProgressBar.vue';
 import UploadFile from '../UploadFile.vue';
+import StringInput from './StringInput.vue'
 
 export default {
     components: {
         Ico,
         BlueButton,
-        RedButton,
         UploadFile,
-        DragAndDropZone,
+        StringInput,
+        ProgressBar,
     },
     props: {
         name: {
@@ -20,100 +20,93 @@ export default {
     },
     data() {
         return {
-            files: {},
-            value: []
+            isUploading: false,
+            file: {},
+            serverConfig: {},
+            totalChunks: 1,
+            uploadedChunks: 0,
         }
     },
     methods: {
         addFileButtonClickHandler() {
             this.$refs.uploadInput.click()
         },
-        changeFileInputHandler(){
-            this.initFiles(this.$refs.uploadInput.files)
-        },
-        initFiles(files){
-            for (let i = 0; i < files.length; i++) {
-                this.files[files[i].name] = {
-                    name: files[i].name,
-                    status: 'upload',
-                    file: files[i],
-                }
-            }
-        },
-        deleteFileButtonClickHandler(file){
-            delete this.files[file.name]
-        },
-        clearFileListButtonClickHandler(){
-            this.files = {}
-            this.value = []
-        },
-        fileUploadedHandler(fileId){
-            this.value.push(fileId)
-        },
+        changeFileInputHandler() {
+            this.isUploading = false
+            this.uploadedChunks = 0
 
-        dropFilesHandler(files){
-            this.initFiles(files)
+            this.file = this.$refs.uploadInput.files[0]
+            this.serverHandshake()
+        },
+        async serverHandshake() {
+            try {
+                const response = await axios.post(route('upload.startUpload'), {
+                    origin_name: this.file.name,
+                    file_size: this.file.size
+                })
+
+                this.serverConfig = response.data.data
+
+                this.fileId = this.serverConfig.id
+                this.totalChunks = this.serverConfig.chunks.length
+
+
+                this.uploadFile()
+            } catch (error) { }
+        },
+        uploadFile() {
+            this.isUploading = true
+            let chunkSize = this.serverConfig.config.chunkSize
+
+            this.serverConfig.chunks.forEach(chunk => {
+                let chunkContent = this.file.slice((chunk.npp - 1) * chunkSize, chunk.npp * chunkSize)
+                this.uploadChunk(chunk.id, chunkContent)
+            });
+        },
+        uploadChunk(chunkId, content, attempt = 0) {
+            if (attempt == 3) {
+                return
+            }
+
+            axios.postForm(route('upload.writeChunk', { chunk: chunkId }), {
+                file: content
+            })
+                .then(() => {
+                    this.uploadedChunks = this.uploadedChunks + 1
+                })
+                .catch(() => {
+                    this.uploadChunk(chunkId, content, attempt + 1)
+                })
         }
-    }
+    },
 }
 </script>
 
 <template>
     <div class="big-file-input-container">
-        <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler" multiple>
-        <input v-for="(fileId, i) in value" type="hidden" :name="`${name}[${i}]`" :value="fileId">
-
-        <div class="file-list-container">
-            <UploadFile v-for="file in files"
-                :file="file.file"
-                :onFileUploaded="fileUploadedHandler"
-                :onDeleteFileButtonClick="deleteFileButtonClickHandler"
-            />
-        </div>
-
-        <DragAndDropZone :onDrop="dropFilesHandler" />
-
-        <div class="add-file-container">
-            <RedButton class="list-action-button clear-file-list-button" :onClick="clearFileListButtonClickHandler">
-                <span>Очистить</span>
-                <Ico type="faTrash" />
-            </RedButton>
-            <div class="empty-box"></div>
-            <BlueButton class="list-action-button add-file-button" :onClick="addFileButtonClickHandler">
-                <span>Добавить файлы</span>
-                <Ico type="faPaperclip" />
-            </BlueButton>
-        </div>
+        <input type="hidden" :name :value="serverConfig.id">
+        <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler">
+        <StringInput class="file-name-input" :value="file.name ?? ''" readonly />
+        <BlueButton class="add-file-button" :onClick="addFileButtonClickHandler">
+            <Ico type="faFile" />
+        </BlueButton>
+        <ProgressBar v-if="isUploading" :procentage="uploadedChunks / totalChunks" />
     </div>
 </template>
 
 <style lang="sass" scoped>
 .big-file-input-container
-    display: flex
-    flex-direction: column
-    gap: 10px
+    display: grid
+    grid-template-areas: 'A B' 'C C'
+    grid-template-columns: auto 30px
+    grid-template-rows: 30px 10px
+    gap: 5px
     .upload-input
         display: none
-    .file-list-container
-        display: flex
-        flex-direction: column
-        gap: 5px
-    .add-file-container
-        display: flex
-        .empty-box
-            width: 100%
-            height: 100%
-        .list-action-button
-            display: flex
-            gap: 5px
-            .ico-container
-                width: 20px
-                height: 20px
-                padding: 2px
-            &.clear-file-list-button
-                width: 250px
-            &.add-file-button
-                width: 450px
-
+    .file-name-input
+        grid-area: A
+    .add-file-button
+        grid-area: B
+        padding: 7px
 
 </style>
