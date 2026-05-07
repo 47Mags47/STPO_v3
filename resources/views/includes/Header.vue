@@ -29,7 +29,7 @@ export default {
     },
 
     computed: {
-        current_user: () => usePage().props.current_user.data,
+        // current_user: () => usePage().props.current_user.data,
     },
 };
 </script>
@@ -42,12 +42,12 @@ export default {
         </div>
 
         <div class="user-info-container
-        cursor-pointer hover:brightness-75 active:brightness-50 select-none" v-if="current_user !== null" @click="toDashboard">
+        cursor-pointer hover:brightness-75 active:brightness-50 select-none" @click="toDashboard">
             <div class="user-logo">
                 <Ico type="faUser" />
             </div>
             <div class="user-name">
-                <span>{{ current_user?.full_name }}</span>
+                <!-- <span>{{ current_user?.full_name }}</span> -->
             </div>
         </div>
 
