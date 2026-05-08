@@ -95,6 +95,9 @@
         - [ ] dev_components_CreateDashboard
             - [ ] dev_components_CreateDashBoard_CreateProfile
 
+        - [ ] dev_components_CreateChat
+            создать страницу чата
+
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
