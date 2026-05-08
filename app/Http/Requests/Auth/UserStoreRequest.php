@@ -22,7 +22,7 @@ class UserStoreRequest extends FormRequest
             'phone'             => ['nullable', 'string', 'regex:/\+7 \([0-9]{3}\) [0-9]{3} [0-9]{2}-[0-9]{2}/'],
             'phone_dob'         => ['nullable', 'string', 'max:10'],
             'login'             => ['required', 'string', 'min:2', 'max:255', 'unique:' . User::class . ',login'],
-            'email'             => ['required', 'email', 'unique:' . User::class . ',enail'],
+            'email'             => ['required', 'email', 'unique:' . User::class . ',email'],
             'password'          => ['required', 'string', 'min:4', 'max:255', 'confirmed'],
         ];
     }
