@@ -21,7 +21,6 @@ export default {
 <template>
     <ResourceTable
         caption="Федеральная социальная доплата (реестры СФР)"
-
         :hasCreateButton="true"
         :data="files.data"
         :meta="files.meta"
@@ -29,6 +28,10 @@ export default {
             {
                 'ico': 'faFile',
                 'onClick': (row) => router.visit(route('fsd.payment-files.index', {'sfrFile': row.id}))
+            },
+            {
+                'ico': 'faDownload',
+                'onClick': (row) => router.visit(route('fsd.sfr-files.show', {'sfr_file': row.id}))
             }
         ]"
         :collumns="[
@@ -59,6 +62,15 @@ export default {
                 type: 'date',
                 dataIndex: 'upload_at',
                 width: '100px'
+            },
+        ]"
+        :channels="[
+            {
+                name: 'sfr.fsd.sfr-file',
+                event: '.change',
+                onEvent: (e) => {
+                    router.reload({ only: ['files'] })
+                }
             }
         ]"
     />

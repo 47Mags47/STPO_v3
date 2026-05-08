@@ -5,6 +5,6 @@ export { default as List } from './List/List.vue'
 export { default as BlueButton } from './buttons/BlueButton.vue'
 export { default as RedButton } from './buttons/RedButton.vue'
 
-export { default as MessageNotification } from "./Notificaations/MessageNotification.vue";
-export { default as DownloadFileNotification } from "./Notificaations/DownloadFileNotification.vue";
+export { default as MessageNotification } from "./Notifications/MessageNotification.vue";
+export { default as DownloadFileNotification } from "./Notifications/DownloadFileNotification.vue";
 

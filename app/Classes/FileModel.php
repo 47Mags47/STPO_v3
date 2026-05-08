@@ -3,6 +3,7 @@
 namespace App\Classes;
 
 use App\Models\Base\File;
+use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -11,8 +12,8 @@ abstract class FileModel extends BaseModel
 {
     ### Настройки
     ##################################################
-    public string|null $StorageFileDisk = null;
-    public string|null $StorageFilePath = null;
+    public static string|null $StorageFileDisk = null;
+    public static string|null $StorageFilePath = null;
 
     public bool $createBase = true;
     public bool $createInStorage = true;
@@ -22,7 +23,7 @@ abstract class FileModel extends BaseModel
 
     public static function boot()
     {
-        parent::boot();
+        parent::boot(self::$StorageFileDisk);
 
         self::creating(function ($model) {
             // Создание базовой модели в БД
@@ -36,8 +37,8 @@ abstract class FileModel extends BaseModel
                     $originName = request()->input('origin_name');
 
                 $storageFile = File::factory()->create([
-                    'disk'          => $model->StorageFileDisk ?? 'local',
-                    'path'          => $model->StorageFilePath ?? '',
+                    'disk'          => $model::$StorageFileDisk ?? 'local',
+                    'path'          => $model::$StorageFilePath ?? '',
                     'name'          => Str::random(40),
                     'origin_name'   => $originName,
                 ]);
@@ -63,6 +64,14 @@ abstract class FileModel extends BaseModel
 
     ### Методы
     ##################################################
+    public static function getDisk(){
+        return self::$StorageFileDisk;
+    }
+
+    public static function getPath(){
+        return self::$StorageFilePath;
+    }
+
     public function getLocalPath()
     {
         return $this->file->path !== ''
@@ -85,6 +94,16 @@ abstract class FileModel extends BaseModel
         return Storage::disk($this->file->disk ?? 'local')->put($this->getLocalPath(), $content);
     }
 
+    public function setStatus(string $code): self
+    {
+        // HACK Добавить проверку на существование статуса с таким кодом
+        $this->file->update([
+            'status_id' => FileStatus::byCode($code)->id
+        ]);
+
+        return $this;
+    }
+
     public function move(?string $disk = 'local', ?string $path = '', ?string $name = null)
     {
         $newFileName = $name ?? $this->file->name;
@@ -98,6 +117,22 @@ abstract class FileModel extends BaseModel
         ]);
 
         return $result;
+    }
+
+    public function copy(?string $disk = 'local', ?string $path = '', ?string $name = null){
+        $name = $name ?? Str::random(40);
+
+        $from = $this->getFullPath();
+        $to = Storage::disk($disk)->path($path . '/' . $name);
+
+        copy($from, $to);
+
+        return File::create([
+            'disk' => $disk,
+            'path' => $path,
+            'name' => $name,
+            'origin_name' => $this->file->origin_name,
+        ]);
     }
 
     ### Связи

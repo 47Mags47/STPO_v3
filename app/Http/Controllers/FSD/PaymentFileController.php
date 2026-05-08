@@ -7,42 +7,47 @@ use App\Http\Requests\FSD\PaymentFileStoreRequest;
 use App\Jobs\FSD\ReadPaymentFileJob;
 use App\Models\Base\UploadFile;
 use App\Models\FSD\PaymentFile;
-use App\Models\FSD\SFRFile;
+use App\Models\FSD\PaymentType;
 use Inertia\Inertia;
 
 class PaymentFileController extends Controller
 {
-    public function index(SFRFile $sfrFile)
+    public function index()
     {
         return Inertia::render('fsd/payment-files/index', [
-            'files' => fn() => $sfrFile->paymentFiles->toResourceCollection(),
+            'files' => fn() => PaymentFile::getResource('created_at', 'desc'),
         ]);
     }
 
-    public function create(SFRFile $sfrFile)
+    public function create()
     {
         return Inertia::render('fsd/payment-files/create', [
-            'sfrFile' => fn() => $sfrFile->toResource(),
+            'types' => PaymentType::getResource(),
         ]);
     }
 
-    public function store(PaymentFileStoreRequest $request, SFRFile $sfrFile)
+    public function store(PaymentFileStoreRequest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->validated('upload_file_id'))->first();
-        $uploadfile->move('fsd', 'payment');
+        foreach ($request->input('file_ids') as $uploadFileId) {
+            $uploadfile = UploadFile::whereKey($uploadFileId)->first();
 
-        $paymentFile = PaymentFile::create([
-            'file_id'       => $uploadfile->file->id,
-            'sfr_file_id'   => $sfrFile->id,
+            if (PaymentFile::checkExist($uploadfile->file->origin_name, $request->input('type_id'), $request->input('in_month'))) {
+                $file_name = $uploadfile->file->origin_name;
+                return back()->withErrors([$file_name => 'Этот файл уже загружен']);
+            }
 
-            'date_start'    => $request->input('date_start'),
-            'date_end'      => $request->input('date_end'),
-        ]);
+            $paymentFile = $uploadfile->moveToModel(PaymentFile::class, $request->validated());
 
-        $uploadfile->delete();
+            ReadPaymentFileJob::dispatch($paymentFile)->onQueue('SFR-FSD-ReadPaymentFile');
+        }
 
-        ReadPaymentFileJob::dispatch($paymentFile);
+        return redirect()->route('fsd.payment-files.index')->with('succes', 'Запись успешно создана');
+    }
 
-        return redirect()->route('fsd.payment-files.index', ['sfrFile' => $sfrFile->id])->with('succes', 'Запись успешно создана');
+    public function destroy(PaymentFile $paymentFile)
+    {
+        $paymentFile->delete();
+
+        return back()->with('succes', 'Запись удалена');
     }
 }
