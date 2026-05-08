@@ -30,8 +30,8 @@ class SFRFile extends FileModel
         ];
     }
 
-    public string|null $StorageFileDisk = 'fsd';
-    public string|null $StorageFilePath = 'sfr';
+    public static string|null $StorageFileDisk = 'fsd';
+    public static string|null $StorageFilePath = 'sfr';
 
     ### Связи
     ##################################################
@@ -40,13 +40,35 @@ class SFRFile extends FileModel
         return $this->hasMany(Recipient::class, 'file_id');
     }
 
-    public function paymentFiles(): HasMany
+    public function payments()//: HasMany
     {
-        return $this->hasMany(PaymentFile::class, 'sfr_file_id');
+        $paymentTableName = Payment::getTableName();
+        $paymentFileTableName = PaymentFile::getTableName();
+
+        $periodStart = $this->recipients()->min('date_start');
+        $periodEnd = $this->recipients()->max('date_end');
+
+        return
+            $this
+                ->hasManyThrough(Payment::class, Recipient::class, 'file_id', 'SNILS', 'id', 'SNILS')
+                ->join($paymentFileTableName, $paymentTableName . '.file_id', '=', $paymentFileTableName . '.id')
+                ->whereBetween($paymentFileTableName . '.in_month', [$periodStart, $periodEnd]);
     }
 
-    public function payments(): HasManyThrough
+    public function transits()//:
     {
-        return $this->through('paymentFiles')->has('payments');
+        $recipientsTable = TransitRecipient::getTableName();
+        $categoriesTable = TransitCategory::getTableName();
+        $equivalentsTable = TransitEquivalent::getTableName();
+
+        $periodStart = $this->recipients()->min('date_start');
+        $periodEnd = $this->recipients()->max('date_end');
+
+        return $this
+            ->hasManyThrough(TransitRecipient::class, Recipient::class, 'file_id', 'SNILS', 'id', 'SNILS')
+            ->join($categoriesTable, $recipientsTable . '.wp_category_id', '=', $categoriesTable . '.wp_category_id')
+            ->join($equivalentsTable, $categoriesTable . '.id', '=', $equivalentsTable . '.category_id')
+            ->where($recipientsTable . '.date_start', '<', $periodEnd)
+            ->where($recipientsTable . '.date_end', '>', $periodStart);
     }
 }

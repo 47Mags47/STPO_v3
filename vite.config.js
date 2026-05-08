@@ -11,6 +11,7 @@ export default defineConfig({
         alias: {
             "@components":  "/resources/views/components",
             "@widjets":     "/resources/views/widjets",
+            "@layouts":     "/resources/views/layouts",
         },
     },
     plugins: [

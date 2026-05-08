@@ -1,7 +1,6 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
 import { ResourceTable } from "@components";
-import { h } from "vue";
 
 export default {
     components: {
@@ -18,6 +17,7 @@ export default {
         caption="Федеральная социальная доплата (реестры выплат)"
 
         :hasCreateButton="true"
+        :hasDeleteButton="true"
         :data="files.data"
         :meta="files.meta"
         :collumns="[
@@ -26,15 +26,26 @@ export default {
                 dataIndex: 'file.name',
             },
             {
-                title: 'Записей',
-                dataIndex: 'payments.count',
-                width: '100px',
-                position: 'center-right'
+                title: 'Наименование выплаты',
+                dataIndex: 'type.name',
+                width: '600px',
             },
             {
-                type: 'render',
-                // HACK Поправить формат вывода даты на xx.xx.xxxx
-                render: (row) => ({ component:  'span', props: { innerHTML: `${row.date_start} - ${row.date_end}`} })
+                title: 'Тип',
+                dataIndex: 'type.pay_code',
+                width: '50px',
+            },
+            // HACK выводить название месяца, а не дату
+            {
+                title: 'Месяц',
+                dataIndex: 'in_month',
+                width: '150px',
+            },
+            {
+                title: 'Записей',
+                dataIndex: 'payments.count',
+                width: '75px',
+                position: 'center-right'
             },
         ]"
     />

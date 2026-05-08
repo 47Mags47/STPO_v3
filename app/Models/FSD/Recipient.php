@@ -4,7 +4,6 @@ namespace App\Models\FSD;
 
 use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Recipient extends BaseModel
@@ -18,14 +17,10 @@ class Recipient extends BaseModel
     protected $table = 'fsd__recipients';
 
     protected $fillable = [
-        'division_code',
-        'first_name',
-        'last_name',
-        'middle_name',
+        'birth',
         'SNILS',
 
         'file_id',
-        'status_id',
 
         'date_start',
         'date_end',
@@ -41,13 +36,8 @@ class Recipient extends BaseModel
 
     ### Связи
     ##################################################
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(RecipientStatus::class, 'status_id');
-    }
-
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class, 'recipient_id');
+        return $this->hasMany(Payment::class, 'SNILS', 'SNILS');
     }
 }

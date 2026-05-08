@@ -16,29 +16,46 @@ class PaymentFile extends FileModel
     protected $table = 'fsd__payment_files';
 
     protected $fillable = [
-        'amount',
+        'in_month',
         'file_id',
-        'sfr_file_id',
-        'date_start',
-        'date_end'
+        'type_id'
     ];
 
-    public string|null $StorageFileDisk = 'fsd';
-    public string|null $StorageFilePath = 'payment';
+    public static string|null $StorageFileDisk = 'fsd';
+    public static string|null $StorageFilePath = 'payment';
+
+
+    protected function casts(): array
+    {
+        return [
+            'in_month' => 'date',
+        ];
+    }
 
     ### Методы
     ##################################################
-    //
+    public static function checkExist(string $origin_name, ?int $type_id = null, ?string $in_month = null){
+        $query = self::query();
+        $query->whereHas('file', fn($query) => $query->where('origin_name', $origin_name));
+
+        if($type_id !== null)
+            $query->where('type_id', $type_id);
+
+        if($in_month !== null)
+            $query->where('in_month', $in_month);
+
+        return $query->count() > 0;
+    }
 
     ### Связи
     ##################################################
-    public function SFRFile(): BelongsTo
-    {
-        return $this->belongsTo(SFRFile::class, 'sfr_file_id');
-    }
-
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'file_id');
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(PaymentType::class, 'type_id');
     }
 }

@@ -21,6 +21,8 @@ export default {
 
         PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
         Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
+
+        BigFilesInput:      defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
         DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
@@ -107,6 +109,7 @@ export default {
                 <CheckBox           v-if="input.type === 'checkbox'"        v-bind="prepareProps(input)" />
                 <FileInput          v-if="input.type === 'file'"            v-bind="prepareProps(input)" />
                 <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
+                <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
                 <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
                 <DateBetween        v-if="input.type === 'dateBetween'"     v-bind="prepareProps(input)" />

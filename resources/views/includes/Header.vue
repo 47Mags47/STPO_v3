@@ -27,7 +27,7 @@ export default {
     },
 
     computed: {
-        current_user: () => usePage().props.current_user.data,
+        // current_user: () => usePage().props.current_user.data,
     },
 };
 </script>
@@ -45,7 +45,7 @@ export default {
                 <Ico type="faUser" />
             </div>
             <div class="user-name">
-                <span>{{ current_user?.full_name }}</span>
+                <!-- <span>{{ current_user?.full_name }}</span> -->
             </div>
         </div>
 

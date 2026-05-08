@@ -22,7 +22,7 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.red-button
+.button.red-button
     background: $red-button-background
     &:hover, &.active
         background: $red-button-backgroun-hover

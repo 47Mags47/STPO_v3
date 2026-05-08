@@ -1,114 +1,11 @@
 <script>
-import ResourceForm from "../components/forms/ResourceForm.vue";
-// import Ico from "../components/Ico.vue";
-import Alert from "../components/Alert.vue";
-// import ContainerAlert from "../components/ContainerAlert.vue";
-import { DateTime } from "luxon";
-import DatePicker from "../components/datepicker/DatePicker.vue";
-import DateBetweenInput from "../components/inputs/DateBetweenInput.vue";
-
-import { router } from "@inertiajs/vue3";
 
 export default {
     components: {
-        ResourceForm,
-        DateBetweenInput,
-        Alert,
-        DatePicker,
-    },
-    data() {
-        return {
-            testdate: DateTime.now(),
-        }
-    },
-    methods: {
-        toDashboard(routeName) {
-            try {
-                router.visit(route(routeName));
-            } catch (error) {
-                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
-            }
-        }
-    },
+
+    }
 }
 </script>
 
 <template>
-    <button @click="toDashboard('dashboard')">route</button>
-    <!-- <DatePicker
-    name="123"
-    :useDayPicker="true"
-    :useMonthPicker="true"
-    :useYearPicker="true"
-    :value="'10.02.1024'"
-    /> -->
-
-    <!-- <button class="bg-red-400 cursor-pointer w-64 h-32" @click="test">click</button> -->
-
-
-    <!-- <button @click="console.log(errors)" class=" border bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> SHOW ERRS </button>
-    <button @click="errors.push({id: Date.now() + Math.random(), msg: 'Ошибка 4'})" class="boder bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer">
-        ADD ERR
-    </button>
-    <button @click="clearErrs" class="bg-sky-300 rounded w-1/3 h-1/12 cursor-pointer"> CLEAR ERRS </button>
-
-    <ContainerAlert :errors="errors"
-              @removeErrFromArray="removeErrFromArray"/> -->
-
-    <!-- <Alert msg="Тест большой ошибки раз два три четыре пять шесть семь восемь девять десять
-    одиннадцать двеннадцать треннадцать пятнадцать шестнадцать семнадцать 1 2 3 4 5 6 7 8 9 0 11 112 121 1231 12312
-    333333333333333333333333333333333333333333333333333
-    "/> -->
-
-    <!-- <Alert msg="Тест маленькой ошибки раз два три четыре пять" v-deleteOverlay=""/> -->
-
-    <!-- <DateBetweenInput
-        name="myDateBetween"
-        :useDayPicker="false"
-    /> -->
-    <!-- <ResourceForm
-    v-deleteOverlay=""
-    :inputs="[
-        {
-            type: 'string',
-            name: 'login',
-            label: 'Login'
-        },
-        {
-            type: 'string',
-            name: 'email',
-            label: 'Email'
-        },
-        {
-            type: 'dateBetween',
-            useDayPicker: false,
-            name: 'dateBetween',
-            label: 'Период'
-        },
-    ]"
-    /> -->
-
-    <!-- <MyDelete>
-        <ResourceForm
-    :inputs="[
-        {
-            type: 'string',
-            name: 'login',
-            label: 'Login'
-        },
-        {
-            type: 'string',
-            name: 'email',
-            label: 'Email'
-        },
-        {
-            type: 'dateBetween',
-            useDayPicker: true,
-            name: 'dateBetween',
-            label: 'Период'
-        },
-    ]"
-    />
-    </MyDelete> -->
-
 </template>
