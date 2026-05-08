@@ -8,6 +8,14 @@ Route::get('/test', fn() => Inertia::render('test'));
 Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
 Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login'])->name('auth.users.login');
+Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, 'store'])->name('auth.users.store');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('verification.success');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/confirmed', fn() => Inertia::render('emailConfirmed'))->middleware(['auth'])->name('verification.success');
 
 Route::name('auth.')->group(function () {
     Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update', 'show']);

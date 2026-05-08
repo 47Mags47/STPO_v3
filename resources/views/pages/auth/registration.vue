@@ -37,6 +37,13 @@ export default {
             this.updateFullName();
         },
     },
+    // computed: {
+    //     form() {
+    //         return ({
+    //             login: email
+    //         })
+    //     }
+    // }
 };
 </script>
 
@@ -111,7 +118,7 @@ export default {
             },
             {
                 type: 'password',
-                name: 'password_confirmnation',
+                name: 'password_confirmation',
                 label: 'Повторите пароль',
                 required: true,
             },

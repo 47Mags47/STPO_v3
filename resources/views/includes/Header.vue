@@ -12,6 +12,10 @@ export default {
         Notifications,
     },
 
+    data() {
+        return {}
+    },
+
     methods: {
         toDashboard() {
             router.visit(route('dashboard'));

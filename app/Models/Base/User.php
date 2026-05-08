@@ -11,11 +11,15 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract; // новое
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomVerifyEmail;
+
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
     use Authenticatable;
     use Authorizable;
@@ -25,9 +29,24 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use HasFactory;
     use RolesAndPermissions;
 
+    use Notifiable;
+
     ### Настройки
     ##################################################
     protected $table = 'base__users';
+
+    public function sendEmailVerificationNotification()
+    {
+        // Генерируем стандартную ссылку верификации
+        $url = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $this->getKey(), 'hash' => sha1($this->getEmailForVerification())]
+        );
+
+        // Отправляем кастомное уведомление
+        $this->notify(new CustomVerifyEmail($url));
+    }
 
     protected $fillable = [
         'first_name',

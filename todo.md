@@ -102,3 +102,7 @@
     - base
         - [ ] FixUploadBigFile
             Вынести процесс объеденения чанков (FileChunk) при загрузке больших фалов (UploadFile) в одельный процесс
+
+    - other
+        - [ ] FixEmailVerify
+            Перенести логику из web.php в контроллер
