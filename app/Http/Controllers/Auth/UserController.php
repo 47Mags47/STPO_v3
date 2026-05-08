@@ -38,4 +38,11 @@ class UserController extends Controller
 
         return redirect()->route('dashboard')->with('succes', 'Запись успешно обновлена');
     }
+
+    public function show(User $user)
+    {
+        return Inertia::render('base/users/show', [
+            'user' => fn() => $user->toResource(),
+        ]);
+    }
 }

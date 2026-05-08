@@ -3,19 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home');
-Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
-Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 Route::get('/test', fn() => Inertia::render('test'));
 
+Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
+Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
+Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 
 Route::name('auth.')->group(function () {
-    Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update']);
+    Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['create', 'store', 'edit', 'update', 'show']);
 });
 
 Route::name('upload.')->prefix('/upload')->group(function () {
-    Route::get('files/startUpload',                             [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
-    Route::post('files/{file}/chunks/{chunk}',                  [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
+    Route::post('files/startUpload',                            [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
+    Route::post('chunks/{chunk}',                               [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
 });
 
 Route::name('administrate.')->prefix('/administrate')->group(function () {
@@ -34,6 +34,8 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 });
 
 Route::name('fsd.')->prefix('/fsd')->group(function () {
-    Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store']);
-    Route::resource('/sfr-files/{sfrFile}/payment-files',       App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store']);
+    Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
+    Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
 });

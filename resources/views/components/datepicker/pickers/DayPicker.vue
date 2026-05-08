@@ -104,9 +104,9 @@ export default {
                 </span>
             </div>
 
-            <div class="day-picker-header-container">
+            <div class="day-picker-header-container flex items-center">
                 <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevMonth"/>
-                <span class="font-bold! text-2xl! cursor-pointer hover:text-white"
+                <span class="font-bold! h-fit! text-2xl! cursor-pointer hover:text-white"
                 @click="onSwitcherClickHandler">
                     {{ focusMonth }}
                 </span>

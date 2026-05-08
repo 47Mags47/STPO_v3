@@ -2,23 +2,20 @@
 
 namespace App\Models\FSD;
 
-use App\Classes\BaseModel;
-use App\Traits\HasCode;
+use App\Classes\FileModel;
 
-class RecipientStatus extends BaseModel
+class SFRFileResult extends FileModel
 {
-    use HasCode;
-
     ### Настройки
     ##################################################
-    public $timestamps = false;
-
-    protected $table = 'fsd__recipient_statuses';
+    protected $table = 'fsd__sfr_file_results';
 
     protected $fillable = [
-        'code',
-        'name',
+        'file_id'
     ];
+
+    public static string|null $StorageFileDisk = 'fsd';
+    public static string|null $StorageFilePath = 'output';
 
     ### Методы
     ##################################################

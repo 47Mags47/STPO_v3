@@ -5,6 +5,7 @@ namespace App\Models\Base;
 use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class File extends BaseModel
@@ -22,6 +23,7 @@ class File extends BaseModel
         'origin_name',
         'errors',
         'upload_at',
+        'status_id',
     ];
 
     protected function casts(): array
@@ -44,5 +46,12 @@ class File extends BaseModel
         return new Attribute(
             get: fn() => Storage::disk($this->disk)->has($this->path . '/' . $this->name),
         );
+    }
+
+    ### Связи
+    ##################################################
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(FileStatus::class, 'status_id');
     }
 }

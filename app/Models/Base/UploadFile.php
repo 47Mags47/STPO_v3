@@ -19,16 +19,34 @@ class UploadFile extends FileModel
         'totalChunks',
     ];
 
-    public string|null $StorageFileDisk = 'uploads';
-    public string|null $StorageFilePath = 'files';
+    public static string|null $StorageFileDisk = 'uploads';
+    public static string|null $StorageFilePath = 'files';
 
     public bool $deleteBase = false;
     public bool $deleteInStorage = false;
 
     ### Связи
     ##################################################
+    public function moveToModel(string $modelClass, array $attributes)
+    {
+        $this->move($modelClass::$StorageFileDisk, $modelClass::$StorageFilePath);
+
+        $model = $modelClass::create(array_merge(
+            $attributes,
+            [
+                'file_id' => $this->file->id
+            ]
+        ));
+
+        $this->delete();
+
+        return $model;
+    }
+
+    ### Связи
+    ##################################################
     public function chunks(): HasMany
     {
-        return $this->hasMany(FileChunk::class, 'total_file_id')->orderBy('npp');
+        return $this->hasMany(FileChunk::class, 'upload_file_id')->orderBy('npp');
     }
 }

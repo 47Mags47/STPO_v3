@@ -10,7 +10,7 @@ class SFRFileStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'upload_file_id' => ['required', 'exists:' . UploadFile::class . ',id']
+            'file_id'        => ['required', 'exists:' . UploadFile::class . ',id'],
         ];
     }
 }

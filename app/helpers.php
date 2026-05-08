@@ -51,3 +51,17 @@ if (! function_exists('return_bytes')) {
         return $number;
     }
 }
+
+if (! function_exists('PATTERNS')) {
+    function PATTERNS(string $pattern)
+    {
+        return [
+            'LAST_NAME'     => "/[а-яА-ЯёЁ -]{0,255}/",
+            'FIRST_NAME'    => "/[а-яА-ЯёЁ -]{0,255}/",
+            'MIDDLE_NAME'   => "/[а-яА-ЯёЁ -]{0,255}/",
+            'DOT_DATE'      => "/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/",
+            'FLOAT'         => "/[0-9]{1,6}\.[0-9]{2}/",
+            'SNILS'         => "/[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}/",
+        ][$pattern] ?? '//';
+    }
+}

@@ -67,8 +67,8 @@ export default {
                 </span>
             </div>
 
-            <div class="w-full flex justify-center items-center">
-                <span class="font-bold! text-2xl! cursor-pointer hover:text-white" @click="onSwitcherClickHandler"> месяцы </span>
+            <div class="w-full h-[25px] flex justify-center items-center">
+                <span class="font-bold! h-fit! text-2xl! cursor-pointer hover:text-white" @click="onSwitcherClickHandler"> месяцы </span>
             </div>
         </template>
 

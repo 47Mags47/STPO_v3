@@ -34,6 +34,16 @@
 
 - sfr ( Он же FSD ) ( СФР )
     - fsd   Федеральная Социальная Доплата
+        - [x] sfr_fsd_a1_FixPaymentFileResource
+            Исправить вывод кол-ва записей на странице payment-files/index
+
+        - [x] sfr_fsd_a2_FixUploadSfrFile
+            Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
+
+        - [ ] sfr_fsd_a3_AddUploadStatus
+            Добавить отображение статуса чтения SFRFile
+            Добавить отображение статуса чтения PaymentFile
+
         - [ ] CreateJobsAlert
             - [ ] Добавить прогресбар чтения FSDFile
             - [ ] Добавить прогресбар чтения PaymentFile
@@ -45,9 +55,13 @@
 
         - [x] sfr_fsd_a1_FixPaymentFileResource
             Исправить вывод кол-ва записей на странице payment-files/index
+
         - [ ] FixUploadSfrFile
             Исправить загрузку файлов от СФР (ошибка при загрузке больших файлов)
 
+        - [ ] AddErrorHandler
+            Добавить валидацию данных из загружаемого файла (SFRFile)
+            
 - dev ( прочее )
     - pusher ( он же websocket )
         - [x] dev_pusher_a1_InstallAndTest 
@@ -60,10 +74,10 @@
         - [ ] FixIcoButton
             Вынести класс 'ico-button' в отдельный компонент
 
-        - [ ] CreateDateInput
+        - [x] CreateDateInput
             Создать компонент DateInput
 
-        - [ ] CreateDateBetweenInput
+        - [x] CreateDateBetweenInput
             Создать компонент DateBetweenInput
         
         - [x] CreateDatePicker
@@ -76,8 +90,15 @@
             Ренейм ErrorPopUpQueue на ContainerAlert,
             Рефакт и улучшение кода в компонентах ErrorPopUpMsgm, ErrorPopUpMsgQueue
 
-        - [ ] dev_components_CreateNotification
+        - [x] dev_components_CreateNotification
+
+        - [ ] dev_components_CreateDashboard
+            - [ ] dev_components_CreateDashBoard_CreateProfile
 
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
+
+    - base
+        - [ ] FixUploadBigFile
+            Вынести процесс объеденения чанков (FileChunk) при загрузке больших фалов (UploadFile) в одельный процесс
