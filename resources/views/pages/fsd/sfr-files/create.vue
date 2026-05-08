@@ -16,7 +16,7 @@ export default {
         :inputs="[
             {
                 type: 'bigFile',
-                name: 'file_ids',
+                name: 'file_id',
                 label: 'Файл',
             },
         ]"

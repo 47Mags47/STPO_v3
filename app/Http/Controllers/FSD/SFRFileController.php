@@ -27,7 +27,7 @@ class SFRFileController extends Controller
 
     public function store(SFRFileStoreRequest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->input('upload_file_id'))->first();
+        $uploadfile = UploadFile::whereKey($request->input('file_id'))->first();
 
         $SFRFile = $uploadfile->moveToModel(SFRFile::class, [
             'region_code'   => substr($uploadfile->file->origin_name, 0, 3),
