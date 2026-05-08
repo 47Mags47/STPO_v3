@@ -43,7 +43,7 @@ export default {
 <template>
     <ResourceForm
         header="Регистрация"
-        :action="route('users.store')"
+        :action="route('auth.users.store')"
         :inputs="[
             {
                 type: 'string',

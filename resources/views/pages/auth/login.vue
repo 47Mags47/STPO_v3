@@ -35,7 +35,7 @@ export default {
         ]"
     >
         <template #footer>
-            <Link :href="route('users.create')"> Зарегистрироваться </Link>
+            <Link :href="route('auth.users.create')"> Зарегистрироваться </Link>
         </template>
     </ResourceForm>
 </template>

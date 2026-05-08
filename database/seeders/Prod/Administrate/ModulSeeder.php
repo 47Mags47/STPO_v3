@@ -13,43 +13,57 @@ class ModulSeeder extends Seeder
      */
     public function run(): void
     {
-        Modul::create([
+        Modul::firstOrCreate([
             'name' => 'Обращения',
             'route_name' => 'appeal.appeals.index',
         ]);
 
         // Administrate
-        Modul::create([
+        Modul::firstOrCreate([
             'name'          => 'Список групп модулей',
             'route_name'    => 'administrate.modul-groups.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
-        Modul::create([
+        Modul::firstOrCreate([
             'name'          => 'Список модулей',
             'route_name'    => 'administrate.moduls.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
-        Modul::create([
+        Modul::firstOrCreate([
             'name'          => 'Список организаций',
             'route_name'    => 'administrate.divisions.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
-        Modul::create([
+        Modul::firstOrCreate([
             'name'          => 'Список пользователей',
             'route_name'    => 'administrate.users.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
-        Modul::create([
+        Modul::firstOrCreate([
             'name'          => 'Список шаблонов',
             'route_name'    => 'administrate.templates.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
 
         // SFR
-        Modul::create([
+        Modul::firstOrCreate([
             'in_production' => true,
-            'name'          => 'Федеральныя социальная доплата',
+            'name'          => 'ФСД СФР',
             'route_name'    => 'fsd.sfr-files.index',
+            'group_id'      => ModulGroup::byCode('SFR')->id,
+        ]);
+
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'ФСД Выплаты',
+            'route_name'    => 'fsd.payment-files.index',
+            'group_id'      => ModulGroup::byCode('SFR')->id,
+        ]);
+
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'ФСД Проезд',
+            'route_name'    => 'fsd.transit-files.index',
             'group_id'      => ModulGroup::byCode('SFR')->id,
         ]);
     }

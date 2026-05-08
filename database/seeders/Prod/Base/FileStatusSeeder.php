@@ -12,10 +12,10 @@ class FileStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        FileStatus::create(['code' => 'upload',    'name' => 'Загружается']);
-        FileStatus::create(['code' => 'uploaded',  'name' => 'Загружен']);
+        FileStatus::firstOrCreate(['code' => 'upload',    'name' => 'Загружается']);
+        FileStatus::firstOrCreate(['code' => 'uploaded',  'name' => 'Загружен']);
 
-        FileStatus::create(['code' => 'read',      'name' => 'Читается']);
-        FileStatus::create(['code' => 'readed',    'name' => 'Считан']);
+        FileStatus::firstOrCreate(['code' => 'read',      'name' => 'Читается']);
+        FileStatus::firstOrCreate(['code' => 'readed',    'name' => 'Считан']);
     }
 }

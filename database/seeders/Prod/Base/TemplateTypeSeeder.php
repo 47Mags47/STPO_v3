@@ -12,6 +12,6 @@ class TemplateTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        TemplateType::create(['code' => 'test',   'name' => 'Тестовый шаблон']);
+        TemplateType::firstOrCreate(['code' => 'test',   'name' => 'Тестовый шаблон']);
     }
 }
