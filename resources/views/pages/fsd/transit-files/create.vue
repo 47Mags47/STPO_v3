@@ -26,7 +26,7 @@ export default {
             },
             {
                 type: 'bigFile',
-                name: 'upload_file_id',
+                name: 'file_id',
                 label: 'Файл',
             },
         ]"
