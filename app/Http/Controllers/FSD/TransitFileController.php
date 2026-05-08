@@ -32,7 +32,7 @@ class TransitFileController extends Controller
             'date_end' => $request->date_end,
         ]);
 
-        ReadTransitFileJob::dispatch($transitFile);
+        ReadTransitFileJob::dispatch($transitFile)->onQueue('SFR-FSD-ReadTransitFile');
 
         return redirect()->route('fsd.transit-files.index')->with('succes', 'Запись успешно создана');
     }
