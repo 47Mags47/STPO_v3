@@ -1,14 +1,12 @@
 <script>
 import { router } from "@inertiajs/vue3";
 
-import AuthLayout from "./AuthLayout.vue";
 import DashNavigation from "../components/dashboard/navigation/DashNavigation.vue";
 
 import Ico from "../components/Ico.vue";
 
 export default {
     components: {
-        AuthLayout,
         DashNavigation,
         Ico
     },
@@ -41,28 +39,26 @@ export default {
 </script>
 
 <template>
-    <AuthLayout>
-        <div class="size-full flex flex-col ">
-            <DashNavigation />
+    <div class="size-full flex flex-col ">
+        <DashNavigation />
 
-            <div v-if="isLoading" class="size-full flex justify-center items-center">
-                <div class="size-[128px] animate-spin">
-                    <Ico type="faCircleNotch" class="text-blue-300"/>
-                </div>
+        <div v-if="isLoading" class="size-full flex justify-center items-center">
+            <div class="size-[128px] animate-spin">
+                <Ico type="faCircleNotch" class="text-blue-300"/>
             </div>
-
-            <div v-else class="size-full">
-                <div class="size-full">
-                    <slot name="default" />
-                    <!-- <slot name="main" />
-                    <slot name="userdata" />
-                    <slot name="administrate" />
-                    <slot name="settings" /> -->
-                </div>
-            </div>
-
         </div>
-    </AuthLayout>
+
+        <div v-else class="size-full">
+            <div class="size-full">
+                <slot name="default" />
+                <!-- <slot name="main" />
+                <slot name="userdata" />
+                <slot name="administrate" />
+                <slot name="settings" /> -->
+            </div>
+        </div>
+
+    </div>
 </template>
 
 <style lang="sass">
