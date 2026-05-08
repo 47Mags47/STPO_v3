@@ -18,16 +18,12 @@ export default {
 
     methods: {
         toDashboard() {
-            try {
-                router.visit('dashboard');
-            } catch (error) {
-                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
-            }
+            router.visit(route('dashboard'));
         }
     },
 
     computed: {
-        // current_user: () => usePage().props.current_user.data,
+        current_user: () => usePage().props.current_user?.data,
     },
 };
 </script>
@@ -39,17 +35,16 @@ export default {
             <h3>СТПО</h3>
         </div>
 
-        <div class="user-info-container
-        cursor-pointer hover:brightness-75 active:brightness-50 select-none" @click="toDashboard">
+        <div class="user-info-container" v-if="current_user" @click="toDashboard">
             <div class="user-logo">
                 <Ico type="faUser" />
             </div>
             <div class="user-name">
-                <!-- <span>{{ current_user?.full_name }}</span> -->
+                <span>{{ current_user?.full_name }}</span>
             </div>
         </div>
 
-        <Notifications />
+        <Notifications v-if="current_user"/>
         <Menu />
     </div>
 </template>
@@ -84,6 +79,13 @@ export default {
         padding: 7px 10px
         border: 2px solid white
         border-radius: 7px
+
+        cursor: pointer
+
+        transition: .5s
+        &:hover
+            color: #ccc
+            border: 2px solid #ccc
         .user-name
             font-size: 1.2rem
             font-weight: bold
