@@ -13,9 +13,7 @@ export default {
     },
 
     data() {
-        return {
-            // current_user: { full_name: 'Фамилия И.О.' }
-        }
+        return {}
     },
 
     methods: {
@@ -42,7 +40,7 @@ export default {
         </div>
 
         <div class="user-info-container
-        cursor-pointer hover:brightness-75 active:brightness-50 select-none" v-if="current_user !== null" @click="toDashboard">
+        cursor-pointer hover:brightness-75 active:brightness-50 select-none" @click="toDashboard">
             <div class="user-logo">
                 <Ico type="faUser" />
             </div>
