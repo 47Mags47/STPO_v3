@@ -56,12 +56,38 @@ if (! function_exists('PATTERNS')) {
     function PATTERNS(string $pattern)
     {
         return [
-            'LAST_NAME'     => "/[а-яА-ЯёЁ -]{0,255}/",
-            'FIRST_NAME'    => "/[а-яА-ЯёЁ -]{0,255}/",
-            'MIDDLE_NAME'   => "/[а-яА-ЯёЁ -]{0,255}/",
-            'DOT_DATE'      => "/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/",
-            'FLOAT'         => "/[0-9]{1,6}\.[0-9]{2}/",
-            'SNILS'         => "/[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}/",
+            'CSV_SEPARATOR' => "[.,; ]",
+            'LAST_NAME'     => "[а-яА-ЯёЁ -]{0,255}",
+            'FIRST_NAME'    => "[а-яА-ЯёЁ -]{0,255}",
+            'MIDDLE_NAME'   => "[а-яА-ЯёЁ -]{0,255}",
+            'DOT_DATE'      => "[0-9]{2}\.[0-9]{2}\.[0-9]{4}",
+            'FLOAT'         => "[0-9]{1,6}\.[0-9]{2}",
+            'SNILS'         => "[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}",
         ][$pattern] ?? '//';
+    }
+}
+
+if (! function_exists('getCSVSeparator')) {
+    function getCSVSeparator(string $line)
+    {
+        $line = trim($line);
+
+        if (count(str_getcsv($line, ';')) > 1)
+            return ';';
+
+        if (count(str_getcsv($line, '.')) > 1)
+            return '.';
+
+        if (count(str_getcsv($line, ',')) > 1)
+            return ',';
+
+        return false;
+    }
+}
+
+if (! function_exists('clearString')) {
+    function clearString(string $string)
+    {
+        return str_replace(["\r\n", "\r", "\n"], '', trim($string));
     }
 }

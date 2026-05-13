@@ -44,6 +44,7 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 Route::name('fsd.')->prefix('/fsd')->group(function () {
     Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('/payment-recipients',                      App\Http\Controllers\FSD\PaymentRecipientController::class)->only(['index']);
     Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
     Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
 });

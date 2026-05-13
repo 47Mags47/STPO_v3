@@ -28,12 +28,20 @@ return new class extends Migration
             $table->string('path');
             $table->string('name');
             $table->string('origin_name');
-            $table->json('errors')->default(null);
 
             $table->foreignId('upload_at')->nullable()->index();
             $table->foreignId('status_id')->nullable()->constrained(FileStatus::getTableName());
 
             $table->timestamps();
+        });
+
+        Schema::create('base__file_errors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('file_id')
+                ->constrained(File::getTableName())
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->string('error');
         });
 
         Schema::create('base__file_uploads', function (Blueprint $table) {

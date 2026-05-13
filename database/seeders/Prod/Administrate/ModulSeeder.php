@@ -62,6 +62,13 @@ class ModulSeeder extends Seeder
 
         Modul::firstOrCreate([
             'in_production' => true,
+            'name'          => 'ФСД получатели выплат',
+            'route_name'    => 'fsd.payment-recipients.index',
+            'group_id'      => ModulGroup::byCode('SFR')->id,
+        ]);
+
+        Modul::firstOrCreate([
+            'in_production' => true,
             'name'          => 'ФСД Проезд',
             'route_name'    => 'fsd.transit-files.index',
             'group_id'      => ModulGroup::byCode('SFR')->id,

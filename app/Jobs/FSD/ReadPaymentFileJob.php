@@ -28,8 +28,20 @@ class ReadPaymentFileJob implements ShouldQueue
         $lines = [];
         $jobs = [];
         while (!feof($file)) {
+            $line = fgets($file);
+
+            if (strlen(trim($line)) == 0)
+                continue;
+
+            if(preg_match("/^[а-яА-Я].*$/", mb_convert_encoding($line, 'UTF-8', 'CP-866')) === 0){
+                $this->paymentFile->addError('Неверная кодировка'. $line);
+
+                continue;
+            }
+
             $count++;
-            $lines[] = mb_convert_encoding(fgets($file), 'UTF-8', 'CP-866');
+
+            $lines[] = mb_convert_encoding($line, 'UTF-8', 'CP-866');
 
             if ($count >= $this::CHUNK_SIZE) {
                 $jobs[] = new ReadPaymentFileChunkJob($this->paymentFile, $lines);

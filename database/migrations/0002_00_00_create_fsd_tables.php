@@ -72,8 +72,12 @@ return new class extends Migration
         Schema::create('fsd__payments', function (Blueprint $table) {
             $table->id();
 
-            $table->decimal('amount', 8, 2);
-            $table->string('SNILS');
+            $table->decimal('amount', 8, 2)->nullable()->default(null);
+            $table->string('SNILS')->nullable()->default(null);
+
+            $table->string('first_name')->nullable()->default(null);
+            $table->string('last_name')->nullable()->default(null);
+            $table->string('middle_name')->nullable()->default(null);
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
 

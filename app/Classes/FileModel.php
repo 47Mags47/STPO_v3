@@ -135,6 +135,13 @@ abstract class FileModel extends BaseModel
         ]);
     }
 
+    public function addError(string $error)
+    {
+        $this->file->addError($error);
+
+        return $this;
+    }
+
     ### Связи
     ##################################################
     public function file(): BelongsTo
