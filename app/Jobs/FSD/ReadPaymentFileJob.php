@@ -24,6 +24,7 @@ class ReadPaymentFileJob implements ShouldQueue
 
         $file = fopen($this->paymentFile->getFullPath(), 'r');
 
+        $isFirstLine = true;
         $count = 0;
         $lines = [];
         $jobs = [];
@@ -33,14 +34,17 @@ class ReadPaymentFileJob implements ShouldQueue
             if (strlen(trim($line)) == 0)
                 continue;
 
-            if(preg_match("/^[а-яА-Я].*$/", mb_convert_encoding($line, 'UTF-8', 'CP-866')) === 0){
-                $this->paymentFile->addError('Неверная кодировка'. $line);
-
-                continue;
+            // Проверка кодировки документа
+            if($isFirstLine){
+                if(preg_match("/^[а-яА-Я ].*$/", clearString(mb_convert_encoding($line, 'UTF-8', 'CP-866'))) === 0){
+                    $this->paymentFile->addError('Неверная кодировка файла (ошибка первой строки)');
+                    break;
+                }else{
+                    $isFirstLine = false;
+                }
             }
 
             $count++;
-
             $lines[] = mb_convert_encoding($line, 'UTF-8', 'CP-866');
 
             if ($count >= $this::CHUNK_SIZE) {
