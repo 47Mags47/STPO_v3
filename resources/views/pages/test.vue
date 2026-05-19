@@ -1,11 +1,9 @@
 <script>
-
 export default {
-    components: {
-
-    }
+    components: {}
 }
 </script>
 
 <template>
 </template>
+
