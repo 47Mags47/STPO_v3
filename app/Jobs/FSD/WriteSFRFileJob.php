@@ -15,6 +15,8 @@ class WriteSFRFileJob implements ShouldQueue
 {
     use Queueable;
 
+    public $timeout = 600;
+
     private SFRFile $fromFile;
     private $fromFileCursor;
     private SFRFileResult $toFile;
