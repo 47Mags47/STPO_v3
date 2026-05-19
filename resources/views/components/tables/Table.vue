@@ -18,6 +18,12 @@ export default {
                 </h3>
             </div>
 
+            <div class="filters">
+                <form method="GET" action>
+                    <slot name="filters"></slot>
+                </form>
+            </div>
+
             <div class="toolbar" v-if="'toolbar' in $slots">
                 <slot name="toolbar"></slot>
             </div>
@@ -63,6 +69,12 @@ export default {
             font-weight: 600
             color: #1f2937
             line-height: 1.3
+        .filters form
+            border: 1px solid
+            padding: 10px 0px
+            display: flex
+            align-items: center
+            gap: 24px
         .toolbar
             display: flex
             justify-content: space-between

@@ -7,12 +7,16 @@ import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 import { h } from 'vue';
 
+import FormItem from '../../FormItem.vue';
+
 export default {
     components: {
         Table,
         TableRow,
         TableTh,
         TableTd,
+
+        FormItem,
 
         CreateButton:   defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
         EditButton:     defineAsyncComponent(() => import("../buttons/EditButton.vue")),
@@ -22,6 +26,13 @@ export default {
         Ico:            defineAsyncComponent(() => import("../../Ico.vue")),
         Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
         BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+
+        CheckBox:       defineAsyncComponent(() => import("../../inputs/CheckBox.vue")),
+        StringInput:    defineAsyncComponent(() => import('../../inputs/StringInput.vue')),
+        Select:         defineAsyncComponent(() => import('../../inputs/Select.vue')),
+        DateInput:      defineAsyncComponent(() => import('../../inputs/DateInput.vue')),
+        DateBetween:    defineAsyncComponent(() => import('../../inputs/DateBetweenInput.vue')),
+        DatePicker:     defineAsyncComponent(() => import('../../datepicker/DatePicker.vue')),
     },
 
     props: {
@@ -86,6 +97,35 @@ export default {
             type: Object,
             default: () => ({ current_page: 1, last_page: 1 })
         },
+        filters: {
+            type: Array,
+            default: () => [],
+            validator(value) {
+                let hasInvalidType = value.filter((input) => {
+                    return ![
+                        'string',
+                        'text',
+                        'select',
+                        'checkbox',
+                        'date',
+                        'datepicker',
+                        'dateBetween'
+                    ].includes(input.type);
+                });
+
+                if (hasInvalidType.length !== 0) {
+                    hasInvalidType.forEach((input) => {
+                        throw new Error(
+                            `Недействительный тип "${input.type}"!`,
+                        );
+                    });
+
+                    return false;
+                }
+
+                return true;
+            },
+        },
 
         //Other
         rowLinks: {
@@ -100,6 +140,14 @@ export default {
     },
 
     methods: {
+        prepareProps(filter) {
+            const { type, label, ...rest } = filter;
+            return rest;
+        },
+        // getFormItemOrientation(filter) {
+        //     if (filter.type === "checkbox") return "horizontal-reverse";
+        // },
+
         // Handlers
         createButtonClickHandler(e) {
             this.onCreateButtonClick(e);
@@ -172,6 +220,25 @@ export default {
     <Table class="resource-table">
         <template #colgroup>
             <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+        </template>
+
+        <template #filters>
+            <template v-for="filter in filters">
+                <FormItem
+                :name="filter.name"
+                :label="filter.label"
+                :for="filter.name"
+                :orientation="{
+                    'checkbox'  : 'horizontal-reverse',
+                }[filter.type] ?? 'vertical'">
+                    <CheckBox           v-if="filter.type === 'checkbox'"       v-bind="prepareProps(filter)" />
+                    <StringInput        v-if="filter.type === 'string'"         v-bind="prepareProps(filter)" />
+                    <Select             v-if="filter.type === 'select'"         v-bind="prepareProps(filter)" />
+                    <DateInput          v-if="filter.type === 'date'"          v-bind="prepareProps(filter)" />
+                    <DatePicker         v-if="filter.type === 'datePicker'"    v-bind="prepareProps(filter)" />
+                    <DateBetween        v-if="filter.type === 'dateBetween'"   v-bind="prepareProps(filter)" />
+                </FormItem>
+            </template>
         </template>
 
         <template #toolbar>
