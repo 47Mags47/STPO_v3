@@ -29,8 +29,8 @@ export default {
 <template>
 
     <div
-    class="flex justify-between items-center w-full py-1! h-(--input-height)">
-        <div class="flex gap-4 items-center w-fit">
+    class="flex justify-between items-center w-full gap-2 py-1! h-(--input-height)">
+        <div class="flex gap-3 items-center w-fit">
             <span> С </span>
             <DatePicker
             :name="`${name}[dateStart]`"
@@ -39,9 +39,7 @@ export default {
             :useYearPicker/>
         </div>
 
-        <div class="h-full w-1 bg-black"></div>
-
-        <div class="flex gap-4 items-center w-fit">
+        <div class="flex gap-3 items-center w-fit">
             <span> ПО </span>
             <DatePicker
             :name="`${name}[dateEnd]`"
