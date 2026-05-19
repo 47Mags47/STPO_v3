@@ -84,11 +84,11 @@ export default {
                 label: 'datepicker',
                 name: 'filter5'
             },
-            {
-                type: 'dateBetween',
-                label: 'select',
-                name: 'filter3'
-            },
+            // {
+            //     type: 'dateBetween',
+            //     label: 'select',
+            //     name: 'filter3'
+            // },
         ]"
         :channels="[
             {
