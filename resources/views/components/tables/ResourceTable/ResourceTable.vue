@@ -140,8 +140,12 @@ export default {
     },
 
     methods: {
-        prepareProps(filter) {
+        preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
+
+            rest.name = `filters[${rest.name}]`
+            console.log(rest);
+
             return rest;
         },
         // getFormItemOrientation(filter) {
@@ -223,23 +227,33 @@ export default {
         </template>
 
         <template #filters>
-            <template v-for="filter in filters">
-                <FormItem
+            <div class="table-filters">
+                <div
+                v-for="filter in filters"
+                class="filter-item">
+                    <FormItem
                     :name="filter.name"
                     :label="filter.label"
                     :for="filter.name"
                     :orientation="{
-                        'checkbox'  : 'horizontal-reverse',
-                    }[filter.type] ?? 'vertical'"
-                >
-                    <CheckBox           v-if="filter.type === 'checkbox'"       v-bind="prepareProps(filter)" />
-                    <StringInput        v-if="filter.type === 'string'"         v-bind="prepareProps(filter)" />
-                    <Select             v-if="filter.type === 'select'"         v-bind="prepareProps(filter)" />
-                    <DateInput          v-if="filter.type  === 'date'"          v-bind="prepareProps(filter)" />
-                    <DatePicker         v-if="filter.type  === 'datepicker'"    v-bind="prepareProps(filter)" />
-                    <DateBetween        v-if="filter.type  === 'datebetween'"   v-bind="prepareProps(filter)" />
-                </FormItem>
-            </template>
+                        checkbox: 'horizontal-reverse',
+                    }[filter.type] ?? 'vertical'">
+                        <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
+                        <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
+                        <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
+                        <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
+                        <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
+                        <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
+                    </FormItem>
+                </div>
+
+                <button class="filters-btn">
+                    Сбросить
+                </button>
+                <button class="filters-btn">
+                    Применить
+                </button>
+            </div>
         </template>
 
         <template #toolbar>
@@ -309,6 +323,39 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
+    :deep(.table-filters)
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        gap: 12px
+
+    :deep(.filter-item)
+        display: flex
+        align-items: center
+
+        padding: 14px
+        border: 1px solid #e5e7eb
+        border-radius: 14px
+        background: #fff
+        transition: .2s ease
+
+        &:hover
+            border-color: #cbd5e1
+            box-shadow: 0 4px 14px rgba(0,0,0,.06)
+
+    :deep(.filters-btn)
+        height: fit-content
+        padding: 12px 18px
+        border-radius: 12px
+        background: $blue-button-background
+        color: white
+        align-self: flex-end
+        transition: .2s ease
+
+        &:hover
+            background: $blue-button-backgroun-hover
+            cursor: pointer
+
     :deep()
         .table-header
             padding: 0 15px

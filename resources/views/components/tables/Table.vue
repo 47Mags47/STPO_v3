@@ -70,11 +70,12 @@ export default {
             color: #1f2937
             line-height: 1.3
         .filters form
-            border: 1px solid
+            // border: 1px solid
             padding: 10px 0px
             display: flex
+            flex-wrap: wrap
             align-items: center
-            gap: 24px
+            gap: 32px
         .toolbar
             display: flex
             justify-content: space-between

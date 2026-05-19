@@ -62,32 +62,164 @@ export default {
             {
                 type: 'checkbox',
                 label: 'checkbox',
-                name: 'filter1'
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
             },
             {
                 type: 'string',
                 label: 'string',
-                name: 'filter2'
+                name: 'string'
             },
             {
                 type: 'select',
                 label: 'select',
-                name: 'filter3'
+                name: 'select',
+                options: {
+                    data: [
+                        {
+                            label: 'labl1',
+                            value: 'val1',
+                        },
+                        {
+                            label: 'labl1',
+                            value: 'val1',
+                        },
+                        {
+                            label: 'labl1',
+                            value: 'val1',
+                        },
+                    ]
+                }
             },
             {
                 type: 'date',
                 label: 'date',
-                name: 'filter4'
+                name: 'date'
             },
             {
                 type: 'datepicker',
                 label: 'datepicker',
-                name: 'filter5'
+                name: 'datepicker'
             },
             {
-                type: 'datebetween',
-                label: 'select',
-                name: 'filter3'
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
             },
         ]"
         :channels="[
