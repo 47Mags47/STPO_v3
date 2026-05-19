@@ -3,16 +3,19 @@
 </script>
 
 <template>
-    <div class="size-full flex flex-col drop-shadow-lg">
-        <header class="h-[64px] bg-(--meny-background) w-full flex items-center gap-3 px-4! py-2!">
+    <div class="size-full flex flex-col drop-shadow-lg overflow-hidden">
+        <header v-if="$slots.header"
+        class="h-[40px] bg-(--meny-background) w-full flex items-center gap-3 px-4! py-2! shrink-0">
             <slot name="header"/>
         </header>
 
-        <main id="messagesContainer" class="grow w-full flex bg-white flex-col p-4! custom-scrollbar">
+        <main id="messagesContainer"
+        class=" w-full flex bg-white flex-col-reverse px-4! pb-4! custom-scrollbar min-h-0 h-full">
             <slot name="content" />
         </main>
 
-        <footer class="min-h-[124px] bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.08)] w-full flex flex-col justify-center px-10! py-10!">
+        <footer
+        class="relative h-[76px] w-full bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.08)] flex gap-3 justify-center px-4! py-4!">
             <slot name="footer" />
         </footer>
     </div>
