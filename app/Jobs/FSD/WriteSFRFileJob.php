@@ -32,6 +32,7 @@ class WriteSFRFileJob implements ShouldQueue
 
     public function handle(): void
     {
+        waitDisabledFile($this->sfrFile);
 
         $this->fromFile = $this->sfrFile;
         $this->fromFileCursor = fopen($this->fromFile->getFullPath(), 'r');
@@ -70,12 +71,6 @@ class WriteSFRFileJob implements ShouldQueue
                 $snils = mb_substr($recipientLine, 1, 14);
                 $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
 
-                // Проверяем, что снилс есть хотя бы в одном списке
-                if (!$transitsGroupBySnils->has($snils) and !$paymentsGroupBySnils->has($snils)) {
-                    $this->writeDefault($month, $birth);
-                    continue;
-                }
-
                 // Пишем выплаты
                 if ($paymentsGroupBySnils->has($snils))
                     foreach ($paymentsGroupBySnils[$snils] as $payment) {
@@ -90,6 +85,8 @@ class WriteSFRFileJob implements ShouldQueue
                             $this->writeTransit($month, $transit);
                         }
                     }
+                else
+                    $this->writeDefault($month, $birth);
             }
         }
 
