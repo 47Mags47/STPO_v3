@@ -74,7 +74,7 @@ class WriteSFRFileJob implements ShouldQueue
                 // Пишем выплаты
                 if ($paymentsGroupBySnils->has($snils))
                     foreach ($paymentsGroupBySnils[$snils] as $payment) {
-                        if ($payment->paymentFile->in_month->between($month->startOfMonth(), $month->endOfMonth()))
+                        if ($payment->paymentFile->in_month->between($month->startOfMonth(), $month->endOfMonth()) or $payment->paymentFile->in_month == $month->startOfMonth())
                             $this->writePayment($payment);
                     }
 
