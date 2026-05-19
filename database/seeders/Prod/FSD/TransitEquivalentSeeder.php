@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class TransitEquivalentSeeder extends Seeder
 {
-    public function getCategoryId($category)
+    public function getCategoryId(?int $category)
     {
         return TransitCategory::where('wp_category_id', $category)->get()->first()->id;
     }

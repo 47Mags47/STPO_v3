@@ -48,6 +48,7 @@ export default {
                         'checkbox',
                         'file',
                         'bigFile',
+                        'bigFiles',
                         'date',
                         'datePicker',
                         'dateBetween',

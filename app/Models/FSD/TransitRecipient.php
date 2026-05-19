@@ -30,7 +30,7 @@ class TransitRecipient extends BaseModel
 
     ### Связи
     ##################################################
-    public function file(): BelongsTo
+    public function transitFile(): BelongsTo
     {
         return $this->belongsTo(TransitFile::class, 'file_id');
     }

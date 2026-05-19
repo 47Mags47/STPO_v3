@@ -10,8 +10,9 @@ class TransitFileStoreReqouest extends FormRequest
     public function rules(): array
     {
         return [
-            'file_ids'          => ['required', 'array'],
-            'file_ids.*'        => ['exists:' . UploadFile::class . ',id'],
+            'file_id'       => ['required', 'exists:' . UploadFile::class . ',id'],
+            'date_start'    => ['required', 'date', 'after:date_and'],
+            'date_end'      => ['required', 'date', 'after:date_start'],
         ];
     }
 }

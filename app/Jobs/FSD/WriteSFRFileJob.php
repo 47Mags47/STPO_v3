@@ -6,6 +6,7 @@ use App\Models\FSD\Payment;
 use App\Models\FSD\SFRFile;
 use App\Models\FSD\SFRFileResult;
 use App\Models\FSD\TransitCategory;
+use App\Models\FSD\TransitRecipient;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
@@ -13,10 +14,6 @@ use Illuminate\Support\Carbon;
 class WriteSFRFileJob implements ShouldQueue
 {
     use Queueable;
-
-    public $timeout = 300;
-
-    private $paymentsGroupBySnils;
 
     private SFRFile $fromFile;
     private $fromFileCursor;
@@ -26,10 +23,14 @@ class WriteSFRFileJob implements ShouldQueue
     private float $defaultEquivalent;
 
 
-    public function __construct(public SFRFile $sfrFile) {}
+    public function __construct(public SFRFile $sfrFile)
+    {
+        $this->onQueue('SFR-FSD-WriteSFRFile');
+    }
 
     public function handle(): void
     {
+
         $this->fromFile = $this->sfrFile;
         $this->fromFileCursor = fopen($this->fromFile->getFullPath(), 'r');
 
@@ -39,8 +40,17 @@ class WriteSFRFileJob implements ShouldQueue
         $this->defaultEquivalent = TransitCategory::where('wp_category_id', null)->get()->first()
             ->equivalent->equivalent;
 
-        $paymentsGroupBySnils = $this->sfrFile->payments->groupBy('SNILS');
-        $transitsGroupBySnils = $this->sfrFile->transits->groupBy('SNILS');
+
+        $date_start = $this->sfrFile->date_start;
+        $date_end = $this->sfrFile->date_end;
+
+        $paymentsGroupBySnils = Payment::whereHas('paymentFile', fn($query) => $query->whereBetween('in_month', [$date_start, $date_end]))
+            ->get()
+            ->groupBy('SNILS');
+
+        $transitsGroupBySnils = TransitRecipient::where('date_start', '<', $date_end)->where('date_end', '>', $date_start)
+            ->get()
+            ->groupBy('SNILS');
 
         while (!feof($this->fromFileCursor)) {
             $recipientLine = fgets($this->fromFileCursor);
@@ -51,85 +61,56 @@ class WriteSFRFileJob implements ShouldQueue
             if (!preg_match("/^О[0-9]{3}-[0-9]{3}-[0-9]{3}.*$/", $recipientLine))
                 continue;
 
-            // Проверяем, что снилс есть хотя бы в одном списке
-            $snils = mb_substr($recipientLine, 1, 14);
-            if (!$transitsGroupBySnils->has($snils) and !$paymentsGroupBySnils->has($snils)) {
-                $this->writeDefault($recipientLine);
+            $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
+            $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
+
+            foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
+                $snils = mb_substr($recipientLine, 1, 14);
+                $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
+
+                // Проверяем, что снилс есть хотя бы в одном списке
+                if (!$transitsGroupBySnils->has($snils) and !$paymentsGroupBySnils->has($snils)) {
+                    $this->writeDefault($month, $birth);
+                    continue;
+                }
+
+                // Пишем выплаты
+                if ($paymentsGroupBySnils->has($snils))
+                    foreach ($paymentsGroupBySnils[$snils] as $payment) {
+                        if ($payment->paymentFile->in_month->between($periodDateStart, $periodDateEnd))
+                            $this->writePayment($payment);
+                    }
+
+                // Пишем проезд
+                if ($transitsGroupBySnils->has($snils))
+                    foreach ($transitsGroupBySnils[$snils] as $transit) {
+                        if ($transit->date_start->toPeriod($transit->date_end)->contains($month)) {
+                            $this->writeTransit($month, $transit);
+                        }
+                    }
             }
-
-
-            // Пишем выплаты
-            if ($paymentsGroupBySnils->has($snils))
-                $this->writePayments($recipientLine, $paymentsGroupBySnils);
-
-            // Пишем эквиваленты
-            if ($transitsGroupBySnils->has($snils))
-                $this->writeTransits($recipientLine, $transitsGroupBySnils);
         }
 
         fclose($this->fromFileCursor);
         fclose($this->toFileCursor);
     }
 
-    public function writeDefault($recipientLine)
+    public function writeDefault($month, $birth)
     {
-        $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
-        $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
+        $isAdult = $birth->diff($month)->y >= 18;
 
-        foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
-            $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
-            if ($birth->diff($month)->y >= 18) {
-                $line =
-                    'М' .
-                    $month->startOfMonth()->format('Y/m/d') .
-                    '3' .
-                    'ДЭР ' .
-                    mb_str_pad(number_format($this->defaultEquivalent, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
-                    mb_str_pad(number_format(00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
-                    $month->startOfMonth()->format('Y/m/d') .
-                    $month->endOfMonth()->format('Y/m/d') .
-                    "\n";
+        $line =
+            'М' .
+            $month->startOfMonth()->format('Y/m/d') .
+            '3' .
+            'ДЭР ' .
+            mb_str_pad(number_format($isAdult ? $this->defaultEquivalent : 00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
+            mb_str_pad(number_format(00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
+            $month->startOfMonth()->format('Y/m/d') .
+            $month->endOfMonth()->format('Y/m/d') .
+            "\n";
 
-                fwrite($this->toFileCursor, mb_convert_encoding($line, 'CP-866', 'UTF-8'));
-            } else
-                $this->writeNullString($recipientLine);
-        }
-    }
-
-    public function writeNullString($recipientLine)
-    {
-        $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
-        $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
-
-        foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
-            $line =
-                'М' .
-                $month->startOfMonth()->format('Y/m/d') .
-                '3' .
-                'ДЭР ' .
-                mb_str_pad(number_format(00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
-                mb_str_pad(number_format(00.00, 2, '.', ''), '10', '0', STR_PAD_LEFT) .
-                $month->startOfMonth()->format('Y/m/d') .
-                $month->endOfMonth()->format('Y/m/d') .
-                "\n";
-
-            fwrite($this->toFileCursor, mb_convert_encoding($line, 'CP-866', 'UTF-8'));
-        }
-    }
-
-    public function writeTransits(string $recipientLine, $transitsGroupBySnils)
-    {
-        $snils = mb_substr($recipientLine, 1, 14);
-        $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
-        $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
-
-        foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
-            foreach ($transitsGroupBySnils[$snils] as $transit) {
-                if ($transit->date_start->toPeriod($transit->date_end)->contains($month)) {
-                    $this->writeTransit($month, $transit);
-                }
-            }
-        }
+        fwrite($this->toFileCursor, mb_convert_encoding($line, 'CP-866', 'UTF-8'));
     }
 
     public function writeTransit($month, $transit)
@@ -146,18 +127,6 @@ class WriteSFRFileJob implements ShouldQueue
             "\n";
 
         fwrite($this->toFileCursor, mb_convert_encoding($line, 'CP-866', 'UTF-8'));
-    }
-
-    public function writePayments(string $recipientLine, $paymentsGroupBySnils)
-    {
-        $snils = mb_substr($recipientLine, 1, 14);
-        $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
-        $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
-
-        foreach ($paymentsGroupBySnils[$snils] as $payment) {
-            if ($payment->paymentFile->in_month->between($periodDateStart, $periodDateEnd))
-                $this->writePayment($payment);
-        }
     }
 
     public function writePayment(Payment $payment)
