@@ -1,5 +1,6 @@
 <?php
 
+use App\Classes\FileModel;
 use App\Models\Base\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -89,5 +90,14 @@ if (! function_exists('clearString')) {
     function clearString(string $string)
     {
         return str_replace(["\r\n", "\r", "\n"], '', trim($string));
+    }
+}
+
+if (! function_exists('waitDisabledFile')) {
+    function waitDisabledFile(FileModel $file) {
+        if($file->file->is_disabled){
+            sleep(1);
+            waitDisabledFile($file);
+        }
     }
 }

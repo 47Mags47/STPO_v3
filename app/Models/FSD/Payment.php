@@ -52,7 +52,7 @@ class Payment extends BaseModel
 
     ### Связи
     ##################################################
-    public function PaymentFile(): BelongsTo
+    public function paymentFile(): BelongsTo
     {
         return $this->belongsTo(PaymentFile::class, 'file_id');
     }

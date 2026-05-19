@@ -40,22 +40,16 @@ export default {
                 dataIndex: 'file.name',
             },
             {
-                title: 'Начало',
-                dataIndex: 'recipients.min_date_start',
                 type: 'date',
-                width: '100px',
+                title: 'Дата начала',
+                dataIndex: 'date_start',
+                width: '100px'
             },
             {
-                title: 'Окончание',
-                dataIndex: 'recipients.max_date_start',
                 type: 'date',
-                width: '100px',
-            },
-            {
-                title: 'Получателей',
-                dataIndex: 'recipients.count',
-                width: '100px',
-                position: 'center-right'
+                title: 'Дата окончания',
+                dataIndex: 'date_end',
+                width: '100px'
             },
             {
                 title: 'Загружен',

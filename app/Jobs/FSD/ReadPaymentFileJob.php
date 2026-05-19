@@ -16,10 +16,14 @@ class ReadPaymentFileJob implements ShouldQueue
 
     const CHUNK_SIZE = 1000;
 
-    public function __construct(public PaymentFile $paymentFile) {}
+    public function __construct(public PaymentFile $paymentFile) {
+        $this->onQueue('SFR-FSD-ReadPaymentFile');
+    }
 
     public function handle(): void
     {
+        waitDisabledFile($this->paymentFile);
+
         Log::info('Загрузка файла: ' . $this->paymentFile->file->origin_name);
 
         $file = fopen($this->paymentFile->getFullPath(), 'r');

@@ -8,7 +8,6 @@ use App\Jobs\FSD\ReadSFRFileJob;
 use App\Jobs\FSD\WriteSFRFileJob;
 use App\Models\Base\UploadFile;
 use App\Models\FSD\SFRFile;
-use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
 class SFRFileController extends Controller
@@ -27,14 +26,7 @@ class SFRFileController extends Controller
 
     public function store(SFRFileStoreRequest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->input('file_id'))->first();
-
-        $SFRFile = $uploadfile->moveToModel(SFRFile::class, [
-            'region_code'   => substr($uploadfile->file->origin_name, 0, 3),
-            'sign_code'     => substr($uploadfile->file->origin_name, 3, 1),
-            'in_date'       => Carbon::create(substr(now()->format('YY'), 0, 3) . substr($uploadfile->file->origin_name, 4, 1), substr($uploadfile->file->origin_name, 5, 2)),
-            'npp_for_month' => substr($uploadfile->file->origin_name, 7, 1),
-        ]);
+        $SFRFile = UploadFile::moveToModel($request->input('file_id'), SFRFile::class, $request->validated());
 
         ReadSFRFileJob::dispatch($SFRFile);
 
@@ -43,6 +35,6 @@ class SFRFileController extends Controller
 
     public function show(SFRFile $sfrFile)
     {
-        WriteSFRFileJob::dispatch($sfrFile)->onQueue('SFR-FSD-WriteSFRFile');
+        WriteSFRFileJob::dispatch($sfrFile);
     }
 }

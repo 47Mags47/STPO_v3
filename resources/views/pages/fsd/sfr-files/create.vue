@@ -15,6 +15,11 @@ export default {
         :action="route('fsd.sfr-files.store')"
         :inputs="[
             {
+                type: 'date',
+                name: 'in_date',
+                label: 'Месяц',
+            },
+            {
                 type: 'bigFile',
                 name: 'file_id',
                 label: 'Файл',

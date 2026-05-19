@@ -19,8 +19,6 @@ class ProdSeeder extends Seeder
             $this->call(Auth\RolesAndPermissionsSeeder::class);
             $this->call(Auth\SuperUserSeederSeeder::class);
 
-            $this->call(Base\FileStatusSeeder::class);
-
             $this->call(Base\TemplateStyleSeeder::class);
             $this->call(Base\TemplateTypeSeeder::class);
 

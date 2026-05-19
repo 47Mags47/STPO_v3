@@ -25,14 +25,9 @@ class TransitFileController extends Controller
 
     public function store(TransitFileStoreReqouest $request)
     {
-        $uploadfile = UploadFile::whereKey($request->input('file_id'))->first();
+        $transitFile = UploadFile::moveToModel($request->input('file_id'), TransitFile::class, $request->validated());
 
-        $transitFile = $uploadfile->moveToModel(TransitFile::class, [
-            'date_start' => $request->date_start,
-            'date_end' => $request->date_end,
-        ]);
-
-        ReadTransitFileJob::dispatch($transitFile)->onQueue('SFR-FSD-ReadTransitFile');
+        ReadTransitFileJob::dispatch($transitFile);
 
         return redirect()->route('fsd.transit-files.index')->with('succes', 'Запись успешно создана');
     }

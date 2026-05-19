@@ -18,7 +18,9 @@ class ReadTransitFileChunkJob implements ShouldQueue
 
     const CSV_SEPARATOR = ';';
 
-    public function __construct(public TransitFile $transitFile, public array $lines) {}
+    public function __construct(public TransitFile $transitFile, public array $lines) {
+        $this->onQueue('SFR-FSD-ReadTransitFile');
+    }
 
     public function handle(): void
     {

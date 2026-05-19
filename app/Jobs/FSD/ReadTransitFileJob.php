@@ -16,10 +16,14 @@ class ReadTransitFileJob implements ShouldQueue
 
     const CHUNK_SIZE = 5000;
 
-    public function __construct(public TransitFile $transitFile) {}
+    public function __construct(public TransitFile $transitFile) {
+        $this->onQueue('SFR-FSD-ReadTransitFile');
+    }
 
     public function handle(): void
     {
+        waitDisabledFile($this->transitFile);
+
         Log::info('Загрузка файла: ' . $this->transitFile->file->origin_name);
 
         $file = fopen($this->transitFile->getFullPath(), 'r');
@@ -42,7 +46,6 @@ class ReadTransitFileJob implements ShouldQueue
         $jobs[] = new ReadTransitFileChunkJob($this->transitFile, $lines);
 
         Bus::batch($jobs)
-            ->onQueue('SFR-FSD-ReadTransitFile')
             ->dispatch();
     }
 }
