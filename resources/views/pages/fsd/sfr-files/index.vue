@@ -59,112 +59,7 @@ export default {
             },
         ]"
         :filters="[
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
 
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
             {
                 type: 'checkbox',
                 label: 'checkbox',
@@ -221,6 +116,46 @@ export default {
                 label: 'datebetween',
                 name: 'datebetween'
             },
+            {
+                type: 'datepicker',
+                label: 'datepicker',
+                name: 'datepicker'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            // {
+            //     type: 'dateBetween',
+            //     label: 'datebetween',
+            //     name: 'datebetween'
+            // },
+            // {
+            //     type: 'dateBetween',
+            //     label: 'datebetween',
+            //     name: 'datebetween'
+            // },
         ]"
         :channels="[
             {

@@ -35,6 +35,13 @@ export default {
         DatePicker:     defineAsyncComponent(() => import('../../datepicker/DatePicker.vue')),
     },
 
+    data() {
+        return {
+            hoveredFilterIndex: null,
+            isFilterOpen: false,
+        }
+    },
+
     props: {
         // Toggles
         hasCreateButton: {
@@ -140,17 +147,37 @@ export default {
     },
 
     methods: {
+        // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
+        fixDropdownPosition() {
+            const elements = this.$refs.dropDown;
+
+            if (!elements?.length) return;
+
+            elements.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+
+                // выходит справа
+                if (rect.right > window.innerWidth) {
+                    el.style.left = 'auto';
+                    el.style.right = '0';
+                } else {
+                    el.style.left = '0';
+                    el.style.right = 'auto';
+                }
+            });
+        },
+
         preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
 
             rest.name = `filters[${rest.name}]`
-            console.log(rest);
 
             return rest;
         },
-        // getFormItemOrientation(filter) {
-        //     if (filter.type === "checkbox") return "horizontal-reverse";
-        // },
+        toggleFilterVisible() {
+            this.isFilterOpen = !this.isFilterOpen
+            this.fixDropdownPosition()
+        },
 
         // Handlers
         createButtonClickHandler(e) {
@@ -227,32 +254,68 @@ export default {
         </template>
 
         <template #filters>
-            <div class="table-filters">
-                <div
-                v-for="filter in filters"
-                class="filter-item">
-                    <FormItem
-                    :name="filter.name"
-                    :label="filter.label"
-                    :for="filter.name"
-                    :orientation="{
-                        checkbox: 'horizontal-reverse',
-                    }[filter.type] ?? 'vertical'">
-                        <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
-                        <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
-                        <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
-                        <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
-                        <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
-                        <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
-                    </FormItem>
-                </div>
+            <div class="container-table-filters">
+                <div class="table-filters" :class="{ 'table-visible-show': isFilterOpen }">
+                    <div v-for="(filter, index) in filters"
+                    class="filter-item">
+                        <span> {{ filter.name }} </span>
+                        <div class="filter-item-icon">
+                            <Ico type="faChevronDown" />
+                        </div>
 
-                <button class="filters-btn">
-                    Сбросить
-                </button>
-                <button class="filters-btn">
-                    Применить
-                </button>
+                        <div ref="dropDown" class="filter-item-content">
+                            <FormItem
+                            :name="filter.name"
+                            :label="filter.label"
+                            :for="preparePropsFromFilter(filter).name"
+                            :orientation="{
+                                checkbox: 'horizontal-reverse',
+                            }[filter.type] ?? 'vertical'">
+                                <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
+                                <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
+                                <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
+                                <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
+                                <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
+                                <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
+                            </FormItem>
+                        </div>
+                    </div>
+                    <!-- <div
+                    v-for="filter in filters"
+                    class="filter-item">
+                        <FormItem
+                        :name="filter.name"
+                        :label="filter.label"
+                        :for="preparePropsFromFilter(filter).name"
+                        :orientation="{
+                            checkbox: 'horizontal-reverse',
+                        }[filter.type] ?? 'vertical'">
+                            <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
+                            <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
+                            <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
+                            <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
+                            <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
+                            <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
+                        </FormItem>
+                    </div> -->
+                </div>
+                <div class="filter-btns">
+                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                        Сбросить
+                    </button>
+                    <button                 class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                        Применить
+                    </button>
+                    <button type="button"   class="filter-showbtn"
+                    :class="{ active: isFilterOpen }"
+                    @click="toggleFilterVisible">
+                        фильтры
+                        <div
+                        class="filter-btn-item-icon">
+                            <Ico type="faChevronDown" />
+                        </div>
+                    </button>
+                </div>
             </div>
         </template>
 
@@ -323,38 +386,135 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
-    :deep(.table-filters)
+    .container-table-filters
+        width: 100%
         display: flex
-        flex-wrap: wrap
-        align-items: center
+        flex-direction: column
         gap: 12px
 
-    :deep(.filter-item)
-        display: flex
-        align-items: center
+        :deep(.table-filters)
+            display: flex
+            flex-wrap: wrap
+            align-items: center
+            gap: 12px
+            z-index: 1000
 
-        padding: 14px
-        border: 1px solid #e5e7eb
-        border-radius: 14px
-        background: #fff
-        transition: .2s ease
+            // скрыто
+            opacity: 0
+            transform: translateY(-20px)
+            max-height: 0
+            pointer-events: none
 
-        &:hover
-            border-color: #cbd5e1
-            box-shadow: 0 4px 14px rgba(0,0,0,.06)
+            transition: .4s ease
 
-    :deep(.filters-btn)
-        height: fit-content
-        padding: 12px 18px
-        border-radius: 12px
-        background: $blue-button-background
-        color: white
-        align-self: flex-end
-        transition: .2s ease
+            &.table-visible-show
+                opacity: 1
+                transform: translateY(0)
+                max-height: 500px
+                pointer-events: auto
+                transition: .4s ease
 
-        &:hover
-            background: $blue-button-backgroun-hover
-            cursor: pointer
+        :deep(.filter-item)
+            position: relative
+            display: flex
+            align-items: center
+
+            height: 32px
+            gap: 6px
+            padding: 6px 10px
+            border-radius: 14px
+            background: whitesmoke
+            transition: .2s ease
+
+            &:hover
+                background: lightgray
+                cursor: pointer
+                color: black
+                .filter-item-icon
+                    color: black
+                    transform: rotate(0)
+                .filter-item-content
+                    opacity: 1
+                    visibility: visible
+
+            .filter-item-icon
+                color: lightgray
+                height: 100%
+                width: 24px
+                transform: rotate(-90deg)
+                transition: .2s ease
+
+            .filter-item-content
+                opacity: 0
+                visibility: hidden
+                position: absolute
+
+                top: calc( 100% + 8px )
+                z-index: 1000
+                left: 0
+
+                padding: 6px 10px
+
+                width: fit-content
+                min-width: 146px
+                height: fit-content
+                background: white
+                filter: drop-shadow(0 8px 8px rgba(0,0,0,0.2))
+                border-radius: 8px
+
+                transition: 0.2s ease
+
+        .filter-btns
+            display: flex
+            justify-content: end
+            gap: 4px
+
+            :deep(.filter-btn)
+                height: fit-content
+                padding: 4px 10px
+                border-radius: 8px
+                background: $blue-button-background
+                color: white
+                align-self: flex-end
+                transition: .2s ease
+
+                opacity: 0
+                visibility: hidden
+
+                &.filterShow
+                    opacity: 1
+                    visibility: visible
+
+                &:hover
+                    background: $blue-button-backgroun-hover
+                    cursor: pointer
+
+            :deep(.filter-showbtn)
+                display: flex
+                gap: 6px
+                height: fit-content
+                padding: 4px 10px
+                border-radius: 8px
+                background: $blue-button-background
+                color: white
+                align-self: flex-end
+                transition: .2s ease
+
+                &:hover
+                    background: $blue-button-backgroun-hover
+                    cursor: pointer
+
+                &.active
+                    .filter-btn-item-icon
+                        transform: rotate(0)
+
+                .filter-btn-item-icon
+                    color: lightgray
+                    height: 100%
+                    width: 14px
+                    transition: .2s ease
+                    transform: rotate(-90deg)
+
 
     :deep()
         .table-header
@@ -369,3 +529,5 @@ export default {
 
             font-size: 1.2rem
 </style>
+
+<!-- single select /multy , datebetween, checkbox, numberBetween -->

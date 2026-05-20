@@ -249,7 +249,7 @@ export default {
             @click="(e) => e.target.select()"/>
 
             <Ico
-            class="ml-1! cursor-pointer"
+            class="ml-1! cursor-pointer shrink-0 w-[16px]!"
             @click.stop="datePickerOpen = !datePickerOpen"
             type="faCalendar"/>
         </div>
@@ -272,7 +272,7 @@ export default {
             <div
             ref="pickerContainer"
             v-show="datePickerOpen"
-            class="date-picker-container z-10 mt-2!"
+            class="date-picker-container z-1000 mt-2!"
             @click.stop>
                 <DayPicker
                 v-if="currentPicker === 'day'"
