@@ -280,24 +280,6 @@ export default {
                             </FormItem>
                         </div>
                     </div>
-                    <!-- <div
-                    v-for="filter in filters"
-                    class="filter-item">
-                        <FormItem
-                        :name="filter.name"
-                        :label="filter.label"
-                        :for="preparePropsFromFilter(filter).name"
-                        :orientation="{
-                            checkbox: 'horizontal-reverse',
-                        }[filter.type] ?? 'vertical'">
-                            <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
-                            <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
-                            <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
-                            <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
-                            <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
-                            <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
-                        </FormItem>
-                    </div> -->
                 </div>
                 <div class="filter-btns">
                     <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }">
