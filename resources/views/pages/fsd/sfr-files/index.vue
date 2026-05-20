@@ -156,6 +156,33 @@ export default {
             //     label: 'datebetween',
             //     name: 'datebetween'
             // },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect',
+                options: [
+                    {
+                        label: 'label1',
+                    }
+                ]
+            },
+            {
+                type: 'multiSelect',
+                label: 'multiSelect',
+                name: 'multiSelect',
+                options: [
+                    {
+                        label: 'label1',
+                        // value: 'value1',
+                        name: 'name1',
+                    },
+                    {
+                        label: 'label2',
+                        // value: 'value2',
+                        name: 'name2',
+                    },
+                ]
+            },
         ]"
         :channels="[
             {

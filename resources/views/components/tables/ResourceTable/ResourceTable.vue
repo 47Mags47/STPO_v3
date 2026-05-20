@@ -33,6 +33,8 @@ export default {
         DateInput:      defineAsyncComponent(() => import('../../inputs/DateInput.vue')),
         DateBetween:    defineAsyncComponent(() => import('../../inputs/DateBetweenInput.vue')),
         DatePicker:     defineAsyncComponent(() => import('../../datepicker/DatePicker.vue')),
+        SingleSelect:   defineAsyncComponent(() => import('../../inputs/SingleSelect.vue')),
+        MultiSelect:    defineAsyncComponent(() => import('../../inputs/MultiSelect.vue')),
     },
 
     data() {
@@ -116,7 +118,9 @@ export default {
                         'checkbox',
                         'date',
                         'datepicker',
-                        'dateBetween'
+                        'dateBetween',
+                        'singleSelect',
+                        'multiSelect',
                     ].includes(input.type);
                 });
 
@@ -277,6 +281,8 @@ export default {
                                 <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
                                 <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
                                 <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
+                                <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" />
+                                <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" />
                             </FormItem>
                         </div>
                     </div>
