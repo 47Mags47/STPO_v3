@@ -48,12 +48,11 @@ export default {
             currentPicker = 'day';
 
         return {
+            pickerId: Date.now() + Math.random(),
             currentPicker,
             datePickerOpen: false,
+            pickerStyles: {},
 
-            // d: this.useDayPicker ? null : DateTime.now().day,
-            // m: this.useMonthPicker ? null : DateTime.now().month,
-            // y: this.useYearPicker ? null : DateTime.now().year,
             d: this.useDayPicker ? '' : '01',
             m: this.useMonthPicker ? '' : DateTime.now().month.toString(),
             y: this.useYearPicker ? '' : DateTime.now().year.toString(),
@@ -110,6 +109,11 @@ export default {
     },
 
     methods: {
+        handleOtherPickerOpen(event) {
+            if (event.detail !== this.pickerId) {
+                this.datePickerOpen = false;
+            }
+        },
         changePicker() {
             const pickers = this.activePickers;
             // Если пикеров 0 или 1 переключать нечего
@@ -138,7 +142,33 @@ export default {
             }
         },
         togglePicker() {
-            this.datePickerOpen = true;
+            const willOpen = !this.datePickerOpen;
+
+            // закрываем остальные
+            window.dispatchEvent(
+                new CustomEvent(
+                    'close-all-datepickers',
+                    {
+                        detail: this.pickerId
+                    }
+                )
+            );
+
+            this.datePickerOpen = willOpen;
+
+            if (this.datePickerOpen) {
+                this.$nextTick(() => {
+                    const rect =
+                        this.$el.getBoundingClientRect();
+
+                    this.pickerStyles = {
+                        position: 'fixed',
+                        top: `${rect.bottom}px`,
+                        left: `${rect.left}px`,
+                        zIndex: 999999,
+                    };
+                });
+            }
         },
 
         clickOutsideHandler(event) {
@@ -201,6 +231,20 @@ export default {
             }
         },
     },
+
+    mounted() {
+        window.addEventListener(
+            'close-all-datepickers',
+            this.handleOtherPickerOpen
+        );
+    },
+
+    beforeUnmount() {
+        window.removeEventListener(
+            'close-all-datepickers',
+            this.handleOtherPickerOpen
+        );
+    },
 };
 </script>
 
@@ -250,7 +294,7 @@ export default {
 
             <Ico
             class="ml-1! cursor-pointer shrink-0 w-[16px]!"
-            @click.stop="datePickerOpen = !datePickerOpen"
+            @click.stop="togglePicker"
             type="faCalendar"/>
         </div>
 
@@ -261,38 +305,41 @@ export default {
         :value="selectedDate ? selectedDate : ''">
 
         <!-- Датапикер -->
-        <Transition
-        enter-active-class="transition duration-300 ease-out"
-        enter-from-class="opacity-0 transform scale-90"
-        enter-to-class="opacity-100 transform scale-100"
-        leave-active-class="transition duration-300 ease-in"
-        leave-from-class="opacity-100 transform scale-100"
-        leave-to-class="opacity-0 transform scale-90"
-        name="fade">
-            <div
-            ref="pickerContainer"
-            v-show="datePickerOpen"
-            class="date-picker-container z-1000 mt-2!"
-            @click.stop>
-                <DayPicker
-                v-if="currentPicker === 'day'"
-                :on-switcher-click="changePicker"
-                :select-date="selectDate"
-                :selected-date="selectedDate"/>
+         <Teleport to="body">
+            <Transition
+            enter-active-class="transition duration-300 ease-out"
+            enter-from-class="opacity-0 transform scale-90"
+            enter-to-class="opacity-100 transform scale-100"
+            leave-active-class="transition duration-300 ease-in"
+            leave-from-class="opacity-100 transform scale-100"
+            leave-to-class="opacity-0 transform scale-90"
+            name="fade">
+                <div
+                ref="pickerContainer"
+                :style="pickerStyles"
+                v-if="datePickerOpen"
+                class="date-picker-container mt-2!"
+                @click.stop>
+                    <DayPicker
+                    v-if="currentPicker === 'day'"
+                    :on-switcher-click="changePicker"
+                    :select-date="selectDate"
+                    :selected-date="selectedDate"/>
 
-                <MonthPicker
-                v-if="currentPicker === 'month'"
-                :on-switcher-click="changePicker"
-                :select-date="selectDate"
-                :selected-date="selectedDate"/>
+                    <MonthPicker
+                    v-if="currentPicker === 'month'"
+                    :on-switcher-click="changePicker"
+                    :select-date="selectDate"
+                    :selected-date="selectedDate"/>
 
-                <YearPicker
-                v-if="currentPicker === 'year'"
-                :on-switcher-click="changePicker"
-                :select-date="selectDate"
-                :selected-date="selectedDate"/>
-            </div>
-        </Transition>
+                    <YearPicker
+                    v-if="currentPicker === 'year'"
+                    :on-switcher-click="changePicker"
+                    :select-date="selectDate"
+                    :selected-date="selectedDate"/>
+                </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 
@@ -307,7 +354,6 @@ export default {
 
 
 .date-picker-container
-    position: absolute
     width: 200px
     height: 340px
 </style>
