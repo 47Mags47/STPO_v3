@@ -19,7 +19,7 @@ export default {
             </div>
 
             <div class="filters">
-                <form method="GET" action>
+                <form method="GET" action="/fsd/testfsd">
                     <slot name="filters"></slot>
                 </form>
             </div>

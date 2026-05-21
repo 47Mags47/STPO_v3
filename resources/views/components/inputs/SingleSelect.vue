@@ -6,7 +6,9 @@ export default {
         Ico:            defineAsyncComponent(() => import("../Ico.vue")),
     },
     data() {
-        return {}
+        return {
+            isSelectClicked: false,
+        }
     },
     props: {
         options: {
@@ -34,31 +36,46 @@ export default {
             default: 'Выберите..'
         },
     },
-    methods: {},
+    methods: {
+        clickOutsideHandler(event) {
+            this.isSelectClicked = false;
+        },
+    },
 }
 </script>
 
 <template>
-    <div class="select-wrapper">
-        <select class="single-select" :name="name">
-            <option value="null"                               > {{ placeholder }}  </option>
-            <option v-for="option in options"
-            :value="option.value ? option.value : option.label"> {{ option.label }} </option>
-        </select>
+    <div class="select-wrapper" v-outsideClick="clickOutsideHandler">
 
-        <div class="select-icon-wrapper">
-            <Ico type="faChevronDown"/>
+        <div class="single-select" @click="isSelectClicked = !isSelectClicked" :class="{ focus: isSelectClicked}">
+            <span> {{ placeholder }} </span>
         </div>
+        <div v-show="isSelectClicked" class="single-select-content-wrapper">
+            <label v-for="option in options" class="single-select-content-option">
+                <input type="radio" :name="name" :value="option.value ? option.value : option.label" />
+                <span> {{ option.label }} </span>
+            </label>
+        </div>
+
+        <!-- <div class="select-icon-wrapper">
+            <Ico type="faChevronDown"/>
+        </div> -->
     </div>
 </template>
 
 <style lang="sass" scoped>
 .select-wrapper
     position: relative
+    height: 100%
+
+    &:hover
+        .single-select
+            border-color: #bdbdbd
     .single-select
         width: 100%
-        min-height: 40px
-        padding: 8px 38px 8px 12px
+        min-width: 132px
+        min-height: 30px
+        padding: 4px 38px 4px 12px
 
         border: 1px solid #d8d8d8
         border-radius: 10px
@@ -73,27 +90,43 @@ export default {
 
         transition: .2s ease
 
-        // убираем дефолтный вид select
-        appearance: none
-        -webkit-appearance: none
-        -moz-appearance: none
-
-        &:hover
-            border-color: #bdbdbd
-
-        &:focus
+        &.focus
             border-color: #3b82f6
-            box-shadow: 0 0 0 3px rgba(59,130,246,.15)
 
+    .single-select-content-wrapper
+        border: 1px solid gray
 
-    .select-icon-wrapper
         position: absolute
-        height: 100%
-        right: 12px
-        top: 0
+        display: flex
+        flex-direction: column
 
-        padding: 10px 1px
+        z-index: 10
 
-        pointer-events: none
-        color: gray
+        width: fit-content
+        min-width: 120px
+
+        background-color: white
+
+        .single-select-content-option
+            display: flex
+            align-items: center
+            gap: 5px
+
+            padding: 2px 12px
+            cursor: pointer
+            transition: .15s ease
+
+            &:hover
+                background: ghostwhite
+
+    // .select-icon-wrapper
+    //     position: absolute
+    //     height: 100%
+    //     right: 12px
+    //     top: 0
+
+    //     padding: 10px 1px
+
+    //     pointer-events: none
+    //     color: gray
 </style>

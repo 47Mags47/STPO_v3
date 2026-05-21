@@ -18,11 +18,11 @@ export default {
 
             validator(options) {
                 return options.every(option => {
-                    if (typeof option   === 'object' && option !== null && 'label' in  option && 'name' in option)
+                    if (typeof option   === 'object' && option !== null && 'label' in  option)
                         return true
 
                     throw new Error(
-                        "Элемент массива должен быть объектом, не быть пустым, содержать label и name!"
+                        "Элемент массива должен быть объектом, не быть пустым, содержать label!"
                     );
                     return false
                 });
@@ -32,10 +32,10 @@ export default {
             type: String,
             default: 'Выберите..'
         },
-    },
-    name: {
-        type: String,
-        default: ''
+        name: {
+            type: String,
+            default: ''
+        },
     },
     methods: {
         clickOutsideHandler(event) {
@@ -48,30 +48,33 @@ export default {
 <template>
     <div class="multi-select-wrapper" v-outsideClick="clickOutsideHandler">
         <div class="multi-select" @click="isSelectClicked = !isSelectClicked" :class="{ focus: isSelectClicked}">
-            <span> {{ selectedValues.length ? `Выбрано: ${selectedValues.length}` : placeholder }} </span>
+            <!-- <span> {{ selectedValues.length ? `Выбрано: ${selectedValues.length}` : placeholder }} </span> -->
+             <span> {{ placeholder }} </span>
         </div>
         <div v-show="isSelectClicked" class="multi-select-content">
-            <label v-for="option in options"
-            :key="option.name"
+            <label v-for="(option, index) in options"
+            :key="index"
             class="multi-select-content-option">
                 <input type="checkbox"
                  v-model="selectedValues"
                 :value="option.value ? option.value : option.label"
-                :name="option.name" />
+                :name="`${name}[]`" />
 
                 <span> {{ option.label }} </span>
             </label>
         </div>
 
-        <div class="select-icon-wrapper">
+        <!-- <div class="select-icon-wrapper">
             <Ico type="faChevronDown"/>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <style lang="sass" scoped>
 .multi-select-wrapper
     position: relative
+    height: 100%
+    z-index: 10
 
     &:hover
         .multi-select
@@ -79,8 +82,8 @@ export default {
     .multi-select
         width: 100%
         min-width: 132px
-        min-height: 40px
-        padding: 8px 38px 8px 12px
+        min-height: 20px
+        padding: 4px 38px 4px 12px
 
         border: 1px solid #d8d8d8
         border-radius: 10px
@@ -104,7 +107,9 @@ export default {
         position: absolute
         display: flex
         flex-direction: column
-        width: 100%
+
+        width: fit-content
+        min-width: 120px
 
         background-color: white
 
@@ -118,16 +123,16 @@ export default {
             transition: .15s ease
 
             &:hover
-                background: mediumpurple
+                background: ghostwhite
 
-    .select-icon-wrapper
-        position: absolute
-        height: 100%
-        right: 12px
-        top: 0
+    // .select-icon-wrapper
+    //     position: absolute
+    //     height: 100%
+    //     right: 12px
+    //     top: 0
 
-        padding: 10px 1px
+    //     padding: 10px 1px
 
-        pointer-events: none
-        color: gray
+    //     pointer-events: none
+    //     color: gray
 </style>

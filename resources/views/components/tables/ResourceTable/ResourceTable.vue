@@ -35,12 +35,14 @@ export default {
         DatePicker:     defineAsyncComponent(() => import('../../datepicker/DatePicker.vue')),
         SingleSelect:   defineAsyncComponent(() => import('../../inputs/SingleSelect.vue')),
         MultiSelect:    defineAsyncComponent(() => import('../../inputs/MultiSelect.vue')),
+        NumberBetween:  defineAsyncComponent(() => import('../../inputs/NumberBetween.vue')),
     },
 
     data() {
         return {
             hoveredFilterIndex: null,
             isFilterOpen: false,
+            resetKey: 0,
         }
     },
 
@@ -121,6 +123,7 @@ export default {
                         'dateBetween',
                         'singleSelect',
                         'multiSelect',
+                        'numberBetween'
                     ].includes(input.type);
                 });
 
@@ -151,22 +154,36 @@ export default {
     },
 
     methods: {
+        resetFilters() {
+            this.resetKey++;
+
+            router.get(
+                window.location.pathname,
+                {},
+                {
+                    preserveState: true,
+                    replace: true
+                }
+            );
+        },
         // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
-        fixDropdownPosition() {
-            const elements = this.$refs.dropDown;
+        fixDropdownPosition(event) {
+            const el =
+                event.currentTarget.querySelector(
+                    '.filter-item-content'
+                );
 
-            if (!elements?.length) return;
+            if (!el) return;
 
-            elements.forEach((el) => {
+            requestAnimationFrame(() => {
+                el.style.left = '0';
+                el.style.right = 'auto';
+
                 const rect = el.getBoundingClientRect();
 
-                // выходит справа
-                if (rect.right > window.innerWidth) {
+                if (rect.right > window.innerWidth - 12) {
                     el.style.left = 'auto';
                     el.style.right = '0';
-                } else {
-                    el.style.left = '0';
-                    el.style.right = 'auto';
                 }
             });
         },
@@ -180,7 +197,7 @@ export default {
         },
         toggleFilterVisible() {
             this.isFilterOpen = !this.isFilterOpen
-            this.fixDropdownPosition()
+            // this.fixDropdownPosition()
         },
 
         // Handlers
@@ -259,36 +276,58 @@ export default {
 
         <template #filters>
             <div class="container-table-filters">
-                <div class="table-filters" :class="{ 'table-visible-show': isFilterOpen }">
-                    <div v-for="(filter, index) in filters"
-                    class="filter-item">
-                        <span> {{ filter.name }} </span>
-                        <div class="filter-item-icon">
-                            <Ico type="faChevronDown" />
-                        </div>
+                <div ref="filterForm">
+                    <div class="table-filters" :class="{ 'table-visible-show': isFilterOpen }">
+                        <div v-for="(filter, index) in filters"
+                        @mouseenter="fixDropdownPosition"
+                        :class="{
+                            'filter-item':
+                                filter.type !== 'checkbox'      &&
+                                filter.type !== 'singleSelect'  &&
+                                filter.type !== 'multiSelect'   &&
+                                filter.type !== 'numberBetween'}">
+                            <!-- checkbox,  singleSelect, multiSelect, numberBetween-->
+                            <template v-if="filter.type === 'checkbox'
+                            || filter.type === 'singleSelect'
+                            || filter.type === 'multiSelect'
+                            || filter.type === 'numberBetween'">
+                                <div class="flex items-center gap-2">
+                                    <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                    <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                    <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                    <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
 
-                        <div ref="dropDown" class="filter-item-content">
-                            <FormItem
-                            :name="filter.name"
-                            :label="filter.label"
-                            :for="preparePropsFromFilter(filter).name"
-                            :orientation="{
-                                checkbox: 'horizontal-reverse',
-                            }[filter.type] ?? 'vertical'">
-                                <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" />
-                                <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" />
-                                <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" />
-                                <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" />
-                                <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" />
-                                <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" />
-                                <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" />
-                                <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" />
-                            </FormItem>
+                                    <span v-if="filter.type === 'checkbox'">{{ filter.name }}</span>
+                                </div>
+                            </template>
+
+                            <!-- остальные фильтры -->
+                            <template v-else>
+                                <span>{{ filter.name }}</span>
+
+                                <div class="filter-item-icon">
+                                    <Ico type="faChevronDown" />
+                                </div>
+
+                                <div class="filter-item-content">
+                                    <FormItem
+                                    :name="filter.name"
+                                    :label="filter.label"
+                                    :for="preparePropsFromFilter(filter).name"
+                                    orientation="vertical">
+                                        <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                        <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                        <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                        <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                        <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
+                                    </FormItem>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
                 <div class="filter-btns">
-                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }" @click="resetFilters">
                         Сбросить
                     </button>
                     <button                 class="filter-btn"  :class="{ filterShow: isFilterOpen }">
@@ -385,7 +424,6 @@ export default {
             flex-wrap: wrap
             align-items: center
             gap: 12px
-            z-index: 1000
 
             // скрыто
             opacity: 0
@@ -420,24 +458,22 @@ export default {
                 color: black
                 .filter-item-icon
                     color: black
-                    transform: rotate(0)
+                    transform: rotate(180deg)
                 .filter-item-content
-                    opacity: 1
-                    visibility: visible
+                    display: flex
 
             .filter-item-icon
                 color: lightgray
                 height: 100%
                 width: 24px
-                transform: rotate(-90deg)
+                transform: rotate(0deg)
                 transition: .2s ease
 
             .filter-item-content
-                opacity: 0
-                visibility: hidden
+                display: none
                 position: absolute
 
-                top: calc( 100% + 8px )
+                top: 100%
                 z-index: 1000
                 left: 0
 
@@ -494,14 +530,14 @@ export default {
 
                 &.active
                     .filter-btn-item-icon
-                        transform: rotate(0)
+                        transform: rotate(180deg)
 
                 .filter-btn-item-icon
                     color: lightgray
                     height: 100%
                     width: 14px
                     transition: .2s ease
-                    transform: rotate(-90deg)
+                    transform: rotate(0deg)
 
 
     :deep()

@@ -159,27 +159,133 @@ export default {
             {
                 type: 'singleSelect',
                 label: 'singleSelect',
-                name: 'singleSelect',
+                name: 'singleSelect1',
                 options: [
                     {
-                        label: 'label1',
-                    }
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
                 ]
             },
             {
                 type: 'multiSelect',
                 label: 'multiSelect',
                 name: 'multiSelect',
+                // placeholder: 'multiSelect',
                 options: [
                     {
                         label: 'label1',
-                        // value: 'value1',
+                        value: 'value1',
                         name: 'name1',
                     },
                     {
                         label: 'label2',
                         // value: 'value2',
                         name: 'name2',
+                    },
+                ]
+            },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
+                placeholderFrom: 'От',
+                placeholderTo: 'До',
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'dateBetween',
+                label: 'datebetween',
+                name: 'datebetween'
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
                     },
                 ]
             },
