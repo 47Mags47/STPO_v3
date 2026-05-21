@@ -33,6 +33,10 @@ export default {
             default: 'Выберите..'
         },
     },
+    name: {
+        type: String,
+        default: ''
+    },
     methods: {
         clickOutsideHandler(event) {
             this.isSelectClicked = false;
@@ -51,9 +55,9 @@ export default {
             :key="option.name"
             class="multi-select-content-option">
                 <input type="checkbox"
-                v-model="selectedValues"
+                 v-model="selectedValues"
                 :value="option.value ? option.value : option.label"
-                :name="`filters[${option.name}]`" />
+                :name="option.name" />
 
                 <span> {{ option.label }} </span>
             </label>
@@ -72,10 +76,6 @@ export default {
     &:hover
         .multi-select
             border-color: #bdbdbd
-    // &:focus
-    //     .multi-select
-    //         border-color: #3b82f6
-    //         box-shadow: 0 0 0 3px rgba(59,130,246,.15)
     .multi-select
         width: 100%
         min-width: 132px
