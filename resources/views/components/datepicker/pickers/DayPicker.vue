@@ -33,12 +33,27 @@ export default {
         focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
             default: {}
-        }
+        },
+        fromFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        toFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        rangeMode: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             currentDate: this.startDateObject,
-            selectedDate: null
+
+            selectedDate: null,
+            fromSelectedDate: null,
+            toSelectedDate: null
         };
     },
     computed: {
@@ -82,15 +97,31 @@ export default {
         },
 
         onDayClickhandler(e, selectedDate){
-            this.selectDate(selectedDate, 'day');
-            this.selectedDate = selectedDate
+            if (this.rangeMode) {
+                // Если обе даты выбраны
+                if (this.fromSelectedDate && this.toSelectedDate) {
+                    console.log(1)
+                    this.fromSelectedDate = null
+                    this.toSelectedDate = null
+                }
 
-            // console.log(1, selectedDate.toLocaleString('ru'))
-            // if(this.isRanged) {
-            //     this.onDayClick(e, selectedDate.setLocale('ru').toFormat('dd.MM.yyyy'), selectedDate.dateEnd);
-            // } else {
-            //     this.onDayClick(e, selectedDate);
-            // }
+                // Если нет начальной даты
+                if (!this.fromSelectedDate) {
+                    this.fromSelectedDate = selectedDate
+                    this.selectedToDate = null
+                }
+                else if (this.fromSelectedDate && !this.toSelectedDate) {
+                    this.toSelectedDate = selectedDate
+                    if (this.fromSelectedDate > this.toSelectedDate) {
+                        this.toSelectedDate = this.fromSelectedDate
+                        this.fromSelectedDate = selectedDate
+                    }
+                }
+                this.selectDate(this.fromSelectedDate, this.toSelectedDate, 'day');
+            } else {
+                this.selectDate(selectedDate, null, 'day');
+                this.selectedDate = selectedDate
+            }
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -146,9 +177,12 @@ export default {
                                     // дни, не входящие в этот месяц и выходные (сб, вс)
                                     'text-gray-500': !dayInterval.start.hasSame(currentDate, 'month') || [6,7].includes(dayInterval.start.weekday),
                                     // выбранный день (фокус)
-                                    'border-2 border-(--meny-background) bg-gray-300': focusedDate && dayInterval.start.hasSame(focusedDate, 'day'),
+                                    'border-2 border-(--meny-background) bg-gray-300': !rangeMode && focusedDate && dayInterval.start.hasSame(focusedDate, 'day'),
                                     // сегодняший день (или день с пропса)
-                                    'text-white bg-(--meny-background)': startDateObject && dayInterval.start.hasSame(startDateObject, 'day')
+                                    'text-white bg-(--meny-background)': startDateObject && dayInterval.start.hasSame(startDateObject, 'day'),
+
+                                    'border-2 border-red-300 bg-gray-300': fromFocusedDate && dayInterval.start.hasSame(fromFocusedDate, 'day'),
+                                    'border-2 border-emerald-300 bg-gray-300': toFocusedDate && dayInterval.start.hasSame(toFocusedDate, 'day'),
                                 }">
                                     {{ dayInterval.start.day }}
                                 </div>

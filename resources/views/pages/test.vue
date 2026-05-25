@@ -51,9 +51,9 @@ export default {
             <Checkbox name="checkbox" label="checkbox-label"/>
             <NumberBetween name="numberBetween" label="chosing"/>
             <DatePicker /> -->
-             <div class="w-[128px]">
+             <div class="w-[290px]">
                 <!-- <SingleSelect name="singleSelect" label="Тема" :options/> -->
-                 <DatePicker />
+                 <DatePicker name="dateBetween" :range-mode="true"/>
 
 
                  <!-- <div class="single-select-content-container"

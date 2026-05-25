@@ -25,12 +25,27 @@ export default {
         focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
             default: {}
-        }
+        },
+        fromFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        toFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        rangeMode: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             currentDate: this.startDateObject,
-            selectedDate: null
+
+            selectedDate: null,
+            fromSelectedDate: null,
+            toSelectedDate: null
         };
     },
     watch: {
@@ -71,8 +86,30 @@ export default {
         },
 
         onYearClickhandler(e, selectedDate){
-            this.selectDate(selectedDate, 'year');
-            this.selectedDate = selectedDate
+            if (this.rangeMode) {
+                // Если обе даты выбраны
+                if (this.fromSelectedDate && this.toSelectedDate) {
+                    this.fromSelectedDate = null
+                    this.toSelectedDate = null
+                }
+
+                // Если нет начальной даты
+                if (!this.fromSelectedDate) {
+                    this.fromSelectedDate = selectedDate
+                    this.selectedToDate = null
+                }
+                else if (this.fromSelectedDate && !this.toSelectedDate) {
+                    this.toSelectedDate = selectedDate
+                    if (this.fromSelectedDate > this.toSelectedDate) {
+                        this.toSelectedDate = this.fromSelectedDate
+                        this.fromSelectedDate = selectedDate
+                    }
+                }
+                this.selectDate(this.fromSelectedDate, this.toSelectedDate, 'year');
+            } else {
+                this.selectDate(selectedDate, null, 'year');
+                this.selectedDate = selectedDate
+            }
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -112,9 +149,12 @@ export default {
                                     @click="onYearClickhandler($event, year.start)"
                                     :class="{
                                         // выбранный год (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': focusedDate && year.start.hasSame(focusedDate, 'year'),
+                                        'border-2 border-(--meny-background) bg-gray-300': !rangeMode && focusedDate && year.start.hasSame(focusedDate, 'year'),
                                         // сегодняший год (или год с пропса)
-                                        'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year')
+                                        'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year'),
+
+                                        'border-2 border-red-300 bg-gray-300': fromFocusedDate && year.start.hasSame(fromFocusedDate, 'year'),
+                                        'border-2 border-emerald-300 bg-gray-300': toFocusedDate && year.start.hasSame(toFocusedDate, 'year'),
                                     }">
                                         {{ year.start.toFormat('yyyy') }}
                                     </div>
