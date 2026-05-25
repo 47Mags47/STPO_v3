@@ -14,61 +14,10 @@ Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, '
 
 
 Route::get('/test', function () {
+    dump(request()->all());
 
     return Inertia::render('test', [
-
-        'messages' => [
-            [
-                "id" => 1,
-                "text" => "Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение",
-                "readed" => false,
-                "files" => [
-                    [
-                        'id' => 11,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/500/300'
-                    ],
-                    [
-                        'id' => 12,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/200/300'
-                    ]
-                ],
-                "appeal_id" => 1,
-                "sender_id" => 6,
-                "created_at" => "2026-05-08 02:31:12"
-            ],
-            [
-                "id" => 2,
-                "text" => "Это сообщение от пользователя 2 не длинное сообщение",
-                "readed" => true,
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-05-08 02:31:12"
-            ],
-            [
-                "id" => 2,
-                "text" => "Это сообщение от пользователя 2 длинное сообщение длинное сообщение длинное сообщение длинное сообщение с картинкой",
-                "readed" => true,
-                "files" => [
-                    [
-                        'id' => 13,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/200/300'
-                    ]
-                ],
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-05-08 02:31:12"
-            ]
-        ],
-        'current_user' => [
-            'id' => 2,
-            'full_name' => 'FULLNAME F.N.'
-        ]
-
+        'thems' => App\Models\Administrate\Template::getResource(),
     ]);
 
 });

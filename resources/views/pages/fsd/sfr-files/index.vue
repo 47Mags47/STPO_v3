@@ -289,6 +289,197 @@ export default {
                     },
                 ]
             },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
         ]"
         :channels="[
             {

@@ -337,9 +337,8 @@ export default {
                     :class="{ active: isFilterOpen }"
                     @click="toggleFilterVisible">
                         фильтры
-                        <div
-                        class="filter-btn-item-icon">
-                            <Ico type="faChevronDown" />
+                        <div class="filter-btn-item-icon">
+                            <Ico type="faChevronDown" class="" />
                         </div>
                     </button>
                 </div>
@@ -412,6 +411,8 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.test
+    height: 25px
 .resource-table
     .container-table-filters
         width: 100%
@@ -424,21 +425,20 @@ export default {
             flex-wrap: wrap
             align-items: center
             gap: 12px
+            overflow: hidden
 
             // скрыто
             opacity: 0
             transform: translateY(-20px)
             max-height: 0
             pointer-events: none
-
-            transition: .4s ease
+            transition: 1s ease
 
             &.table-visible-show
                 opacity: 1
                 transform: translateY(0)
-                max-height: 500px
+                max-height: 300px
                 pointer-events: auto
-                transition: .4s ease
 
         :deep(.filter-item)
             position: relative

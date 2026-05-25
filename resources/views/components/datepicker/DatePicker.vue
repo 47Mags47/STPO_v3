@@ -37,21 +37,14 @@ export default {
     },
     data() {
         let currentPicker = ''
-
-        if(this.useYearPicker)
-            currentPicker = 'year';
-
-        if(this.useMonthPicker)
-            currentPicker = 'month';
-
-        if(this.useDayPicker)
-            currentPicker = 'day';
+        if(this.useYearPicker)  currentPicker = 'year';
+        if(this.useMonthPicker) currentPicker = 'month';
+        if(this.useDayPicker)   currentPicker = 'day';
 
         return {
             pickerId: Date.now() + Math.random(),
             currentPicker,
             datePickerOpen: false,
-            pickerStyles: {},
 
             d: this.useDayPicker ? '' : '01',
             m: this.useMonthPicker ? '' : DateTime.now().month.toString(),
@@ -155,20 +148,6 @@ export default {
             );
 
             this.datePickerOpen = willOpen;
-
-            if (this.datePickerOpen) {
-                this.$nextTick(() => {
-                    const rect =
-                        this.$el.getBoundingClientRect();
-
-                    this.pickerStyles = {
-                        position: 'fixed',
-                        top: `${rect.bottom}px`,
-                        left: `${rect.left}px`,
-                        zIndex: 999999,
-                    };
-                });
-            }
         },
 
         clickOutsideHandler(event) {
@@ -249,10 +228,10 @@ export default {
 </script>
 
 <template>
-    <div class="relative w-fit" v-outsideClick="clickOutsideHandler">
+    <div class="relative size-full" v-outsideClick="clickOutsideHandler">
         <!-- Кастомный датаинпут из трёх инпутов (дд мм гггг) -->
         <div
-        class="base-input w-fit! flex justify-between"
+        class="relative base-input w-full flex justify-start"
         @click.stop="togglePicker">
             <input
             v-if="useDayPicker"
@@ -293,7 +272,7 @@ export default {
             @click="(e) => e.target.select()"/>
 
             <Ico
-            class="ml-1! cursor-pointer shrink-0 w-[16px]!"
+            class="ico"
             @click.stop="togglePicker"
             type="faCalendar"/>
         </div>
@@ -305,55 +284,59 @@ export default {
         :value="selectedDate ? selectedDate : ''">
 
         <!-- Датапикер -->
-         <Teleport to="body">
-            <Transition
-            enter-active-class="transition duration-300 ease-out"
-            enter-from-class="opacity-0 transform scale-90"
-            enter-to-class="opacity-100 transform scale-100"
-            leave-active-class="transition duration-300 ease-in"
-            leave-from-class="opacity-100 transform scale-100"
-            leave-to-class="opacity-0 transform scale-90"
-            name="fade">
-                <div
-                ref="pickerContainer"
-                :style="pickerStyles"
-                v-if="datePickerOpen"
-                class="date-picker-container mt-2!"
-                @click.stop>
-                    <DayPicker
-                    v-if="currentPicker === 'day'"
-                    :on-switcher-click="changePicker"
-                    :select-date="selectDate"
-                    :selected-date="selectedDate"/>
+        <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0 transform scale-90"
+        enter-to-class="opacity-100 transform scale-100"
+        leave-active-class="transition duration-300 ease-in"
+        leave-from-class="opacity-100 transform scale-100"
+        leave-to-class="opacity-0 transform scale-90"
+        name="fade">
+            <div
+            ref="pickerContainer"
+            v-if="datePickerOpen"
+            class="date-picker-container"
+            @click.stop>
+                <DayPicker
+                v-if="currentPicker === 'day'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :focusedDate="selectedDate"/>
 
-                    <MonthPicker
-                    v-if="currentPicker === 'month'"
-                    :on-switcher-click="changePicker"
-                    :select-date="selectDate"
-                    :selected-date="selectedDate"/>
+                <MonthPicker
+                v-if="currentPicker === 'month'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :focused-date="selectedDate"/>
 
-                    <YearPicker
-                    v-if="currentPicker === 'year'"
-                    :on-switcher-click="changePicker"
-                    :select-date="selectDate"
-                    :selected-date="selectedDate"/>
-                </div>
-            </Transition>
-        </Teleport>
+                <YearPicker
+                v-if="currentPicker === 'year'"
+                :on-switcher-click="changePicker"
+                :select-date="selectDate"
+                :focused-date="selectedDate"/>
+            </div>
+        </Transition>
     </div>
 </template>
 
 <style lang="sass" scoped>
-// .fade-enter-active,
-// .fade-leave-active
-//   @apply transition duration-300
-
-// .fade-enter-from,
-// .fade-leave-to
-//   @apply opacity-0
-
-
 .date-picker-container
-    width: 200px
+    position: absolute
+    width: 250px
     height: 340px
+
+
+.ico
+    position: absolute
+    right: 8px
+    top: 0
+    width: 16px
+    cursor: pointer
+
+    &:hover
+        color: gray
+
+    &:active
+        color: black
+
 </style>

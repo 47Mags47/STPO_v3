@@ -22,20 +22,22 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        selectedDate: {
+        focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
-            default: null,
+            default: {}
         }
     },
     data() {
         return {
             startOfInterval: DateTime.now().startOf('year'),
             endOfInterval: DateTime.now().endOf('year'),
+            selectedDate: null
         }
     },
     methods: {
         onMonthClickhandler(e, selectedDate){
             this.selectDate(selectedDate, 'month');
+            this.selectedDate = selectedDate
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -73,7 +75,7 @@ export default {
         </template>
 
         <template #content>
-            <div class="w-full h-full p-1!">
+            <div class="month-picker-content-container w-full h-full p-1!">
                 <table class="table-fixed w-full h-full">
                     <thead></thead>
                     <tbody class="">
@@ -84,7 +86,7 @@ export default {
                                     @click="onMonthClickhandler($event, month.start)"
                                     :class="{
                                         // выбранный месяц (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && month.start.month === selectedDate.month,
+                                        'border-2 border-(--meny-background) bg-gray-300': focusedDate && month.start.month === focusedDate.month,
                                         // сегодняший месяц (или месяц с пропса)
                                         'text-white bg-(--meny-background)': startDateObject && month.start.month === startDateObject.month
                                     }">
@@ -101,5 +103,8 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-
+.month-picker-content-container
+    th, td
+        border: none
+        padding: 0
 </style>

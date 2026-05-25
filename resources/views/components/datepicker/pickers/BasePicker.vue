@@ -6,7 +6,7 @@ export default {
 
 <template>
     <div class="flex flex-col rounded-lg overflow-hidden select-none w-full h-full">
-        <div class="flex flex-col justify-between p-2! bg-(--meny-background) h-36">
+        <div class="flex flex-col justify-between p-2! bg-(--meny-background) min-h-[90px]">
             <slot name="header"/>
         </div>
 
@@ -15,3 +15,7 @@ export default {
         </div>
     </div>
 </template>
+
+<style lang="sass">
+
+</style>

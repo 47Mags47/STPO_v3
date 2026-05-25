@@ -10,10 +10,6 @@ export default {
         Ico,
     },
     props: {
-        onYearClick: {
-            type: Function,
-            default: (e) => { }
-        },
         onSwitcherClick: {
             type: Function,
             default: (e) => { }
@@ -26,14 +22,15 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        selectedDate: {
+        focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
-            default: null,
+            default: {}
         }
     },
     data() {
         return {
             currentDate: this.startDateObject,
+            selectedDate: null
         };
     },
     watch: {
@@ -73,9 +70,9 @@ export default {
                 this.currentDate = this.currentDate.minus({ year: 12 });
         },
 
-        onYearClickhandler(e, date){
-            this.selectDate(date, 'year');
-            this.onYearClick(e, date);
+        onYearClickhandler(e, selectedDate){
+            this.selectDate(selectedDate, 'year');
+            this.selectedDate = selectedDate
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -104,7 +101,7 @@ export default {
         </template>
 
         <template #content>
-            <div class="w-full h-full p-1!">
+            <div class="year-picker-content-container w-full h-full p-1!">
                 <table class="table-fixed w-full h-full">
                     <thead></thead>
                     <tbody class="">
@@ -115,7 +112,7 @@ export default {
                                     @click="onYearClickhandler($event, year.start)"
                                     :class="{
                                         // выбранный год (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && year.start.hasSame(selectedDate, 'year'),
+                                        'border-2 border-(--meny-background) bg-gray-300': focusedDate && year.start.hasSame(focusedDate, 'year'),
                                         // сегодняший год (или год с пропса)
                                         'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year')
                                     }">
@@ -141,7 +138,10 @@ export default {
     :deep()
         .ico-container
             width: 25px
-.day-picker-content-container
+.year-picker-content-container
     table
         width: 100%
+    th, td
+        border: none
+        padding: 0
 </style>
