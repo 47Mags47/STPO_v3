@@ -66,100 +66,9 @@ export default {
                 name: 'checkbox'
             },
             {
-                type: 'string',
-                label: 'string',
-                name: 'string'
-            },
-            {
-                type: 'select',
-                label: 'select',
-                name: 'select',
-                options: {
-                    data: [
-                        {
-                            label: 'labl1',
-                            value: 'val1',
-                        },
-                        {
-                            label: 'labl1',
-                            value: 'val1',
-                        },
-                        {
-                            label: 'labl1',
-                            value: 'val1',
-                        },
-                    ]
-                }
-            },
-            {
-                type: 'date',
-                label: 'date',
-                name: 'date'
-            },
-            {
-                type: 'datepicker',
-                label: 'datepicker',
-                name: 'datepicker'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'datepicker',
-                label: 'datepicker',
-                name: 'datepicker'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            // {
-            //     type: 'dateBetween',
-            //     label: 'datebetween',
-            //     name: 'datebetween'
-            // },
-            // {
-            //     type: 'dateBetween',
-            //     label: 'datebetween',
-            //     name: 'datebetween'
-            // },
-            {
                 type: 'singleSelect',
                 label: 'singleSelect',
-                name: 'singleSelect1',
+                name: 'singleSelect2',
                 options: [
                     {
                         label: 'label11223233213231',
@@ -179,17 +88,18 @@ export default {
                 type: 'multiSelect',
                 label: 'multiSelect',
                 name: 'multiSelect',
-                // placeholder: 'multiSelect',
                 options: [
                     {
-                        label: 'label1',
-                        value: 'value1',
-                        name: 'name1',
+                        label: 'label11223233213231',
                     },
                     {
-                        label: 'label2',
-                        // value: 'value2',
-                        name: 'name2',
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
                     },
                 ]
             },
@@ -197,289 +107,55 @@ export default {
                 type: 'numberBetween',
                 label: 'numberBetween',
                 name: 'numberBetween',
-                placeholderFrom: 'От',
-                placeholderTo: 'До',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'dateFilter',
+                label: 'singleDate',
+                name: 'singleDate',
+                rangeMode: false,
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'dateFilter',
+                label: 'multiDate',
+                name: 'multiDate',
+                rangeMode: true
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
             {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'dateBetween',
-                label: 'datebetween',
-                name: 'datebetween'
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
             },
 
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect2',
-                options: [
-                    {
-                        label: 'label11223233213231',
-                    },
-                    {
-                        label: 'label12',
-                    },
-                    {
-                        label: 'label13',
-                    },
-                    {
-                        label: 'label14',
-                    },
-                ]
-            },
         ]"
         :channels="[
             {

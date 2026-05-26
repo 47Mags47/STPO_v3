@@ -13,14 +13,6 @@ Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login']
 Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, 'store'])->name('auth.users.store');
 
 
-Route::get('/test', function () {
-    dump(request()->all());
-
-    return Inertia::render('test', [
-        'thems' => App\Models\Administrate\Template::getResource(),
-    ]);
-
-});
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();

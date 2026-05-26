@@ -75,7 +75,8 @@ export default {
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
                 />
-                <span> {{ Object.get(option, labelKey) }} </span>
+                <!-- <span> {{ Object.get(option, labelKey) }} </span> -->
+                 <span> {{ option.label }} </span>
             </label>
         </div>
     </div>
@@ -85,6 +86,7 @@ export default {
 .single-select-container
     position: relative
     width: 100%
+    min-width: 120px
 
     .single-select
         position: relative
@@ -119,8 +121,8 @@ export default {
         max-height: 0px
         overflow-y: auto
         transition: .5s ease
+        z-index: 10
 
-        background: white
         @include scroll
 
         &.active
@@ -133,6 +135,7 @@ export default {
             width: 100%
             padding: 6px 4px
             cursor: pointer
+            background: white
             span
                 overflow: hidden
                 text-overflow: ellipsis

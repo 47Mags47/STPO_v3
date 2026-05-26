@@ -75,7 +75,8 @@ export default {
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
                 />
-                <span> {{ Object.get(option, labelKey) }} </span>
+                <!-- <span> {{ Object.get(option, labelKey) }} </span> -->
+                 <span> {{ option.label }} </span>
             </label>
         </div>
     </div>
@@ -94,6 +95,7 @@ export default {
         border: 1px solid $blue-button-background
         cursor: pointer
         transition: .5s ease
+        @include input()
 
         &:hover
             background-color: $blue-button-background
@@ -101,7 +103,7 @@ export default {
 
         .ico-chevron
             position: absolute
-            width: 18px
+            width: 14px
 
             top: 0
             right: 10px
@@ -110,7 +112,7 @@ export default {
             color: black
 
             &.active
-                transform: rotate(180deg)
+                transform: rotate(540deg)
 
     .multi-select-content-container
         position: absolute
@@ -119,6 +121,7 @@ export default {
         overflow: hidden
         overflow: auto
         transition: .5s ease
+        z-index: 10
 
         background: white
         @include scroll

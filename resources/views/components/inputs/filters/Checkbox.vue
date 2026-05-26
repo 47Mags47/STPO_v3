@@ -39,11 +39,10 @@ export default {
 <style lang="sass" scoped>
 .checkbox-container
     display: flex
-    border-radius: 12px
-    background: lightgray
     cursor: pointer
     padding: 7px
     transition: .5s ease
+    @include input()
 
     &.active
         background-color: $blue-button-background

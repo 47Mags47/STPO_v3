@@ -26,7 +26,6 @@ export default {
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
         DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
-        DateBetween:        defineAsyncComponent(() => import('../inputs/DateBetweenInput.vue')),
     },
     props: {
         inputs: {
@@ -51,7 +50,6 @@ export default {
                         'bigFiles',
                         'date',
                         'datePicker',
-                        'dateBetween',
                     ].includes(input.type);
                 });
 
@@ -113,7 +111,6 @@ export default {
                 <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
                 <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
-                <DateBetween        v-if="input.type === 'dateBetween'"     v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>

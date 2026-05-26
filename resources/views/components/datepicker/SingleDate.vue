@@ -325,7 +325,7 @@ export default {
     position: absolute
     width: 250px
     height: 340px
-
+    z-index: 10
 
 .ico
     position: absolute

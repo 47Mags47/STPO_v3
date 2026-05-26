@@ -64,13 +64,15 @@ export default {
         border: 1px solid $blue-button-background
         cursor: pointer
 
+        @include input()
+
         &:hover
             background: $blue-button-backgroun-hover
             color: $blue-button-color
 
         .ico-chevron
             position: absolute
-            width: 18px
+            width: 14px
 
             top: 0
             right: 10px
@@ -79,7 +81,7 @@ export default {
             color: black
 
             &.active
-                transform: rotate(180deg)
+                transform: rotate(540deg)
 
     .number-between-content-container
         width: 100%
@@ -94,13 +96,14 @@ export default {
         transition: .5s ease
         background: white
         padding: 0px 8px
+        z-index: 10
 
         cursor: auto
 
         &.active
             max-height: 40px
             padding: 5px 8px
-            box-shadow: 0px 1px 4px black
+            box-shadow: 0px 0.5px 3px black
 
         input
             width: calc((100% / 2) - 12px )

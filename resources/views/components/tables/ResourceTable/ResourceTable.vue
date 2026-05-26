@@ -27,15 +27,11 @@ export default {
         Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
         BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
 
-        CheckBox:       defineAsyncComponent(() => import("../../inputs/CheckBox.vue")),
-        StringInput:    defineAsyncComponent(() => import('../../inputs/StringInput.vue')),
-        Select:         defineAsyncComponent(() => import('../../inputs/Select.vue')),
-        DateInput:      defineAsyncComponent(() => import('../../inputs/DateInput.vue')),
-        DateBetween:    defineAsyncComponent(() => import('../../inputs/DateBetweenInput.vue')),
-        DatePicker:     defineAsyncComponent(() => import('../../datepicker/DatePicker.vue')),
-        SingleSelect:   defineAsyncComponent(() => import('../../inputs/SingleSelect.vue')),
-        MultiSelect:    defineAsyncComponent(() => import('../../inputs/MultiSelect.vue')),
-        NumberBetween:  defineAsyncComponent(() => import('../../inputs/NumberBetween.vue')),
+        Checkbox:       defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
+        SingleSelect:   defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
+        MultiSelect:    defineAsyncComponent(() => import('../../inputs/filters/MultiSelect.vue')),
+        NumberBetween:  defineAsyncComponent(() => import('../../inputs/filters/NumberBetween.vue')),
+        DateFilter:     defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
     },
 
     data() {
@@ -114,16 +110,12 @@ export default {
             validator(value) {
                 let hasInvalidType = value.filter((input) => {
                     return ![
-                        'string',
-                        'text',
-                        'select',
                         'checkbox',
-                        'date',
                         'datepicker',
-                        'dateBetween',
                         'singleSelect',
                         'multiSelect',
-                        'numberBetween'
+                        'numberBetween',
+                        'dateFilter'
                     ].includes(input.type);
                 });
 
@@ -196,8 +188,42 @@ export default {
             return rest;
         },
         toggleFilterVisible() {
-            this.isFilterOpen = !this.isFilterOpen
-            // this.fixDropdownPosition()
+            const el = this.$refs.filtersRef;
+
+            if (!el) return;
+
+            this.isFilterOpen = !this.isFilterOpen;
+
+            if (this.isFilterOpen) {
+                el.classList.add('opened');
+
+                // во время анимации скрываем overflow
+                el.style.overflow = 'hidden';
+                el.style.maxHeight = `${el.scrollHeight}px`;
+
+                // после анимации открываем overflow
+                setTimeout(() => {
+                    if (this.isFilterOpen) {
+                        el.style.overflow = 'visible';
+                        el.style.maxHeight = 'none';
+                    }
+                }, 400);
+            } else {
+                // перед закрытием снова скрываем overflow
+                el.style.overflow = 'hidden';
+
+                if (el.style.maxHeight === 'none') {
+                    el.style.maxHeight = `${el.scrollHeight}px`;
+                }
+
+                requestAnimationFrame(() => {
+                    el.style.maxHeight = '0px';
+                });
+
+                setTimeout(() => {
+                    el.classList.remove('opened');
+                }, 400);
+            }
         },
 
         // Handlers
@@ -276,54 +302,18 @@ export default {
 
         <template #filters>
             <div class="container-table-filters">
-                <div ref="filterForm">
-                    <div class="table-filters" :class="{ 'table-visible-show': isFilterOpen }">
-                        <div v-for="(filter, index) in filters"
-                        @mouseenter="fixDropdownPosition"
-                        :class="{
-                            'filter-item':
-                                filter.type !== 'checkbox'      &&
-                                filter.type !== 'singleSelect'  &&
-                                filter.type !== 'multiSelect'   &&
-                                filter.type !== 'numberBetween'}">
-                            <!-- checkbox,  singleSelect, multiSelect, numberBetween-->
-                            <template v-if="filter.type === 'checkbox'
-                            || filter.type === 'singleSelect'
-                            || filter.type === 'multiSelect'
-                            || filter.type === 'numberBetween'">
-                                <div class="flex items-center gap-2">
-                                    <CheckBox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                    <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                    <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                    <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-
-                                    <span v-if="filter.type === 'checkbox'">{{ filter.name }}</span>
-                                </div>
-                            </template>
-
-                            <!-- остальные фильтры -->
-                            <template v-else>
-                                <span>{{ filter.name }}</span>
-
-                                <div class="filter-item-icon">
-                                    <Ico type="faChevronDown" />
-                                </div>
-
-                                <div class="filter-item-content">
-                                    <FormItem
-                                    :name="filter.name"
-                                    :label="filter.label"
-                                    :for="preparePropsFromFilter(filter).name"
-                                    orientation="vertical">
-                                        <StringInput    v-if="filter.type === 'string'"         v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                        <Select         v-if="filter.type === 'select'"         v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                        <DateInput      v-if="filter.type === 'date'"           v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                        <DatePicker     v-if="filter.type === 'datepicker'"     v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                        <DateBetween    v-if="filter.type === 'dateBetween'"    v-bind="preparePropsFromFilter(filter)" :key="resetKey"/>
-                                    </FormItem>
-                                </div>
-                            </template>
-                        </div>
+                <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
+                    <div class="w-[260px]" v-for="filter in filters">
+                        <MultiSelect    v-if="filter.type === 'multiSelect'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
+                        <SingleSelect   v-if="filter.type === 'singleSelect'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
+                        <Checkbox       v-if="filter.type === 'checkbox'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
+                        <DateFilter     v-if="filter.type === 'dateFilter'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"       :range-mode="filter.rangeMode"/>
                     </div>
                 </div>
                 <div class="filter-btns">
@@ -419,26 +409,29 @@ export default {
         display: flex
         flex-direction: column
         gap: 12px
+        z-index: 100
 
         :deep(.table-filters)
             display: flex
             flex-wrap: wrap
             align-items: center
             gap: 12px
-            overflow: hidden
 
-            // скрыто
-            opacity: 0
-            transform: translateY(-20px)
+            overflow: hidden
             max-height: 0
             pointer-events: none
-            transition: 1s ease
 
-            &.table-visible-show
+            padding-bottom: 8px
+
+            opacity: 0
+
+            transition: max-height .5s ease, opacity .5s ease
+
+            &.opened
                 opacity: 1
                 transform: translateY(0)
-                max-height: 300px
                 pointer-events: auto
+                box-shadow: 0px 7px 4px -8px gray
 
         :deep(.filter-item)
             position: relative
@@ -468,25 +461,6 @@ export default {
                 width: 24px
                 transform: rotate(0deg)
                 transition: .2s ease
-
-            .filter-item-content
-                display: none
-                position: absolute
-
-                top: 100%
-                z-index: 1000
-                left: 0
-
-                padding: 6px 10px
-
-                width: fit-content
-                min-width: 146px
-                height: fit-content
-                background: white
-                filter: drop-shadow(0 8px 8px rgba(0,0,0,0.2))
-                border-radius: 8px
-
-                transition: 0.2s ease
 
         .filter-btns
             display: flex
@@ -530,7 +504,7 @@ export default {
 
                 &.active
                     .filter-btn-item-icon
-                        transform: rotate(180deg)
+                        transform: rotate(540deg)
 
                 .filter-btn-item-icon
                     color: lightgray
@@ -553,5 +527,3 @@ export default {
 
             font-size: 1.2rem
 </style>
-
-<!-- single select /multy , datebetween, checkbox, numberBetween -->
