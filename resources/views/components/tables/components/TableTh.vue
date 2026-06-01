@@ -9,12 +9,17 @@ export default {
             type: Boolean,
             default: false,
         },
+        colspan: {
+            type: Number,
+            default: 1,
+        }
     },
 
     computed: {
         bind() {
             return {
                 width: this.button ? "60px" : this.width,
+                colspan: this.colspan
             };
         },
     },
@@ -23,12 +28,7 @@ export default {
 
 <template>
     <th v-bind="bind">
-        <div
-            :class="{
-                'table-thead-cell-container': true,
-                'has-button': button,
-            }"
-        >
+        <div :class="{ 'table-thead-cell-container': true, 'has-button': button }">
             <slot />
         </div>
     </th>

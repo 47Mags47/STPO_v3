@@ -14,16 +14,17 @@ class SuperUserSeederSeeder extends Seeder
      */
     public function run(): void
     {
-        $superuser = User::create([
+        $superuser = User::firstOrCreate([
             'first_name'        => 'root',
             'last_name'         => null,
             'middle_name'       => null,
             'full_name'         => 'root',
             'login'             => 'root',
-            'password'          => Hash::make('root'),
             'email'             => null,
-            'email_verified_at' => now(),
             'password_expired'  => false,
+        ], [
+            'password'          => Hash::make('root'),
+            'email_verified_at' => now(),
         ]);
 
         $superuser->roles()->attach(Role::byCode('system_user')->id);

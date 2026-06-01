@@ -95,6 +95,9 @@
         - [ ] dev_components_CreateDashboard
             - [ ] dev_components_CreateDashBoard_CreateProfile
 
+        - [ ] dev_components_CreateChat
+            создать страницу чата
+
     - libs ( библиотеки, хелперы и тд )
         - [ ] AddDateLib
             - [ ] Добавить глобальный хелпер или библиотеку для форматирования даты
@@ -102,3 +105,9 @@
     - base
         - [ ] FixUploadBigFile
             Вынести процесс объеденения чанков (FileChunk) при загрузке больших фалов (UploadFile) в одельный процесс
+
+    - other
+        - [ ] FixEmailVerify
+            Перенести логику из web.php в контроллер
+        - [ ] AddFilters
+            добавить фильтры в ResourceTable

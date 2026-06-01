@@ -1,6 +1,7 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import { ResourceTable } from "@components";
+import { ResourceTable, Ico } from "@components";
+import { defineAsyncComponent, shallowRef } from "vue";
 
 export default {
     components: {
@@ -9,6 +10,11 @@ export default {
     computed: {
         files: () => usePage().props.files,
     },
+    data(){
+        return {
+            Ico: shallowRef(Ico)
+        }
+    }
 }
 </script>
 
@@ -47,6 +53,22 @@ export default {
                 width: '75px',
                 position: 'center-right'
             },
+            {
+                type: 'render',
+                width: 45,
+                render: (row) => row.file.errors.length > 0
+                ? {
+                    component: Ico,
+                    props: {
+                        type: 'faCircleExclamation',
+                        style: 'color: orange; width: 25px',
+                        title: row.file.errors.map((el) => el.error).join('\n')
+                    }
+                }
+                : {
+                    component: 'span'
+                }
+            }
         ]"
     />
 </template>

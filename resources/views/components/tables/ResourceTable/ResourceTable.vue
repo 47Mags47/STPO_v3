@@ -183,15 +183,18 @@ export default {
             </div>
             <div class="table-actions-container">
                 <slot name="actions" />
-                <CreateButton @click="createButtonClickHandler" />
+                <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
             </div>
         </template>
 
         <template #thead>
             <TableRow>
-                <TableTh v-for="column in collumns" v-bind="column">
-                    {{ column.title }}
-                </TableTh>
+
+                <template v-for="column in collumns">
+                    <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
+                        {{ column.title }}
+                    </TableTh>
+                </template>
 
                 <template v-if="collumns.length > 0 && data.length > 0">
                     <TableTh v-if="hasDeleteButton !== false" button />

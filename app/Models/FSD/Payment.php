@@ -17,6 +17,9 @@ class Payment extends BaseModel
     protected $table = 'fsd__payments';
 
     protected $fillable = [
+        'first_name',
+        'last_name',
+        'middle_name',
         'amount',
         'SNILS',
         'file_id',
@@ -49,7 +52,7 @@ class Payment extends BaseModel
 
     ### Связи
     ##################################################
-    public function PaymentFile(): BelongsTo
+    public function paymentFile(): BelongsTo
     {
         return $this->belongsTo(PaymentFile::class, 'file_id');
     }

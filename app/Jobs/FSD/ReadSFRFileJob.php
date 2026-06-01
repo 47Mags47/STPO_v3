@@ -2,46 +2,46 @@
 
 namespace App\Jobs\FSD;
 
-use App\Events\SFR\FSD\SFRFileChange;
 use App\Models\FSD\SFRFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Carbon;
 
 class ReadSFRFileJob implements ShouldQueue
 {
     use Queueable;
 
-    const CHUNK_SIZE = 5000;
-
-    public function __construct(public SFRFile $file) {}
+    public function __construct(public SFRFile $SFRFile)
+    {
+        $this->onQueue('SFR-FSD-ReadSFRFile');
+    }
 
     public function handle(): void
     {
-        $file = fopen($this->file->getFullPath(), 'r');
+        waitDisabledFile($this->SFRFile);
 
-        $count = 0;
-        $lines = [];
-        $jobs = [];
+        $file = fopen($this->SFRFile->getFullPath(), 'r');
+
+        $date_start = $this->SFRFile->in_date->startOfMonth();
+        $date_end = $this->SFRFile->in_date->endOfMonth();
+
         while (!feof($file)) {
-            $count++;
-            $lines[] = mb_convert_encoding(fgets($file), 'UTF-8', 'CP-866');
+            $line = mb_convert_encoding(fgets($file), 'UTF-8', 'CP-866');
 
-            if ($count >= $this::CHUNK_SIZE) {
-                $jobs[] = new ReadSFRFileChunkJob($this->file, $lines);
+            if (!preg_match("/^О[0-9]{3}-[0-9]{3}-[0-9]{3}.*$/", $line))
+                continue;
 
-                $count = 0;
-                $lines = [];
+            if (Carbon::make(mb_substr($line, 1184, 10)) < $date_start){
+                $date_start = Carbon::make(mb_substr($line, 1184, 10))->startOfMonth();
             }
+
+            if (Carbon::make(mb_substr($line, 1194, 10)) > $date_end)
+                $date_end = Carbon::make(mb_substr($line, 1194, 10))->endOfMonth();
         }
 
-        $jobs[] = new ReadSFRFileChunkJob($this->file, $lines);
-
-        Bus::batch($jobs)
-            ->finally(function () {
-                SFRFileChange::dispatch();
-            })
-            ->onQueue('SFR-FSD-ReadSFRFile')
-            ->dispatch();
+        $this->SFRFile->update([
+            'date_start' => $date_start,
+            'date_end' => $date_end,
+        ]);
     }
 }

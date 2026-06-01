@@ -23,6 +23,7 @@ class CurrentUserResource extends JsonResource
             'phone_dob'         => $this->phone_dob,
             'login'             => $this->login,
             'email'             => $this->email,
+            'is_email_verified' => $this->email_verified_at !== null,
         ];
     }
 }

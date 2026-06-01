@@ -36,9 +36,9 @@ class PaymentFileController extends Controller
                 return back()->withErrors([$file_name => 'Этот файл уже загружен']);
             }
 
-            $paymentFile = $uploadfile->moveToModel(PaymentFile::class, $request->validated());
+            $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, $request->validated());
 
-            ReadPaymentFileJob::dispatch($paymentFile)->onQueue('SFR-FSD-ReadPaymentFile');
+            ReadPaymentFileJob::dispatch($paymentFile);
         }
 
         return redirect()->route('fsd.payment-files.index')->with('succes', 'Запись успешно создана');

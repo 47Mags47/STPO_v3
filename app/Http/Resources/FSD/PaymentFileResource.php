@@ -18,6 +18,7 @@ class PaymentFileResource extends JsonResource
             'id' => $this->id,
             'file' => [
                 'name' => $this->file->origin_name,
+                'errors' => $this->file->errors->toResourceCollection(),
             ],
             'payments' => [
                 'count' => $this->payments()->count()
