@@ -1,15 +1,17 @@
 <script>
-import { usePage } from "@inertiajs/vue3";
-import Ico from "./../components/Ico.vue";
-import Menu from "./Menu.vue";
-import Notifications from "./Notifications.vue";
-import { router } from "@inertiajs/vue3";
+import { usePage, router } from '@inertiajs/vue3';
+
+import Ico from './../components/Ico.vue';
+import Menu from './Menu.vue';
+import Notifications from './Notifications.vue';
+import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 
 export default {
     components: {
         Ico,
         Menu,
         Notifications,
+        AlertsPopup
     },
 
     data() {
@@ -46,6 +48,7 @@ export default {
 
         <Notifications v-if="current_user"/>
         <Menu />
+        <AlertsPopup />
     </div>
 </template>
 

@@ -30,7 +30,7 @@ class SFRFileController extends Controller
 
         ReadSFRFileJob::dispatch($SFRFile);
 
-        return redirect()->route('fsd.sfr-files.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('fsd.sfr-files.index')->with('success', 'Запись успешно создана');
     }
 
     public function show(SFRFile $sfrFile)
