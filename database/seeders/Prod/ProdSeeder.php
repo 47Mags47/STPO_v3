@@ -10,9 +10,6 @@ class ProdSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         try {
@@ -21,6 +18,7 @@ class ProdSeeder extends Seeder
 
             $this->call(Base\TemplateStyleSeeder::class);
             $this->call(Base\TemplateTypeSeeder::class);
+            $this->call(Base\NotificationTypeSeeder::class);
 
             $this->call(Administrate\ModulGroupSeeder::class);
             $this->call(Administrate\ModulSeeder::class);

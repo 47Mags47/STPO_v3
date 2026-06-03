@@ -45,7 +45,7 @@ export default {
 </script>
 
 <template>
-    {{console.log(pr)}}
+    <!-- {{console.log(pr)}} -->
     <div class="alerts-popup-container">
         <template v-if="'info' in alerts">
             <template v-for="alert in alerts.info ?? []">

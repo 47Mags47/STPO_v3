@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
+use App\Services\NotificationService;
+
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -59,7 +61,6 @@ class HandleInertiaRequests extends Middleware
 
         if ($request->session()->has('loading'))
             $shared['flash']['loading'] = [$request->session()->get('loading')];
-
 
         // User
         $shared['current_user'] = Auth::user() !== null

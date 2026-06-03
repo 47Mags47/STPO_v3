@@ -11,6 +11,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
 
+use App\Events\SFR\FSD\FileGenerated;
+
+use App\Services\NotificationService;
+use App\Models\Notifications\AppNotification;
+
 class WriteSFRFileJob implements ShouldQueue
 {
     use Queueable;
@@ -21,17 +26,20 @@ class WriteSFRFileJob implements ShouldQueue
     private $fromFileCursor;
     private SFRFileResult $toFile;
     private $toFileCursor;
+    private NotificationService $notificationService;
 
     private float $defaultEquivalent;
 
 
-    public function __construct(public SFRFile $sfrFile)
+    public function __construct(public SFRFile $sfrFile, public int $userId)
     {
         $this->onQueue('SFR-FSD-WriteSFRFile');
     }
 
     public function handle(): void
     {
+        $this->notificationService = app(NotificationService::class);
+
         waitDisabledFile($this->sfrFile);
 
         $this->fromFile = $this->sfrFile;
@@ -92,6 +100,14 @@ class WriteSFRFileJob implements ShouldQueue
 
         fclose($this->fromFileCursor);
         fclose($this->toFileCursor);
+
+        $this->notificationService->create(
+            recipientId: $this->userId,
+            typeId: 1,
+            message: 'Файл успешно сформирован'
+        );
+
+        event(new FileGenerated($this->sfrFile, $this->userId));
     }
 
     public function writeDefault($month, $birth)

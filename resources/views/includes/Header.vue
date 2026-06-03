@@ -26,13 +26,26 @@ export default {
 
     computed: {
         current_user: () => usePage().props.current_user?.data,
+        pr: () => usePage().props
     },
+
+    mounted() {
+        window.Echo.channel('fsd.files')
+            .subscribed(() => {
+                console.log('subscribed');
+            })
+            .listen('.file.generated', (e) => {
+                console.log('received:', e);
+            })
+            .error((error) => {
+                console.error('Channel error:', error);
+            });
+    }
 };
 </script>
 
 <template>
     <div class="header-container">
-
         <div class="logo-container">
             <h3>СТПО</h3>
         </div>

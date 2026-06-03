@@ -10,6 +10,8 @@ use App\Models\Base\UploadFile;
 use App\Models\FSD\SFRFile;
 use Inertia\Inertia;
 
+use Illuminate\Support\Facades\Auth;
+
 class SFRFileController extends Controller
 {
     public function index()
@@ -35,6 +37,6 @@ class SFRFileController extends Controller
 
     public function show(SFRFile $sfrFile)
     {
-        WriteSFRFileJob::dispatch($sfrFile);
+        WriteSFRFileJob::dispatch($sfrFile, Auth::id());
     }
 }
