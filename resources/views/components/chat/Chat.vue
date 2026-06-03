@@ -73,8 +73,6 @@ export default {
             this.$refs.fileInput.click()
         },
         onFileChange(event) {
-            // this.selectedFiles = [...event.target.files]
-            // this.message = ''
             this.prepareFiles(event.target.files)
         },
         prepareFiles(files) {
@@ -128,7 +126,7 @@ export default {
         }
     },
     computed: {
-        // chatUser: () => usePage().props,
+        appeal_messages: () => usePage().props.messages?.data,
         current_user: () => usePage().props.current_user,
         messages() {
             return usePage().props.messages
