@@ -208,7 +208,7 @@ export default {
     <div class="relative w-fit" v-outsideClick="clickOutsideHandler">
         <!-- Кастомный датаинпут из трёх инпутов (дд мм гггг) -->
         <div
-        class="base-input w-fit! flex justify-between items-center mb-2!"
+        class="base-input w-fit! flex justify-between"
         @click.stop="togglePicker">
             <input
             v-if="useDayPicker"
@@ -249,7 +249,7 @@ export default {
             @click="(e) => e.target.select()"/>
 
             <Ico
-            class="ml-1! cursor-pointer hover:text-gray-400 transition"
+            class="ml-1! cursor-pointer"
             @click.stop="datePickerOpen = !datePickerOpen"
             type="faCalendar"/>
         </div>
@@ -272,7 +272,7 @@ export default {
             <div
             ref="pickerContainer"
             v-show="datePickerOpen"
-            class="date-picker-container z-10"
+            class="date-picker-container z-10 mt-2!"
             @click.stop>
                 <DayPicker
                 v-if="currentPicker === 'day'"

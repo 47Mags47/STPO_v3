@@ -109,3 +109,7 @@
     - other
         - [ ] FixEmailVerify
             Перенести логику из web.php в контроллер
+        - [ ] AddFilters
+            добавить фильтры в ResourceTable
+        - [ ] add fsdFilesNotifications
+            Добавить уведомление при скачивании файла

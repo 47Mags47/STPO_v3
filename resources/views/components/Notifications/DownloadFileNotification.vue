@@ -21,6 +21,11 @@ export default {
             type: String,
         },
     },
+    data() {
+        return {
+            isDelete: false,
+        }
+    },
     methods: {
         downoadClickButtonHandler(){
             router.get(this.link)
@@ -31,10 +36,14 @@ export default {
 
 <template>
     <BaseNotification class="download-file-notification-container">
-        <template #header> SYSTEM </template>
-
-        <template #ico>
+        <template #header>
             <Ico type="faFile" />
+            SYSTEM
+            <Ico
+                type="faX"
+                class="absolute! right-3 font-bold! cursor-pointer w-fit! hover:text-gray-300"
+                @click="deleteNot(notification.id)"
+            />
         </template>
 
         <template #content>

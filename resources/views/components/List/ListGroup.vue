@@ -119,7 +119,6 @@ export default {
         overflow-y: auto
         transition: height 0.25s ease;
         .list-item-container
-            height: 25px
             padding-left: 25px
     &.open
         .list-group-label

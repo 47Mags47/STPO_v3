@@ -12,11 +12,10 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        Status::create(['code' => 'new',        'name' => 'Новая']);
-        Status::create(['code' => 'in_work',    'name' => 'В работе']);
-        Status::create(['code' => 'pending',    'name' => 'Ожидание ответа']);
-        Status::create(['code' => 'closed',     'name' => 'Закрыта']);
-
-        Status::create(['code' => 'in_revision', 'name' => 'В доработке']);
+        Status::firstOrCreate(['code' => 'new',        'name' => 'Новая']);
+        Status::firstOrCreate(['code' => 'in_work',    'name' => 'В работе']);
+        Status::firstOrCreate(['code' => 'pending',    'name' => 'Ожидание ответа']);
+        Status::firstOrCreate(['code' => 'closed',     'name' => 'Закрыта']);
+        Status::firstOrCreate(['code' => 'in_revision', 'name' => 'В доработке']);
     }
 }

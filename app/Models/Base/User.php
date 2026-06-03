@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -81,5 +82,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function divisions(): BelongsToMany
     {
         return $this->belongsToMany(Division::class, 'auth_user_division');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'recipient_id')->orderBy('created_at');
     }
 }

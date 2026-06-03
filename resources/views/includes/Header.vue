@@ -1,15 +1,17 @@
 <script>
-import { usePage } from "@inertiajs/vue3";
-import Ico from "./../components/Ico.vue";
-import Menu from "./Menu.vue";
-import Notifications from "./Notifications.vue";
-import { router } from "@inertiajs/vue3";
+import { usePage, router } from '@inertiajs/vue3';
+
+import Ico from './../components/Ico.vue';
+import Menu from './Menu.vue';
+import Notifications from './Notifications.vue';
+import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 
 export default {
     components: {
         Ico,
         Menu,
         Notifications,
+        AlertsPopup
     },
 
     data() {
@@ -24,13 +26,26 @@ export default {
 
     computed: {
         current_user: () => usePage().props.current_user?.data,
+        pr: () => usePage().props
     },
+
+    mounted() {
+        window.Echo.channel('fsd.files')
+            .subscribed(() => {
+                console.log('subscribed');
+            })
+            .listen('.file.generated', (e) => {
+                console.log('received:', e);
+            })
+            .error((error) => {
+                console.error('Channel error:', error);
+            });
+    }
 };
 </script>
 
 <template>
     <div class="header-container">
-
         <div class="logo-container">
             <h3>СТПО</h3>
         </div>
@@ -46,6 +61,7 @@ export default {
 
         <Notifications v-if="current_user"/>
         <Menu />
+        <AlertsPopup />
     </div>
 </template>
 

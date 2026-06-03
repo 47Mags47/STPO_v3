@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
+use App\Services\NotificationService;
+
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -45,20 +47,20 @@ class HandleInertiaRequests extends Middleware
 
         // Flash
         $shared['flash'] = [];
-        if ($request->session()->has('message'))
-            $shared['flash']['success'] = $request->session()->get('message');
+        if ($request->session()->has('success'))
+            $shared['flash']['success'] = [$request->session()->get('success')];
 
         if ($request->session()->has('error'))
-            $shared['flash']['error'] = $request->session()->get('error');
+            $shared['flash']['error'] = [$request->session()->get('error')];
 
         if ($request->session()->has('info'))
-            $shared['flash']['info'] = $request->session()->get('info');
+            $shared['flash']['info'] = [$request->session()->get('info')];
 
         if ($request->session()->has('warning'))
-            $shared['flash']['warning'] = $request->session()->get('warning');
+            $shared['flash']['warning'] = [$request->session()->get('warning')];
 
         if ($request->session()->has('loading'))
-            $shared['flash']['loading'] = $request->session()->get('loading');
+            $shared['flash']['loading'] = [$request->session()->get('loading')];
 
         // User
         $shared['current_user'] = Auth::user() !== null

@@ -8,3 +8,4 @@ export { default as RedButton } from './buttons/RedButton.vue'
 export { default as MessageNotification } from "./Notifications/MessageNotification.vue";
 export { default as DownloadFileNotification } from "./Notifications/DownloadFileNotification.vue";
 
+export { default as Ico } from './Ico.vue'

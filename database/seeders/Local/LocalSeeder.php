@@ -18,13 +18,9 @@ class LocalSeeder extends Seeder
         $this->call(Administrate\TemplateSeeder::class);
 
         $this->call(Base\UserSeeder::class);
+        $this->call(Base\NotificationSeeder::class);
 
         $this->call(Appeal\AppealSeeder::class);
         $this->call(Appeal\MessageSeeder::class);
-
-        // $this->call(FSD\SFRFileSeeder::class);
-        // $this->call(FSD\RecipientSeeder::class);
-        // $this->call(FSD\PaymentFileSeeder::class);
-        // $this->call(FSD\PaymentSeeder::class);
     }
 }

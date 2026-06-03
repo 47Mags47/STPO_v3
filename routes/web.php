@@ -2,76 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 
-// Route::get('/test', fn() => Inertia::render('test'));
+Route::get('/test', fn() => Inertia::render('test'));
 
 Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
 Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
 Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login'])->name('auth.users.login');
 Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, 'store'])->name('auth.users.store');
-
-
-Route::get('/test', function () {
-
-    return Inertia::render('test', [
-
-        'messages' => [
-            [
-                "id" => 1,
-                "text" => "Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение",
-                "readed" => false,
-                "files" => [
-                    [
-                        'id' => 11,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/500/300'
-                    ],
-                    [
-                        'id' => 12,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/200/300'
-                    ]
-                ],
-                "appeal_id" => 1,
-                "sender_id" => 6,
-                "created_at" => "2026-05-08 02:31:12"
-            ],
-            [
-                "id" => 2,
-                "text" => "Это сообщение от пользователя 2 не длинное сообщение",
-                "readed" => true,
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-05-08 02:31:12"
-            ],
-            [
-                "id" => 2,
-                "text" => "Это сообщение от пользователя 2 длинное сообщение длинное сообщение длинное сообщение длинное сообщение с картинкой",
-                "readed" => true,
-                "files" => [
-                    [
-                        'id' => 13,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/200/300'
-                    ]
-                ],
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-05-08 02:31:12"
-            ]
-        ],
-        'current_user' => [
-            'id' => 2,
-            'full_name' => 'FULLNAME F.N.'
-        ]
-
-    ]);
-
-});
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -106,6 +44,7 @@ Route::name('appeal.')->prefix('/appeal')->group(function () {
 Route::name('fsd.')->prefix('/fsd')->group(function () {
     Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('/payment-recipients',                      App\Http\Controllers\FSD\PaymentRecipientController::class)->only(['index']);
     Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
     Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
 });

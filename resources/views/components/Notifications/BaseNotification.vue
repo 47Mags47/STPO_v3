@@ -7,7 +7,6 @@ export default {
 <template>
     <div class="notification-container">
         <div class="notification-header">
-            <slot name="ico" />
             <slot name="header" />
         </div>
 
@@ -21,16 +20,19 @@ export default {
 
 <style lang="sass" scoped>
 .notification-container
+    position: relative
+    padding: 4px 6px
     .notification-header
         display: flex
         align-items: center
         font-weight: bold
+        gap: 5px
         :deep()
             .ico-container
-                width: 25px
-                height: 25px
-                padding: 5px
+                width: 16px
+                height: 16px
+                // padding: 5px
     .notification-content-line
         .notification-content
-            padding: 5px 10px
+            padding: 10px 0 5px 0
 </style>

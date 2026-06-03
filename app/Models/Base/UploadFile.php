@@ -3,6 +3,7 @@
 namespace App\Models\Base;
 
 use App\Classes\FileModel;
+use App\Jobs\Base\MoveFilelJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -25,20 +26,24 @@ class UploadFile extends FileModel
     public bool $deleteBase = false;
     public bool $deleteInStorage = false;
 
-    ### Связи
+    ### Методы
     ##################################################
-    public function moveToModel(string $modelClass, array $attributes)
-    {
-        $this->move($modelClass::$StorageFileDisk, $modelClass::$StorageFilePath);
+    public static function moveToModel(
+        string $uploadFileId,
+        string $modelClass,
+        ?array $attributes = []
+    ) {
+        $uploadFile = UploadFile::whereKey($uploadFileId)->first();
 
-        $model = $modelClass::create(array_merge(
-            $attributes,
-            [
-                'file_id' => $this->file->id
-            ]
-        ));
+        if ($uploadFile === null)
+            abort(503);
 
-        $this->delete();
+        if (!(new $modelClass() instanceof FileModel))
+            abort(503);
+
+        $model = $modelClass::create(array_merge($attributes ?? [], ['file_id' => $uploadFile->file->id]));
+
+        MoveFilelJob::dispatch($uploadFile->file, $modelClass::$StorageFileDisk, $modelClass::$StorageFilePath);
 
         return $model;
     }

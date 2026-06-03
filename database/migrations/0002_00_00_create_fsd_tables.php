@@ -3,7 +3,6 @@
 use App\Models\Base\File;
 use App\Models\FSD\PaymentFile;
 use App\Models\FSD\PaymentType;
-use App\Models\FSD\SFRFile;
 use App\Models\FSD\TransitCategory;
 use App\Models\FSD\TransitFile;
 use Illuminate\Database\Migrations\Migration;
@@ -20,10 +19,9 @@ return new class extends Migration
         Schema::create('fsd__sfr_files', function (Blueprint $table) {
             $table->id();
 
-            $table->string('region_code', 3)->comment('Код региона из классификатора территориальных органов СФР');
-            $table->integer('sign_code')->comment("Признак вида представления информации \n0 – полный региональный сегмент Федерального регистра; \n1 – данные об изменениях в региональном сегменте Федерального регистра; \n2 – запрос на граждан, имеющих право на получение социальной доплаты к пенсии; \n3 – ответ на граждан, имеющих право на получение социальной доплаты к пенсии)");
-            $table->date('in_date')->comment('Дата формирования файла');
-            $table->integer('npp_for_month')->comment('Порядковый номер представления информации в указанном месяце');
+            $table->date('in_date');
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
 
             $table->foreignId('file_id')->constrained(File::getTableName());
 
@@ -36,18 +34,6 @@ return new class extends Migration
             $table->foreignId('file_id')->constrained(File::getTableName())->onDelete('cascade');
 
             $table->timestamps();
-        });
-
-        Schema::create('fsd__recipients', function (Blueprint $table) {
-            $table->id();
-
-            $table->string('SNILS');
-            $table->date('birth');
-
-            $table->date('date_start');
-            $table->date('date_end');
-
-            $table->foreignId('file_id')->constrained(SFRFile::getTableName())->onDelete('cascade');
         });
 
         Schema::create('fsd__payment_types', function (Blueprint $table) {
@@ -72,8 +58,12 @@ return new class extends Migration
         Schema::create('fsd__payments', function (Blueprint $table) {
             $table->id();
 
-            $table->decimal('amount', 8, 2);
-            $table->string('SNILS');
+            $table->decimal('amount', 8, 2)->nullable()->default(null);
+            $table->string('SNILS')->nullable()->default(null);
+
+            $table->string('first_name')->nullable()->default(null);
+            $table->string('last_name')->nullable()->default(null);
+            $table->string('middle_name')->nullable()->default(null);
 
             $table->foreignId('file_id')->constrained(PaymentFile::getTableName())->onDelete('cascade');
 

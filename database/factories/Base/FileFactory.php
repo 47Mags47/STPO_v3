@@ -16,7 +16,6 @@ class FileFactory extends Factory
             'path' => '',
             'name' => Str::random(40) . '.txt',
             'origin_name' => Str::random(40),
-            'errors' => [],
             'upload_at' => null,
         ];
     }

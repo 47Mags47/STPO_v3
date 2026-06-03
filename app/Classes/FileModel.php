@@ -3,7 +3,6 @@
 namespace App\Classes;
 
 use App\Models\Base\File;
-use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,7 +22,7 @@ abstract class FileModel extends BaseModel
 
     public static function boot()
     {
-        parent::boot(self::$StorageFileDisk);
+        parent::boot();
 
         self::creating(function ($model) {
             // Создание базовой модели в БД
@@ -94,31 +93,6 @@ abstract class FileModel extends BaseModel
         return Storage::disk($this->file->disk ?? 'local')->put($this->getLocalPath(), $content);
     }
 
-    public function setStatus(string $code): self
-    {
-        // HACK Добавить проверку на существование статуса с таким кодом
-        $this->file->update([
-            'status_id' => FileStatus::byCode($code)->id
-        ]);
-
-        return $this;
-    }
-
-    public function move(?string $disk = 'local', ?string $path = '', ?string $name = null)
-    {
-        $newFileName = $name ?? $this->file->name;
-        $newPath = Storage::disk($disk)->path($path . '/' . $newFileName);
-        $result = rename($this->getFullPath(), $newPath);
-
-        $this->file->update([
-            'disk' => $disk,
-            'path' => $path,
-            'name' => $newFileName,
-        ]);
-
-        return $result;
-    }
-
     public function copy(?string $disk = 'local', ?string $path = '', ?string $name = null){
         $name = $name ?? Str::random(40);
 
@@ -133,6 +107,13 @@ abstract class FileModel extends BaseModel
             'name' => $name,
             'origin_name' => $this->file->origin_name,
         ]);
+    }
+
+    public function addError(string $error)
+    {
+        $this->file->addError($error);
+
+        return $this;
     }
 
     ### Связи
