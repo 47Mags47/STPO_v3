@@ -14,5 +14,6 @@ class ModulGroupSeeder extends Seeder
     {
         ModulGroup::firstOrCreate(['code' => 'administrate',   'name' => 'Администрирование']);
         ModulGroup::firstOrCreate(['code' => 'SFR',            'name' => 'СФР']);
+        ModulGroup::firstOrCreate(['code' => 'payments',       'name' => 'Выплаты']);
     }
 }

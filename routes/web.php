@@ -48,3 +48,8 @@ Route::name('fsd.')->prefix('/fsd')->group(function () {
     Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
     Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
 });
+
+Route::name('payment.')->prefix('/payment')->group(function () {
+    Route::resource('/payments',                                 App\Http\Controllers\Payment\PaymentController::class)->except('show');
+    Route::resource('/events',                                  App\Http\Controllers\Payment\EventController::class)->except('show');
+});

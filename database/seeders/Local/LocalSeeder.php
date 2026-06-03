@@ -15,12 +15,14 @@ class LocalSeeder extends Seeder
     public function run(): void
     {
         $this->call(Administrate\DivisionSeeder::class);
-        $this->call(Administrate\TemplateSeeder::class);
 
         $this->call(Base\UserSeeder::class);
         $this->call(Base\NotificationSeeder::class);
 
         $this->call(Appeal\AppealSeeder::class);
         $this->call(Appeal\MessageSeeder::class);
+
+        $this->call(Payment\PaymentSeeder::class);
+        $this->call(Payment\EventSeeder::class);
     }
 }
