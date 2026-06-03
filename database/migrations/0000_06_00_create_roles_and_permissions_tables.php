@@ -44,7 +44,7 @@ return new class extends Migration
         Schema::create('auth__users_pivot_roles', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->constrained(Permission::getTableName());
+            $table->foreignId('user_id')->constrained(User::getTableName());
             $table->foreignId('role_id')->constrained(Role::getTableName());
 
             $table->foreignId('division_id')->nullable()->constrained(Division::getTableName());
