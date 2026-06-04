@@ -37,7 +37,7 @@ class MessageController extends Controller
         if ($request->hasFile('file')) {
             $file = File::factory()->create([
                 'disk' => 'appeals',
-                'path' => 'messages' . $appeal->id,
+                'path' => 'messages/' . $appeal->id,
                 'origin_name' => $request->file('file')->getBasename(),
             ]);
 

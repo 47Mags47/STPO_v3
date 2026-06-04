@@ -260,7 +260,6 @@ export default {
             </template>
 
             <template #footer>
-                <div @click="console.log(localMessages)">click</div>
                 <!-- файлы -->
                 <div
                 class="absolute left-0 top-0

@@ -156,6 +156,17 @@ export default {
                 return collumn.value(row)
 
             return Object.get(row, collumn.dataIndex)
+        },
+
+        statusColor(row, collumn) {
+            if (collumn.title?.toLowerCase() !== 'статус') return
+
+            const statusName = this.getCellValue(row, collumn).toLowerCase()
+            if (statusName === "новая")             return "text-blue-700"
+            if (statusName === "в работе")          return "text-yellow-800"
+            if (statusName === "ожидание ответа")   return "text-indigo-700"
+            if (statusName === "закрыта")           return "text-green-700"
+            if (statusName === "в доработке")       return "text-orange-700"
         }
     },
 
@@ -211,6 +222,7 @@ export default {
                 <template v-for="collumn in collumns">
                     <TableTd
                         v-if="checkCellVisible(row, collumn)"
+                        :class="statusColor(row, collumn)"
                         v-bind="{...collumn, value: getCellValue(row, collumn)}"
                     />
                 </template>

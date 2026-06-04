@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends BaseModel
 {
-    use HasFactory, ThisFileModel, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     ### Настройки
     ##################################################
