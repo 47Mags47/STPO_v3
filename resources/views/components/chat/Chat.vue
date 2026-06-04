@@ -380,23 +380,5 @@ export default {
 .custom-scrollbar
     scrollbar-gutter: stable
     overflow-y: auto
-
-    &::-webkit-scrollbar
-        height: 100%
-        width: 5px
-
-    // Трек (дорожка)
-    &::-webkit-scrollbar-track
-        background: #3d9bd16c
-        border-radius: 10px
-
-    // Ползунок
-    &::-webkit-scrollbar-thumb
-        background: #6cbbe9
-        border-radius: 10px
-        transition: background 0.2s ease
-        cursor: pointer
-
-        &:hover
-            background: #80d0ff
+    @include scroll()
 </style>
