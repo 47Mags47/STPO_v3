@@ -11,21 +11,29 @@ use App\Models\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Events\Appeal\MessageSent;
+
 class MessageController extends Controller
 {
     public function index(Appeal $appeal)
     {
         return Inertia::render('appeal/messages/index', [
-            'messages' => Inertia::scroll(fn() => MessageResource::collection($appeal->messages()->paginate(25))),
+            'appeal' => $appeal->toResource(),
+            'messages' => Inertia::scroll(fn() => MessageResource::collection($appeal->messages()
+                ->orderBy('id', 'desc')
+                ->cursorPaginate(25))),
         ]);
     }
 
     public function store(MessageStoreRequest $request, Appeal $appeal)
     {
-        $message = Message::make(collect($request->validated())->merge([
-            'sender_id' => user()->id
-        ]));
+        $message = Message::create([
+            'message'       => $request->message,
+            'sender_id'     => user()->id,
+            'appeal_id'     => $appeal->id,
+        ]);
 
+        // DEV Переделать в отдельную модель
         if ($request->hasFile('file')) {
             $file = File::factory()->create([
                 'disk' => 'appeals',
@@ -38,11 +46,15 @@ class MessageController extends Controller
             $message->file_id = $file->id;
         }
 
-        $message->store();
+        $message->save();
+
+        broadcast(new MessageSent(
+            $message,
+            $appeal->id
+        ))->toOthers();
 
         return redirect()
-            ->route('appeal.messages.index', ['appeal' => $appeal])
-            ->with('succes', 'Запись успешно создана');
+            ->route('appeal.messages.index', ['appeal' => $appeal]);
     }
 
     public function show(Appeal $appeal, Message $message)

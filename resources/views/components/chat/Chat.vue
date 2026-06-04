@@ -5,6 +5,7 @@ import baseChat from "./baseChat.vue";
 import MessageChat from "./messageChat.vue";
 import { DateTime } from "luxon";
 import DragAndDropZone from '../DragAndDropZone.vue';
+import { router } from '@inertiajs/vue3';
 
 export default {
     components: {
@@ -29,12 +30,30 @@ export default {
     },
     props: {},
     methods: {
+        loadMore() {
+            if (!this.links.next) return
+
+            router.visit(this.links.next, {
+                preserveState: true, // не пересоздаёт компонент
+                preserveScroll: true, // сохраняет текущий скролл
+                only: ['messages'],  // говорим бэку отправить нам ещё раз messages чтобы не обновлялись другие пропсы
+
+                onSuccess: (page) => {
+                    const allMessages = page.props.messages?.data
+                    this.localMessages = [
+                        ...page.props.messages.data,
+                    ]
+
+                    // this.messages = page.props.messages
+                }
+            })
+        },
         onDrop(files) {
             this.prepareFiles(files)
         },
         formatMessageDateSeporator(date) {
             return DateTime
-                .fromFormat(date, 'yyyy-MM-dd HH:mm:ss')
+                .fromISO(date)
                 .setLocale('ru')
                 .toFormat('dd MMMM yyyy')
         },
@@ -42,11 +61,13 @@ export default {
             if (index === this.localMessages.length - 1) return true
 
             const currentDate = DateTime
-                .fromFormat(this.localMessages[index].created_at, 'yyyy-MM-dd HH:mm:ss')
+                .fromISO(this.localMessages[index].created_at)
+                .setLocale('ru')
                 .toFormat('yyyy-MM-dd')
 
             const prevDate = DateTime
-                .fromFormat(this.localMessages[index + 1].created_at, 'yyyy-MM-dd HH:mm:ss')
+                .fromISO(this.localMessages[index + 1].created_at)
+                .setLocale('ru')
                 .toFormat('yyyy-MM-dd')
 
             return currentDate !== prevDate
@@ -93,17 +114,34 @@ export default {
             this.selectedFiles.splice(i, 1)
         },
 
-        sendMessage(){
+        async sendMessage(){
             if (!this.message?.trim() && !this.selectedFiles.length) return
 
             const files = [...this.selectedFiles]
 
+            const DateNow = DateTime.now().toISO()
+
             this.localMessages.unshift({
+                created_at: DateNow,
                 files,
                 id: Date.now() + Math.random(),
-                sender_id: this.current_user.id,
-                text: this.message,
-                created_at: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss')
+                message: this.message,
+                sender: {
+                    id: this.current_user.id,
+                    full_name: this.current_user.full_name
+                }
+            })
+
+            router.post(route('appeal.messages.store', {
+                appeal: this.appeal_id
+            }), {
+                message: this.message,
+                created_at: DateNow,
+            }, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    this.message = ''
+                }
             })
 
             this.message = ''
@@ -112,25 +150,31 @@ export default {
             this.scrollToBottom()
         },
 
+        onScroll(e) {
+            const el = e.target
+
+            const isTop = -1*el.scrollTop >= ( el.scrollHeight - el.clientHeight - 200 )
+
+            if (isTop) {
+                this.loadMore()
+            }
+        },
         scrollToBottom() {
             this.$nextTick(() => {
                 const container = document.getElementById('messagesContainer')
                 container.scrollTop = container.scrollHeight
             })
         },
-        date_created_at(new_date){
-            return DateTime.fromFormat(new_date, 'yyyy-MM-dd HH:mm:ss').setLocale('ru').toFormat('dd MMM yyyy HH:mm')
-        },
         updateWidth() {
             this.innerwidth = window.innerWidth
         }
     },
     computed: {
-        appeal_messages: () => usePage().props.messages?.data,
-        current_user: () => usePage().props.current_user,
-        messages() {
-            return usePage().props.messages
-        },
+        current_user: () => usePage().props.current_user?.data,
+        messages: () => usePage().props.messages?.data,
+        appeal_id: () => usePage().props.appeal?.data.id,
+        links: () => usePage().props.messages?.links,
+
         maxVisibleFiles() {
             return Math.floor(this.innerwidth / this.UPLOADED_FILE_WIDTH - 1)
         },
@@ -143,8 +187,23 @@ export default {
     },
     mounted() {
         // копия из Inertia props
-        this.localMessages = [...this.messages].reverse()
+        this.localMessages = [...this.messages]
         window.addEventListener('resize', this.updateWidth)
+
+        // DEV дописать пушинг файлов
+        Echo.private(`appeal.${this.appeal_id}`)
+        .listen('.message.sent', (msg) => {
+            if (this.current_user.id !== msg.sender_id) {
+                this.localMessages.unshift({
+                    created_at: msg.created_at,
+                    id: msg.id,
+                    message: msg.message,
+                    sender: {
+                        id: msg.sender_id,
+                    }
+                })
+            }
+        })
     },
     beforeUnmount() {
         window.removeEventListener('resize', this.updateWidth)
@@ -165,44 +224,43 @@ export default {
                 <slot name="header" />
             </template>
 
-            <!-- ТУТ CSS -> FLEX-DIRECTION: COLUMN-REVERSE -->
             <template #content>
-                <template v-for="(message, index) in localMessages"
-                :key="message.id">
-
-                    <MessageChat
-                    :message="message"
-                    :class="{
-                        'mt-16!':
-                        index   <       localMessages.length - 1
-                                &&      localMessages[index + 1].sender_id !== message.sender_id
-                                &&      !isShowDateSeparator(index)
-                    }"/>
-
-                    <!-- разделитель даты -->
-                    <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
-                        <div class="flex items-center gap-3 w-full max-w-[320px]">
-                            <div class="h-px flex-1 bg-gray-300"></div>
-                                <span
-                                class="shrink-0
-                                px-2! py-1!
-                                rounded-full
-                                bg-white
-                                border border-gray-200
-                                text-gray-500
-                                text-[12px]!
-                                font-medium
-                                shadow-sm">
-                                    {{ formatMessageDateSeporator(message.created_at) }}
-                                </span>
-                            <div class="h-px flex-1 bg-gray-300"></div>
+                <div class="flex flex-col-reverse custom-scrollbar h-full w-full px-4! pb-4!" @scroll="onScroll">
+                    <template v-for="(message, index) in localMessages"
+                    :key="message.id">
+                        <MessageChat
+                        :message="message"
+                        :class="{
+                            'mt-16!':
+                            index   <       localMessages.length - 1
+                                    &&      localMessages[index + 1].sender_id !== message.sender_id
+                                    &&      !isShowDateSeparator(index)
+                        }"/>
+                        <!-- разделитель даты -->
+                        <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
+                            <div class="flex items-center gap-3 w-full max-w-[320px]">
+                                <div class="h-px flex-1 bg-gray-300"></div>
+                                    <span
+                                    class="shrink-0
+                                    px-2! py-1!
+                                    rounded-full
+                                    bg-white
+                                    border border-gray-200
+                                    text-gray-500
+                                    text-[12px]!
+                                    font-medium
+                                    shadow-sm">
+                                        {{ formatMessageDateSeporator(message.created_at) }}
+                                    </span>
+                                <div class="h-px flex-1 bg-gray-300"></div>
+                            </div>
                         </div>
-                    </div>
-
-                </template>
+                    </template>
+                </div>
             </template>
 
             <template #footer>
+                <div @click="console.log(localMessages)">click</div>
                 <!-- файлы -->
                 <div
                 class="absolute left-0 top-0
@@ -319,60 +377,26 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.custom-scrollbar
+    scrollbar-gutter: stable
+    overflow-y: auto
 
+    &::-webkit-scrollbar
+        height: 100%
+        width: 5px
+
+    // Трек (дорожка)
+    &::-webkit-scrollbar-track
+        background: #3d9bd16c
+        border-radius: 10px
+
+    // Ползунок
+    &::-webkit-scrollbar-thumb
+        background: #6cbbe9
+        border-radius: 10px
+        transition: background 0.2s ease
+        cursor: pointer
+
+        &:hover
+            background: #80d0ff
 </style>
-
-<!-- 'messages' => [
-            [
-                "id" => 1,
-                // "text" => "Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение Это сообщение от пользователя 1 длинное сообщение",
-                "readed" => false,
-                "files" => [
-                    [
-                        'id' => 11,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/500/300'
-                    ],
-                    [
-                        'id' => 12,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/200/300'
-                    ]
-                ],
-                "appeal_id" => 1,
-                "sender_id" => 6,
-                "created_at" => "2026-01-01 02:31:12"
-            ],
-            [
-                "id" => 2,
-                "text" => "1 2 3 msg",
-                "readed" => true,
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-01-01 02:31:12"
-            ],
-            [
-                "id" => 3,
-                // "text" => "Это сообщение от пользователя 2 длинное сообщение длинное сообщение длинное сообщение длинное сообщение с картинкой",
-                "readed" => true,
-                "files" => [
-                    [
-                        'id' => 13,
-                        'isImage' => true,
-                        'url' => 'https://picsum.photos/400/500'
-                    ]
-                ],
-                "file_id" => null,
-                "appeal_id" => 1,
-                "sender_id" => 2,
-                "created_at" => "2026-05-08 02:31:12"
-            ],
-            [
-                "id" => 4,
-                "text" => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores aliquid distinctio minus asperiores labore consequuntur atque necessitatibus rem, itaque repudiandae. Quaerat minus neque voluptate aut ullam quod veniam consequatur quas.",
-                "readed" => false,
-                "appeal_id" => 1,
-                "sender_id" => 6,
-                "created_at" => "2026-05-08 04:05:13"
-            ], -->

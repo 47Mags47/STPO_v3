@@ -13,9 +13,11 @@ class MessageStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        //DEV Переделать на required_unless
         return [
-            'message' => ['required_unless:file', 'string', 'max:25000'],
-            'file' => ['required_unless:message', 'file', 'max:2048'],
+
+            'message' => ['required_if:file, null', 'string', 'max:25000'],
+            'file' => ['required_if:message, null', 'file', 'max:2048'],
         ];
     }
 }

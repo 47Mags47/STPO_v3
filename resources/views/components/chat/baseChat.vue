@@ -10,7 +10,7 @@
         </header>
 
         <main id="messagesContainer"
-        class=" w-full flex bg-white flex-col-reverse px-4! pb-4! custom-scrollbar min-h-0 h-full">
+        class="size-full bg-white min-h-0">
             <slot name="content" />
         </main>
 
@@ -22,26 +22,4 @@
 </template>
 
 <style lang="sass" scoped>
-.custom-scrollbar
-    scrollbar-gutter: stable
-    overflow-y: auto
-
-    &::-webkit-scrollbar
-        height: 100%
-        width: 5px
-
-    // Трек (дорожка)
-    &::-webkit-scrollbar-track
-        background: #3d9bd16c
-        border-radius: 10px
-
-    // Ползунок
-    &::-webkit-scrollbar-thumb
-        background: #6cbbe9
-        border-radius: 10px
-        transition: background 0.2s ease
-        cursor: pointer
-
-        &:hover
-            background: #80d0ff
 </style>

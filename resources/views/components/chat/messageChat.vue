@@ -49,9 +49,9 @@ export default {
         },
     },
     computed: {
-        current_user: () => usePage().props.current_user,
+        current_user: () => usePage().props.current_user?.data,
         date_created_at(){
-            return DateTime.fromFormat(this.message.created_at, 'yyyy-MM-dd HH:mm:ss').setLocale('ru').toFormat('dd MMM yyyy HH:mm')
+            return DateTime.fromISO(this.message.created_at).setLocale('ru').toFormat('HH:mm')
         },
         files(){
             return Array.isArray(this.message.files)
@@ -59,7 +59,7 @@ export default {
                 : []
         },
         isMine(){
-            return this.current_user.id === this.message.sender_id
+            return this.current_user.id === this.message.sender.id
         },
         isGroupedFiles() {
             return this.message.files?.length >= 4
@@ -190,7 +190,7 @@ export default {
 
             <!-- текст -->
             <span class="wrap-anywhere rounded-xl ">
-                {{ message.text }}
+                {{ message.message }}
             </span>
 
             <!-- время -->

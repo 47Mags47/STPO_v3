@@ -18,15 +18,14 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'message' => $this->message,
             'readed' => (bool) $this->readed,
-            'sender' => [
-                'fullName' => $this->sender->full_name,
-            ],
+            'sender' => $this->sender->toResource(),
             'file' => $this->file_id !== null
                 ? [
                     'url' => route('appeal.messages.show', ['appeal' => $this->appeal, 'message' => $this]),
                     'originName' => $this->originName,
                 ]
-                : null
+                : null,
+            'created_at' => $this->created_at,
         ];
     }
 }

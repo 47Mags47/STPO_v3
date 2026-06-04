@@ -32,7 +32,7 @@ export default {
     mounted() {
         window.Echo.channel('fsd.files')
             .subscribed(() => {
-                console.log('subscribed');
+                // console.log('subscribed');
             })
             .listen('.file.generated', (e) => {
                 console.log('received:', e);

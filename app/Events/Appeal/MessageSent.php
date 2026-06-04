@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Events\Appeal;
+
+use App\Models\Appeal\Message;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+
+class MessageSent implements ShouldBroadcastNow
+{
+    public function __construct(
+        public Message $message,
+        public int $appealId
+    ) {}
+
+    public function broadcastOn(): Channel
+    {
+        return new PrivateChannel('appeal.' . $this->appealId);
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'message.sent';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'id' => $this->message->id,
+            'message' => $this->message->message,
+            'sender_id' => $this->message->sender_id,
+            'created_at' => $this->message->created_at,
+
+        ];
+    }
+}
