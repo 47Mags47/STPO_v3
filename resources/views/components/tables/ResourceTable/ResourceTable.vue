@@ -96,6 +96,11 @@ export default {
         channels: {
             type: Array,
             default: []
+        },
+
+        rowClasses: {
+            type: [Array, String, Function],
+            default: null
         }
     },
 
@@ -112,6 +117,26 @@ export default {
         },
         deleteButtonClickHandler(row) {
             this.onDeleteButtonClick(row);
+        },
+
+        // Classes
+        getRowClasses(row) {
+            if (this.rowClasses === null) return
+
+            if (typeof this.rowClasses === 'string')
+                return this.rowClasses
+
+            if (Array.isArray(this.rowClasses))
+                return this.rowClasses.join(' ')
+
+            if (typeof this.rowClasses === 'function') {
+                let returned = this.rowClasses(row)
+
+                if ( typeof returned !== 'string' )
+                    console.error('rowClasses должен возвращать строку. Возвращаемое значение: ', returned)
+
+                return returned
+            }
         },
 
         // Check
@@ -218,12 +243,11 @@ export default {
         </template>
 
         <template #tbody>
-            <TableRow v-if="data.length > 0" v-for="row in data" >
+            <TableRow v-if="data.length > 0" v-for="row in data" :class="getRowClasses(row)" >
                 <template v-for="collumn in collumns">
                     <TableTd
                         v-if="checkCellVisible(row, collumn)"
-                        :class="statusColor(row, collumn)"
-                        v-bind="{...collumn, value: getCellValue(row, collumn)}"
+                        v-bind="{...collumn, row, value: getCellValue(row, collumn)}"
                     />
                 </template>
 

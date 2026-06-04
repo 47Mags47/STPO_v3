@@ -9,3 +9,5 @@ export { default as MessageNotification } from "./Notifications/MessageNotificat
 export { default as DownloadFileNotification } from "./Notifications/DownloadFileNotification.vue";
 
 export { default as Ico } from './Ico.vue'
+
+export { default as Chat } from './chat/Chat.vue'

@@ -56,6 +56,15 @@ export default {
                 title: 'Статус',
                 dataIndex: 'status.name',
                 width: '125px',
+                cellClasses: (value, row) => (
+                    {
+                        new:            'text-blue-700',
+                        closed:         'text-green-700',
+                        in_work:        'text-yellow-700',
+                        in_revision:    'text-red-700',
+                        pending:        'text-indigo-700',
+                    }[row.status.code] ?? ''
+                )
             },
             {
                 type: 'render',

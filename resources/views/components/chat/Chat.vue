@@ -21,14 +21,27 @@ export default {
             message: '',
 
             selectedFiles: [],
-            localMessages: [], // Это МОК
+            localMessages: [],
 
             innerwidth: window.innerWidth,
 
             isfilesUploading: false
         }
     },
-    props: {},
+    props: {
+        messages: {
+            type: Array,
+            default: () => []
+        },
+        channelName: {
+            type: String,
+            default: null
+        },
+        postURL: {
+            type: String,
+            default: null
+        }
+    },
     methods: {
         loadMore() {
             if (!this.links.next) return
@@ -43,8 +56,6 @@ export default {
                     this.localMessages = [
                         ...page.props.messages.data,
                     ]
-
-                    // this.messages = page.props.messages
                 }
             })
         },
@@ -132,17 +143,17 @@ export default {
                 }
             })
 
-            router.post(route('appeal.messages.store', {
-                appeal: this.appeal_id
-            }), {
-                message: this.message,
-                created_at: DateNow,
-            }, {
-                preserveScroll: true,
-                onSuccess: () => {
-                    this.message = ''
+            router.post(this.postURL ?? location.href,
+                {
+                    message: this.message,
+                    created_at: DateNow,
+                }, {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        this.message = ''
+                    }
                 }
-            })
+            )
 
             this.message = ''
             this.selectedFiles = []
@@ -171,8 +182,6 @@ export default {
     },
     computed: {
         current_user: () => usePage().props.current_user?.data,
-        messages: () => usePage().props.messages?.data,
-        appeal_id: () => usePage().props.appeal?.data.id,
         links: () => usePage().props.messages?.links,
 
         maxVisibleFiles() {
@@ -191,19 +200,21 @@ export default {
         window.addEventListener('resize', this.updateWidth)
 
         // DEV дописать пушинг файлов
-        Echo.private(`appeal.${this.appeal_id}`)
-        .listen('.message.sent', (msg) => {
-            if (this.current_user.id !== msg.sender_id) {
-                this.localMessages.unshift({
-                    created_at: msg.created_at,
-                    id: msg.id,
-                    message: msg.message,
-                    sender: {
-                        id: msg.sender_id,
+        if (this.channelName !== null)
+            Echo
+                .private(this.channelName)
+                .listen('.message.sent', (msg) => {
+                    if (this.current_user.id !== msg.sender_id) {
+                        this.localMessages.unshift({
+                            created_at: msg.created_at,
+                            id: msg.id,
+                            message: msg.message,
+                            sender: {
+                                id: msg.sender_id,
+                            }
+                        })
                     }
                 })
-            }
-        })
     },
     beforeUnmount() {
         window.removeEventListener('resize', this.updateWidth)

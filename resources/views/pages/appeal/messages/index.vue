@@ -1,6 +1,5 @@
 <script>
-import Chat from '../../../components/chat/Chat.vue';
-import Ico from '../../../components/Ico.vue';
+import { Chat, Ico, BlueButton} from '@components'
 import { usePage } from '@inertiajs/vue3';
 import { DateTime } from 'luxon';
 import { router } from '@inertiajs/vue3';
@@ -10,6 +9,7 @@ export default {
     components: {
         Chat,
         Ico,
+        BlueButton,
     },
     methods: {
         backClickHandler () {
@@ -17,33 +17,37 @@ export default {
         }
     },
     computed: {
-        prps() {
-            return usePage().props
-        },
-        appeal: () => usePage().props?.appeal?.data,
-        appealDateFormatted() {
-            return DateTime.fromISO(this.appeal.created).toFormat('dd.MM.yyyy hh:mm')
-        },
+        appeal: () => usePage().props.appeal.data,
+        messages: () => usePage().props.messages.data,
         statusColor() {
-            if (this.appeal.status.name.toLowerCase() === "новая") return "text-blue-700"
-            if (this.appeal.status.name.toLowerCase() === "в работе") return "text-yellow-800"
-            if (this.appeal.status.name.toLowerCase() === "ожидание ответа") return "text-indigo-700"
-            if (this.appeal.status.name.toLowerCase() === "закрыта") return "text-green-700"
-            if (this.appeal.status.name.toLowerCase() === "в доработке") return "text-orange-700"
-        }
+            const code = this.appeal.status.code
 
+            if(code === 'new')              return 'text-blue-700'
+            if(code === 'closed')           return 'text-green-700'
+            if(code === 'in_work')          return 'text-yellow-700'
+            if(code === 'in_revision')      return 'text-red-700'
+            if(code === 'pending')          return 'text-indigo-700'
+
+            return ''
+        }
     }
 }
 </script>
 
 <template>
-    <Chat>
+    <Chat
+        :channel-name="`appeal.${appeal.id}`"
+        :messages="messages"
+    >
         <template #header >
-            <Ico
+            <BlueButton
                 @click="backClickHandler"
-                type="faArrowLeft"
-                class="w-[26px]! text-(--blue-button-background) hover:text-(--blue-button-background-hover) cursor-pointer"
-            />
+                class="w-[64px]!"
+            >
+                <Ico
+                    type="faArrowLeft"
+                />
+            </BlueButton>
             <div>
                  <span class="font-bold!"> №: </span>
                  <span> {{ appeal.id }} </span>
@@ -51,10 +55,11 @@ export default {
             <div>
                 <span class="font-bold!"> Отправитель: </span>
                 <span> {{ appeal.sender.full_name }} </span>
+                <span> ({{ appeal.office }} каб.) </span>
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
-                <span> {{ appealDateFormatted }} </span>
+                <span> {{ appeal.created }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>

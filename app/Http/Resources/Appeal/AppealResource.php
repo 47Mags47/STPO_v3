@@ -16,7 +16,7 @@ class AppealResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created' => $this->created_at,
+            'created' => $this->created_at->format('d.m.Y'),
             'office' => $this->office,
             'comment' => $this->comment,
             'them' => [
@@ -30,6 +30,7 @@ class AppealResource extends JsonResource
                 'full_name' => $this->sender->full_name
             ],
             'status' => [
+                'code' => $this->status->code,
                 'name' => $this->status->name
             ],
             'actions' => [

@@ -8,6 +8,11 @@ export default {
     },
 
     props: {
+        row: {
+            type: Object,
+            default: {}
+        },
+
         // Content
         type: {
             type: String,
@@ -29,6 +34,10 @@ export default {
         rowspan: {
             type: [Number, Function],
             default: null,
+        },
+        cellClasses: {
+            type: [String, Array, Function],
+            default: null
         },
         position: {
             type: String,
@@ -65,12 +74,34 @@ export default {
                     : ''
         },
     },
+
+    methods: {
+        getCellClasses() {
+            if (this.cellClasses === null) return
+
+            if (typeof this.cellClasses === 'string')
+                return this.cellClasses
+
+            if (Array.isArray(this.cellClasses))
+                return this.cellClasses.join(' ')
+
+            if (typeof this.cellClasses === 'function') {
+                let returned = this.cellClasses(this.value, this.row)
+
+                if ( typeof returned !== 'string' )
+                    console.error('cellClasses должен возвращать строку. Возвращаемое значение: ', returned)
+
+                return returned
+            }
+        },
+    }
 };
 </script>
 
 <template>
     <td v-if="visible"
         :colspan
+        :class="getCellClasses()"
         :rowspan
     >
         <div :class="['table-cell-container', position]">

@@ -5,7 +5,7 @@
 <template>
     <div class="size-full flex flex-col drop-shadow-lg overflow-hidden">
         <header v-if="$slots.header"
-        class="h-[40px] bg-[#adcbf7] w-full flex items-center gap-5 px-4! py-2! shrink-0">
+        class="h-[40px] bg-white drop-shadow-md w-full flex items-center gap-5 px-4! py-2! shrink-0">
             <slot name="header"/>
         </header>
 
