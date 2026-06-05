@@ -59,6 +59,7 @@ export default {
     .table-header
         display: flex
         flex-direction: column
+        padding: 0 10px
         .header
             font-weight: 600
             color: #1f2937
@@ -70,13 +71,12 @@ export default {
             gap: 1rem
 
     .table-content
-        border: $table-border
+        // border: $table-border
         overflow: hidden
 
         table
             width: 100%
-            border-collapse: separate
-            border-spacing: 0
+            border-collapse: collapse
             color: #374151
             tbody
                 tr
@@ -88,6 +88,6 @@ export default {
                     &:hover
                         background: #eef2ff
 
-            tbody tr:last-child td
-                border-bottom: none
+            // tbody tr:last-child td
+            //     border-bottom: none
 </style>

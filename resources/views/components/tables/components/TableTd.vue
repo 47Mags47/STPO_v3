@@ -121,16 +121,17 @@ export default {
 <style lang="sass" scoped>
 table
     tbody tr
-        &:first-child th
-            border-bottom: none
+        // &:first-child th
+        //     border-bottom: none
         td
-            border-top: $table-border
-            border-right: $table-border
+            border: $table-border
+            // border-top: $table-border
+            // border-right: $table-border
             position: relative
-            &:first-child
-                border-left: none
-            &:last-child
-                border-right: none
+            // &:first-child
+            //     border-left: none
+            // &:last-child
+            //     border-right: none
 .table-cell-container
     padding: 10px
 
