@@ -84,5 +84,12 @@ class ModulSeeder extends Seeder
             'route_name'    => 'payment.events.index',
             'group_id'      => ModulGroup::byCode('payments')->id,
         ]);
+
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Выплаты',
+            'route_name'    => 'payment.payments.index',
+            'group_id'      => ModulGroup::byCode('payments')->id,
+        ]);
     }
 }
