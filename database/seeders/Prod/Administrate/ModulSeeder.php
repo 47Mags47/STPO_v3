@@ -18,6 +18,7 @@ class ModulSeeder extends Seeder
             'route_name' => 'appeal.appeals.index',
         ]);
 
+
         // Administrate
         Modul::firstOrCreate([
             'name'          => 'Список групп модулей',
@@ -44,6 +45,7 @@ class ModulSeeder extends Seeder
             'route_name'    => 'administrate.templates.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
+
 
         // SFR
         Modul::firstOrCreate([
@@ -72,6 +74,15 @@ class ModulSeeder extends Seeder
             'name'          => 'ФСД Проезд',
             'route_name'    => 'fsd.transit-files.index',
             'group_id'      => ModulGroup::byCode('SFR')->id,
+        ]);
+
+
+        // payments
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Календарь выплат',
+            'route_name'    => 'payment.events.index',
+            'group_id'      => ModulGroup::byCode('payments')->id,
         ]);
     }
 }
