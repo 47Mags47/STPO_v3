@@ -50,6 +50,7 @@ Route::name('fsd.')->prefix('/fsd')->group(function () {
 });
 
 Route::name('payment.')->prefix('/payment')->group(function () {
-    Route::resource('/payments',                                 App\Http\Controllers\Payment\PaymentController::class)->except('show');
+    Route::resource('/payments',                                App\Http\Controllers\Payment\PaymentController::class)->except('show');
     Route::resource('/events',                                  App\Http\Controllers\Payment\EventController::class)->except('show');
+    Route::resource('/banks',                                   App\Http\Controllers\Payment\BankController::class)->except('show');
 });

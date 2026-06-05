@@ -9,6 +9,15 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::create('payment__banks', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('code')->unique();
+            $table->string('name');
+
+            $table->timestamps();
+        });
+
         Schema::create('payment__payments', function (Blueprint $table) {
             $table->id();
 
@@ -33,5 +42,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('payment__events');
         Schema::dropIfExists('payment__payments');
+        Schema::dropIfExists('payment__banks');
     }
 };
