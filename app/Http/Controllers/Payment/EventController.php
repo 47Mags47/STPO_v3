@@ -27,6 +27,7 @@ class EventController extends Controller
                 ->get()
                 ->toResourceCollection()
                 ->groupBy('in_day'),
+            'current_date' => $date_start,
         ]);
     }
 

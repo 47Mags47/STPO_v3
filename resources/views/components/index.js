@@ -11,3 +11,8 @@ export { default as DownloadFileNotification } from "./Notifications/DownloadFil
 export { default as Ico } from './Ico.vue'
 
 export { default as Chat } from './chat/Chat.vue'
+
+export { default as Table } from './tables/Table.vue'
+export { default as TableRow } from './tables/components/TableRow.vue'
+export { default as TableTh } from './tables/components/TableTh.vue'
+export { default as TableTd } from './tables/components/TableTd.vue'

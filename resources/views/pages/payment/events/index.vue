@@ -1,12 +1,8 @@
 <script>
-import Table from "@components/tables/Table.vue"
-import TableRow from "@components/tables/components/TableRow.vue"
-import TableTd from "@components/tables/components/TableTd.vue"
-
-import BlueButton from "@components/buttons/BlueButton.vue"
-import Ico from "@components/Ico.vue"
-
-import Checkbox from "@components/inputs/CheckBox.vue"
+import {
+    Table, TableRow, TableTd,
+    BlueButton, Ico,
+ } from "@components"
 
 import { DateTime } from "luxon";
 import { usePage } from "@inertiajs/vue3";
@@ -17,36 +13,65 @@ export default {
     components: {
         Table, TableRow, TableTd,
         Ico,
-        Checkbox, BlueButton,
+        BlueButton,
     },
-     data() {
+    data() {
         return {
-            toggledMonth: DateTime.now(),
+            loading: false,
         }
     },
 
     computed: {
         paymentEvents: () => usePage().props.events,
+        toggledDate: () => DateTime.fromISO(usePage().props.current_date),
 
-        visibleMonth() {
-            return this.toggledMonth.setLocale('ru').toFormat('LLLL')
+        visibleToggledMonth() {
+            return this.toggledDate
+                .setLocale('ru')
+                .toFormat('LLLL')
         },
+        isPaymentDataEmpty() {
+            return this.paymentEvents.length === 0
+        }
     },
 
     methods: {
         prevMonth() {
-            this.toggledMonth = this.toggledMonth.minus({ months: 1 })
+            const prevDate = this.toggledDate.minus({ months: 1 })
+            this.routeTo('payment.events.index', {
+                month: prevDate.month,
+                year: prevDate.year,
+            })
         },
         nextMonth() {
-            this.toggledMonth = this.toggledMonth.plus({ months: 1 })
+            const nextDate = this.toggledDate.plus({ months: 1 })
+            this.routeTo('payment.events.index', {
+                month: nextDate.month,
+                year: nextDate.year,
+            })
         },
+
         getDateFormatted(date) {
-            return DateTime.fromSQL(date).setLocale('ru').toFormat('dd-MM-yyyy')
+            return DateTime
+                .fromSQL(date)
+                .setLocale('ru')
+                .toFormat('dd.MM.yyyy')
         },
-        toRoute(url, param) {
+
+        routeTo(url, param) {
             router.get(route(url, param ?? null))
         }
-    }
+    },
+
+    mounted() {
+        router.on('start', () => {
+            this.loading = true
+        })
+
+        router.on('finish', () => {
+            this.loading = false
+        })
+    },
 }
 </script>
 
@@ -63,21 +88,31 @@ export default {
                             <Ico type="faArrowLeft"/>
                         </BlueButton>
 
-                        <span class="text-xl!"> {{ visibleMonth }} </span>
+                        <span class="text-xl!"> {{ visibleToggledMonth }} </span>
 
                         <BlueButton class="" @click="nextMonth">
                             <Ico type="faArrowRight"/>
                         </BlueButton>
                 </div>
-
-                <BlueButton class="w-[35px]! p-2!" @click="toRoute('payment.events.create')">
+                <BlueButton class="w-[35px]! p-2!" @click="routeTo('payment.events.create')">
                     <Ico type="faPlus" />
                 </BlueButton>
            </div>
         </template>
 
         <template #tbody>
-            <template v-for="(events, date) in paymentEvents">
+            <div
+                v-if="loading"
+                class="not-data-cell"
+            >
+                <Ico type="faSpinner" class="animate-spin text-4xl!" />
+                <span class="text">Загрузка...</span>
+            </div>
+            <div v-else-if="isPaymentDataEmpty" vertical="center" horizontal="center" class="not-data-cell">
+                <Ico type="faDatabase"/>
+                <span class="text">Данных нет :(</span>
+            </div>
+            <template v-else v-for="(events, date) in paymentEvents">
                 <TableRow>
                     <TableTd :rowspan="events.length + 1" class="w-[400px]">
                         {{ getDateFormatted(date) }}
@@ -89,7 +124,7 @@ export default {
                             {{ event.data.payment.name }}
                         </TableTd>
                         <TableTd class="w-[56px]">
-                            <BlueButton class="size-[35px]! p-2!" @click="toRoute('payment.events.edit', event.data.id)">
+                            <BlueButton class="size-[35px]! p-2!" @click="routeTo('payment.events.edit', event.data.id)">
                                 <Ico type="faPen" class="p-[3px]!"/>
                             </BlueButton>
                         </TableTd>
@@ -107,4 +142,18 @@ export default {
             background: none
         &:hover
             background: none
+
+    .not-data-cell
+        height: 250px
+        padding: 35px 0px
+
+        border-bottom: $table-border
+        border-top: $table-border
+
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 25px
+
+        font-size: 1.2rem
 </style>
