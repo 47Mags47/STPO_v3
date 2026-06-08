@@ -110,8 +110,8 @@ export default {
             flex: 1
         .label-ico-container
             transition: .3s
-            width: 15px
-            height: 15px
+            width: 18px
+            height: 18px
     .list-group-content
         display: flex
         flex-direction: column
