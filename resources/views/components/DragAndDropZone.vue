@@ -8,9 +8,12 @@ export default {
     props: {
         onDrop: {
             type: Function,
-            defaul: () => { }
+            default: () => {}
         },
-        files: [],
+        files: {
+            type: Array,
+            default: () => []
+        },
     },
     data(){
         return {
@@ -33,8 +36,8 @@ export default {
 
 <template>
     <div :class="{'drop-zone': true, 'isActive': isActive}"
-        @dragover.prevent="() => isActive = true"
-        @dragleave.prevent="() => isActive = false"
+        @dragover.prevent="setActive(true)"
+        @dragleave.prevent="setActive(false)"
 
         @drop.prevent.stop="dropFilesHandler"
     >
