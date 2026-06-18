@@ -81,5 +81,5 @@ export default {
     &.ico-button
         width: 35px
         height: 35px
-        padding: 10px
+        padding: 8px
 </style>
