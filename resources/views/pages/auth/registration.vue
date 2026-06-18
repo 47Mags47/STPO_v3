@@ -37,13 +37,6 @@ export default {
             this.updateFullName();
         },
     },
-    // computed: {
-    //     form() {
-    //         return ({
-    //             login: email
-    //         })
-    //     }
-    // }
 };
 </script>
 
