@@ -55,7 +55,7 @@ export default {
             },
             {
                 type: 'render',
-                width: 45,
+                width: '45px',
                 render: (row) => row.file.errors.length > 0
                 ? {
                     component: Ico,
