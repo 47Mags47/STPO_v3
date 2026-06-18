@@ -5,14 +5,15 @@ use Inertia\Inertia;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // неавторизованные пользователи
-Route::get('/login', fn() => Inertia::render('auth/login'))->name('login');
-Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login'])->name('auth.users.login');
-Route::post('/users/create', [App\Http\Controllers\Auth\UserController::class, 'store'])->name('auth.users.store');
+Route::get('/login',            fn() => Inertia::render('auth/login'))                          ->name('login');
+Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('auth.users.login');
+Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('auth.users.create');
+Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('auth.users.store');
 
 // авторизованные пользователи
 Route::middleware('auth')->group(function () {
     Route::name('auth.')->group(function () {
-        Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['create', 'edit', 'update', 'show']);
+        Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
     Route::get('/test', fn() => Inertia::render('test'));
