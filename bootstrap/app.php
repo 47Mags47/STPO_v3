@@ -4,6 +4,12 @@ use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
+
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,5 +24,24 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Throwable $e, $request) {
+            // 401
+            if ($e instanceof AuthenticationException) {
+                return Inertia::render('httpErrors/401')
+                    ->toResponse($request)
+                    ->setStatusCode(401);
+            }
+
+            // 403
+            if (
+                $e instanceof AuthorizationException ||
+                ($e instanceof HttpException && $e->getStatusCode() === 403)
+            ) {
+                return Inertia::render('httpErrors/403')
+                    ->toResponse($request)
+                    ->setStatusCode(403);
+            }
+
+            return null;
+        });
     })->create();

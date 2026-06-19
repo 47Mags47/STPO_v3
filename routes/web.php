@@ -5,6 +5,9 @@ use Inertia\Inertia;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // неавторизованные пользователи
+Route::get('/403',        fn() => Inertia::render('httpErrors/403'))                            ->name('forbidden');
+Route::get('/401',     fn() => Inertia::render('httpErrors/401'))                               ->name('Unauthorized');
+
 Route::get('/login',            fn() => Inertia::render('auth/login'))                          ->name('login');
 Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('auth.users.login');
 Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('auth.users.create');
