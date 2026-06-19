@@ -17,7 +17,9 @@ createInertiaApp({
 
         const page = await importPage();
 
-        page.default.layout = AuthLayout;
+        if (!name.startsWith('httpErrors/')) {
+            page.default.layout ??= AuthLayout;
+        }
 
         return page;
     },
