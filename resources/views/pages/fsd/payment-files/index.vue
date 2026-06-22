@@ -30,11 +30,11 @@ export default {
             {
                 title: 'Наименование',
                 dataIndex: 'file.name',
+                width: '400px',
             },
             {
                 title: 'Наименование выплаты',
                 dataIndex: 'type.name',
-                width: '600px',
             },
             {
                 title: 'Тип',

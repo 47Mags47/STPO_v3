@@ -47,6 +47,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function checkValidLine(string $line)
     {
+        // HACK добавить вывод пропущеных строк
         // Проверка строки
         $none_SILS_pattern = implode(PATTERNS('CSV_SEPARATOR'), [
             str_replace(['/'], '', PATTERNS('LAST_NAME')),
