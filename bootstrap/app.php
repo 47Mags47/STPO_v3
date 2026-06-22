@@ -25,13 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, $request) {
-            // 401
-            if ($e instanceof AuthenticationException) {
-                return Inertia::render('httpErrors/401')
-                    ->toResponse($request)
-                    ->setStatusCode(401);
-            }
-
             // 403
             if (
                 $e instanceof AuthorizationException ||
