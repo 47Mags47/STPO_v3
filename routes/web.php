@@ -1,35 +1,49 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
-// неавторизованные пользователи
-Route::get('/403',        fn() => Inertia::render('httpErrors/403'))                            ->name('forbidden');
+Route::get('/test', fn() => Inertia::render('test'));
 
-Route::get('/login',            fn() => Inertia::render('auth/login'))                          ->name('login');
-Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('auth.users.login');
-Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('auth.users.create');
-Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('auth.users.store');
+### HTTP ERRORS
+##################################################
+Route::get('/403',        fn() => Inertia::render('httpErrors/403'))->name('forbidden');
 
-// авторизованные пользователи
+### DEFAULT ROUTES
+##################################################
+Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
+
+### GUEST
+##################################################
+Route::middleware('guest')->group(function () {
+    Route::get('/login',            fn() => Inertia::render('auth/login'))->name('login');
+
+    Route::name('auth.')->group(function () {
+        Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])->name('users.login');
+        Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])->name('users.create');
+        Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])->name('users.store');
+    });
+});
+
+### AUTH
+##################################################
 Route::middleware('auth')->group(function () {
     Route::name('auth.')->group(function () {
         Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
-    Route::get('/test', fn() => Inertia::render('test'));
+    Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
 
+    // EMAIL
+    Route::name('verification.')->prefix('/email')->group(function () {
+        // HACK создать страницу "вам необходимо подтвердить Email" маршрут ниже
+        Route::get('/verify',                       [EmailController::class, 'notice'])->name('notice');
+        Route::get('/verify/{id}/{hash}',           [EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
+        Route::get('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
+    });
 
-    Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
-    Route::get('/dashboard', fn() => 'dashboard page')->name('dashboard');
-
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect()->route('verification.success');
-    })->middleware(['auth', 'signed'])->name('verification.verify');
-    Route::get('/email/confirmed', fn() => Inertia::render('emailConfirmed'))->middleware(['auth'])->name('verification.success');
-
+    // FILE UPLOAD
     Route::name('upload.')->prefix('/upload')->group(function () {
         Route::post('files/startUpload',                            [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
         Route::post('chunks/{chunk}',                               [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
@@ -50,7 +64,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/appeals/{appeal}/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
     });
 
-    Route::name('fsd.')->prefix('/fsd')->group(function () {
+    Route::middleware('verified')->name('fsd.')->prefix('/fsd')->group(function () {
         Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
         Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::resource('/payment-recipients',                      App\Http\Controllers\FSD\PaymentRecipientController::class)->only(['index']);
