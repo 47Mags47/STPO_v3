@@ -1,7 +1,7 @@
 <script>
-import DashboardLayout from "../layouts/DashboardLayout.vue";
+import DashboardLayout from "../../layouts/DashboardLayout.vue";
 
-import ResourceForm from '../components/forms/ResourceForm.vue';
+import ResourceForm from '../../components/forms/ResourceForm.vue';
 
 export default {
     components: {

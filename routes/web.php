@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/users',       App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
-    Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
+    Route::get('/dashboard', fn() => Inertia::render('dashboard/dashboard'))->name('dashboard');
 
     // EMAIL
     Route::name('verification.')->prefix('/email')->group(function () {
