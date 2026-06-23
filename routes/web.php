@@ -20,9 +20,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/login',            fn() => Inertia::render('auth/login'))->name('login');
 
     Route::name('auth.')->group(function () {
-        Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])->name('users.login');
-        Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])->name('users.create');
-        Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])->name('users.store');
+        Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('users.login');
+        Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('users.create');
+        Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('users.store');
     });
 });
 
@@ -30,7 +30,8 @@ Route::middleware('guest')->group(function () {
 ##################################################
 Route::middleware('auth')->group(function () {
     Route::name('auth.')->group(function () {
-        Route::resource('/users', App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
+        Route::post('/logout',          [App\Http\Controllers\Auth\UserController::class,   'logout'])  ->name('logout');
+        Route::resource('/users',       App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
     Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');

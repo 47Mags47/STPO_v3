@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -28,6 +29,15 @@ class UserController extends Controller
         return back()->withErrors([
             'login' => 'Неверный логин или пароль.',
         ]);
+    }
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
     public function create()
     {

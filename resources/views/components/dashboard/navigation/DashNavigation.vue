@@ -50,6 +50,9 @@ export default {
             this.chosenNavItem = item
             this.routeTo(item.url)
         },
+        logout() {
+            router.post(route('auth.logout'))
+        }
     },
 
     created() {
@@ -73,7 +76,9 @@ export default {
                 </span>
 
                 <div class="h-full w-full flex justify-end items-center select-none">
-                    <span class="text-red-600 text-lg! rounded px-2! hover:text-red-400 active:text-red-600 cursor-pointer"> выход </span>
+                    <button class="group cursor-pointer" @click="logout">
+                        <span class="text-red-600 text-lg! rounded px-2! group-hover:text-red-400 group-active:text-red-600"> выход </span>
+                    </button>
                 </div>
 
             </template>
