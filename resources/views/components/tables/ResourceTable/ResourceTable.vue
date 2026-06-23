@@ -193,42 +193,7 @@ export default {
             return rest;
         },
         toggleFilterVisible() {
-            // const el = this.$refs.filtersRef;
-
-            // if (!el) return;
-
             this.isFilterOpen = !this.isFilterOpen;
-
-            // if (this.isFilterOpen) {
-            //     el.classList.add('opened');
-
-            //     // во время анимации скрываем overflow
-            //     el.style.overflow = 'hidden';
-            //     el.style.maxHeight = `${el.scrollHeight}px`;
-
-            //     // после анимации открываем overflow
-            //     setTimeout(() => {
-            //         if (this.isFilterOpen) {
-            //             el.style.overflow = 'visible';
-            //             el.style.maxHeight = 'none';
-            //         }
-            //     }, 400);
-            // } else {
-            //     // перед закрытием снова скрываем overflow
-            //     el.style.overflow = 'hidden';
-
-            //     if (el.style.maxHeight === 'none') {
-            //         el.style.maxHeight = `${el.scrollHeight}px`;
-            //     }
-
-            //     requestAnimationFrame(() => {
-            //         el.style.maxHeight = '0px';
-            //     });
-
-            //     setTimeout(() => {
-            //         el.classList.remove('opened');
-            //     }, 400);
-            // }
         },
 
         // Handlers
@@ -455,10 +420,8 @@ export default {
             align-items: center
             gap: 12px
 
-            // padding-bottom: 8px
+            padding-bottom: 8px
             overflow: hidden
-            padding: 10px
-
             opacity: 0
 
             transition: max-height .5s ease, opacity .5s ease
