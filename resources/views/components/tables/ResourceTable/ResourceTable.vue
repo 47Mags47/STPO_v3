@@ -7,12 +7,16 @@ import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 import { h } from 'vue';
 
+import FormItem from '../../FormItem.vue';
+
 export default {
     components: {
         Table,
         TableRow,
         TableTh,
         TableTd,
+
+        FormItem,
 
         CreateButton:   defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
         EditButton:     defineAsyncComponent(() => import("../buttons/EditButton.vue")),
@@ -22,6 +26,20 @@ export default {
         Ico:            defineAsyncComponent(() => import("../../Ico.vue")),
         Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
         BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+
+        Checkbox:       defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
+        SingleSelect:   defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
+        MultiSelect:    defineAsyncComponent(() => import('../../inputs/filters/MultiSelect.vue')),
+        NumberBetween:  defineAsyncComponent(() => import('../../inputs/filters/NumberBetween.vue')),
+        DateFilter:     defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
+    },
+
+    data() {
+        return {
+            hoveredFilterIndex: null,
+            isFilterOpen: false,
+            resetKey: 0,
+        }
     },
 
     props: {
@@ -86,6 +104,34 @@ export default {
             type: Object,
             default: () => ({ current_page: 1, last_page: 1 })
         },
+        filters: {
+            type: Array,
+            default: () => [],
+            validator(value) {
+                let hasInvalidType = value.filter((input) => {
+                    return ![
+                        'checkbox',
+                        'datepicker',
+                        'singleSelect',
+                        'multiSelect',
+                        'numberBetween',
+                        'dateFilter'
+                    ].includes(input.type);
+                });
+
+                if (hasInvalidType.length !== 0) {
+                    hasInvalidType.forEach((input) => {
+                        throw new Error(
+                            `Недействительный тип "${input.type}"!`,
+                        );
+                    });
+
+                    return false;
+                }
+
+                return true;
+            },
+        },
 
         //Other
         rowLinks: {
@@ -105,6 +151,86 @@ export default {
     },
 
     methods: {
+        resetFilters() {
+            this.resetKey++;
+
+            router.get(
+                window.location.pathname,
+                {},
+                {
+                    preserveState: true,
+                    replace: true
+                }
+            );
+        },
+        // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
+        fixDropdownPosition(event) {
+            const el =
+                event.currentTarget.querySelector(
+                    '.filter-item-content'
+                );
+
+            if (!el) return;
+
+            requestAnimationFrame(() => {
+                el.style.left = '0';
+                el.style.right = 'auto';
+
+                const rect = el.getBoundingClientRect();
+
+                if (rect.right > window.innerWidth - 12) {
+                    el.style.left = 'auto';
+                    el.style.right = '0';
+                }
+            });
+        },
+
+        preparePropsFromFilter(filter) {
+            const { type, label, ...rest } = filter;
+
+            rest.name = `filters[${rest.name}]`
+
+            return rest;
+        },
+        toggleFilterVisible() {
+            const el = this.$refs.filtersRef;
+
+            if (!el) return;
+
+            this.isFilterOpen = !this.isFilterOpen;
+
+            if (this.isFilterOpen) {
+                el.classList.add('opened');
+
+                // во время анимации скрываем overflow
+                el.style.overflow = 'hidden';
+                el.style.maxHeight = `${el.scrollHeight}px`;
+
+                // после анимации открываем overflow
+                setTimeout(() => {
+                    if (this.isFilterOpen) {
+                        el.style.overflow = 'visible';
+                        el.style.maxHeight = 'none';
+                    }
+                }, 400);
+            } else {
+                // перед закрытием снова скрываем overflow
+                el.style.overflow = 'hidden';
+
+                if (el.style.maxHeight === 'none') {
+                    el.style.maxHeight = `${el.scrollHeight}px`;
+                }
+
+                requestAnimationFrame(() => {
+                    el.style.maxHeight = '0px';
+                });
+
+                setTimeout(() => {
+                    el.classList.remove('opened');
+                }, 400);
+            }
+        },
+
         // Handlers
         createButtonClickHandler(e) {
             this.onCreateButtonClick(e);
@@ -210,6 +336,41 @@ export default {
             <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
         </template>
 
+        <template #filters>
+            <div class="container-table-filters">
+                <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
+                    <div class="w-[260px]" v-for="filter in filters">
+                        <MultiSelect    v-if="filter.type === 'multiSelect'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
+                        <SingleSelect   v-if="filter.type === 'singleSelect'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
+                        <Checkbox       v-if="filter.type === 'checkbox'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
+                        <DateFilter     v-if="filter.type === 'dateFilter'"
+                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"       :range-mode="filter.rangeMode"/>
+                    </div>
+                </div>
+                <div class="filter-btns">
+                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }" @click="resetFilters">
+                        Сбросить
+                    </button>
+                    <button                 class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                        Применить
+                    </button>
+                    <button type="button"   class="filter-showbtn"
+                    :class="{ active: isFilterOpen }"
+                    @click="toggleFilterVisible">
+                        фильтры
+                        <div class="filter-btn-item-icon">
+                            <Ico type="faChevronDown" class="" />
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </template>
+
         <template #toolbar>
             <div class="table-search-container">
 
@@ -276,7 +437,119 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.test
+    height: 25px
 .resource-table
+    .container-table-filters
+        width: 100%
+        display: flex
+        flex-direction: column
+        gap: 12px
+        z-index: 100
+
+        :deep(.table-filters)
+            display: flex
+            flex-wrap: wrap
+            align-items: center
+            gap: 12px
+
+            overflow: hidden
+            max-height: 0
+            pointer-events: none
+
+            padding-bottom: 8px
+
+            opacity: 0
+
+            transition: max-height .5s ease, opacity .5s ease
+
+            &.opened
+                opacity: 1
+                transform: translateY(0)
+                pointer-events: auto
+                box-shadow: 0px 7px 4px -8px gray
+
+        :deep(.filter-item)
+            position: relative
+            display: flex
+            align-items: center
+
+            height: 32px
+            gap: 6px
+            padding: 6px 10px
+            border-radius: 14px
+            background: whitesmoke
+            transition: .2s ease
+
+            &:hover
+                background: lightgray
+                cursor: pointer
+                color: black
+                .filter-item-icon
+                    color: black
+                    transform: rotate(180deg)
+                .filter-item-content
+                    display: flex
+
+            .filter-item-icon
+                color: lightgray
+                height: 100%
+                width: 24px
+                transform: rotate(0deg)
+                transition: .2s ease
+
+        .filter-btns
+            display: flex
+            justify-content: end
+            gap: 4px
+
+            :deep(.filter-btn)
+                height: fit-content
+                padding: 4px 10px
+                border-radius: 8px
+                background: $blue-button-background
+                color: white
+                align-self: flex-end
+                transition: .2s ease
+
+                opacity: 0
+                visibility: hidden
+
+                &.filterShow
+                    opacity: 1
+                    visibility: visible
+
+                &:hover
+                    background: $blue-button-backgroun-hover
+                    cursor: pointer
+
+            :deep(.filter-showbtn)
+                display: flex
+                gap: 6px
+                height: fit-content
+                padding: 4px 10px
+                border-radius: 8px
+                background: $blue-button-background
+                color: white
+                align-self: flex-end
+                transition: .2s ease
+
+                &:hover
+                    background: $blue-button-backgroun-hover
+                    cursor: pointer
+
+                &.active
+                    .filter-btn-item-icon
+                        transform: rotate(540deg)
+
+                .filter-btn-item-icon
+                    color: lightgray
+                    height: 100%
+                    width: 14px
+                    transition: .2s ease
+                    transform: rotate(0deg)
+
+
     :deep()
         .table-header
             padding: 0 15px

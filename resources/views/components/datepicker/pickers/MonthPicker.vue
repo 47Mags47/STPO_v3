@@ -22,20 +22,59 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        selectedDate: {
+        focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
-            default: null,
-        }
+            default: {}
+        },
+        fromFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        toFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        rangeMode: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             startOfInterval: DateTime.now().startOf('year'),
             endOfInterval: DateTime.now().endOf('year'),
+
+            selectedDate: null,
+            fromSelectedDate: null,
+            toSelectedDate: null
         }
     },
     methods: {
         onMonthClickhandler(e, selectedDate){
-            this.selectDate(selectedDate, 'month');
+            if (this.rangeMode) {
+                // Если обе даты выбраны
+                if (this.fromSelectedDate && this.toSelectedDate) {
+                    this.fromSelectedDate = null
+                    this.toSelectedDate = null
+                }
+
+                // Если нет начальной даты
+                if (!this.fromSelectedDate) {
+                    this.fromSelectedDate = selectedDate
+                    this.selectedToDate = null
+                }
+                else if (this.fromSelectedDate && !this.toSelectedDate) {
+                    this.toSelectedDate = selectedDate
+                    if (this.fromSelectedDate > this.toSelectedDate) {
+                        this.toSelectedDate = this.fromSelectedDate
+                        this.fromSelectedDate = selectedDate
+                    }
+                }
+                this.selectDate(this.fromSelectedDate, this.toSelectedDate, 'month');
+            } else {
+                this.selectDate(selectedDate, null, 'month');
+                this.selectedDate = selectedDate
+            }
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -73,7 +112,7 @@ export default {
         </template>
 
         <template #content>
-            <div class="w-full h-full p-1!">
+            <div class="month-picker-content-container w-full h-full p-1!">
                 <table class="table-fixed w-full h-full">
                     <thead></thead>
                     <tbody class="">
@@ -84,9 +123,12 @@ export default {
                                     @click="onMonthClickhandler($event, month.start)"
                                     :class="{
                                         // выбранный месяц (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && month.start.month === selectedDate.month,
+                                        'border-2 border-(--meny-background) bg-gray-300': !rangeMode && focusedDate && month.start.month === focusedDate.month,
                                         // сегодняший месяц (или месяц с пропса)
-                                        'text-white bg-(--meny-background)': startDateObject && month.start.month === startDateObject.month
+                                        'text-white bg-(--meny-background)': startDateObject && month.start.month === startDateObject.month,
+
+                                        'border-2 border-red-300 bg-gray-300': fromFocusedDate && month.start.hasSame(fromFocusedDate, 'month'),
+                                        'border-2 border-emerald-300 bg-gray-300': toFocusedDate && month.start.hasSame(toFocusedDate, 'month'),
                                     }">
                                         {{ month.start.setLocale('ru').toFormat('LLL').toUpperCase().slice(0, 3) }}
                                     </div>
@@ -101,5 +143,8 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-
+.month-picker-content-container
+    th, td
+        border: none
+        padding: 0
 </style>

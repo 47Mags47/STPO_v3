@@ -18,6 +18,12 @@ export default {
                 </h3>
             </div>
 
+            <div class="filters">
+                <form method="GET" action="/test">
+                    <slot name="filters"></slot>
+                </form>
+            </div>
+
             <div class="toolbar" v-if="'toolbar' in $slots">
                 <slot name="toolbar"></slot>
             </div>
@@ -64,6 +70,12 @@ export default {
             font-weight: 600
             color: #1f2937
             line-height: 1.3
+        .filters form
+            padding: 10px 0px
+            display: flex
+            flex-wrap: wrap
+            align-items: center
+            gap: 32px
         .toolbar
             display: flex
             justify-content: space-between
@@ -71,7 +83,6 @@ export default {
             gap: 1rem
 
     .table-content
-        // border: $table-border
         overflow: hidden
 
         table
@@ -87,7 +98,4 @@ export default {
 
                     &:hover
                         background: #eef2ff
-
-            // tbody tr:last-child td
-            //     border-bottom: none
 </style>

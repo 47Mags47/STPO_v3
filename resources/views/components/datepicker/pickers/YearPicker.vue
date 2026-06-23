@@ -10,10 +10,6 @@ export default {
         Ico,
     },
     props: {
-        onYearClick: {
-            type: Function,
-            default: (e) => { }
-        },
         onSwitcherClick: {
             type: Function,
             default: (e) => { }
@@ -26,14 +22,30 @@ export default {
             type: Function,
             default: (e) => { }
         },
-        selectedDate: {
+        focusedDate: { // Чтобы при перерендере компонента день дата запоминалась
             type: Object,
-            default: null,
-        }
+            default: {}
+        },
+        fromFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        toFocusedDate: {
+            type: Object,
+            default: {}
+        },
+        rangeMode: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             currentDate: this.startDateObject,
+
+            selectedDate: null,
+            fromSelectedDate: null,
+            toSelectedDate: null
         };
     },
     watch: {
@@ -73,9 +85,31 @@ export default {
                 this.currentDate = this.currentDate.minus({ year: 12 });
         },
 
-        onYearClickhandler(e, date){
-            this.selectDate(date, 'year');
-            this.onYearClick(e, date);
+        onYearClickhandler(e, selectedDate){
+            if (this.rangeMode) {
+                // Если обе даты выбраны
+                if (this.fromSelectedDate && this.toSelectedDate) {
+                    this.fromSelectedDate = null
+                    this.toSelectedDate = null
+                }
+
+                // Если нет начальной даты
+                if (!this.fromSelectedDate) {
+                    this.fromSelectedDate = selectedDate
+                    this.selectedToDate = null
+                }
+                else if (this.fromSelectedDate && !this.toSelectedDate) {
+                    this.toSelectedDate = selectedDate
+                    if (this.fromSelectedDate > this.toSelectedDate) {
+                        this.toSelectedDate = this.fromSelectedDate
+                        this.fromSelectedDate = selectedDate
+                    }
+                }
+                this.selectDate(this.fromSelectedDate, this.toSelectedDate, 'year');
+            } else {
+                this.selectDate(selectedDate, null, 'year');
+                this.selectedDate = selectedDate
+            }
         },
         onSwitcherClickHandler() {
             this.onSwitcherClick()
@@ -104,7 +138,7 @@ export default {
         </template>
 
         <template #content>
-            <div class="w-full h-full p-1!">
+            <div class="year-picker-content-container w-full h-full p-1!">
                 <table class="table-fixed w-full h-full">
                     <thead></thead>
                     <tbody class="">
@@ -115,9 +149,12 @@ export default {
                                     @click="onYearClickhandler($event, year.start)"
                                     :class="{
                                         // выбранный год (фокус)
-                                        'border-2 border-(--meny-background) bg-gray-300': selectedDate && year.start.hasSame(selectedDate, 'year'),
+                                        'border-2 border-(--meny-background) bg-gray-300': !rangeMode && focusedDate && year.start.hasSame(focusedDate, 'year'),
                                         // сегодняший год (или год с пропса)
-                                        'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year')
+                                        'text-white bg-(--meny-background)': startDateObject && year.start.hasSame(startDateObject, 'year'),
+
+                                        'border-2 border-red-300 bg-gray-300': fromFocusedDate && year.start.hasSame(fromFocusedDate, 'year'),
+                                        'border-2 border-emerald-300 bg-gray-300': toFocusedDate && year.start.hasSame(toFocusedDate, 'year'),
                                     }">
                                         {{ year.start.toFormat('yyyy') }}
                                     </div>
@@ -141,7 +178,10 @@ export default {
     :deep()
         .ico-container
             width: 25px
-.day-picker-content-container
+.year-picker-content-container
     table
         width: 100%
+    th, td
+        border: none
+        padding: 0
 </style>

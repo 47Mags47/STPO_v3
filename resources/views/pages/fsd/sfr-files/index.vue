@@ -58,6 +58,64 @@ export default {
                 width: '100px'
             },
         ]"
+        :filters="[
+
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect2',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'multiSelect',
+                label: 'multiSelect',
+                name: 'multiSelect',
+                options: [
+                    {
+                        label: 'label11223233213231',
+                    },
+                    {
+                        label: 'label12',
+                    },
+                    {
+                        label: 'label13',
+                    },
+                    {
+                        label: 'label14',
+                    },
+                ]
+            },
+            {
+                type: 'dateFilter',
+                label: 'singleDate',
+                name: 'singleDate',
+                rangeMode: false,
+            },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
+            },
+
+        ]"
         :channels="[
             {
                 name: 'sfr.fsd.sfr-file',
