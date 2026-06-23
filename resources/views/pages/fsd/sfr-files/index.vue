@@ -114,6 +114,21 @@ export default {
                 label: 'numberBetween',
                 name: 'numberBetween',
             },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
+            },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
+            },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween',
+            },
 
         ]"
         :channels="[

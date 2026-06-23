@@ -193,42 +193,42 @@ export default {
             return rest;
         },
         toggleFilterVisible() {
-            const el = this.$refs.filtersRef;
+            // const el = this.$refs.filtersRef;
 
-            if (!el) return;
+            // if (!el) return;
 
             this.isFilterOpen = !this.isFilterOpen;
 
-            if (this.isFilterOpen) {
-                el.classList.add('opened');
+            // if (this.isFilterOpen) {
+            //     el.classList.add('opened');
 
-                // во время анимации скрываем overflow
-                el.style.overflow = 'hidden';
-                el.style.maxHeight = `${el.scrollHeight}px`;
+            //     // во время анимации скрываем overflow
+            //     el.style.overflow = 'hidden';
+            //     el.style.maxHeight = `${el.scrollHeight}px`;
 
-                // после анимации открываем overflow
-                setTimeout(() => {
-                    if (this.isFilterOpen) {
-                        el.style.overflow = 'visible';
-                        el.style.maxHeight = 'none';
-                    }
-                }, 400);
-            } else {
-                // перед закрытием снова скрываем overflow
-                el.style.overflow = 'hidden';
+            //     // после анимации открываем overflow
+            //     setTimeout(() => {
+            //         if (this.isFilterOpen) {
+            //             el.style.overflow = 'visible';
+            //             el.style.maxHeight = 'none';
+            //         }
+            //     }, 400);
+            // } else {
+            //     // перед закрытием снова скрываем overflow
+            //     el.style.overflow = 'hidden';
 
-                if (el.style.maxHeight === 'none') {
-                    el.style.maxHeight = `${el.scrollHeight}px`;
-                }
+            //     if (el.style.maxHeight === 'none') {
+            //         el.style.maxHeight = `${el.scrollHeight}px`;
+            //     }
 
-                requestAnimationFrame(() => {
-                    el.style.maxHeight = '0px';
-                });
+            //     requestAnimationFrame(() => {
+            //         el.style.maxHeight = '0px';
+            //     });
 
-                setTimeout(() => {
-                    el.classList.remove('opened');
-                }, 400);
-            }
+            //     setTimeout(() => {
+            //         el.classList.remove('opened');
+            //     }, 400);
+            // }
         },
 
         // Handlers
@@ -447,27 +447,26 @@ export default {
         gap: 12px
         z-index: 100
 
+
         :deep(.table-filters)
             display: flex
+            max-height: 0
             flex-wrap: wrap
             align-items: center
             gap: 12px
 
+            // padding-bottom: 8px
             overflow: hidden
-            max-height: 0
-            pointer-events: none
-
-            padding-bottom: 8px
+            padding: 10px
 
             opacity: 0
 
             transition: max-height .5s ease, opacity .5s ease
 
             &.opened
+                overflow: visible
                 opacity: 1
-                transform: translateY(0)
-                pointer-events: auto
-                box-shadow: 0px 7px 4px -8px gray
+                max-height: 150px
 
         :deep(.filter-item)
             position: relative
