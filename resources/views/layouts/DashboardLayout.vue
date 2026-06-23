@@ -54,10 +54,10 @@ export default {
             <div v-else class="size-full">
                 <div class="size-full">
                     <slot name="default" />
-                    <!-- <slot name="main" />
+                    <slot name="main" />
                     <slot name="userdata" />
                     <slot name="administrate" />
-                    <slot name="settings" /> -->
+                    <slot name="settings" />
                 </div>
             </div>
         </div>

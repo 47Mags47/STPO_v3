@@ -52,11 +52,6 @@ export default {
         },
     },
 
-    // computed: {
-    //     chosenNavItem() {
-    //         return this.navItems.find(navItem => navItem.url === usePage().url)
-    //     }
-    // },
     created() {
         // по умолчанию выбранный элемент это объект, у которого свойство url = текущему url
         this.chosenNavItem = this.navItems.find(navItem => navItem.url === usePage().url)
