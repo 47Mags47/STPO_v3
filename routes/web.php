@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         // HACK создать страницу "вам необходимо подтвердить Email" маршрут ниже
         Route::get('/verify',                       [EmailController::class, 'notice'])->name('notice');
         Route::get('/verify/{id}/{hash}',           [EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
-        Route::get('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
+        Route::post('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
     });
 
     // FILE UPLOAD

@@ -11,17 +11,16 @@ use Inertia\Inertia;
 class EmailController extends Controller
 {
     public function notice(){
-        return Inertia::render('httpErrors/403_NoEmail');
+        return Inertia::render('email/index');
     }
 
     public function verify(EmailVerificationRequest $request){
         $request->fulfill();
-        dd('1412');
         return redirect()->route('home')->with('succes', 'Email адрес подтвержден');
     }
 
     public function send(Request $request){
         $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Письмо с подтверждением отправлено!');
+        return Inertia::render('email/create');
     }
 }
