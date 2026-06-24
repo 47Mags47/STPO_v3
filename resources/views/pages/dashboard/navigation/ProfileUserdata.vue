@@ -1,11 +1,9 @@
 <script>
-import DashboardLayout from "../layouts/DashboardLayout.vue";
-
-import ResourceForm from '../components/forms/ResourceForm.vue';
-import Ico from "../components/Ico.vue";
-
 import { router, usePage } from "@inertiajs/vue3";
 import { readonly } from "vue";
+
+import { DashboardLayout } from "@layouts";
+import { ResourceForm, Ico } from '@components';
 
 export default {
     components: {
