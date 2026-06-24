@@ -304,7 +304,7 @@ export default {
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                    <div class="w-[260px]" v-for="filter in filters">
+                    <div class="min-w-[260px] flex-1" v-for="filter in filters">
                         <MultiSelect    v-if="filter.type === 'multiSelect'"
                         :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
                         <SingleSelect   v-if="filter.type === 'singleSelect'"
@@ -423,12 +423,13 @@ export default {
             overflow: hidden
             opacity: 0
 
-            transition: max-height .5s ease, opacity .5s ease
+            transition: max-height .5s ease, padding-bottom .5s ease, opacity .5s ease
 
             &.opened
                 overflow: visible
                 opacity: 1
-                max-height: 150px
+                max-height: 170px
+                padding-bottom: 8px
 
         :deep(.filter-item)
             position: relative
