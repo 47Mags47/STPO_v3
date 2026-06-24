@@ -40,11 +40,11 @@ export default {
     <div class="number-between-container" v-outsideClick="clickOutsideHandler">
         <div class="number-between-label-container" @click="labelClickHandler">
             {{ label }}
-            <Ico type="faChevronDown" class="ico-chevron" :class="{ 'active': isOpen }"/>
+            <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
         <div class="number-between-content-container" :class="{ 'active': isOpen }">
             <NumberInput :name="`${name}[from]`" />
-            <Ico type="faMinus" class="ico-minus" />
+            <Ico type="minus" class="ico-minus" />
             <NumberInput :name="`${name}[to]`" />
         </div>
     </div>

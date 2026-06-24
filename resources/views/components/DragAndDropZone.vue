@@ -41,7 +41,7 @@ export default {
 
         @drop.prevent.stop="dropFilesHandler"
     >
-        <Ico type="faCloudArrowDown" />
+        <Ico type="cloud-arrow-down" />
     </div>
 </template>
 

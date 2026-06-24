@@ -43,7 +43,7 @@ export default {
             'bg-sky-700/90': alertType === 'info',
             'bg-red-700': alertType === 'error',
         }">
-            <Ico type="faXmark" class="text-red-700 flex !w-fit bg-gray-300 !px-1 cursor-pointer
+            <Ico type="xmark" class="text-red-700 flex !w-fit bg-gray-300 !px-1 cursor-pointer
             hover:bg-gray-100 hover:text-red-500"
             @click="closeErrAlert"/>
         </div>

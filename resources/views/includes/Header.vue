@@ -52,7 +52,7 @@ export default {
 
         <div class="user-info-container" v-if="current_user" @click="toDashboard">
             <div class="user-logo">
-                <Ico type="faUser" />
+                <Ico type="user" />
             </div>
             <div class="user-name">
                 <span>{{ current_user?.full_name }}</span>

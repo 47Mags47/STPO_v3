@@ -131,9 +131,9 @@ export default {
             </div>
 
             <div class="day-picker-header-container items-center">
-                <Ico class="cursor-pointer hover:text-white" type="faChevronLeft" @click="prevSlide"/>
+                <Ico class="cursor-pointer hover:text-white" type="chevron-left" @click="prevSlide"/>
                 <span class="font-bold! text-2xl! cursor-pointer hover:text-white" @click="onSwitcherClickHandler"> годы </span>
-                <Ico class="cursor-pointer hover:text-white" type="faChevronRight" @click="nextSlide" />
+                <Ico class="cursor-pointer hover:text-white" type="chevron-right" @click="nextSlide" />
             </div>
         </template>
 

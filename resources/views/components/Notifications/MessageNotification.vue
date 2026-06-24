@@ -25,7 +25,7 @@ export default {
         </template>
 
         <template #ico>
-            <Ico type="faComment" />
+            <Ico type="comment" />
         </template>
 
         <template #content>

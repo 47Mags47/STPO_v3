@@ -38,7 +38,7 @@ export default {
         <template #header>
             <div class="h-full w-full bg-red-600">
                  <div class="absolute! left-1/2 top-[25%] -translate-x-1/2 bg-red-200 rounded-full p-1.5! size-fit">
-                    <Ico type="faCircleExclamation"
+                    <Ico type="circle-exclamation"
                     class="size-[30px]!
                     text-red-600"/>
                  </div>

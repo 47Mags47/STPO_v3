@@ -26,11 +26,11 @@ export default {
         :meta="files.meta"
         :rowLinks="[
             {
-                'ico': 'faFile',
+                'ico': 'file',
                 'onClick': (row) => router.visit(route('fsd.payment-files.index', {'sfrFile': row.id}))
             },
             {
-                'ico': 'faDownload',
+                'ico': 'download',
                 'onClick': (row) => router.visit(route('fsd.sfr-files.show', {'sfr_file': row.id}))
             }
         ]"

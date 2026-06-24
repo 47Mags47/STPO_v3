@@ -24,6 +24,6 @@ export default {
 
 <template>
     <BlueButton @click="clickHandler" class="ico-button">
-        <Ico type="faPlus" />
+        <Ico type="plus" />
     </BlueButton>
 </template>

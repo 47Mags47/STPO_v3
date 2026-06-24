@@ -332,7 +332,7 @@ export default {
                 <Ico
                 class="ico"
                 @click.stop="togglePicker"
-                type="faCalendar"/>
+                type="calendar"/>
             </div>
         </div>
 

@@ -61,7 +61,7 @@ export default {
 <template>
     <div class="menu-container" v-outsideClick="outsideClickHandler">
         <div class="button-container" @click="togleOpen">
-            <Ico type="faBars" />
+            <Ico type="bars" />
         </div>
         <div :class="{ 'menu-list-container': true, open: isOpen }">
             <List :items="menuList" :onItemClick="(item) => menuItemClickHandler(item)" />

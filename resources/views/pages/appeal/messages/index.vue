@@ -45,7 +45,7 @@ export default {
                 class="w-[64px]!"
             >
                 <Ico
-                    type="faArrowLeft"
+                    type="arrow-left"
                 />
             </BlueButton>
             <div>

@@ -76,12 +76,12 @@ export default {
         <div class="add-file-container">
             <RedButton class="list-action-button clear-file-list-button" :onClick="clearFileListButtonClickHandler">
                 <span>Очистить</span>
-                <Ico type="faTrash" />
+                <Ico type="trash" />
             </RedButton>
             <div class="empty-box"></div>
             <BlueButton class="list-action-button add-file-button" :onClick="addFileButtonClickHandler">
                 <span>Добавить файлы</span>
-                <Ico type="faPaperclip" />
+                <Ico type="paperclip" />
             </BlueButton>
         </div>
     </div>

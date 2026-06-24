@@ -37,10 +37,10 @@ export default {
 <template>
     <BaseNotification class="download-file-notification-container">
         <template #header>
-            <Ico type="faFile" />
+            <Ico type="file" />
             SYSTEM
             <Ico
-                type="faX"
+                type="x"
                 class="absolute! right-3 font-bold! cursor-pointer w-fit! hover:text-gray-300"
                 @click="deleteNot(notification.id)"
             />
@@ -50,7 +50,7 @@ export default {
             <div class="download-file-notification-content">
                 <span class="message">Файл {{ fileName }} готов к загрузке.</span>
                 <RedButton :onClick="downoadClickButtonHandler" >
-                    <Ico type="faDownload" />
+                    <Ico type="download" />
                 </RedButton>
             </div>
         </template>

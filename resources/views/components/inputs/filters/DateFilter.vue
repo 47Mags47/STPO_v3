@@ -62,7 +62,7 @@ export default {
         <div class="date-input" @click="selectClickHandler">
             {{ label }}
 
-            <Ico type="faChevronDown" class="ico-chevron" :class="{ 'active': isOpen }"/>
+            <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
 
         <div ref="dateInputContainer" class="date-input-content-container"

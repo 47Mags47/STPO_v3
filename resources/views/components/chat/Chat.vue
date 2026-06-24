@@ -300,7 +300,7 @@ export default {
                         transition-opacity duration-200
                         text-gray-300 hover:text-red-500
                         cursor-pointer">
-                            <Ico type="faXmark" class="w-[12px]!"/>
+                            <Ico type="xmark" class="w-[12px]!"/>
                         </button>
 
                         <!-- номер файла -->
@@ -361,7 +361,7 @@ export default {
                 hover:text-gray-400  active:text-gray-200 cursor-pointer"
                 @click="uploadFileHandler">
                     <!-- иконка загрузки файлов -->
-                    <Ico type="faPaperclip" class="p-0.5!"/>
+                    <Ico type="paperclip" class="p-0.5!"/>
                 </button>
 
                 <!-- кнопка отправки -->
@@ -369,7 +369,7 @@ export default {
                 text-white bg-(--blue-button-background)
                 hover:text-gray-400  active:text-gray-200 cursor-pointer"
                 @click="sendMessage">
-                    <Ico type="faPaperPlane" class="p-0.5!"/>
+                    <Ico type="paper-plane" class="p-0.5!"/>
                 </button>
 
 

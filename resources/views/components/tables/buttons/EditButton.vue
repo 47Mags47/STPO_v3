@@ -24,6 +24,6 @@ export default {
 
 <template>
     <BlueButton @click="clickHandler" class="ico-button">
-        <Ico type="faPen" />
+        <Ico type="pen" />
     </BlueButton>
 </template>

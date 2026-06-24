@@ -1,30 +1,16 @@
 <script>
-import * as icons from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 export default {
-    components: {
-        FontAwesomeIcon,
-    },
     props: {
         type: {
             type: String,
-            validator(value){
-                return value in icons
-            }
-        },
-    },
-    data() {
-        return {
-            icons
         }
-    },
+    }
 };
 </script>
 
 <template>
     <div class="ico-container">
-        <FontAwesomeIcon :icon="icons[type]" />
+        <i :class="['fa-solid', `fa-${type}`]"></i>
     </div>
 </template>
 

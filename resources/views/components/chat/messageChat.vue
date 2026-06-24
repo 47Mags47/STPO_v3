@@ -89,7 +89,7 @@ export default {
                         <div v-if="file.isImage && !loadedImages[file.url]" class="flex gap-2 items-center" :class="isMine ? 'justify-end' : 'justify-start'">
                             <div class="inset-0 size-[1lh] flex items-center justify-center">
                                 <Ico
-                                type="faSpinner"
+                                type="spinner"
                                 class="animate-spin text-gray-500"/>
                             </div>
                             <span> картинка загружается </span>
@@ -118,7 +118,7 @@ export default {
                                 </span>
                             </div>
                             <Ico
-                            type="faFile"
+                            type="file"
                             class="text-gray-600 aspect-square group-hover:text-gray-400 transition duration-300"/>
                         </div>
                     </div>
@@ -137,7 +137,7 @@ export default {
                             <span> все файлы </span>
                             <span class="transition" :class="isShowAllFiles ? 'opacity-0' : 'opacity-100'"> +{{ message.files.length - 4 }} </span>
                             <div class="h-full">
-                                <Ico type="faChevronRight"
+                                <Ico type="chevron-right"
                                 class="transition"
                                 :class="isShowAllFiles ? 'rotate-90' : 'rotate-0'"/>
                             </div>
@@ -151,7 +151,7 @@ export default {
                 <div v-if="file.isImage && !loadedImages[file.url]" class="flex gap-2 items-center" :class="isMine ? 'justify-end' : 'justify-start'">
                     <div class="inset-0 size-[1lh] flex items-center justify-center">
                         <Ico
-                        type="faSpinner"
+                        type="spinner"
                         class="animate-spin text-gray-500"/>
                     </div>
                     <span> картинка загружается </span>
@@ -182,7 +182,7 @@ export default {
                             </span>
                         </div>
                         <Ico
-                        type="faFile"
+                        type="file"
                         class="text-gray-600 h-[48px]! w-fit! group-hover:text-gray-400 transition duration-300"/>
                     </div>
                 </a>
@@ -198,7 +198,7 @@ export default {
             :class="isMine ? 'justify-start' : 'justify-end'">
                 <Ico
                 v-if="current_user.id === message.sender_id"
-                type="faCheckDouble"
+                type="check-double"
                 class="h-[1lh]! w-fit!"
                 :class="message.readed ? 'text-blue-600' : 'text-gray-600'"/>
                 <span class="text-gray-600 italic">
@@ -233,7 +233,7 @@ export default {
                         select-none
                         transition-transform duration-150"/>
                         <button class="absolute right-0 top-0 size-[64px]">
-                            <Ico type="faX"
+                            <Ico type="x"
                             class="text-red-400 cursor-pointer hover:text-red-600"
                             @click="closeImagePreview"/>
                         </button>

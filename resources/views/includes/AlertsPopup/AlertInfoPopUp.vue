@@ -38,7 +38,7 @@ export default {
         <template #header>
             <div class="h-full w-full bg-(--meny-background)">
                  <div class="absolute! left-1/2 top-[25%] -translate-x-1/2 bg-sky-200 rounded-full p-1.5! size-fit">
-                    <Ico type="faCircleQuestion"
+                    <Ico type="circle-question"
                     class="size-[30px]!
                     text-(--meny-background)"/>
                  </div>

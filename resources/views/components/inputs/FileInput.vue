@@ -102,7 +102,7 @@ export default {
                     class="clear-btn"
                     @click.stop="clear"
                 >
-                    <Ico type="faX" />
+                    <Ico type="x" />
                 </BaseButton>
 
                 <BlueButton class="select-btn" @click.stop="trigger">

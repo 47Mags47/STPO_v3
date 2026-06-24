@@ -202,7 +202,7 @@ export default {
             />
 
             <div class="select-ico-container" :class="{ rotated: open }">
-                <Ico type="faChevronDown" />
+                <Ico type="chevron-down" />
             </div>
         </div>
 

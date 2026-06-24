@@ -88,7 +88,7 @@ export default {
         <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler">
         <StringInput class="file-name-input" :value="file.name ?? ''" readonly />
         <BlueButton class="add-file-button" :onClick="addFileButtonClickHandler">
-            <Ico type="faFile" />
+            <Ico type="file" />
         </BlueButton>
         <ProgressBar v-if="isUploading" :procentage="uploadedChunks / totalChunks" />
     </div>

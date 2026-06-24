@@ -85,17 +85,17 @@ export default {
                     place-items-center"
                 >
                         <BlueButton class="" @click="prevMonth">
-                            <Ico type="faArrowLeft"/>
+                            <Ico type="arrow-left"/>
                         </BlueButton>
 
                         <span class="text-xl!"> {{ visibleToggledMonth }} </span>
 
                         <BlueButton class="" @click="nextMonth">
-                            <Ico type="faArrowRight"/>
+                            <Ico type="arrow-right"/>
                         </BlueButton>
                 </div>
                 <BlueButton class="w-[35px]! p-2!" @click="routeTo('payment.events.create')">
-                    <Ico type="faPlus" />
+                    <Ico type="plus" />
                 </BlueButton>
            </div>
         </template>
@@ -105,11 +105,11 @@ export default {
                 v-if="loading"
                 class="not-data-cell"
             >
-                <Ico type="faSpinner" class="animate-spin text-4xl!" />
+                <Ico type="spinner" class="animate-spin text-4xl!" />
                 <span class="text">Загрузка...</span>
             </div>
             <div v-else-if="isPaymentDataEmpty" vertical="center" horizontal="center" class="not-data-cell">
-                <Ico type="faDatabase"/>
+                <Ico type="database"/>
                 <span class="text">Данных нет :(</span>
             </div>
             <template v-else v-for="(events, date) in paymentEvents">
@@ -125,7 +125,7 @@ export default {
                         </TableTd>
                         <TableTd class="w-[56px]">
                             <BlueButton class="size-[35px]! p-2!" @click="routeTo('payment.events.edit', event.data.id)">
-                                <Ico type="faPen" class="p-[3px]!"/>
+                                <Ico type="pen" class="p-[3px]!"/>
                             </BlueButton>
                         </TableTd>
                     </TableRow>

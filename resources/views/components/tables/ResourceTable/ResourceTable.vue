@@ -329,7 +329,7 @@ export default {
                     @click="toggleFilterVisible">
                         фильтры
                         <div class="filter-btn-item-icon">
-                            <Ico type="faChevronDown" class="" />
+                            <Ico type="chevron-down" class="" />
                         </div>
                     </button>
                 </div>
@@ -389,7 +389,7 @@ export default {
             </TableRow>
             <tr v-else>
                 <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
-                    <Ico type="faDatabase" />
+                    <Ico type="database" />
                     <span class="text">Данных нет :(</span>
                 </TableTd>
             </tr>

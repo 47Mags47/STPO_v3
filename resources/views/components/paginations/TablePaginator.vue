@@ -70,7 +70,7 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="faAnglesLeft" :url="generateLink(1)" />
+            <Link icoType="angles-left" :url="generateLink(1)" />
 
             <Link v-if="current_page - 2 > 0" :page="current_page - 2" :url="generateLink(current_page - 2)"/>
             <Link v-if="current_page - 1 > 0" :page="current_page - 1" :url="generateLink(current_page - 1)"/>
@@ -78,7 +78,7 @@ export default {
             <Link v-if="last_page - current_page > 1" :page="current_page + 1" :url="generateLink(current_page + 1)"/>
             <Link v-if="last_page - current_page > 2" :page="current_page + 2" :url="generateLink(current_page + 2)"/>
 
-            <Link icoType="faAnglesRight" :url="generateLink(last_page)"/>
+            <Link icoType="angles-right" :url="generateLink(last_page)"/>
         </ul>
     </div>
 </template>

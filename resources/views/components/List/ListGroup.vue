@@ -66,7 +66,7 @@ export default {
                 {{ label }}
             </div>
             <div class="label-ico-container">
-                <Ico type="faChevronRight"/>
+                <Ico type="chevron-right"/>
             </div>
         </div>
         <Transition

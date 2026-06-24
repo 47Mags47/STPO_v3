@@ -63,10 +63,6 @@ export default {
                 <span> {{ option.label }} </span>
             </label>
         </div>
-
-        <!-- <div class="select-icon-wrapper">
-            <Ico type="faChevronDown"/>
-        </div> -->
     </div>
 </template>
 

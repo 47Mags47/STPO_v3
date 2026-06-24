@@ -27,6 +27,6 @@ export default {
 
 <template>
     <RedButton @click.prevent="clickHandler" class="ico-button">
-        <Ico type="faTrash" />
+        <Ico type="trash" />
     </RedButton>
 </template>

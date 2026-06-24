@@ -59,7 +59,7 @@ export default {
         <div class="single-select" @click="selectClickHandler">
             {{ label }}
 
-            <Ico type="faChevronDown" class="ico-chevron" :class="{ 'active': isOpen }"/>
+            <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
 
         <div class="single-select-content-container"

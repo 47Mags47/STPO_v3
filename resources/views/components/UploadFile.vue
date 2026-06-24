@@ -108,15 +108,15 @@ export default {
 <template>
     <div class="upload-file-container">
         <div class="file-info-line" :title="errorText">
-            <Ico v-if="status == 'upload'" class="file-style-ico file-style-upload" type="faFileCirclePlus" />
-            <Ico v-if="status == 'success'" class="file-style-ico file-style-success" type="faFileCircleCheck" />
-            <Ico v-if="status == 'error' || error" class="file-style-ico file-style-error" type="faFileCircleExclamation" />
+            <Ico v-if="status == 'upload'" class="file-style-ico file-style-upload" type="file-circle-plus" />
+            <Ico v-if="status == 'success'" class="file-style-ico file-style-success" type="file-circle-check" />
+            <Ico v-if="status == 'error' || error" class="file-style-ico file-style-error" type="file-circle-exclamation" />
 
             <div class="file-name">{{ file.name }}</div>
 
-            <Ico v-if="status == 'success'" type="faX" class="file-action-button delete-file-button"
+            <Ico v-if="status == 'success'" type="x" class="file-action-button delete-file-button"
                 @click="deleteFileButtonClickHandler" />
-            <Ico v-if="status == 'error'" type="faArrowRotateRight" class="file-action-button refresh-file-button"
+            <Ico v-if="status == 'error'" type="arrow-rotate-right" class="file-action-button refresh-file-button"
                 @click="refreshFileButtonClickHandler" />
 
         </div>
