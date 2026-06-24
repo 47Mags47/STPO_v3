@@ -116,11 +116,11 @@ export default {
 
     .single-select-content-container
         position: absolute
-        max-width: 100%
         max-height: 0px
         overflow-y: auto
         transition: .5s ease
         z-index: 10
+        width: 100%
 
         @include scroll
 
