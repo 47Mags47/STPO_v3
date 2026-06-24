@@ -301,8 +301,8 @@ export default {
             <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
         </template>
 
-        <template #filters>
-            <div v-if="filters.length !== 0" class="container-table-filters">
+        <template v-if="filters.length !== 0" #filters>
+            <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                     <div class="w-[260px]" v-for="filter in filters">
                         <MultiSelect    v-if="filter.type === 'multiSelect'"

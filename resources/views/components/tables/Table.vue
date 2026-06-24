@@ -18,7 +18,7 @@ export default {
                 </h3>
             </div>
 
-            <div class="filters">
+            <div v-if="'filters' in $slots" class="filters">
                 <form method="GET" action="/test">
                     <slot name="filters"></slot>
                 </form>
