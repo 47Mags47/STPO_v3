@@ -112,7 +112,6 @@ export default {
 
     .date-input-content-container
         width: 100%
-        // max-height: 0
 
         position: absolute
 
@@ -123,14 +122,12 @@ export default {
         background: white
         padding: 0px 8px
         z-index: 10
+        border: 0 solid lightgray
 
         cursor: auto
 
         &.active
             animation: open .5s ease forwards
-            // max-height: 40px
-            // padding: 5px 8px
-            // box-shadow: 0px 0.5px 3px black
         &:not(.active)
             animation: close .5s ease forwards
 
@@ -143,14 +140,14 @@ export default {
         overflow: visible
         max-height: 40px
         padding: 5px 8px
-        box-shadow: 0px 0.5px 3px black
+        border: 1px solid lightgray
 
 @keyframes close
     from
         overflow: visible
         max-height: 40px
         padding: 5px 8px
-        box-shadow: 0px 0.5px 3px black
+        border: 1px solid lightgray
     to
         overflow: hidden
         max-height: 0

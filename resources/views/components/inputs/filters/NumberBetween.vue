@@ -97,13 +97,13 @@ export default {
         background: white
         padding: 0px 8px
         z-index: 10
-
+        border: 0 solid lightgray
         cursor: auto
 
         &.active
             max-height: 40px
             padding: 5px 8px
-            box-shadow: 0px 0.5px 3px black
+            border: 1px solid lightgray
 
         input
             width: calc((100% / 2) - 12px )

@@ -1,9 +1,11 @@
 <script>
 import Ico from '../../Ico.vue';
+import Checkbox from '../CheckBox.vue';
 
 export default {
     components: {
         Ico,
+        Checkbox
     },
 
     props: {
@@ -69,19 +71,22 @@ export default {
                 :for="`${name}_${index}`"
                 @click="radioClickHandler"
             >
-                <input
-                    type="checkbox"
+                <Checkbox
                     :name="`${name}[]`"
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
                 />
-                 <span> {{ option.label }} </span>
+                <span> {{ option.label }} </span>
             </label>
         </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
+.base-input
+    &[type="checkbox"]
+        width: 22px
+        height: 22px
 .multi-select-container
     position: relative
     width: 100%
@@ -121,13 +126,14 @@ export default {
         overflow: auto
         transition: .5s ease
         z-index: 10
+        border: 0 solid lightgray
 
         background: white
         @include scroll
 
         &.active
             max-height: 300px
-            box-shadow: 0px 1px 4px black
+            border: 1px solid lightgray
 
         .multi-select-content
             display: flex

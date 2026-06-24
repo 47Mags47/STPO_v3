@@ -121,12 +121,13 @@ export default {
         transition: .5s ease
         z-index: 10
         width: 100%
+        border: 0 solid lightgray
 
         @include scroll
 
         &.active
             max-height: 300px
-            box-shadow: 0px 1px 4px black
+            border: 1px solid lightgray
 
         .single-select-content
             display: flex
