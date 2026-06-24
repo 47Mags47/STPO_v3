@@ -231,6 +231,7 @@ export default {
         overflow: hidden
 
         transition: .5s
+        z-index: 1000
 
         &.open
             height: 400px
