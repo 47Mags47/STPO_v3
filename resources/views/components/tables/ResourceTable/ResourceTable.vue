@@ -302,7 +302,7 @@ export default {
         </template>
 
         <template #filters>
-            <div class="container-table-filters">
+            <div v-if="filters.length !== 0" class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                     <div class="w-[260px]" v-for="filter in filters">
                         <MultiSelect    v-if="filter.type === 'multiSelect'"
@@ -329,7 +329,7 @@ export default {
                     @click="toggleFilterVisible">
                         фильтры
                         <div class="filter-btn-item-icon">
-                            <Ico type="chevron-down" class="" />
+                            <Ico type="chevron-down" class="text-white" />
                         </div>
                     </button>
                 </div>
@@ -409,7 +409,6 @@ export default {
         width: 100%
         display: flex
         flex-direction: column
-        gap: 12px
         z-index: 100
 
 
@@ -420,7 +419,7 @@ export default {
             align-items: center
             gap: 12px
 
-            padding-bottom: 8px
+            padding-bottom: 0
             overflow: hidden
             opacity: 0
 
@@ -471,6 +470,7 @@ export default {
                 border-radius: 8px
                 background: $blue-button-background
                 color: white
+                font-weight: bold
                 align-self: flex-end
                 transition: .2s ease
 
@@ -495,6 +495,7 @@ export default {
                 color: white
                 align-self: flex-end
                 transition: .2s ease
+                font-weight: bold
 
                 &:hover
                     background: $blue-button-backgroun-hover
