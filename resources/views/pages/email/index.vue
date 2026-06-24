@@ -24,7 +24,9 @@ export default {
                 type: 'email',
                 name: 'email',
                 label: 'E-mail',
+                class: 'text-gray-500! border-gray-400! cursor-not-allowed',
                 value: current_user.email,
+                readonly: true,
             }
         ]"
     >
