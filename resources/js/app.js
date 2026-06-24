@@ -18,7 +18,10 @@ createInertiaApp({
 
         const page = await importPage();
 
-        if (!name.startsWith('httpErrors/')) {
+        const exceptions = ['httpErrors/', 'NoEmail']
+        const isException = exceptions.some(n => name.startsWith(n))
+
+        if (!isException) {
             page.default.layout ??= AuthLayout;
         }
 

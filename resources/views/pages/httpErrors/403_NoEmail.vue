@@ -12,8 +12,8 @@ export default {
     <HttpError
         :code="403"
         title="Доступ запрещён"
-        description="Обратитесь к администратору или вернитесь на главную страницу"
-        home-url="/"
-        home-description="Главная страница"
+        description="Вам необходимо подтвердить адрес электронной почты (email)"
+        home-url="/dashboard"
+        home-description="Подтвердить"
     />
 </template>

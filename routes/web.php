@@ -34,14 +34,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('/users',       App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
-    Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
+    Route::get('/dashboard', fn() => Inertia::render('dashboard/dashboard'))->name('dashboard');
 
     // EMAIL
     Route::name('verification.')->prefix('/email')->group(function () {
         // HACK создать страницу "вам необходимо подтвердить Email" маршрут ниже
         Route::get('/verify',                       [EmailController::class, 'notice'])->name('notice');
         Route::get('/verify/{id}/{hash}',           [EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
-        Route::get('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
+        Route::post('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
     });
 
     // FILE UPLOAD
