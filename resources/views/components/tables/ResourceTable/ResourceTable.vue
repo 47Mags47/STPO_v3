@@ -327,7 +327,7 @@ export default {
                     <button type="button"   class="filter-showbtn"
                     :class="{ active: isFilterOpen }"
                     @click="toggleFilterVisible">
-                        фильтры
+                        <span> фильтры </span>
                         <div class="filter-btn-item-icon">
                             <Ico type="chevron-down" class="text-white" />
                         </div>
@@ -466,8 +466,8 @@ export default {
             gap: 4px
 
             :deep(.filter-btn)
-                height: fit-content
-                padding: 4px 10px
+                height: 35px
+                padding: 8px
                 border-radius: 8px
                 background: $blue-button-background
                 color: white
@@ -488,9 +488,10 @@ export default {
 
             :deep(.filter-showbtn)
                 display: flex
+                justify-content: center
                 gap: 6px
-                height: fit-content
-                padding: 4px 10px
+                height: 35px
+                padding: 8px
                 border-radius: 8px
                 background: $blue-button-background
                 color: white
