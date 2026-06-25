@@ -15,7 +15,8 @@ class DivisionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => ['required', 'string', 'min:3', 'max:255', 'unique:' . Division::class . ',name,'. $this->route('division')->id],
+            'name'      => ['required', 'string', 'min:3', 'max:255', 'unique:' . Division::class . ',name,'. $this->route('division')->id],
+            'city_id'   => ['required', 'Integer', 'exists:administrate__cities,id']
         ];
     }
 }

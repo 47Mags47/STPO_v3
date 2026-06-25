@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         // HACK создать страницу "вам необходимо подтвердить Email" маршрут ниже
         Route::get('/verify',                       [EmailController::class, 'notice'])->name('notice');
         Route::get('/verify/{id}/{hash}',           [EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
-        Route::post('/verification-notification',    [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
+        Route::post('/verification-notification',   [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
     });
 
     // FILE UPLOAD
@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/moduls',                                  App\Http\Controllers\Administrate\ModulController::class)->except('show');
         Route::resource('/modul-groups',                            App\Http\Controllers\Administrate\ModulGroupController::class)->except('show');
         Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
+        Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
     });
 
     Route::name('appeal.')->prefix('/appeal')->group(function () {

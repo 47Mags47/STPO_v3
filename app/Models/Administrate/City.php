@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Administrate;
 
 use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-use App\Models\Division;
+use App\Models\Administrate\Division;
 
 class City extends BaseModel
 {
-    //
+    use HasFactory;
 
     ### Настройки
     ##################################################
-    protected $table = 'main_cities';
+    protected $table = 'administrate__cities';
 
     protected $fillable = [
         'id',

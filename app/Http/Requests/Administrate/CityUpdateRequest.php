@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Administrate;
 
-use App\Models\Administrate\Division;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DivisionStoreRequest extends FormRequest
+use App\Models\Administrate\City;
+
+class CityUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +16,7 @@ class DivisionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => ['required', 'string', 'min:3', 'max:255', 'unique:' . Division::class . ',name'],
-            'city_id'  => ['required', 'Integer', 'exists:administrate__cities,id']
+            'name'  => ['required', 'string', 'max:255', 'unique:' . City::class . ',name,'. $this->route('city')->id],
         ];
     }
 }

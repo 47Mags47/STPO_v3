@@ -31,8 +31,15 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
         Modul::firstOrCreate([
+            'in_production' => true,
             'name'          => 'Список организаций',
             'route_name'    => 'administrate.divisions.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Список городов',
+            'route_name'    => 'administrate.cities.index',
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
         Modul::firstOrCreate([
