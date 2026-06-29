@@ -14,6 +14,19 @@ redirect_stderr=true
 stdout_logfile=/var/www/STPO/storage/logs/queue/default.log
 stopwaitsecs=3600
 
+[program:queue-notifications]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/STPO/artisan queue:work --queue=notifications --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=4
+redirect_stderr=true
+stdout_logfile=/var/www/STPO/storage/logs/queue/default.log
+stopwaitsecs=3600
+
 [program:queue-SFR-FSD-ReadSFRFile]
 process_name=%(program_name)s_%(process_num)02d
 command=php /var/www/STPO/artisan queue:work --queue=SFR-FSD-ReadSFRFile --max-time=3600
