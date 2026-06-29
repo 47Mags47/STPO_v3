@@ -161,18 +161,20 @@ export default {
         <div class="w-[16px] mr-2! cursor-pointer">
             <Ico type="calendar" @click="popupButtonClickHandler" />
         </div>
-        <DateInputPopup v-show="isPopupOpen"
-            ref="dateInputPopup"
-            :isRange
-            :style="popupStyle"
-            :checkValid
-            :onClick="dayClickHandler"
-            :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-            :selectedDateBetween="{
-                from: selectedDateFrom?.toFormat('yyyy-MM-dd'),
-                to:   selectedDateTo?.toFormat('yyyy-MM-dd')
-            }"
-        />
+        <Transition name="popup">
+            <DateInputPopup v-show="isPopupOpen"
+                ref="dateInputPopup"
+                :isRange
+                :style="popupStyle"
+                :checkValid
+                :onClick="dayClickHandler"
+                :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
+                :selectedDateBetween="{
+                    from: selectedDateFrom?.toFormat('yyyy-MM-dd'),
+                    to:   selectedDateTo?.toFormat('yyyy-MM-dd')
+                }"
+            />
+        </Transition>
     </div>
 </template>
 
@@ -221,4 +223,19 @@ export default {
         align-items: center
         justify-content: center
 
+.popup-enter-active,
+.popup-leave-active
+    transition: all .2s ease
+
+
+.popup-enter-from,
+.popup-leave-to
+    opacity: 0
+    transform: scale(.95)
+
+
+.popup-enter-to,
+.popup-leave-from
+    opacity: 1
+    transform: scale(1)
 </style>
