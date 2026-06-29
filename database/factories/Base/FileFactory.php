@@ -2,9 +2,7 @@
 
 namespace Database\Factories\Base;
 
-use App\Models\Base\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileFactory extends Factory
@@ -18,12 +16,5 @@ class FileFactory extends Factory
             'origin_name' => Str::random(40),
             'upload_at' => null,
         ];
-    }
-
-    public function configure(): static
-    {
-        return $this->afterCreating(function (File $file) {
-            Storage::disk($file->disk)->put($file->path . '/' . $file->name, '');
-        });
     }
 }

@@ -3,6 +3,7 @@
 use App\Models\Base\File;
 use App\Models\FSD\PaymentFile;
 use App\Models\FSD\PaymentType;
+use App\Models\FSD\SFRFile;
 use App\Models\FSD\TransitCategory;
 use App\Models\FSD\TransitFile;
 use Illuminate\Database\Migrations\Migration;
@@ -31,6 +32,7 @@ return new class extends Migration
         Schema::create('fsd__sfr_file_results', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('sfr_file_id')->constrained(SFRFile::getTableName())->onDelete('cascade');
             $table->foreignId('file_id')->constrained(File::getTableName())->onDelete('cascade');
 
             $table->timestamps();

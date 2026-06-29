@@ -20,7 +20,7 @@ class UploadFile extends FileModel
         'totalChunks',
     ];
 
-    public static string|null $StorageFileDisk = 'uploads';
+    public static string|null $storage_file_disk = 'uploads';
     public static string|null $StorageFilePath = 'files';
 
     public bool $deleteBase = false;
@@ -43,7 +43,7 @@ class UploadFile extends FileModel
 
         $model = $modelClass::create(array_merge($attributes ?? [], ['file_id' => $uploadFile->file->id]));
 
-        MoveFilelJob::dispatch($uploadFile->file, $modelClass::$StorageFileDisk, $modelClass::$StorageFilePath);
+        MoveFilelJob::dispatch($uploadFile->file, $modelClass::$storage_file_disk, $modelClass::$storage_file_path);
 
         return $model;
     }

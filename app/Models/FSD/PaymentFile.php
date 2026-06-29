@@ -21,8 +21,8 @@ class PaymentFile extends FileModel
         'type_id'
     ];
 
-    public static string|null $StorageFileDisk = 'fsd';
-    public static string|null $StorageFilePath = 'payment';
+    public static string|null $storage_file_disk = 'fsd';
+    public static string|null $storage_file_path = 'payment';
 
 
     protected function casts(): array

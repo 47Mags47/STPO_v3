@@ -17,8 +17,8 @@ class SFRFileResource extends JsonResource
         return [
             'id'            => $this->id,
             'file' => [
-                'name'      => $this->file->origin_name,
-                'errors'    => $this->file->errors,
+                'name'      => $this->origin_name,
+                'errors'    => $this->errors,
             ],
             'date_start'    => $this->date_start,
             'date_end'      => $this->date_end,

@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Base;
 
+use App\Models\Base\File;
 use App\Models\Base\Notification;
 use App\Models\Base\NotificationType;
 use App\Models\Base\User;
@@ -19,11 +20,29 @@ class NotificationFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        $type = NotificationType::get()->random();
+
+        $attributes = [
             'recipient_id'  => User::randomOrCreate()->id,
-            'type_id'       => NotificationType::get()->random()->id,
-            'message'       => $this->faker->text(),
+            'sender_id'     => User::randomOrCreate()->id,
             'is_readed'     => $this->faker->boolean(),
+            'type_id'       => $type->id,
+            'message'       => null,
+            'context'       => [],
+            'created_at'    => now()->addHours(rand(-5, 5)),
         ];
+
+        if ($type->code === 'file_generated') {
+            $file = File::factory()->create();
+
+            return array_merge($attributes, [
+                'message'       => 'Файл ' . $file->origin_name . ' доступен для загрузки',
+                'context'       => [
+                    'file_id'   => $file->id
+                ]
+            ]);
+        }
+
+        return $attributes;
     }
 }

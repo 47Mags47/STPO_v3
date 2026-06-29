@@ -30,6 +30,6 @@ class SFRFile extends FileModel
         ];
     }
 
-    public static string|null $StorageFileDisk = 'fsd';
-    public static string|null $StorageFilePath = 'sfr';
+    public static string|null $storage_file_disk = 'fsd';
+    public static string|null $storage_file_path = 'sfr';
 }

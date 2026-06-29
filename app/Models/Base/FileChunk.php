@@ -28,8 +28,8 @@ class FileChunk extends FileModel
         ];
     }
 
-    public static string|null $StorageFileDisk = 'uploads';
-    public static string|null $StorageFilePath = 'chunks';
+    public static string|null $storage_file_disk = 'uploads';
+    public static string|null $storage_file_path = 'chunks';
 
     ### Методы
     ##################################################

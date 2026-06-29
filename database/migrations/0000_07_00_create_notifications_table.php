@@ -18,11 +18,14 @@ return new class extends Migration
 
         Schema::create('base__notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recipient_id')->nullable()->constrained(User::getTableName());
-            $table->foreignId('type_id')->constrained(Notification::getTableName());
 
-            $table->text('message');
+            $table->text('message')->nullable();
+            $table->json('context');
             $table->boolean('is_readed')->default(false);
+
+            $table->foreignId('recipient_id')->constrained(User::getTableName());
+            $table->foreignId('sender_id')->nullable()->constrained(User::getTableName());
+            $table->foreignId('type_id')->constrained(Notification::getTableName());
 
             $table->timestamps();
         });

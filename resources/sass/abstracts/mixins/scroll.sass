@@ -27,3 +27,16 @@
     @-moz-document url-prefix()
         scrollbar-width: auto
         scroll-behavior: smooth
+
+@mixin hidden-scroll()
+    /*IE*/
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+        scrollbar-width: 0px
+    /* for chrome */
+    @media screen and (-webkit-min-device-pixel-ratio: 0)
+        &::-webkit-scrollbar
+            width: 0px
+    /* for firefox */
+    @-moz-document url-prefix()
+        scrollbar-width: 0px
+        scroll-behavior: smooth

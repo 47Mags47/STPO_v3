@@ -27,7 +27,7 @@ class SFRFileFactory extends Factory
                 'disk' => 'fsd',
                 'origin_name' => $this->faker->numerify('0523#' . rand(1, 12) . '#.000')
             ]),
-            'created_at' => now()->addDay(rand(-15, 15)),
+            'created_at' => now()->addDays(rand(-15, 15)),
         ];
     }
 }

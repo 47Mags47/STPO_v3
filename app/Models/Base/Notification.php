@@ -3,6 +3,8 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
+use App\Models\Base\NotificationType;
+use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -18,8 +20,17 @@ class Notification extends BaseModel
         'recipient_id',
         'type_id',
         'message',
-        'is_readed'
+        'is_readed',
+        'context',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_readed' => 'boolean',
+            'context'   => 'array',
+        ];
+    }
 
     ### Методы
     ##################################################
@@ -27,8 +38,18 @@ class Notification extends BaseModel
 
     ### Связи
     ##################################################
-    public function type(): BelongsTo
+    public function type()
     {
         return $this->belongsTo(NotificationType::class);
+    }
+
+    public function recipient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recipient_id');
+    }
+
+    public function sender(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'sender_id');
     }
 }

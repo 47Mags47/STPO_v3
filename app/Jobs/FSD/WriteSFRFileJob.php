@@ -3,57 +3,42 @@
 namespace App\Jobs\FSD;
 
 use App\Models\FSD\Payment;
-use App\Models\FSD\SFRFile;
 use App\Models\FSD\SFRFileResult;
 use App\Models\FSD\TransitCategory;
 use App\Models\FSD\TransitRecipient;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
 
-use App\Events\SFR\FSD\FileGenerated;
-
-use App\Services\NotificationService;
-use App\Models\Notifications\AppNotification;
-
 class WriteSFRFileJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Batchable;
 
     public $timeout = 600;
 
-    private SFRFile $fromFile;
     private $fromFileCursor;
-    private SFRFileResult $toFile;
     private $toFileCursor;
-    private NotificationService $notificationService;
-
     private float $defaultEquivalent;
 
-
-    public function __construct(public SFRFile $sfrFile, public int $userId)
+    public function __construct(public SFRFileResult $SFRFileResult)
     {
         $this->onQueue('SFR-FSD-WriteSFRFile');
     }
 
     public function handle(): void
     {
-        $this->notificationService = app(NotificationService::class);
+        waitDisabledFile($this->SFRFileResult->SFRFile);
 
-        waitDisabledFile($this->sfrFile);
-
-        $this->fromFile = $this->sfrFile;
-        $this->fromFileCursor = fopen($this->fromFile->getFullPath(), 'r');
-
-        $this->toFile = SFRFileResult::create();
-        $this->toFileCursor = fopen($this->toFile->getFullPath(), 'w');
+        $this->fromFileCursor = fopen($this->SFRFileResult->SFRFile->getFullPath(), 'r');
+        $this->toFileCursor = fopen($this->SFRFileResult->getFullPath(), 'w');
 
         $this->defaultEquivalent = TransitCategory::where('wp_category_id', null)->get()->first()
             ->equivalent->equivalent;
 
 
-        $date_start = $this->sfrFile->date_start;
-        $date_end = $this->sfrFile->date_end;
+        $date_start = $this->SFRFileResult->SFRFile->date_start;
+        $date_end = $this->SFRFileResult->SFRFile->date_end;
 
         $paymentsGroupBySnils = Payment::whereHas('paymentFile', fn($query) => $query->whereBetween('in_month', [$date_start, $date_end]))
             ->get()
@@ -100,14 +85,6 @@ class WriteSFRFileJob implements ShouldQueue
 
         fclose($this->fromFileCursor);
         fclose($this->toFileCursor);
-
-        $this->notificationService->create(
-            recipientId: $this->userId,
-            typeId: 1,
-            message: 'Файл успешно сформирован'
-        );
-
-        event(new FileGenerated($this->sfrFile, $this->userId));
     }
 
     public function writeDefault($month, $birth)

@@ -28,19 +28,6 @@ export default {
         current_user: () => usePage().props.current_user?.data,
         pr: () => usePage().props
     },
-
-    mounted() {
-        window.Echo.channel('fsd.files')
-            .subscribed(() => {
-                // console.log('subscribed');
-            })
-            .listen('.file.generated', (e) => {
-                console.log('received:', e);
-            })
-            .error((error) => {
-                console.error('Channel error:', error);
-            });
-    }
 };
 </script>
 
@@ -78,6 +65,8 @@ export default {
 
     color: $meny-color
     background: $meny-background
+
+    z-index: 1000
 
     .ico-container
         width: 25px

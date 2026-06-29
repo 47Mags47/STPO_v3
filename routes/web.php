@@ -1,10 +1,31 @@
 <?php
 
-use App\Http\Controllers\Auth\EmailController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/test', fn() => Inertia::render('test'));
+// DEV
+if(config('app.env') === 'local'){
+    Route::get('/test', fn() => Inertia::render('test'));
+    Route::get('/view', fn() => Inertia::render('view'));
+    Route::post('/send-notification', function () {
+        $notification = App\Models\Base\Notification::factory()->create([
+            'is_readed' => false,
+            'recipient_id' => user()->id,
+            'created_at' => now(),
+        ]);
+
+        App\Events\Base\SendNotificationEvent::dispatch($notification);
+
+        return back()->with('success', 'Оповещение отправлено');
+    })->name('send-notification');
+}
+
+// FILES
+Route::name('upload.')->prefix('/upload')->group(function () {
+    Route::post('files/startUpload',    [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
+    Route::post('chunks/{chunk}',       [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
+    Route::get('/download/{file}',      [App\Http\Controllers\Base\UploadController::class, 'download'])->name('download');
+});
 
 ### HTTP ERRORS
 ##################################################
@@ -20,18 +41,22 @@ Route::middleware('guest')->group(function () {
     Route::get('/login',            fn() => Inertia::render('auth/login'))->name('login');
 
     Route::name('auth.')->group(function () {
-        Route::post('/login',           [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('users.login');
-        Route::get('/users/create',     [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('users.create');
-        Route::post('/users/create',    [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('users.store');
+        Route::post('/login',                                       [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('users.login');
+        Route::get('/users/create',                                 [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('users.create');
+        Route::post('/users/create',                                [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('users.store');
     });
 });
 
 ### AUTH
 ##################################################
 Route::middleware('auth')->group(function () {
+    // SYSTEM
+    Route::post('/notification-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
+
+    // AUTH
     Route::name('auth.')->group(function () {
-        Route::post('/logout',          [App\Http\Controllers\Auth\UserController::class,   'logout'])  ->name('logout');
-        Route::resource('/users',       App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
+        Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])  ->name('logout');
+        Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
     Route::get('/dashboard', fn() => Inertia::render('dashboard/dashboard'))->name('dashboard');
@@ -39,15 +64,9 @@ Route::middleware('auth')->group(function () {
     // EMAIL
     Route::name('verification.')->prefix('/email')->group(function () {
         // HACK создать страницу "вам необходимо подтвердить Email" маршрут ниже
-        Route::get('/verify',                       [EmailController::class, 'notice'])->name('notice');
-        Route::get('/verify/{id}/{hash}',           [EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
-        Route::post('/verification-notification',   [EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
-    });
-
-    // FILE UPLOAD
-    Route::name('upload.')->prefix('/upload')->group(function () {
-        Route::post('files/startUpload',                            [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
-        Route::post('chunks/{chunk}',                               [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
+        Route::get('/verify',                                       [App\Http\Controllers\Auth\EmailController::class, 'notice'])->name('notice');
+        Route::get('/verify/{id}/{hash}',                           [App\Http\Controllers\Auth\EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
+        Route::get('/verification-notification',                    [App\Http\Controllers\Auth\EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
     });
 
     Route::name('administrate.')->prefix('/administrate')->group(function () {
@@ -56,7 +75,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('/moduls',                                  App\Http\Controllers\Administrate\ModulController::class)->except('show');
         Route::resource('/modul-groups',                            App\Http\Controllers\Administrate\ModulGroupController::class)->except('show');
         Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
-        Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
     });
 
     Route::name('appeal.')->prefix('/appeal')->group(function () {
