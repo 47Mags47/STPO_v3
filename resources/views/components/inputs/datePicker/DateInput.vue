@@ -173,7 +173,7 @@ export default {
 
     .custom-date-input
         @include input()
-        width: 100%
+        flex: 1
 
     .calendar-icon
         position: absolute

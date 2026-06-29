@@ -158,8 +158,8 @@ export default {
             @blur="inputToBlurHandler"
         />
         <div class="overlay-calendar-to"></div>
-        <div class="calendar-icon">
-            <Ico type="faCalendar" @click="popupButtonClickHandler" />
+        <div class="w-[16px] mr-2! cursor-pointer">
+            <Ico type="calendar" @click="popupButtonClickHandler" />
         </div>
         <DateInputPopup v-show="isPopupOpen"
             ref="dateInputPopup"
@@ -187,7 +187,7 @@ export default {
 
     .overlay-calendar-from
         position: absolute
-        left: 110px
+        left: 205px
         top: 50%
         transform: translateY(-50%)
 
@@ -197,7 +197,7 @@ export default {
 
     .overlay-calendar-to
         position: absolute
-        right: 10px
+        right: 30px
         top: 50%
         transform: translateY(-50%)
 
@@ -208,7 +208,7 @@ export default {
     .custom-date-input
         border: 0
         min-width: 150px
-        width: 100%
+        flex: 1
 
     .calendar-icon
         position: absolute

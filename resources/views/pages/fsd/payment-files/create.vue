@@ -30,6 +30,7 @@ export default {
             },
             {
                 type: 'datePicker',
+                isRange: false,
                 name: 'in_month',
                 label: 'На месяц',
             },
