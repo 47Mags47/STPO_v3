@@ -1,5 +1,5 @@
 <script>
-import DatePicker from '../../datepicker/DatePicker.vue';
+import DatePicker from '../../datePicker/DatePicker.vue';
 import Ico from '../../Ico.vue';
 
 export default {
@@ -22,21 +22,9 @@ export default {
             default: null
         },
 
-        rangeMode: {
+        isRange: {
             type: Boolean,
             default: false,
-        },
-        useDayPicker: {
-            type: Boolean,
-            default: true,
-        },
-        useMonthPicker: {
-            type: Boolean,
-            default: true,
-        },
-        useYearPicker: {
-            type: Boolean,
-            default: true,
         },
     },
 
@@ -69,10 +57,8 @@ export default {
         :class="{ 'active': isOpen }">
             <DatePicker
             :name
-            :range-mode
-            :use-day-picker
-            :use-month-picker
-            :use-year-picker/>
+            :is-range
+        />
         </div>
     </div>
 </template>

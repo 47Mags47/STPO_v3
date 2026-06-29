@@ -1,17 +1,55 @@
 <script>
 import {
+    VerticalForm,
+    DatePicker,
+    Select,
     ResourceTable
 } from '@components'
 
 export default {
     components: {
+        VerticalForm,
+        DatePicker,
+        Select,
         ResourceTable
     }
 }
 </script>
 
 <template>
-    <ResourceTable
+    <VerticalForm>
+        <template #content>
+            <DatePicker name="DateInput" />
+            <Select
+                name="select"
+                :hasSearch=false
+                :options="
+                    {
+                        labelKey: 'label',
+                        valueKey: 'value',
+                        data: [
+                            {
+                                label: 'l1',
+                                value: 'v1'
+                            },
+                            {
+                                label: 'l2',
+                                value: 'v2'
+                            },
+                            {
+                                label: 'l3',
+                                value: 'v3'
+                            },
+                            {
+                                label: 'l4',
+                                value: 'v4'
+                            },
+                        ]
+                    }"
+            />
+        </template>
+    </VerticalForm>
+    <!-- <ResourceTable
         caption="ResourceForm"
         :hasCreateButton="true"
         :hasEditButton="true"
@@ -179,5 +217,5 @@ export default {
                 }
             }
         ]"
-    />
+    /> -->
 </template>

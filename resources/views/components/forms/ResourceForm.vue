@@ -25,7 +25,7 @@ export default {
         BigFilesInput:      defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
-        DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
+        DatePicker:         defineAsyncComponent(() => import('../datePicker/DatePicker.vue')),
     },
     props: {
         inputs: {

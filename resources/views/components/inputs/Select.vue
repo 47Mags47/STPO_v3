@@ -30,6 +30,10 @@ export default {
             }),
         },
         onSelect: { type: Function, default: () => {} },
+        hasSearch: {
+            type: Boolean,
+            default: true
+        }
     },
 
     data() {
@@ -207,7 +211,7 @@ export default {
         </div>
 
         <div v-if="open" class="list-container">
-            <div class="search-input-container">
+            <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
                     placeholder="Поиск..."
@@ -223,8 +227,8 @@ export default {
                     :key="o.value"
                     @click="select(o)"
                     :class="{
-                        selected: o.value === selected?.value,
-                        active: i === activeIndex,
+                        selected: o.value == selected?.value,
+                        active: i == activeIndex,
                     }"
                 >
                     {{ o.label }}

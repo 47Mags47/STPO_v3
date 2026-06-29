@@ -100,6 +100,7 @@ export default {
 
         width: fit-content
         min-width: 120px
+        width: 100%
 
         background-color: white
 

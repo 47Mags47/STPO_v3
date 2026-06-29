@@ -1,10 +1,11 @@
 <script>
 export default {
+    components: {
+    }
 }
 </script>
 
 <template>
-    <i class="fa-solid fa-check"></i>
 </template>
 
 <style lang="sass">
