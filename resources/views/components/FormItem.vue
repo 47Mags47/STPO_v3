@@ -38,7 +38,7 @@ export default {
 <template>
     <div class="form-item-container" :data-orientation="orientation">
         <FormError :name="name" />
-        <label :for>{{ label }}</label>
+        <label v-if="label" :for>{{ label }}</label>
         <slot name="default" />
     </div>
 </template>

@@ -43,7 +43,7 @@ export default {
         },
         showAvailable: {
             type: Boolean,
-            default: true,
+            default: false,
         }
     },
     data() {
@@ -89,8 +89,6 @@ export default {
 
 <template>
     <FormItem :name="name">
-        <Label v-if="label" :labelText="label" />
-
         <!--    HACK убрать isRange из пропсов у инпутов, он должен быть только у пикера
                 В идеале вынести пикер в этот компонент DatePicker -->
         <DateInputBetween v-if="isRange"
