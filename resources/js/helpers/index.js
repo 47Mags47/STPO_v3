@@ -1,2 +1,2 @@
 import './Object';
-import './HasRole'
+import './HasPermission';
