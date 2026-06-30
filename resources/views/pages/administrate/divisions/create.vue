@@ -28,11 +28,7 @@ export default {
                 type: 'select',
                 name: 'city_id',
                 label: 'Город',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: cities,
-                },
+                options: cities,
                 placeholder: 'Выберите город',
             },
         ]"

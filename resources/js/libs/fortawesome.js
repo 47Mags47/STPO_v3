@@ -7,8 +7,12 @@ import {
     faChevronRight,
     faChevronDown,
 
+    faCloudArrowUp,
+    faCloudArrowDown,
+
     faFile,
     faDownload,
+    faPaperclip,
 
     faBell,
     faEnvelope,
@@ -37,8 +41,12 @@ library.add(
     faChevronRight,
     faChevronDown,
 
+    faCloudArrowUp,
+    faCloudArrowDown,
+
     faFile,
     faDownload,
+    faPaperclip,
 
     faBell,
     faEnvelope,

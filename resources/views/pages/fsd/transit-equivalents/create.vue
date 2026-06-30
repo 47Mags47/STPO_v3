@@ -22,11 +22,7 @@ export default {
                 type: 'select',
                 name: 'category_id',
                 label: 'Категория',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: categories,
-                },
+                options: categories,
             },
             {
                 type: 'number',

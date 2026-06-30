@@ -86,7 +86,7 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="chevronLeft" :url="generateLink(1)" />
+            <Link icoType="chevron-left" :url="generateLink(1)" />
 
             <Link
                 v-for="page in pages"
@@ -96,7 +96,7 @@ export default {
                 :url="generateLink(page)"
             />
 
-            <Link icoType="chevronRight" :url="generateLink(last_page)"/>
+            <Link icoType="chevron-right" :url="generateLink(last_page)"/>
         </ul>
     </div>
 </template>

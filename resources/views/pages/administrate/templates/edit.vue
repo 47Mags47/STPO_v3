@@ -34,22 +34,14 @@ export default {
                 type: 'select',
                 name: 'style_id',
                 label: 'Вид',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: templateStyles,
-                },
+                options: templateStyles,
                 value: template.style_id,
             },
             {
                 type: 'select',
                 name: 'type_id',
                 label: 'Тип',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: templateTypes,
-                },
+                options: templateTypes,
                 value: template.type_id,
             },
             {

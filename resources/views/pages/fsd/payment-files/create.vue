@@ -22,15 +22,10 @@ export default {
                 type: 'select',
                 name: 'type_id',
                 label: 'Выплата',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: types,
-                },
+                options: types,
             },
             {
                 type: 'datePicker',
-                isRange: false,
                 name: 'in_month',
                 label: 'На месяц',
             },

@@ -2,18 +2,15 @@
 export default {
     props: {
         id: {
-            type: [String, null],
+            type: String,
             default: (props) => props.name,
         },
-        type: {
-            type: [String, null],
-            default: 'text',
-        },
         name: {
-            type: [String, null],
+            type: String,
+            default: null,
         },
         placeholder: {
-            type: [String, null],
+            type: String,
             default: null,
         },
         required: {
@@ -21,12 +18,12 @@ export default {
             default: false,
         },
         value: {
-            type: [String, Boolean, Number],
+            type: String,
             default: '',
         },
         autocomplete: {
-            type: Boolean,
-            default: false,
+            type: String,
+            default: 'on',
         },
 
         hidden: {
@@ -34,17 +31,18 @@ export default {
             default: false,
         },
 
+        resize: {
+            type: String,
+            default: 'none',
+        },
+
         onInput: {
             type: Function,
-            default: () => {},
-        },
-        onClick: {
-            type: Function,
-            default: () => {},
+            default: () => { },
         },
         onChange: {
             type: Function,
-            default: () => {},
+            default: () => { },
         }
     },
 
@@ -52,42 +50,32 @@ export default {
         inputHandler(e) {
             this.onInput(e);
         },
-        clickHandler(e){
-            this.onClick(e);
-        },
-        changeHandler(e){
+        changeHandler(e) {
             this.onChange(e);
         },
-
-        getInputElement(){
-            return this.$refs.input
-        }
     },
-};
-
-
+}
 </script>
 
 <template>
-    <input
-        ref="input"
-        :class="{ 'base-input': true, 'hidden': hidden }"
-        :type
+    <textarea
+        v-show="!hidden"
+        :class="{ 'text-input': true }"
         :id
         :name
         :placeholder
         :required
         :autocomplete
-        :value
+        :value="value"
+        :style="{ 'resize': resize }"
         @input="inputHandler"
-        @click="clickHandler"
         @change="changeHandler"
     />
 </template>
 
 <style lang="sass" scoped>
-.base-input
+.text-input
     @include input()
-    &.hidden
-        display: none
+
+    height: calc( 7.7rem + 10px )
 </style>

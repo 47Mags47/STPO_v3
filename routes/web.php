@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/templates',                               App\Http\Controllers\Administrate\TemplateController::class)->except('show');
         Route::resource('/moduls',                                  App\Http\Controllers\Administrate\ModulController::class)->except('show');
         Route::resource('/modul-groups',                            App\Http\Controllers\Administrate\ModulGroupController::class)->except('show');
+        Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
         Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
     });
 
@@ -84,7 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/appeals/{appeal}/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
     });
 
-    Route::middleware('verified')->name('fsd.')->prefix('/fsd')->group(function () {
+    Route::name('fsd.')->prefix('/fsd')->group(function () {
         Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
         Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::resource('/payment-recipients',                      App\Http\Controllers\FSD\PaymentRecipientController::class)->only(['index']);
