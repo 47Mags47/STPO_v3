@@ -1,1 +1,2 @@
-import "./Object";
+import './Object';
+import './HasRole'

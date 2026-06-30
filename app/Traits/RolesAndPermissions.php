@@ -6,6 +6,7 @@ use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+use Illuminate\Support\Collection;
 trait RolesAndPermissions
 {
     ### Связи
@@ -22,6 +23,13 @@ trait RolesAndPermissions
 
     ### Методы
     ##################################################
+    public function getPermissions(): Collection{
+        $permissions = $this->permissions;
+        $permissionsThroughRole = $this->roles->map(fn($role) => $role->permissions)->collapse();
+
+        return $permissions->merge($permissionsThroughRole);
+    }
+
     public function addRole(mixed $role, ?array $params = []): self
     {
         $this->roles()->attach(Role::getId($role), $params);
