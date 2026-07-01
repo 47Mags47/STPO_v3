@@ -53,6 +53,7 @@ export default {
             open: false,
             search: '',
             selected: this.value ?? null,
+            activeElementIndex: 0,
         };
     },
 
@@ -108,6 +109,39 @@ export default {
             return this.selected === null
                 ? false
                 : Object.get(option, this.valueKey) === Object.get(this.selected, this.valueKey)
+        },
+
+        onKey(e){
+            if (e.key === 'ArrowDown') {
+                if (this.activeElementIndex < this.filtered.length - 1) {
+                    this.activeElementIndex++;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
+            }
+
+            if (e.key === 'ArrowUp') {
+                if (this.activeElementIndex > 0) {
+                    this.activeElementIndex--;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
+            }
+
+            if (e.key === 'Enter') {
+                this.selectHandler(this.filtered[this.activeElementIndex]);
+                e.target.blur()
+            }
+        },
+
+        scrollToActive() {
+            const el = this.$el.querySelector('.active');
+
+            el?.scrollIntoView({
+                block: 'nearest',
+            });
         }
     },
 };
@@ -133,6 +167,7 @@ export default {
                 :placeholder
                 :value="selectedLabel"
                 :onFocus="openList"
+                @keydown="onKey"
             />
 
             <Ico type="chevron-down" />
@@ -151,7 +186,7 @@ export default {
 
             <ul>
                 <li v-for="(option, i) in filtered"
-                    :class="{'selected': checkSelected(option) }"
+                    :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
                     @click="() => selectHandler(option)"
                 >
                     {{ getLabel(option) }}
@@ -236,7 +271,8 @@ export default {
 
                 &:hover
                     background: $option-background-hover
-
+                &.active
+                    background: $option-background-hover
                 &.selected
                     background: $option-background-selected
 
