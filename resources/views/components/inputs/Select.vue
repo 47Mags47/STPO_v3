@@ -1,8 +1,4 @@
 <script>
-// HACK Добавить анимацию раскрытия списка
-// HACK Добавить перескакивание при недостаточном месте
-// HACK Добавить управление клавишами
-
 import Ico from "../Ico.vue";
 import Baseinput from "./Baseinput.vue";
 
