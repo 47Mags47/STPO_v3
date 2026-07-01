@@ -86,7 +86,10 @@ export default {
         },
 
         openList() {
-            this.open = true;
+            this.open = true
+
+            const dropdown = this.$refs.dropdown
+            fixOverflow(dropdown);
         },
 
         closeList() {
@@ -135,7 +138,7 @@ export default {
             <Ico type="chevron-down" />
         </div>
 
-        <div v-if="open" class="list-container">
+        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
             <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
@@ -193,6 +196,7 @@ export default {
             transition: none
     .list-container
         width: 100%
+        max-height: 0
 
         position: absolute
         left: 0
@@ -206,6 +210,17 @@ export default {
         border-radius: 0 0 $input-border-radius $input-border-radius
 
         overflow: hidden
+
+        transition: all 0.4s ease
+
+        &.open
+            max-height: 250px
+            opacity: 1
+
+        &.closed
+            max-height: 0
+            opacity: 0
+
         .search-input-container
             padding: 10px
             border-bottom: $input-border
