@@ -67,6 +67,28 @@ export default {
 
         selectedValue(){
             return this.getValue(this.selected)
+        },
+    },
+
+    watch: {
+        open(isOpen) {
+            // HACK убрать рефы отсюда
+            let input = this.$refs.input.$el
+            let dropdown = this.$refs.dropdown
+
+            if(isOpen) {
+                // если список выше инпута
+                if (dropdown.getBoundingClientRect().top < input.getBoundingClientRect().top) {
+                    dropdown.style.borderBottom  = '0'
+
+                    input.style.borderRadius     = '0 0 var(--input-border-radius) var(--input-border-radius)'
+                    dropdown.style.borderRadius  = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                } else {
+                    dropdown.style.borderTop = '0'
+                    input.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                }
+            } else
+                input.style.borderRadius = 'var(--input-border-radius)'
         }
     },
 
@@ -84,28 +106,12 @@ export default {
         },
 
         openList() {
-            this.open = true;
-
             fixOverflow(this.$refs.dropdown)
-
-            let input = this.$refs.input.$el.getBoundingClientRect()
-            let dropdown = this.$refs.dropdown.getBoundingClientRect()
-
-            if (dropdown.top < input.top) {
-                this.$refs.input.$el.style.borderRadius = '0 0 var(--input-border-radius) var(--input-border-radius) '
-            } else {
-                this.$refs.input.$el.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
-            }
+            this.open = true;
         },
 
         closeList() {
             this.open = false;
-
-            this.$refs.dropdown.style.maxHeight     = '0'
-            this.$refs.dropdown.style.opacity       = '0'
-            this.$refs.dropdown.style.pointerEvents = 'none'
-
-            this.$refs.input.$el.style.borderRadius = 'var(--input-border-radius)'
         },
 
         selectHandler(option){
@@ -185,7 +191,7 @@ export default {
             <Ico type="chevron-down" />
         </div>
 
-        <div ref="dropdown" class="list-container">
+        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
             <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
@@ -263,6 +269,14 @@ export default {
 
         transition: all 0.4s ease
 
+        &.open
+            max-height: 250px
+            opacity: 1
+
+        &.closed
+            max-height: 0
+            opacity: 0
+
         .search-input-container
             padding: 10px
             border-bottom: $input-border
@@ -285,7 +299,4 @@ export default {
 
     &:hover .input-container .ico-container
         color: #000
-    // &.open
-    //     .input-container input[type="text"]
-    //         border-radius: $input-border-radius $input-border-radius 0 0
 </style>
