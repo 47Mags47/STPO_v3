@@ -1,42 +1,52 @@
-function waitTransition(e) {
-    return new Promise(resolve =>
-        e.addEventListener('transitionend', () => resolve(true), { once: true })
-    );
-}
-
-// HACK дописать хелпер фикса позиционирования,
-// Если выходит за экран (сейчас работает только с элементами, у которых свойство fixed/absolute)
-export async function fixOverflow(e) {
+// HACK сделать код чище
+export function fixOverflow(e) {
     if (typeof e !== 'object') {
         console.error('Аргумент не является объектом!')
         return
     }
 
-    await waitTransition(e)
+    let isOverflow = false
 
-    const rect = e.getBoundingClientRect();
+    // начальные свойства для расчёта
+    e.style.top           = '100%';
+    e.style.bottom        = 'auto';
+    e.style.maxHeight     = '250px'
+    e.style.opacity       = '0'
+    e.style.pointerEvents = 'none'
+    e.style.transition    = 'none'
+    e.style.border        = 'var(--input-border)'
+    e.style.borderTop     = '0'
 
-    let left = parseFloat(getComputedStyle(e).left) || 0;
-    let top = parseFloat(getComputedStyle(e).top) || 0;
+    // фиксим позицию (e раскрылся, но невидим + некликабелен)
+    const rect           = e.getBoundingClientRect()
+    const overflowBottom = rect.bottom - window.innerHeight
 
-    const overflowRight = rect.right - window.innerWidth;
-    const overflowBottom = rect.bottom - window.innerHeight;
-
-    if (rect.left < 0) {
-        e.style.left = `${left - rect.left}px`;
-    }
-
-    if (overflowRight > 0) {
-        e.style.left = `${left - overflowRight}px`;
-    }
-
-    if (rect.top < 0) {
-        e.style.top = `${top - rect.top}px`;
-    }
-
+    // Если выходит за экран снизу
     if (overflowBottom > 0) {
-        e.style.top = `${top - overflowBottom}px`;
+        e.style.top    = 'auto'
+        e.style.bottom = '100%'
+        e.style.borderTop = 'var(--input-border)'
+        e.style.borderBottom = '0'
+        e.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+        isOverflow = true
     }
+    // ..... Другие условия (сверху, справа, слева)
+
+    // возвращаем элемент в изначальное состояние (closed)
+    e.style.maxHeight     = '0'
+    e.style.opacity       = '0'
+    e.style.pointerEvents = 'none'
+
+    // Чтобы был перерасчёт браузером
+    e.offsetHeight
+
+    // раскрываем список с анимацией
+    e.style.transition    = 'max-height .4s ease, opacity .4s ease';
+    e.style.opacity       = '1';
+    e.style.pointerEvents = 'auto';
+    e.style.maxHeight     = '250px';
+
+    return isOverflow
 }
 
 window.fixOverflow = fixOverflow;

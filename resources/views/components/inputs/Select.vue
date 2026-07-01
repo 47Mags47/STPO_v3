@@ -50,6 +50,7 @@ export default {
             search: '',
             selected: this.value ?? null,
             activeElementIndex: 0,
+            isOverflow: false,
         };
     },
 
@@ -83,14 +84,28 @@ export default {
         },
 
         openList() {
-            this.open = true
+            this.open = true;
 
-            const dropdown = this.$refs.dropdown
-            fixOverflow(dropdown);
+            fixOverflow(this.$refs.dropdown)
+
+            let input = this.$refs.input.$el.getBoundingClientRect()
+            let dropdown = this.$refs.dropdown.getBoundingClientRect()
+
+            if (dropdown.top < input.top) {
+                this.$refs.input.$el.style.borderRadius = '0 0 var(--input-border-radius) var(--input-border-radius) '
+            } else {
+                this.$refs.input.$el.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+            }
         },
 
         closeList() {
             this.open = false;
+
+            this.$refs.dropdown.style.maxHeight     = '0'
+            this.$refs.dropdown.style.opacity       = '0'
+            this.$refs.dropdown.style.pointerEvents = 'none'
+
+            this.$refs.input.$el.style.borderRadius = 'var(--input-border-radius)'
         },
 
         selectHandler(option){
@@ -158,6 +173,7 @@ export default {
             />
 
             <Baseinput
+                ref="input"
                 type="text"
                 readonly
                 :placeholder
@@ -169,7 +185,7 @@ export default {
             <Ico type="chevron-down" />
         </div>
 
-        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
+        <div ref="dropdown" class="list-container">
             <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
@@ -236,21 +252,16 @@ export default {
         z-index: 9
 
         background: $input-background
-        border: $input-border
-        border-top: none
+
+
         border-radius: 0 0 $input-border-radius $input-border-radius
+        border: $input-border
+
+        opacity: 0
 
         overflow: hidden
 
         transition: all 0.4s ease
-
-        &.open
-            max-height: 250px
-            opacity: 1
-
-        &.closed
-            max-height: 0
-            opacity: 0
 
         .search-input-container
             padding: 10px
@@ -274,7 +285,7 @@ export default {
 
     &:hover .input-container .ico-container
         color: #000
-    &.open
-        .input-container input[type="text"]
-            border-radius: $input-border-radius $input-border-radius 0 0
+    // &.open
+    //     .input-container input[type="text"]
+    //         border-radius: $input-border-radius $input-border-radius 0 0
 </style>
