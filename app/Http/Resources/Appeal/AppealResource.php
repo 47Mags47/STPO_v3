@@ -27,17 +27,17 @@ class AppealResource extends JsonResource
                 ]
             ],
             'sender' => [
+                'id'        => $this->sender->id,
                 'full_name' => $this->sender->full_name
+            ],
+            'worker' => [
+                'id'        => ($this->id === 1 || $this->id === 2 || $this->id === 3 || $this->id === 5 || $this->id === 8) ? 8 : null,
+                'full_name' => 'asdasdad'
             ],
             'status' => [
                 'code' => $this->status->code,
                 'name' => $this->status->name
             ],
-            'actions' => [
-                'accept'    => user()->can('accept', $this->resource),
-                'goto'      => user()->can('goto', $this->resource),
-                'close'     => user()->can('close', $this->resource),
-            ]
         ];
     }
 }

@@ -9,13 +9,17 @@ export default {
     },
     computed: {
         appeals: () => usePage().props.appeals,
+        current_user: () => usePage().props.current_user.data,
     },
     data(){
         return {
             BlueButton: shallowRef(BlueButton),
             RedButton: shallowRef(RedButton),
-            router
+            router, hasPermission
         }
+    },
+
+    mounted() {
     }
 };
 </script>
@@ -23,7 +27,6 @@ export default {
 <template>
     <ResourceTable
         :hasCreateButton="true"
-
         :data="appeals.data"
         :meta="appeals.meta"
         :collumns="[
@@ -68,16 +71,52 @@ export default {
             },
             {
                 type: 'render',
-                render: (row) => row.actions.accept
-                ? {
-                    component:  BlueButton,
-                    props: {
-                        text: 'Перейти',
-                        onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                render: (row) => {
+                    return {
+                        // кнопка если юзер создал или юзер принял
+                        component: (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
+                        props: {
+                            text: 'Перейти',
+                            onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                        }
                     }
                 }
-                : {
-                    component: 'span'
+            },
+            {
+                type: 'render',
+                visible: hasPermission('appeal_work'),
+                render: (row) => {
+                    return {
+                        component:  BlueButton,
+                        props: {
+                            text: 'Принять',
+                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                        }
+                    }
+                }
+            },
+            {
+                type: 'render',
+                render: (row) => {
+                    return {
+                        component: (row.status.code === 'new' || row.status.code === 'in_work') && (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
+                        props: {
+                            text: 'Закрыть',
+                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                        }
+                    }
+                }
+            },
+            {
+                type: 'render',
+                render: (row) => {
+                    return {
+                        component: row.status.code === 'closed' && (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
+                        props: {
+                            text: 'Возобновить',
+                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                        }
+                    }
                 }
             },
         ]"
