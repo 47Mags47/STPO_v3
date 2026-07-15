@@ -11,7 +11,7 @@ if(config('app.env') === 'local'){
 
 ### DEFAULT ROUTES
 ##################################################
-Route::get('/', fn() => redirect()->route('sfr.fsd.sfr-payment-types.index'))->name('home');
+Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home');
 
 ### FILES
 ##################################################
