@@ -1,5 +1,5 @@
 <script>
-import DatePicker from '../../datePicker/DatePicker.vue';
+import DatePicker from '../datePicker/DatePicker.vue';
 import Ico from '../../Ico.vue';
 
 export default {

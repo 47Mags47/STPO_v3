@@ -7,33 +7,29 @@ use Inertia\Inertia;
 if(config('app.env') === 'local'){
     Route::get('/test', fn() => Inertia::render('test'));
     Route::get('/view', fn() => Inertia::render('view'));
-    Route::post('/send-notification', function () {
-        $notification = App\Models\Base\Notification::factory()->create([
-            'is_readed' => false,
-            'recipient_id' => user()->id,
-            'created_at' => now(),
-        ]);
-
-        App\Events\Base\SendNotificationEvent::dispatch($notification);
-
-        return back()->with('success', 'Оповещение отправлено');
-    })->name('send-notification');
 }
 
-// FILES
+### DEFAULT ROUTES
+##################################################
+Route::get('/', fn() => redirect()->route('sfr.fsd.sfr-payment-types.index'))->name('home');
+
+### FILES
+##################################################
 Route::name('upload.')->prefix('/upload')->group(function () {
     Route::post('files/startUpload',    [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
     Route::post('chunks/{chunk}',       [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
-    Route::get('/download/{file}',      [App\Http\Controllers\Base\UploadController::class, 'download'])->name('download');
+
+});
+
+Route::name('files.')->prefix('/files')->group(function(){
+    Route::get('/{file}/download',      [App\Http\Controllers\Base\FileController::class, 'download'])->name('download');
+    Route::get('/{file}/errors',        [App\Http\Controllers\Base\FileErrorController::class, 'index'])->name('errors');
 });
 
 ### HTTP ERRORS
 ##################################################
 Route::get('/403',        fn() => Inertia::render('httpErrors/403'))->name('forbidden');
 
-### DEFAULT ROUTES
-##################################################
-Route::get('/', fn() => redirect()->route('fsd.sfr-files.index'))->name('home');
 
 ### GUEST
 ##################################################
@@ -70,12 +66,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::name('administrate.')->prefix('/administrate')->group(function () {
-        Route::resource('/users',                                   App\Http\Controllers\Administrate\UserController::class)->only(['index', 'destroy']);
-        Route::resource('/templates',                               App\Http\Controllers\Administrate\TemplateController::class)->except('show');
-        Route::resource('/moduls',                                  App\Http\Controllers\Administrate\ModulController::class)->except('show');
-        Route::resource('/modul-groups',                            App\Http\Controllers\Administrate\ModulGroupController::class)->except('show');
         Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
         Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
+        Route::resource('/payments',                                App\Http\Controllers\Administrate\PaymentController::class)->except('show');
+        Route::resource('/banks',                                   App\Http\Controllers\Administrate\BankController::class)->except('show');
+        Route::resource('/financing-types',                         App\Http\Controllers\Administrate\FinancingTypeController::class)->except('show');
     });
 
     Route::name('appeal.')->prefix('/appeal')->group(function () {
@@ -85,17 +80,20 @@ Route::middleware('auth')->group(function () {
         Route::resource('/appeals/{appeal}/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
     });
 
-    Route::name('fsd.')->prefix('/fsd')->group(function () {
-        Route::resource('/sfr-files',                               App\Http\Controllers\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
-        Route::resource('/payment-files',                           App\Http\Controllers\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
-        Route::resource('/payment-recipients',                      App\Http\Controllers\FSD\PaymentRecipientController::class)->only(['index']);
-        Route::resource('/transit-equivalents',                     App\Http\Controllers\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
-        Route::resource('/transit-files',                           App\Http\Controllers\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
+    Route::name('sfr.')->prefix('/sfr')->group(function () {
+        Route::name('fsd.')->prefix('/fsd')->group(function () {
+            Route::resource('/sfr-files',                               App\Http\Controllers\SFR\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
+            Route::resource('/sfr-files/{SFRFile}/result-files',        App\Http\Controllers\SFR\FSD\ResultFileController::class)->only(['index', 'store', 'show']);
+            Route::resource('/payment-files',                           App\Http\Controllers\SFR\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+            Route::resource('/sfr-payment-categories',                  App\Http\Controllers\SFR\FSD\SFRCategoryController::class)->except(['show']);
+            Route::resource('/asp-payment-categories',                  App\Http\Controllers\SFR\FSD\ASPCategoryController::class)->except(['show']);
+            Route::resource('/transit-categories',                      App\Http\Controllers\SFR\FSD\TransitCategoryController::class)->except(['show']);
+            Route::resource('/transit-equivalents',                     App\Http\Controllers\SFR\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
+            Route::resource('/transit-files',                           App\Http\Controllers\SFR\FSD\TransitFileController::class)->only(['index', 'create', 'store']);
+        });
     });
 
     Route::name('payment.')->prefix('/payment')->group(function () {
-        Route::resource('/payments',                                App\Http\Controllers\Payment\PaymentController::class)->except('show');
         Route::resource('/events',                                  App\Http\Controllers\Payment\EventController::class)->except('show');
-        Route::resource('/banks',                                   App\Http\Controllers\Payment\BankController::class)->except('show');
     });
 });

@@ -3,8 +3,17 @@ import { DateTime, Interval } from "luxon";
 import Select from '../../inputs/Select.vue';
 import Ico from "../../Ico.vue";
 import BlueButton from "../../buttons/BlueButton.vue";
+import MonthSelect from "../MonthSelect.vue";
+import YearSelect from "../YearSelect.vue";
 
 export default {
+    components: {
+        Select,
+        BlueButton,
+        Ico,
+        MonthSelect,
+        YearSelect
+    },
     props: {
         checkValid: {
             type: Function,
@@ -38,11 +47,6 @@ export default {
             default: {}
         }
     },
-    components: {
-        Select,
-        BlueButton,
-        Ico
-    },
     computed: {
         now: () => DateTime.now(),
 
@@ -69,39 +73,10 @@ export default {
 
             return interval
         },
-        monthList(){
-            return{
-                labelKey: 'label',
-                vakueKey: 'value',
-                data: [
-                    { label: 'Январь',      value: 1    },
-                    { label: 'Февраль',     value: 2    },
-                    { label: 'Март',        value: 3    },
-                    { label: 'Апрель',      value: 4    },
-                    { label: 'Май',         value: 5    },
-                    { label: 'Июнь',        value: 6    },
-                    { label: 'Июль',        value: 7    },
-                    { label: 'Август',      value: 8    },
-                    { label: 'Сентябрь',    value: 9    },
-                    { label: 'Октябрь',     value: 10   },
-                    { label: 'Ноябрь',      value: 11   },
-                    { label: 'Декабрь',     value: 12   },
-                ]
-            }
-        },
         availableInterval(){
             let startInterval = this.startInterval ?? this.now.startOf('year').minus({'year': 5})
             let endInterval = this.endInterval ?? this.now.endOf('year').plus({'year': 5})
             return Interval.fromDateTimes(startInterval, endInterval)
-        },
-        yearList(){
-            let startInterval = this.currentDate.startOf('year').minus({'year': 5})
-            let endInterval = this.currentDate.endOf('year').plus({'year': 5})
-
-            return Interval.fromDateTimes(startInterval, endInterval).splitBy({ year: 1 }).map((interval) => ({
-                label: interval.start.toFormat('yyyy'),
-                value: interval.start.toFormat('yyyy'),
-            }))
         },
 
         initialDate(){
@@ -196,32 +171,24 @@ export default {
 <template>
     <div class="date-input-popup-container">
         <div class="header-container">
-            <BlueButton class="" :onClick="goToPrevMonth" :disabled="!checkMonthAvaible(currentDate.minus({'month': 1}))">
+            <BlueButton :onClick="goToPrevMonth" :disabled="!checkMonthAvaible(currentDate.minus({'month': 1}))">
                 <Ico type="chevron-left"/>
             </BlueButton>
             <div class="current-date-container">
-
-                <!-- HACK ПЕРЕДЕЛАТЬ СЕЛЕКТЫ -->
-                <Select
+                <MonthSelect
                     class="month-select"
-                    name="year"
-                    placeholder="Год"
-                    :value="currentDate.toFormat('M')"
-                    :hasSearch="false"
-                    :options="monthList"
+                    name="month"
+                    :value="Number(currentDate.toFormat('M'))"
                     :onSelect="setMonthHandler"
                 />
-
-                <Select
+                <YearSelect
                     class="year-select"
-                    name="month"
-                    placeholder="Месяц"
+                    name="year"
                     :value="currentDate.toFormat('yyyy')"
-                    :options="yearList"
                     :onSelect="setYearHandler"
                 />
             </div>
-            <BlueButton class="" :onClick="goToNextMonth" :disabled="!checkMonthAvaible(currentDate.plus({'month': 1}))">
+            <BlueButton :onClick="goToNextMonth" :disabled="!checkMonthAvaible(currentDate.plus({'month': 1}))">
                 <Ico type="chevron-right"/>
             </BlueButton>
         </div>

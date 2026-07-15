@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Base;
 
+use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,7 @@ class FileFactory extends Factory
             'path' => '',
             'name' => Str::random(40) . '.txt',
             'origin_name' => Str::random(40),
-            'upload_at' => null,
+            'status_id' => FileStatus::byCode('ok')->id,
         ];
     }
 }

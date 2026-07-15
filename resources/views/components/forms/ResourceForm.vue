@@ -27,6 +27,7 @@ export default {
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
         DatePicker:         defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
+        MonthSelect:        defineAsyncComponent(() => import('../inputs/MonthSelect.vue')),
     },
     props: {
         inputs: {
@@ -51,6 +52,7 @@ export default {
                         'bigFiles',
                         'date',
                         'datePicker',
+                        'monthSelect'
                     ].includes(input.type);
                 });
 
@@ -112,7 +114,9 @@ export default {
                 <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
                 <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
                 <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
+
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
+                <MonthSelect        v-if="input.type === 'monthSelect'"     v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton type="submit">{{ sbm }}</BlueButton>
         </template>

@@ -101,12 +101,17 @@ export default {
             this.onSelect(option)
         },
 
-        checkSelected(option){
+        checkSelected(option) {
             return this.selected === null
                 ? false
                 : Object.get(option, this.valueKey) === Object.get(this.selected, this.valueKey)
         }
     },
+    watch:{
+        value(option){
+            this.selected = option
+        },
+    }
 };
 </script>
 

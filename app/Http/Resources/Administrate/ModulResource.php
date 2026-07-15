@@ -18,11 +18,6 @@ class ModulResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'route_name' => $this->route_name,
-            'creator' => $this->creator !== null
-                ? [
-                    'full_name' => $this->creator->full_name
-                ]
-                : null,
             'group' => $this->group !== null
                 ? [
                     'id' => $this->group->id,

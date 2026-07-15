@@ -36,10 +36,6 @@ export default {
                 title: 'Группа',
                 dataIndex: 'group.name',
             },
-            {
-                title: 'Создатель',
-                dataIndex: 'creator_id',
-            },
         ]"
     />
 </template>

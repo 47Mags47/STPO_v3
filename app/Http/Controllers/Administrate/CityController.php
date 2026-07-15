@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Administrate;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Http\Requests\Administrate\CityStoreRequest;
@@ -49,6 +48,6 @@ class CityController extends Controller
     public function destroy(City $city) {
         $city->delete();
 
-        return back()->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

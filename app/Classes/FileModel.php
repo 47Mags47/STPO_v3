@@ -2,8 +2,11 @@
 
 namespace App\Classes;
 
+use App\Events\Base\FileChangeStatusEvent;
 use App\Models\Base\File;
+use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 abstract class FileModel extends BaseModel
 {
@@ -11,6 +14,9 @@ abstract class FileModel extends BaseModel
     ##################################################
     public static string|null $storage_file_disk = 'local';
     public static string|null $storage_file_path = '';
+    public static string|null $channel = null;
+
+    public static bool $deleteInStorage = true;
 
     /**
      * Perform any actions required after the model boots.
@@ -31,7 +37,8 @@ abstract class FileModel extends BaseModel
         });
 
         self::deleted(function ($model) {
-            $model->file->delete();
+            if($model::$deleteInStorage)
+                $model->file->delete();
         });
     }
 
@@ -71,10 +78,10 @@ abstract class FileModel extends BaseModel
      */
     public function save(array $options = [])
     {
-        $parentF_flag = $this->file->save();
+        $parent_flag = $this->file->save();
         $child_flag = parent::save($options);
 
-        return $parentF_flag and $child_flag;
+        return $parent_flag and $child_flag;
     }
 
     ### Методы
@@ -114,8 +121,11 @@ abstract class FileModel extends BaseModel
      * Adds an error to the record
      * @param string $error
      */
-    public function addError(string $error): bool {
-        return $this->file->addError($error);
+    public function addError(string $error): self
+    {
+        $this->file->addError($error);
+
+        return $this;
     }
 
     /**
@@ -127,6 +137,50 @@ abstract class FileModel extends BaseModel
     public function write(string $content): bool
     {
         return $this->file->write($content);
+    }
+
+    /**
+     * Return download response
+     *
+     * @return StreamedResponse
+     */
+    public function download(): StreamedResponse {
+        return $this->file->download();
+    }
+
+    /**
+     * Set file status
+     *
+     * @param FileStatus|string $status
+     * @return bool
+     */
+    public function setStatus(FileStatus|string $status): bool{
+        if(is_string($status))
+            $status = FileStatus::byCode($status);
+
+        $is_updated = $this->file->update([
+            'status_id' => $status->id,
+        ]);
+
+        if($is_updated === false)
+            return false;
+
+        if($this::$channel !== null)
+            FileChangeStatusEvent::dispatch($this);
+
+        return true;
+    }
+
+    /**
+     * Set file disabled
+     *
+     * @param bool $disabled
+     * @return bool
+     */
+    public function setDisabled(bool $disabled = true): bool{
+        return $this->file->update([
+            'is_disabled' => $disabled,
+        ]);
     }
 
     ### Связи

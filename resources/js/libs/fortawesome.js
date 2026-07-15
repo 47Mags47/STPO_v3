@@ -10,7 +10,16 @@ import {
     faCloudArrowUp,
     faCloudArrowDown,
 
+    faArrowLeft,
+    faArrowRight,
+    faArrowRotateLeft,
+
+    faCircle,
+
     faFile,
+    faFileCirclePlus,
+    faFileCircleCheck,
+    faFileCircleExclamation,
     faDownload,
     faPaperclip,
 
@@ -25,7 +34,7 @@ import {
     faPen,
     faBars,
     faX,
-
+    faBug,
 
     faCircleExclamation,
     faCircleCheck,
@@ -44,7 +53,16 @@ library.add(
     faCloudArrowUp,
     faCloudArrowDown,
 
+    faArrowLeft,
+    faArrowRight,
+    faArrowRotateLeft,
+
+    faCircle,
+
     faFile,
+    faFileCirclePlus,
+    faFileCircleCheck,
+    faFileCircleExclamation,
     faDownload,
     faPaperclip,
 
@@ -59,7 +77,7 @@ library.add(
     faPen,
     faBars,
     faX,
-
+    faBug,
 
     faCircleExclamation,
     faCircleCheck,

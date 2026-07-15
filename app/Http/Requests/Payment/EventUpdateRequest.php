@@ -2,19 +2,16 @@
 
 namespace App\Http\Requests\Payment;
 
+use App\Models\Administrate\Payment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EventUpdateRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'payment_id'    => ['required', 'exists:' . Payment::class . ',id'],
+            'in_day'        => ['required', 'date_format:Y-m-d'],
         ];
     }
 }

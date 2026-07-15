@@ -2,8 +2,8 @@
 
 namespace Database\Factories\Payment;
 
+use App\Models\Administrate\Payment;
 use App\Models\Payment\Event;
-use App\Models\Payment\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

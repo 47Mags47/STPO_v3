@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         downoadClickButtonHandler() {
-            window.open(route('upload.download', { file: this.file.file_id }))
+            window.open(route('files.download', { file: this.file.file_id }))
         }
     }
 };

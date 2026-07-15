@@ -1,11 +1,12 @@
 <script>
-import Table from '../Table.vue';
+import { h } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import { router } from '@inertiajs/vue3';
+
+import Table from '../Table.vue';
 import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
-import { h } from 'vue';
 
 import FormItem from '../../FormItem.vue';
 
@@ -16,7 +17,8 @@ export default {
         TableTh,
         TableTd,
 
-        FormItem,
+        RowLink:        defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
+        FormItem:       defineAsyncComponent(() => import("../../FormItem.vue")),
 
         CreateButton:   defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
         EditButton:     defineAsyncComponent(() => import("../buttons/EditButton.vue")),
@@ -132,16 +134,15 @@ export default {
                 return true;
             },
         },
+        channels: {
+            type: Array,
+            default: () => []
+        },
 
         //Other
         rowLinks: {
             type: Array,
             default: [],
-        },
-
-        channels: {
-            type: Array,
-            default: []
         },
 
         rowClasses: {
@@ -287,9 +288,30 @@ export default {
     },
 
     mounted() {
-        this.channels.forEach((channel) => {
-            Echo.channel(channel. name)
+        this.channels.forEach(function(channel){
+            if(typeof channel !== 'object'){
+                console.error('Неверный формат канала');
+                return;
+            }
+
+            if(channel.name === undefined){
+                console.error('Не задан name канала')
+                return
+            }
+
+            if(channel.event === undefined){
+                console.error('Не задан event канала')
+                return
+            }
+
+            if(channel.onEvent === undefined){
+                console.error('Не задан onEvent канала')
+                return
+            }
+
+            Echo.channel(channel.name)
                 .listen(channel.event, channel.onEvent)
+
         })
     }
 }
@@ -299,22 +321,21 @@ export default {
     <Table class="resource-table">
         <template #colgroup>
             <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+
+            <col v-if="hasDeleteButton && data.length > 0" width="60px" />
+            <col v-if="hasShowButton && data.length > 0" width="60px" />
+            <col v-if="hasEditButton && data.length > 0" width="60px" />
         </template>
 
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                     <div class="min-w-[260px] flex-1" v-for="filter in filters">
-                        <MultiSelect    v-if="filter.type === 'multiSelect'"
-                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
-                        <SingleSelect   v-if="filter.type === 'singleSelect'"
-                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"      :options="filter.options"/>
-                        <Checkbox       v-if="filter.type === 'checkbox'"
-                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
-                        <NumberBetween  v-if="filter.type === 'numberBetween'"
-                        :name="preparePropsFromFilter(filter).name"     :label="filter.label" />
-                        <DateFilter     v-if="filter.type === 'dateFilter'"
-                        :name="preparePropsFromFilter(filter).name"     :label="filter.label"       :range-mode="filter.rangeMode"/>
+                        <MultiSelect    v-if="filter.type === 'multiSelect'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :options="filter.options"/>
+                        <SingleSelect   v-if="filter.type === 'singleSelect'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :options="filter.options" />
+                        <Checkbox       v-if="filter.type === 'checkbox'" :name="preparePropsFromFilter(filter).name" :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'" :name="preparePropsFromFilter(filter).name" :label="filter.label" />
+                        <DateFilter     v-if="filter.type === 'dateFilter'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :range-mode="filter.rangeMode" />
                     </div>
                 </div>
                 <div class="filter-btns">
@@ -351,7 +372,6 @@ export default {
 
         <template #thead>
             <TableRow>
-
                 <template v-for="column in collumns">
                     <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
                         {{ column.title }}
@@ -371,9 +391,12 @@ export default {
         <template #tbody>
             <TableRow v-if="data.length > 0" v-for="row in data" :class="getRowClasses(row)" >
                 <template v-for="collumn in collumns">
-                    <TableTd
-                        v-if="checkCellVisible(row, collumn)"
-                        v-bind="{...collumn, row, value: getCellValue(row, collumn)}"
+                    <TableTd v-if="checkCellVisible(row, collumn)"
+                        v-bind="{
+                            ...collumn,
+                            row,
+                            value: getCellValue(row, collumn)
+                        }"
                     />
                 </template>
 
@@ -381,11 +404,15 @@ export default {
                 <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
                 <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)" /></TableTd>
 
-                <TableTd v-for="link in rowLinks">
+                <!-- <TableTd v-for="link in rowLinks"
+                    class="table-button-cell"
+                    position="center-center"
+                >
                     <BlueButton :onclick="() => link.onClick(row)" class="ico-button">
                         <Ico :type="link.ico" />
                     </BlueButton>
-                </TableTd>
+                </TableTd> -->
+                <RowLink v-for="link in rowLinks" v-bind="{...link, row}" />
             </TableRow>
             <tr v-else>
                 <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
@@ -513,18 +540,24 @@ export default {
                     width: 14px
                     transition: .2s ease
                     transform: rotate(0deg)
-
-
     :deep()
         .table-header
             padding: 0 15px
-        .table-content .not-data-cell .table-cell-container
-            height: 250px
-            padding: 35px 0px
 
-            display: flex
-            flex-direction: column
-            gap: 25px
+        .table-content
+            .not-data-cell .table-cell-container
+                height: 250px
+                padding: 35px 0px
 
-            font-size: 1.2rem
+                display: flex
+                flex-direction: column
+                gap: 25px
+
+                font-size: 1.2rem
+            .table-button-cell .table-cell-container .button
+                width: 35px
+                height: 30px
+            .table-file-status-cell .table-cell-container
+                padding: 5px
+
 </style>
