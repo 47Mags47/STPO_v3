@@ -33,6 +33,6 @@ class AppealController extends Controller
             'sender_id' => user()->id,
         ])->toArray());
 
-        return redirect()->route('appeal.appeals.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('appeal.appeals.index')->with('success', 'Запись успешно создана');
     }
 }

@@ -71,13 +71,13 @@ class MessageController extends Controller
 
         return redirect()
             ->route('appeal.messages.index', ['appeal' => $appeal])
-            ->with('succes', 'Запись успешно обновлена');
+            ->with('success', 'Запись успешно обновлена');
     }
 
     public function destroy(Message $message)
     {
         $message->delete();
 
-        return back()->with('succes', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }
