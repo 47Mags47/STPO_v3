@@ -35,4 +35,30 @@ class AppealController extends Controller
 
         return redirect()->route('appeal.appeals.index')->with('succes', 'Запись успешно создана');
     }
+
+    public function accept(Appeal $appeal) {
+        $appeal->update([
+            'status_id' => 2,
+            'worker_id' => user()->id,
+        ]);
+
+        return back();
+    }
+
+    public function close(Appeal $appeal) {
+        $appeal->update([
+            'status_id' => 3,
+        ]);
+
+        return back();
+    }
+
+    public function reaccept(Appeal $appeal) {
+        $appeal->update([
+            'status_id' => 4,
+            'worker_id' => user()->id,
+        ]);
+
+        return back();
+    }
 }

@@ -20,6 +20,7 @@ class Appeal extends BaseModel
         'office',
         'comment',
         'sender_id',
+        'worker_id',
         'status_id',
         'them_id',
     ];
@@ -29,6 +30,11 @@ class Appeal extends BaseModel
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function worker(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'worker_id');
     }
 
     public function them(): BelongsTo

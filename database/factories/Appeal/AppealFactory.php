@@ -24,6 +24,7 @@ class AppealFactory extends Factory
             'comment' => $this->faker->text(250),
 
             'sender_id' => User::randomOrCreate()->id,
+            'worker_id' => User::randomOrCreate()->id,
             'them_id' => Them::randomOrCreate()->id,
             'status_id' => Status::randomOrCreate()->id,
         ];

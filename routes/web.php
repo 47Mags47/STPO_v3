@@ -82,6 +82,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('/thems',                                   App\Http\Controllers\Appeal\ThemController::class)->except('show');
         Route::resource('/appeals',                                 App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
         Route::resource('/appeals/{appeal}/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
+
+        Route::post('/appeals/{appeal}/accept',                     [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
+        Route::post('/appeals/{appeal}/close',                      [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
+        Route::post('/appeals/{appeal}/reaccept',                   [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');
     });
 
     Route::middleware('verified')->name('fsd.')->prefix('/fsd')->group(function () {

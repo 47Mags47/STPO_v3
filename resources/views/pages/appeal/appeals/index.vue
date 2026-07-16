@@ -19,6 +19,26 @@ export default {
         }
     },
 
+    methods: {
+        getComponent(row) {
+            if(
+                row.status.code === 'new' ||
+                this.current_user.id === row.sender.id ||
+                this.current_user.id === row.worker?.id
+            ) return this.BlueButton
+
+            else if (
+                row.status.code === 'closed' &&
+                (this.current_user.id === row.sender.id || this.current_user.id === row.worker.id)
+            ) return this.BlueButton
+
+            else if (
+                (row.status.code === 'new' || row.status.code === 'in_work' || row.status.code === 'reaccepted') &&
+                (this.current_user.id === row.sender.id || this.current_user.id === row.worker.id)
+            ) return this.RedButton
+        }
+    },
+
     mounted() {
     }
 };
@@ -64,57 +84,44 @@ export default {
                         new:            'text-blue-700',
                         closed:         'text-green-700',
                         in_work:        'text-yellow-700',
-                        in_revision:    'text-red-700',
-                        pending:        'text-indigo-700',
+                        reaccepted:     'text-red-700',
                     }[row.status.code] ?? ''
                 )
             },
             {
-                type: 'render',
-                render: (row) => {
-                    return {
-                        // кнопка если юзер создал или юзер принял
-                        component: (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
-                        props: {
-                            text: 'Перейти',
-                            onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
-                        }
-                    }
-                }
-            },
-            {
+                // пользователь, создавший заявку
+                // пользователь, принявший заявку !! воркер может быть нал
+                //
+                // Статус заявки новая
+                // has_permission(appeal_work)
                 type: 'render',
                 visible: hasPermission('appeal_work'),
                 render: (row) => {
                     return {
-                        component:  BlueButton,
+                        component: getComponent(row),
                         props: {
-                            text: 'Принять',
-                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                            text: row.status.code === 'new' ? 'Принять' : 'Перейти',
+                            onClick: (row) => {  row.status.code === 'new' ? router.post(route('appeal.accept', {appeal: row.id})) : router.visit(route('appeal.messages.index', {appeal: row.id})) },
                         }
                     }
                 }
             },
             {
+                // Статус заявки новая или принятая или возобновлено
+                // пользователь, создавший заявку
+                // пользователь, принявший заявку
+                //
+                //  статус заявки закрытая
+                // пользователь, создавший заявку
+                // пользователь, принявший заявку
                 type: 'render',
+                width: '125px',
                 render: (row) => {
                     return {
-                        component: (row.status.code === 'new' || row.status.code === 'in_work') && (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
+                        component: getComponent(row),
                         props: {
-                            text: 'Закрыть',
-                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
-                        }
-                    }
-                }
-            },
-            {
-                type: 'render',
-                render: (row) => {
-                    return {
-                        component: row.status.code === 'closed' && (current_user.id === row.sender.id || current_user.id === row.worker.id) ? BlueButton : null,
-                        props: {
-                            text: 'Возобновить',
-                            // onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
+                            text: row.status.code === 'closed' ? 'Возобновить' : 'Закрыть',
+                            onClick: (row) => { row.status.code === 'closed' ? router.post(route('appeal.reaccept', {appeal: row.id})) : router.post(route('appeal.close', {appeal: row.id})) },
                         }
                     }
                 }

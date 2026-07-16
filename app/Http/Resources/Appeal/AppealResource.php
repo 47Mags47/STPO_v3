@@ -31,8 +31,8 @@ class AppealResource extends JsonResource
                 'full_name' => $this->sender->full_name
             ],
             'worker' => [
-                'id'        => ($this->id === 1 || $this->id === 2 || $this->id === 3 || $this->id === 5 || $this->id === 8) ? 8 : null,
-                'full_name' => 'asdasdad'
+                'id'        => $this->worker->id,
+                'full_name' => $this->worker->full_name
             ],
             'status' => [
                 'code' => $this->status->code,
