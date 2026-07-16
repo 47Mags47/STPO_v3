@@ -16,7 +16,7 @@ class WriteResultFile implements ShouldQueue
 {
     use Queueable, Batchable;
 
-    public $timeout = 600;
+    public $timeout = 1800;
 
     private $fromFileCursor;
     private $toFileCursor;
