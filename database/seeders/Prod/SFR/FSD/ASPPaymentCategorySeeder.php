@@ -31,6 +31,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежемесячная денежная выплата многодетным семьям')->get()->first()->id, 'name' => 'Ежемесячная выплата многодетным 1200 рублей']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежемесячная денежная выплата многодетным семьям')->get()->first()->id, 'name' => 'Ежемесячная денежная выплата в размере 1200 рублей']);
 
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => 'компенсация по оплате ЖКУ (решение суда)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация оплаты за газоснабжение в баллонах']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => 'Компенсация по капремонту (100%)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => 'Компенсация по капремонту (50%)']);
