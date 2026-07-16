@@ -17,6 +17,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежегодная денежная выплата за пользование услугами связи для целей кабельного и (или) эфирного телевизионного вещания ( 5 руб. в мес.)')->get()->first()->id, 'name' => 'ЕДК инвалидам по зрению за радио']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежемесячная денежная выплата на частичную оплату жилого помещения и коммунальных услуг отдельным категориям граждан (15-ОЗ)')->get()->first()->id, 'name' => 'ЕДВ на частичную оплату ЖКУ отдельным категориям г']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежемесячная денежная выплата на частичную оплату жилого помещения и коммунальных услуг отдельным категориям граждан (15-ОЗ)')->get()->first()->id, 'name' => 'ЕДВ на частичную оплату ЖКХ']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежегодная  денежная выплата за услугу по предоставлению проводного радиовещания (8,33 руб. в мес.)')->get()->first()->id, 'name' => 'ГДВ за услугу проводного радиовещания']);
 
