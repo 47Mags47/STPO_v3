@@ -53,10 +53,19 @@ abstract class BaseModel extends Model
             : new \App\Classes\Filter($builder)->apply();
     }
 
-    public static function getResource(?string $order = 'id', ?string $orderDesc = 'asc')
+    public static function getResource(string|array|null $order = 'id', ?string $orderDesc = 'asc')
     {
         $query = self::Filter();
-        $query->orderBy($order, $orderDesc);
+
+        if (is_array($order))
+            foreach ($order as $key => $value) {
+                if (is_string($key))
+                    $query->orderBy($key, $value);
+                else
+                    $query->orderBy($value, 'asc');
+            }
+        else
+            $query->orderBy($order, $orderDesc);
 
         $paginate = getRequestPaginate();
 
@@ -78,7 +87,7 @@ abstract class BaseModel extends Model
 
     private static function getClassKnowingFolderAndEnding(string $namespace, string $class, string $ending = ''): string|bool
     {
-        if(!file_exists(base_path($namespace . '\\' . $class . $ending)))
+        if (!file_exists(base_path($namespace . '\\' . $class . $ending)))
             return false;
 
         if (class_exists($namespace . '\\' . $class . $ending))

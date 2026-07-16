@@ -14,7 +14,7 @@ class PaymentFileController extends Controller
     public function index()
     {
         return Inertia::render('sfr/fsd/payment-files/index', [
-            'files' => fn() => PaymentFile::getResource('created_at', 'desc'),
+            'files' => fn() => PaymentFile::getResource('in_date', 'desc')
         ]);
     }
 
