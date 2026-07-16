@@ -3,7 +3,7 @@ import { defineAsyncComponent } from 'vue';
 
 export default {
     components: {
-        Ico:            defineAsyncComponent(() => import("../Ico.vue")),
+        Ico: defineAsyncComponent(() => import("../Ico.vue")),
     },
     data() {
         return {

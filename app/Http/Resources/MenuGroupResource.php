@@ -11,7 +11,7 @@ class MenuGroupResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'moduls' => MenuItemResource::collection($this->moduls),
+            'moduls' => MenuItemResource::collection($this->moduls()->orderBy('name')->get()),
         ];
     }
 }

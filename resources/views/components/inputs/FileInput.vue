@@ -26,11 +26,11 @@ export default {
         },
         placeholder: {
             type: String,
-            default: "Файл не выбран",
+            default: 'Файл не выбран',
         },
         buttonText: {
             type: String,
-            default: "Выбрать файл",
+            default: 'Выбрать файл',
         },
     },
 
@@ -45,7 +45,7 @@ export default {
             if (!this.internalFiles) return this.placeholder;
 
             if (Array.isArray(this.internalFiles)) {
-                return this.internalFiles.map((f) => f.name).join(", ");
+                return this.internalFiles.map((f) => f.name).join(', ');
             }
 
             return this.internalFiles.name;
@@ -66,7 +66,7 @@ export default {
         },
 
         clear() {
-            this.$refs.input.value = "";
+            this.$refs.input.value = '';
             this.internalFiles = null;
         },
     },

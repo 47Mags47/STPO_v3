@@ -26,7 +26,7 @@ class ThemGroupController extends Controller
     {
         ThemGroup::create($request->validated());
 
-        return redirect()->route('appeal.them-groups.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('appeal.them-groups.index')->with('success', 'Запись успешно создана');
     }
 
     public function edit(ThemGroup $themGroup)
@@ -40,12 +40,12 @@ class ThemGroupController extends Controller
     {
         $themGroup->update($request->validated());
 
-        return redirect()->route('appeal.them-groups.index')->with('succes', 'Запись успешно обновлена');
+        return redirect()->route('appeal.them-groups.index')->with('success', 'Запись успешно обновлена');
     }
 
     public function destroy(ThemGroup $themGroup) {
         $themGroup->delete();
 
-        return back()->with('succes', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

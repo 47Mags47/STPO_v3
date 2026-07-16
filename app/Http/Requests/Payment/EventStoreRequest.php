@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Payment;
 
-use App\Models\Payment\Payment;
+use App\Models\Administrate\Payment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EventStoreRequest extends FormRequest

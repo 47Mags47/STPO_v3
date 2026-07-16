@@ -50,6 +50,6 @@ class DivisionController extends Controller
     public function destroy(Division $division) {
         $division->delete();
 
-        return back()->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

@@ -7,8 +7,21 @@ import {
     faChevronRight,
     faChevronDown,
 
+    faCloudArrowUp,
+    faCloudArrowDown,
+
+    faArrowLeft,
+    faArrowRight,
+    faArrowRotateLeft,
+
+    faCircle,
+
     faFile,
+    faFileCirclePlus,
+    faFileCircleCheck,
+    faFileCircleExclamation,
     faDownload,
+    faPaperclip,
 
     faBell,
     faEnvelope,
@@ -21,7 +34,7 @@ import {
     faPen,
     faBars,
     faX,
-
+    faBug,
 
     faCircleExclamation,
     faCircleCheck,
@@ -37,8 +50,21 @@ library.add(
     faChevronRight,
     faChevronDown,
 
+    faCloudArrowUp,
+    faCloudArrowDown,
+
+    faArrowLeft,
+    faArrowRight,
+    faArrowRotateLeft,
+
+    faCircle,
+
     faFile,
+    faFileCirclePlus,
+    faFileCircleCheck,
+    faFileCircleExclamation,
     faDownload,
+    faPaperclip,
 
     faBell,
     faEnvelope,
@@ -51,7 +77,7 @@ library.add(
     faPen,
     faBars,
     faX,
-
+    faBug,
 
     faCircleExclamation,
     faCircleCheck,

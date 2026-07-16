@@ -29,11 +29,7 @@ export default {
             type: 'select',
             name: 'payment_id',
             label: 'Выплата',
-            options: {
-                labelKey: 'name',
-                valueKey: 'id',
-                data: payments,
-            },
+            options: payments,
             value: event.payment.id
         },
     ]"

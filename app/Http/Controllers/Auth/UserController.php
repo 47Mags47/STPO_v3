@@ -68,7 +68,7 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        return redirect()->route('dashboard')->with('succes', 'Запись успешно обновлена');
+        return redirect()->route('dashboard')->with('success', 'Запись успешно обновлена');
     }
 
     public function show(User $user)

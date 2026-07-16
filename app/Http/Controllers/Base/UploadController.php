@@ -8,7 +8,6 @@ use App\Http\Requests\Base\UploadWriteChunkRequest;
 use App\Models\Base\File;
 use App\Models\Base\FileChunk;
 use App\Models\Base\UploadFile;
-use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
@@ -51,10 +50,5 @@ class UploadController extends Controller
         }
 
         return response()->json();
-    }
-
-    public function download(File $file){
-        // HACK добавить механизм проверки доступа к файлу
-        return Storage::disk($file->disk)->download($file->getLocalPath(), $file->origin_name);
     }
 }

@@ -7,7 +7,7 @@ export default {
         },
         type: {
             type: [String, null],
-            default: "text",
+            default: 'text',
         },
         name: {
             type: [String, null],
@@ -20,9 +20,9 @@ export default {
             type: Boolean,
             default: false,
         },
-        modelValue: {
+        value: {
             type: [String, Boolean, Number],
-            default: "",
+            default: '',
         },
         autocomplete: {
             type: Boolean,
@@ -78,7 +78,7 @@ export default {
         :placeholder
         :required
         :autocomplete
-        :value="modelValue"
+        :value
         @input="inputHandler"
         @click="clickHandler"
         @change="changeHandler"

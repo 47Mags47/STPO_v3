@@ -21,6 +21,8 @@ export default {
 
     position: relative
 
+    display: flex
+
     overflow: hidden
     svg
         width: 100%

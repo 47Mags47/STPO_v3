@@ -16,7 +16,7 @@ class EmailController extends Controller
 
     public function verify(EmailVerificationRequest $request){
         $request->fulfill();
-        return redirect()->route('home')->with('succes', 'Email адрес подтвержден');
+        return redirect()->route('home')->with('success', 'Email адрес подтвержден');
     }
 
     public function send(Request $request){

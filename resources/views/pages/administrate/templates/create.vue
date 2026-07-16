@@ -31,21 +31,13 @@ export default {
                 type: 'select',
                 name: 'style_id',
                 label: 'Вид',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: templateStyles,
-                },
+                options: templateStyles,
             },
             {
                 type: 'select',
                 name: 'type_id',
                 label: 'Тип',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: templateTypes,
-                },
+                options: templateTypes,
             },
             {
                 type: 'number',

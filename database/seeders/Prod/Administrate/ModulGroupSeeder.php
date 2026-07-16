@@ -13,7 +13,7 @@ class ModulGroupSeeder extends Seeder
     public function run(): void
     {
         ModulGroup::firstOrCreate(['code' => 'administrate',   'name' => 'Администрирование']);
-        ModulGroup::firstOrCreate(['code' => 'SFR',            'name' => 'СФР']);
+        ModulGroup::firstOrCreate(['code' => 'FSD_reestrs',    'name' => 'Реестры ФСД']);
         ModulGroup::firstOrCreate(['code' => 'payments',       'name' => 'Выплаты']);
     }
 }

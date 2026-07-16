@@ -3,6 +3,7 @@
 namespace App\Models\Payment;
 
 use App\Classes\BaseModel;
+use App\Models\Administrate\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

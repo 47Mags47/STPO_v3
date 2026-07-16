@@ -4,7 +4,11 @@ namespace App\Models\Base;
 
 use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class File extends BaseModel
 {
@@ -19,15 +23,21 @@ class File extends BaseModel
         'path',
         'name',
         'origin_name',
-        'upload_at',
+        'is_disabled',
         'status_id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_disabled' => 'boolean',
+        ];
+    }
 
     ### Методы модели
     ##################################################
     public static function createChildren(string $model, ?array $attributes = [])
     {
-
         $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
         $childAttributes = array_intersect_key($attributes, array_flip(new $model()->getFillable()));
 
@@ -45,11 +55,15 @@ class File extends BaseModel
      * Adds an error to the record
      * @param string $error
      */
-    public function addError(string $error): bool
+    public function addError(string $error): self
     {
-        $errors = $this->errors;
+        $error = str_replace(PHP_EOL, '', trim($error));
 
-        return $this->update(array_merge($errors, [$error]));
+        $this->errors()->create(
+            ['error' => $error]
+        );
+
+        return $this;
     }
 
     ### Методы хранилища
@@ -106,38 +120,19 @@ class File extends BaseModel
         return Storage::disk($this->disk)->put($this->getLocalPath(), $content);
     }
 
+    public function download(): StreamedResponse{
+        return Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name);
+    }
+
     ### Связи
     ##################################################
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(FileStatus::class, 'status_id');
+    }
 
-
-    // ### Методы
-    // ##################################################
-    // public function deleteInStorage(){
-    //     return Storage::disk($this->disk)->delete($this->path . '/' . $this->name);
-    // }
-
-    // public function addError(string $error){
-    //     $this->errors()->create(['error' => $error]);
-    // }
-
-    // ### Аттрибуты
-    // ##################################################
-    // protected function hasToStorage(): Attribute
-    // {
-    //     return new Attribute(
-    //         get: fn() => Storage::disk($this->disk)->has($this->path . '/' . $this->name),
-    //     );
-    // }
-
-    // ### Связи
-    // ##################################################
-    // public function status(): BelongsTo
-    // {
-    //     return $this->belongsTo(FileStatus::class, 'status_id');
-    // }
-
-    // public function errors(): HasMany
-    // {
-    //     return $this->hasMany(FileError::class, 'file_id');
-    // }
+    public function errors(): HasMany
+    {
+        return $this->hasMany(FileError::class, 'file_id');
+    }
 }

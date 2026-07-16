@@ -40,11 +40,7 @@ export default {
                 type: 'select',
                 name: 'group_id',
                 label: 'Группа',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: modulGroups,
-                },
+                options: modulGroups,
                 value: modul.group_id,
             },
         ]"

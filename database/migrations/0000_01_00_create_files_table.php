@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Base\File;
+use App\Models\Base\FileStatus;
 use App\Models\Base\UploadFile;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,6 +14,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('base__file_statuses', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('code');
+            $table->string('name');
+        });
+
         Schema::create('base__files', function (Blueprint $table) {
             $table->id();
 
@@ -23,7 +31,7 @@ return new class extends Migration
 
             $table->boolean('is_disabled')->default(false);
 
-            $table->foreignId('upload_at')->nullable()->index();
+            $table->foreignId('status_id')->constrained(FileStatus::getTableName());
 
             $table->timestamps();
         });
@@ -32,8 +40,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('file_id')
                 ->constrained(File::getTableName())
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
             $table->string('error');
         });
 

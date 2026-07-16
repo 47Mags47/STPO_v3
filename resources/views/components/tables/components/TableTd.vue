@@ -12,18 +12,36 @@ export default {
             type: Object,
             default: {}
         },
+        render: {
+            type: Function,
+            default: null
+        },
+        dataIndex: {
+            type: String,
+            default: ''
+        },
 
         // Content
         type: {
             type: String,
             default: 'string',
             validator(value) {
-                return ['string', 'date', 'render'].includes(value);
+                return [
+                    'string',
+                    'date',
+                    'datetime',
+                    'render',
+                    'file-status'
+                ].includes(value);
             },
         },
         value: {
             type: [String, Number, Function],
             default: "",
+        },
+        format: {
+            type: String,
+            default: null
         },
 
         // Style
@@ -66,12 +84,27 @@ export default {
 
     computed: {
         normalizedValue() {
-            if (this.type == "string")
+            if (this.type == 'string')
                 return this.value;
-            if (this.type == "date")
+
+            if (this.type == 'date')
                 return this.value !== null
-                    ? DateTime.fromISO(this.value).toFormat("dd.MM.yyyy")
+                    ? DateTime.fromISO(this.value).toFormat(this.format ?? 'dd.MM.yyyy')
                     : ''
+
+            if (this.type == 'datetime')
+                return this.value !== null
+                    ? DateTime.fromISO(this.value).toFormat(this.format ?? 'dd.MM.yyyy HH:mm')
+                    : ''
+
+            if(this.type == 'file-status'){
+                console.log(this.row)
+                if(this.row.file.status.code){
+
+                }
+
+                return '<h1>test<h1>'
+            }
         },
     },
 
@@ -119,21 +152,14 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-table
-    tbody tr
-        // &:first-child th
-        //     border-bottom: none
-        td
-            border: $table-border
-            // border-top: $table-border
-            // border-right: $table-border
-            position: relative
-            // &:first-child
-            //     border-left: none
-            // &:last-child
-            //     border-right: none
+td
+    border: $table-border
+    position: relative
 .table-cell-container
-    padding: 10px
+    width: 100%
+    height: 100%
+
+    padding: 7px 10px
 
     display: flex
     &.top-left

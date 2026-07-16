@@ -35,6 +35,8 @@ class {{ class }} extends Controller
 
     public function destroy({{ model }} ${{ modelVariable }})
     {
-        //
+        ${{ modelVariable }}->delete();
+
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

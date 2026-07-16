@@ -79,11 +79,7 @@ export default {
                 label: 'Подразделение',
                 name: 'division',
                 required: true,
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: divisions,
-                },
+                options: divisions,
             },
             {
                 type: 'phoneHasDob',
