@@ -150,6 +150,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-900 рублей (2)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО - 10000 рублей']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса члену семьи погиб(ум) сотрудн. ОВД']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса члену семьи гр-на, посмертно удост']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Едв региональным льготникам')->get()->first()->id,      'name' => 'ЕДВ ветеранам труда']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Едв региональным льготникам')->get()->first()->id,      'name' => 'ЕДВ труженникам тыла']);
