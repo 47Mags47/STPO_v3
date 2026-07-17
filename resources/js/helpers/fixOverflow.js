@@ -15,7 +15,6 @@ export function fixOverflow(el) {
     const overflowBottom = rect.bottom > window.innerHeight;
     const overflowRight  = rect.right > window.innerWidth;
 
-    console.log(rect.bottom, window.innerHeight)
     // Если вылез снизу за экран
     if(overflowBottom) {
         el.style.top    = 'auto'

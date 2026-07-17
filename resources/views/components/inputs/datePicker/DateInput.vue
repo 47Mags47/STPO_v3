@@ -68,18 +68,6 @@ export default {
             this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
         },
 
-        // async fixPopupBottomPosition() {
-        //     await this.$nextTick()
-
-        //     const popupRect = this.$refs.dateInputPopup.$el.getBoundingClientRect()
-        //     const vh = window.innerHeight
-
-        //     if (popupRect.bottom > vh) {
-        //         this.popupStyle.position = 'fixed'
-        //         this.popupStyle.bottom = '10px'
-        //     }
-        // },
-
         dayClickHandler(date) {
             this.selectedDate = date
             this.onUpdate(this.selectedDate.toFormat('yyyy-MM-dd'))
@@ -141,8 +129,9 @@ export default {
         <div class="w-[16px] mr-2! cursor-pointer">
             <Ico type="calendar" @click="popupButtonClickHandler" />
         </div>
-        <Transition name="popup">
-            <DateInputPopup v-show="isPopupOpen"
+        <!-- <Transition name="popup"> -->
+            <DateInputPopup
+                :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
                 ref="dateInputPopup"
                 :isRange
                 :style="popupStyle"
@@ -152,7 +141,7 @@ export default {
                 :onClick="dayClickHandler"
                 :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
             />
-        </Transition>
+        <!-- </Transition> -->
     </div>
 </template>
 

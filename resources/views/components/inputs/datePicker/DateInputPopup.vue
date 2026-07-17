@@ -257,6 +257,8 @@ export default {
     top: 100%
     z-index: 100
 
+    transition: opacity .3s ease, scale .3s ease
+
     .header-container
         width: 100%
         height: 40px
