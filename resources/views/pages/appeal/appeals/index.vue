@@ -20,27 +20,42 @@ export default {
     },
 
     methods: {
-        getComponent(row) {
-            if(
-                row.status.code === 'new' ||
-                this.current_user.id === row.sender.id ||
-                this.current_user.id === row.worker?.id
-            ) return this.BlueButton
+        getAppealActions(row) {
+            const status = row.status.code;
 
-            else if (
-                row.status.code === 'closed' &&
-                (this.current_user.id === row.sender.id || this.current_user.id === row.worker.id)
-            ) return this.BlueButton
+            const isSender = this.current_user.id === row.sender.id;
+            const isWorker = this.current_user.id === row.worker?.id;
+            const canWork = hasPermission('appeal_work');
 
-            else if (
-                (row.status.code === 'new' || row.status.code === 'in_work' || row.status.code === 'reaccepted') &&
-                (this.current_user.id === row.sender.id || this.current_user.id === row.worker.id)
-            ) return this.RedButton
+            const canAccept   = status === 'new' && canWork
+            const canGo       = isSender || isWorker
+            const canClose    = (status === 'new' || status === 'in_work' || status === 'reaccepted') && (isSender || isWorker)
+            const canReaccept = status === 'closed' && (isSender || isWorker)
+
+            return {
+                first: {
+                    component: (canAccept || canGo) ? this.BlueButton : null,
+                    text: canAccept ? 'Принять' : canGo ? 'Перейти' : null,
+                    onClick: () => {
+                        if (canAccept)
+                            router.post(route('appeal.accept', { appeal: row.id }))
+                        else if (canGo)
+                            router.get(route('appeal.messages.index', { appeal: row.id }))
+                    }
+                },
+                second: {
+                    component: canClose ? this.RedButton : canReaccept ? this.BlueButton : null,
+                    text: canClose ? 'Закрыть' : canReaccept ? 'Возобновить' : null,
+                    onClick: () => {
+                        if (canClose)
+                            router.post(route('appeal.close', { appeal: row.id }))
+                        else if (canReaccept)
+                            router.post(route('appeal.reaccept', { appeal: row.id }))
+                    }
+                }
+            };
         }
     },
-
-    mounted() {
-    }
 };
 </script>
 
@@ -53,18 +68,17 @@ export default {
             {
                 title: 'ID',
                 dataIndex: 'id',
-                width: '100px',
+                width: '75px',
             },
             {
                 title: 'Создана',
                 dataIndex: 'created',
-                type: 'date',
                 width: '100px',
             },
             {
                 title: 'Отправитель',
                 width: '250px',
-                value: (row) => `${row.sender.full_name} (каб. ${row.office})`,
+                value: (row) => row.sender.full_name,
             },
             {
                 title: 'Тема',
@@ -89,41 +103,33 @@ export default {
                 )
             },
             {
-                // пользователь, создавший заявку
-                // пользователь, принявший заявку !! воркер может быть нал
-                //
-                // Статус заявки новая
-                // has_permission(appeal_work)
-                type: 'render',
-                visible: hasPermission('appeal_work'),
-                render: (row) => {
-                    return {
-                        component: getComponent(row),
-                        props: {
-                            text: row.status.code === 'new' ? 'Принять' : 'Перейти',
-                            onClick: (row) => {  row.status.code === 'new' ? router.post(route('appeal.accept', {appeal: row.id})) : router.visit(route('appeal.messages.index', {appeal: row.id})) },
-                        }
-                    }
-                }
-            },
-            {
-                // Статус заявки новая или принятая или возобновлено
-                // пользователь, создавший заявку
-                // пользователь, принявший заявку
-                //
-                //  статус заявки закрытая
-                // пользователь, создавший заявку
-                // пользователь, принявший заявку
+                // Перейти или принять
                 type: 'render',
                 width: '125px',
                 render: (row) => {
+                    const action = this.getAppealActions(row).first;
                     return {
-                        component: getComponent(row),
+                        component: action.component,
                         props: {
-                            text: row.status.code === 'closed' ? 'Возобновить' : 'Закрыть',
-                            onClick: (row) => { row.status.code === 'closed' ? router.post(route('appeal.reaccept', {appeal: row.id})) : router.post(route('appeal.close', {appeal: row.id})) },
+                            text: action.text,
+                            onClick: action.onClick,
                         }
-                    }
+                    };
+                }
+            },
+            {
+                // Закрыть или возобновить
+                type: 'render',
+                width: '125px',
+                render: (row) => {
+                    const action = this.getAppealActions(row).second;
+                    return {
+                        component: action.component,
+                        props: {
+                            text: action.text,
+                            onClick: action.onClick,
+                        }
+                    };
                 }
             },
         ]"

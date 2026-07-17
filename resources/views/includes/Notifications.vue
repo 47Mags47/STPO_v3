@@ -13,7 +13,8 @@ export default {
         return {
             isOpen: false,
             isLoaded: false,
-            notifications: []
+            notifications: [],
+            channel: null
         }
     },
     computed: {
@@ -50,17 +51,17 @@ export default {
     },
 
     mounted(){
+        this.channel = `user.${this.currentUser.id}.notifications`
         this.notifications = this.currentUser.notifications
 
-        Echo.private(`user.${this.currentUser.id}.notifications`)
+        Echo.private(this.channel)
             .listen('.new-notification', (data) => {
                 this.notifications.push(data.notification)
             });
-
     },
 
     unmounted(){
-        Echo.leave(`user.${this.currentUser.id}.notifications`)
+        Echo.leave(this.channel)
     }
 }
 </script>

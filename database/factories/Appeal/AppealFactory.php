@@ -20,7 +20,6 @@ class AppealFactory extends Factory
     public function definition(): array
     {
         return [
-            'office' => $this->faker->numerify('###'),
             'comment' => $this->faker->text(250),
 
             'sender_id' => User::randomOrCreate()->id,

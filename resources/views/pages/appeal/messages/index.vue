@@ -55,7 +55,6 @@ export default {
             <div>
                 <span class="font-bold!"> Отправитель: </span>
                 <span> {{ appeal.sender.full_name }} </span>
-                <span> ({{ appeal.office }} каб.) </span>
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>

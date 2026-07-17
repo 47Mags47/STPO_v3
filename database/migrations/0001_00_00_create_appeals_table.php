@@ -47,7 +47,6 @@ return new class extends Migration
         Schema::create('appeal__appeals', function (Blueprint $table) {
             $table->id();
 
-            $table->string('office');
             $table->string('comment');
 
             $table->foreignId('sender_id')->constrained(User::getTableName());

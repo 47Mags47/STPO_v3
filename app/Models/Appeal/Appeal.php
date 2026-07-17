@@ -17,7 +17,6 @@ class Appeal extends BaseModel
     protected $table = 'appeal__appeals';
 
     protected $fillable = [
-        'office',
         'comment',
         'sender_id',
         'worker_id',
