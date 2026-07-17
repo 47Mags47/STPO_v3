@@ -65,21 +65,20 @@ export default {
     methods: {
         popupButtonClickHandler() {
             this.isPopupOpen = !this.isPopupOpen
-
-            this.isPopupOpen ? this.fixPopupBottomPosition() : null
+            this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
         },
 
-        async fixPopupBottomPosition() {
-            await this.$nextTick()
+        // async fixPopupBottomPosition() {
+        //     await this.$nextTick()
 
-            const popupRect = this.$refs.dateInputPopup.$el.getBoundingClientRect()
-            const vh = window.innerHeight
+        //     const popupRect = this.$refs.dateInputPopup.$el.getBoundingClientRect()
+        //     const vh = window.innerHeight
 
-            if (popupRect.bottom > vh) {
-                this.popupStyle.position = 'fixed'
-                this.popupStyle.bottom = '10px'
-            }
-        },
+        //     if (popupRect.bottom > vh) {
+        //         this.popupStyle.position = 'fixed'
+        //         this.popupStyle.bottom = '10px'
+        //     }
+        // },
 
         dayClickHandler(date) {
             this.selectedDate = date

@@ -7,6 +7,7 @@ export function fixOverflow(el) {
 
     el.style.maxHeight      = 'none'
     el.style.minHeight      = 'none'
+    el.style.display        = 'flex'
 
     let isOverflow = false
     const rect = el.getBoundingClientRect();
@@ -14,10 +15,17 @@ export function fixOverflow(el) {
     const overflowBottom = rect.bottom > window.innerHeight;
     const overflowRight  = rect.right > window.innerWidth;
 
+    console.log(rect.bottom, window.innerHeight)
     // Если вылез снизу за экран
     if(overflowBottom) {
         el.style.top    = 'auto'
         el.style.bottom = '100%'
+
+        isOverflow = true
+    }
+    if(overflowRight) {
+        el.style.left    = 'auto'
+        el.style.right = '0'
 
         isOverflow = true
     }
@@ -26,6 +34,7 @@ export function fixOverflow(el) {
 
     el.style.maxHeight = null
     el.style.minHeight = null
+    el.style.display   = null
 
     void el.offsetHeight
 
