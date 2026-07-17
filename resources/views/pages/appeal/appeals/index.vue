@@ -64,6 +64,38 @@ export default {
         :hasCreateButton="true"
         :data="appeals.data"
         :meta="appeals.meta"
+        :filters="[
+            {
+                type: 'checkbox',
+                label: 'checkbox',
+                name: 'checkbox'
+            },
+            {
+                type: 'dateFilter',
+                label: 'dateFilter',
+                name: 'dateFilter'
+            },
+            {
+                type: 'singleSelect',
+                label: 'singleSelect',
+                name: 'singleSelect'
+            },
+            {
+                type: 'multiSelect',
+                label: 'multiSelect',
+                name: 'multiSelect'
+            },
+            {
+                type: 'numberBetween',
+                label: 'numberBetween',
+                name: 'numberBetween'
+            },
+            {
+                type: 'dateFilter',
+                label: 'dateFilter',
+                name: 'dateFilter'
+            },
+        ]"
         :collumns="[
             {
                 title: 'ID',

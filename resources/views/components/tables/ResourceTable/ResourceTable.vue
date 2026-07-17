@@ -113,7 +113,6 @@ export default {
                 let hasInvalidType = value.filter((input) => {
                     return ![
                         'checkbox',
-                        'datepicker',
                         'singleSelect',
                         'multiSelect',
                         'numberBetween',
