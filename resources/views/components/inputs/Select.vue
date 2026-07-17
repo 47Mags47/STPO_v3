@@ -1,8 +1,4 @@
 <script>
-// HACK Добавить анимацию раскрытия списка
-// HACK Добавить перескакивание при недостаточном месте
-// HACK Добавить управление клавишами
-
 import Ico from "../Ico.vue";
 import Baseinput from "./Baseinput.vue";
 
@@ -53,6 +49,8 @@ export default {
             open: false,
             search: '',
             selected: this.value ?? null,
+            activeElementIndex: 0,
+            isOverflow: false,
         };
     },
 
@@ -69,6 +67,28 @@ export default {
 
         selectedValue(){
             return this.getValue(this.selected)
+        },
+    },
+
+    watch: {
+        open(isOpen) {
+            // HACK убрать рефы отсюда
+            let input = this.$refs.input.$el
+            let dropdown = this.$refs.dropdown
+
+            if(isOpen) {
+                // если список выше инпута
+                if (dropdown.getBoundingClientRect().top < input.getBoundingClientRect().top) {
+                    dropdown.style.borderBottom  = '0'
+
+                    input.style.borderRadius     = '0 0 var(--input-border-radius) var(--input-border-radius)'
+                    dropdown.style.borderRadius  = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                } else {
+                    dropdown.style.borderTop = '0'
+                    input.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                }
+            } else
+                input.style.borderRadius = 'var(--input-border-radius)'
         }
     },
 
@@ -86,6 +106,7 @@ export default {
         },
 
         openList() {
+            fixOverflow(this.$refs.dropdown)
             this.open = true;
         },
 
@@ -105,6 +126,39 @@ export default {
             return this.selected === null
                 ? false
                 : Object.get(option, this.valueKey) === Object.get(this.selected, this.valueKey)
+        },
+
+        onKey(e){
+            if (e.key === 'ArrowDown') {
+                if (this.activeElementIndex < this.filtered.length - 1) {
+                    this.activeElementIndex++;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
+            }
+
+            if (e.key === 'ArrowUp') {
+                if (this.activeElementIndex > 0) {
+                    this.activeElementIndex--;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
+            }
+
+            if (e.key === 'Enter') {
+                this.selectHandler(this.filtered[this.activeElementIndex]);
+                e.target.blur()
+            }
+        },
+
+        scrollToActive() {
+            const el = this.$el.querySelector('.active');
+
+            el?.scrollIntoView({
+                block: 'nearest',
+            });
         }
     },
     watch:{
@@ -130,17 +184,19 @@ export default {
             />
 
             <Baseinput
+                ref="input"
                 type="text"
                 readonly
                 :placeholder
                 :value="selectedLabel"
                 :onFocus="openList"
+                @keydown="onKey"
             />
 
             <Ico type="chevron-down" />
         </div>
 
-        <div v-if="open" class="list-container">
+        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
             <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
@@ -153,7 +209,7 @@ export default {
 
             <ul>
                 <li v-for="(option, i) in filtered"
-                    :class="{'selected': checkSelected(option) }"
+                    :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
                     @click="() => selectHandler(option)"
                 >
                     {{ getLabel(option) }}
@@ -198,6 +254,7 @@ export default {
             transition: none
     .list-container
         width: 100%
+        max-height: 0
 
         position: absolute
         left: 0
@@ -206,11 +263,25 @@ export default {
         z-index: 9
 
         background: $input-background
-        border: $input-border
-        border-top: none
+
+
         border-radius: 0 0 $input-border-radius $input-border-radius
+        border: $input-border
+
+        opacity: 0
 
         overflow: hidden
+
+        transition: all 0.4s ease
+
+        &.open
+            max-height: 250px
+            opacity: 1
+
+        &.closed
+            max-height: 0
+            opacity: 0
+
         .search-input-container
             padding: 10px
             border-bottom: $input-border
@@ -226,13 +297,11 @@ export default {
 
                 &:hover
                     background: $option-background-hover
-
+                &.active
+                    background: $option-background-hover
                 &.selected
                     background: $option-background-selected
 
     &:hover .input-container .ico-container
         color: #000
-    &.open
-        .input-container input[type="text"]
-            border-radius: $input-border-radius $input-border-radius 0 0
 </style>
