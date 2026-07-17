@@ -27,7 +27,7 @@ export default {
             const isWorker = this.current_user.id === row.worker?.id;
             const canWork = hasPermission('appeal_work');
 
-            const canAccept   = status === 'new' && canWork
+            const canAccept   = status === 'new' && canWork && !isSender
             const canGo       = isSender || isWorker
             const canClose    = (status === 'new' || status === 'in_work' || status === 'reaccepted') && (isSender || isWorker)
             const canReaccept = status === 'closed' && (isSender || isWorker)
