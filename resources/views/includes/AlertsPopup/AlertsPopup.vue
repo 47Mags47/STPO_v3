@@ -11,45 +11,20 @@ export default {
     },
 
     computed: {
-        // alerts() {
-        //     return {
-        //         'success': [
-        //             'Успешное действие 1',
-        //             'Успешное действие 2 Успешное действие 2 Успешное действие 2 Успешное действие 2 Успешное действие 2 2 2 2 2 2',
-        //         ],
-        //         'error': [
-        //             'Ошибка действие 1',
-        //             'Ошибка действие 2'
-        //         ],
-        //         'info': [
-        //             'Информационное действие 1',
-        //             'Информационное действие 2',
-
-        //             'Lorem ipsum dolor sit amet consectetur adipisicing elit.'      +
-        //             'Hic ex fuga esse iste obcaecati fugiat, sequi quae ab modi'    +
-        //             'repellendus corporis consequuntur odit placeat doloribus quas aspernatur impedit. Sapiente, odio.' +
-        //             'Lorem ipsum dolor sit amet consectetur adipisicing elit.'      +
-        //             'Hic ex fuga esse iste obcaecati fugiat, sequi quae ab modi repellendus corporis consequuntur odit' +
-        //             'placeat doloribus quas aspernatur impedit. Sapiente, odio. '
-        //     ],
-        //         'warning': [
-        //             'Предупреждение действие 1',
-        //             'Предупреждение действие 2'
-        //         ],
-        //     }
-        // }
         alerts: () => usePage().props.flash,
-        pr:() => usePage().props
     },
+
+    methods: {
+    }
 }
 </script>
 
 <template>
-    <!-- {{console.log(pr)}} -->
+    <!-- {{ isSuccessPopUpOpen }} -->
     <div class="alerts-popup-container">
         <template v-if="'info' in alerts">
             <template v-for="alert in alerts.info ?? []">
-                <AlertInfoPopUp :message="alert" />
+                <AlertInfoPopUp    :message="alert" />
             </template>
         </template>
 
@@ -61,7 +36,7 @@ export default {
 
         <template v-if="'error' in alerts">
             <template v-for="alert in alerts.error ?? []">
-                <AlertErrorPopUp :message="alert" />
+                <AlertErrorPopUp :message="alert"   />
             </template>
         </template>
 

@@ -13,10 +13,15 @@ export default {
             type: String,
             default: ''
         },
+        showPopUp: {
+            type: Function,
+            default: () => {}
+        }
     },
     data() {
         return {
-            isClose: false
+            isClose: false,
+            isHidden: false,
         }
     },
     methods: {
@@ -29,12 +34,16 @@ export default {
         setTimeout(() => {
             this.isClose = true
         }, 3000)
+    },
+
+    updated() {
+        console.log(1, this.isHidden)
     }
 }
 </script>
 
 <template>
-    <BaseAlertPopUp class="alert-success" :class="{ 'close':  isClose }">
+    <BaseAlertPopUp class="alert-success" :class="{ 'close':  isClose, 'hidden': isHidden }" @animationend="isClose ? isHidden = true : null">
         <template #header>
             <div class="h-full w-full bg-emerald-600">
                  <div class="absolute! left-1/2 top-[25%] -translate-x-1/2 bg-emerald-200 rounded-full p-1.5! size-fit">
@@ -68,7 +77,6 @@ export default {
 
     @keyframes fadeIn
         from
-            display: none
             opacity: 0
             transform: translateX(10px)
         to
@@ -80,7 +88,6 @@ export default {
             opacity: 1
             transform: translateX(0)
         to
-            display: none
             opacity: 0
             transform: translateX(10px)
 </style>

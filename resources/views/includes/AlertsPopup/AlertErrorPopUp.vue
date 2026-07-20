@@ -12,29 +12,36 @@ export default {
         message: {
             type: String,
             default: ''
+        },
+        showPopUp: {
+            type: Function,
+            default: () => {}
         }
     },
     data() {
         return {
-            isClose: false
+            isClose:  false,
+            isHidden: false
         }
     },
     methods: {
         closeClickhandler() {
             this.isClose = true
+            this.showPopUp(this.isClose)
         }
     },
 
     mounted() {
         setTimeout(() => {
             this.isClose = true
+            this.showPopUp(this.isClose)
         }, 3000)
     }
 }
 </script>
 
 <template>
-    <BaseAlertPopUp class="alert-success" :class="{ 'close':  isClose }">
+    <BaseAlertPopUp class="alert-success" :class="{ 'close':  isClose, 'hidden': isHidden }" @animationend="isClose ? isHidden = true : null">
         <template #header>
             <div class="h-full w-full bg-red-600">
                  <div class="absolute! left-1/2 top-[25%] -translate-x-1/2 bg-red-200 rounded-full p-1.5! size-fit">
