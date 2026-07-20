@@ -8,8 +8,12 @@ export default {
         ResourceTable,
     },
     computed: {
-        appeals: () => usePage().props.appeals,
-        current_user: () => usePage().props.current_user.data,
+        appeals:            () => usePage().props.appeals,
+        current_user:       () => usePage().props.current_user.data,
+
+        senders:            () => usePage().props.senders.data,
+        themes:             () => usePage().props.themes.data,
+        statuses:           () => usePage().props.statuses.data,
     },
     data(){
         return {
@@ -66,34 +70,29 @@ export default {
         :meta="appeals.meta"
         :filters="[
             {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'checkbox'
-            },
-            {
                 type: 'dateFilter',
-                label: 'dateFilter',
-                name: 'dateFilter'
-            },
-            {
-                type: 'singleSelect',
-                label: 'singleSelect',
-                name: 'singleSelect'
+                isRange: true,
+                label: 'Дата создания',
+                name: 'created_at'
             },
             {
                 type: 'multiSelect',
-                label: 'multiSelect',
-                name: 'multiSelect'
+                label: 'Отправитель',
+                name: 'sender_ids',
+                labelKey: 'full_name',
+                options: senders,
             },
             {
-                type: 'numberBetween',
-                label: 'numberBetween',
-                name: 'numberBetween'
+                type: 'multiSelect',
+                label: 'Тема',
+                name: 'them_ids',
+                options: themes,
             },
             {
-                type: 'dateFilter',
-                label: 'dateFilter',
-                name: 'dateFilter'
+                type: 'multiSelect',
+                label: 'Статус',
+                name: 'status_ids',
+                options: statuses,
             },
         ]"
         :collumns="[

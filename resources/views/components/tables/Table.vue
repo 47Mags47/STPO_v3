@@ -1,10 +1,20 @@
 <script>
+import { Form } from '@inertiajs/vue3';
+
 export default {
     props: {
         caption: {
             type: String,
             default: null,
         },
+    },
+
+    components: {
+        Form,
+    },
+
+    computed:{
+        currrentURL: () => location.href
     },
 };
 </script>
@@ -19,9 +29,9 @@ export default {
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <form method="GET" action="/test">
+                <Form method="GET" :action="currrentURL" v-slot="{ processing }">
                     <slot name="filters"></slot>
-                </form>
+                </Form>
             </div>
 
             <div class="toolbar" v-if="'toolbar' in $slots">

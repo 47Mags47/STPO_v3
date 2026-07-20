@@ -41,6 +41,7 @@ export default {
             hoveredFilterIndex: null,
             isFilterOpen: false,
             resetKey: 0,
+            isLoading: false,
         }
     },
 
@@ -299,9 +300,9 @@ export default {
 
             Echo.channel(channel.name)
                 .listen(channel.event, channel.onEvent)
-
         })
-    }
+    },
+
 }
 </script>
 
@@ -318,12 +319,12 @@ export default {
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                    <div class="min-w-[260px] flex-1" v-for="filter in filters">
-                        <MultiSelect    v-if="filter.type === 'multiSelect'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :options="filter.options"/>
-                        <SingleSelect   v-if="filter.type === 'singleSelect'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :options="filter.options" />
-                        <Checkbox       v-if="filter.type === 'checkbox'" :name="preparePropsFromFilter(filter).name" :label="filter.label" />
-                        <NumberBetween  v-if="filter.type === 'numberBetween'" :name="preparePropsFromFilter(filter).name" :label="filter.label" />
-                        <DateFilter     v-if="filter.type === 'dateFilter'" :name="preparePropsFromFilter(filter).name" :label="filter.label" :range-mode="filter.rangeMode" />
+                    <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters">
+                        <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <Checkbox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <!-- <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter).name" :label="filter.label" /> -->
                     </div>
                 </div>
                 <div class="filter-btns">

@@ -33,7 +33,7 @@ abstract class BaseModel extends Model
             'factory'           => self::getClassKnowingFolderAndEnding('Database\\Factories', $relativeNamespace, 'Factory'),
             'localseeder'       => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Local', $relativeNamespace, 'Seeder'),
             'prodseeder'        => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Prod', $relativeNamespace, 'Seeder'),
-            'filter'            => self::getClassKnowingFolderAndEnding('Database\\Filters', $relativeNamespace, 'Filter'),
+            'filter'            => self::getClassKnowingFolderAndEnding('App\\Filters', $relativeNamespace, 'Filter'),
             'controller'        => self::getClassKnowingFolderAndEnding('App\\Http\\Controllers', $relativeNamespace, 'Controller'),
             'policy'            => self::getClassKnowingFolderAndEnding('App\\Policies', $relativeNamespace, 'Policy'),
             'storerequest'      => self::getClassKnowingFolderAndEnding('App\\Http\\Requests', 'Store' . $relativeNamespace, 'Request'),
@@ -48,6 +48,7 @@ abstract class BaseModel extends Model
 
     public function scopeFilter(Builder $builder): Builder
     {
+        // dd(self::getGuessNames('filter'));
         return self::getGuessNames('filter')
             ? new (self::getGuessNames('filter'))($builder)->apply()
             : new \App\Classes\Filter($builder)->apply();
@@ -87,7 +88,12 @@ abstract class BaseModel extends Model
 
     private static function getClassKnowingFolderAndEnding(string $namespace, string $class, string $ending = ''): string|bool
     {
-        if (!file_exists(base_path($namespace . '\\' . $class . $ending)))
+        $path = base_path($namespace . '\\' . $class . $ending);
+        $path = str_replace('\\', '/', $path);
+        $path = str_replace('/App/', '/app/', $path);
+        $path = $path . '.php';
+
+        if (!file_exists($path))
             return false;
 
         if (class_exists($namespace . '\\' . $class . $ending))

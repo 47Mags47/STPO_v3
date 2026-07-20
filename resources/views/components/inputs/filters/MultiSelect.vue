@@ -52,7 +52,7 @@ export default {
         return {
             isOpen: false
         }
-    }
+    },
 }
 </script>
 
@@ -76,7 +76,7 @@ export default {
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
                 />
-                <span> {{ option.label }} </span>
+                <span> {{ Object.get(option, labelKey) }} </span>
             </label>
         </div>
     </div>
