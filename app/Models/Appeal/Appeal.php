@@ -4,6 +4,7 @@ namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
 use App\Models\Base\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,23 @@ class Appeal extends BaseModel
         'status_id',
         'them_id',
     ];
+
+    ### SCOPES
+    ##################################################
+    public function scopeHasPermission(Builder $builder)
+    {
+        return $builder
+            ->whereKey(null)
+            ->orWhere(function ($query) {
+                $query
+                    ->where('sender_id', user()->id)
+                    ->orWhere('worker_id', user()->id);
+
+                if (user()->hasPermission('appeal_work'))
+                    $query->orWhereNot('sender_id', user()->id);
+            })
+            ->orderBy('created_at', 'desc');
+    }
 
     ### Связи
     ##################################################

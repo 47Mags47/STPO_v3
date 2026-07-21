@@ -13,5 +13,9 @@ class NotificationTypeSeeder extends Seeder
             'code' => 'file_generated',
             'name'=> 'Файл готов к загрузке',
         ]);
+        NotificationType::create([
+            'code' => 'new_message',
+            'name'=> 'Новое сообщение в чате',
+        ]);
     }
 }

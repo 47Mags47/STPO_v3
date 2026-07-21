@@ -50,7 +50,7 @@ return new class extends Migration
             $table->string('comment');
 
             $table->foreignId('sender_id')->constrained(User::getTableName());
-            $table->foreignId('worker_id')->constrained(User::getTableName());
+            $table->foreignId('worker_id')->nullable()->constrained(User::getTableName());
             $table->foreignId('them_id')->constrained(Them::getTableName());
             $table->foreignId('status_id')->constrained(Status::getTableName());
 
