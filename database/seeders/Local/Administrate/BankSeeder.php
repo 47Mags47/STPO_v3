@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Local\Payment;
+namespace Database\Seeders\Local\Administrate;
 
 use App\Models\Administrate\Bank;
 use Illuminate\Database\Seeder;

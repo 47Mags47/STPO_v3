@@ -75,6 +75,12 @@ return [
             'throw' => true,
         ],
 
+        'payments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/payments'),
+            'throw' => true,
+        ],
+
         'appeals' => [
             'driver' => 'local',
             'root' => storage_path('app/private/appeals'),

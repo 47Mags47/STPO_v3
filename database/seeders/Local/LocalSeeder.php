@@ -16,6 +16,8 @@ class LocalSeeder extends Seeder
     {
         $this->call(Administrate\CitySeeder::class);
         $this->call(Administrate\DivisionSeeder::class);
+        $this->call(Administrate\BankSeeder::class);
+        $this->call(Administrate\PaymentSeeder::class);
 
         $this->call(Base\UserSeeder::class);
         $this->call(Base\NotificationSeeder::class);
@@ -23,8 +25,9 @@ class LocalSeeder extends Seeder
         $this->call(Appeal\AppealSeeder::class);
         $this->call(Appeal\MessageSeeder::class);
 
-        $this->call(Payment\BankSeeder::class);
-        $this->call(Payment\PaymentSeeder::class);
+        $this->call(Payment\BankContractSeeder::class);
         $this->call(Payment\EventSeeder::class);
+        $this->call(Payment\PaymentFileSeeder::class);
+        $this->call(Payment\RecipientSeeder::class);
     }
 }

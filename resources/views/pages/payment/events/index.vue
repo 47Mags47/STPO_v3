@@ -1,13 +1,9 @@
 <script>
-import {
-    Table, TableRow, TableTd,
-    BlueButton, Ico,
- } from "@components"
-
 import { DateTime } from "luxon";
-import { usePage } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3"
+import { router, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js"
+
+import { Table, TableRow, TableTd, BlueButton, Ico } from "@components"
 
 export default {
     components: {
@@ -15,40 +11,44 @@ export default {
         Ico,
         BlueButton,
     },
-    data() {
-        return {
-            loading: false,
-        }
-    },
 
     computed: {
         paymentEvents: () => usePage().props.events,
-        toggledDate: () => DateTime.fromISO(usePage().props.current_date),
-
-        visibleToggledMonth() {
-            return this.toggledDate
-                .setLocale('ru')
-                .toFormat('LLLL')
-        },
-        isPaymentDataEmpty() {
-            return this.paymentEvents.length === 0
-        }
+        currentDate: () => DateTime.fromISO(usePage().props.current_date),
     },
 
     methods: {
-        prevMonth() {
-            const prevDate = this.toggledDate.minus({ months: 1 })
-            this.routeTo('payment.events.index', {
+        prevMonthButtonClickHandler() {
+            const prevDate = this.currentDate.minus({ months: 1 })
+            router.get(route('payment.events.index'), {
                 month: prevDate.month,
                 year: prevDate.year,
             })
         },
-        nextMonth() {
-            const nextDate = this.toggledDate.plus({ months: 1 })
-            this.routeTo('payment.events.index', {
+        nextMonthButtonClickHandler() {
+            const nextDate = this.currentDate.plus({ months: 1 })
+            router.get(route('payment.events.index'), {
                 month: nextDate.month,
                 year: nextDate.year,
             })
+        },
+
+        editButtonClickHandler(event){
+            router.get(route('payment.events.edit', {
+                event: event.data.id,
+            }))
+        },
+
+        showButtonClickHandler(event){
+            router.get(route('payment.payment-files.index', {
+                event: event.data.id,
+            }))
+        },
+
+        goToBunksButtonClickHandler(event){
+            router.get(route('payment.banks.index', {
+                event: event.data.id,
+            }))
         },
 
         getDateFormatted(date) {
@@ -57,20 +57,6 @@ export default {
                 .setLocale('ru')
                 .toFormat('dd.MM.yyyy')
         },
-
-        routeTo(url, param) {
-            router.get(route(url, param ?? null))
-        }
-    },
-
-    mounted() {
-        router.on('start', () => {
-            this.loading = true
-        })
-
-        router.on('finish', () => {
-            this.loading = false
-        })
     },
 }
 </script>
@@ -78,43 +64,28 @@ export default {
 <template>
     <Table :caption="'Календарь выплат'" id="event-calendar-table">
         <template #toolbar>
-           <div class="w-full h-[35px] mt-4! flex justify-between items-center">
-                 <div
-                    class="w-fit h-full
-                    grid grid-cols-[64px_100px_64px] gap-2
-                    place-items-center"
-                >
-                        <BlueButton class="" @click="prevMonth">
-                            <Ico type="arrow-left"/>
-                        </BlueButton>
-
-                        <span class="text-xl!"> {{ visibleToggledMonth }} </span>
-
-                        <BlueButton class="" @click="nextMonth">
-                            <Ico type="arrow-right"/>
-                        </BlueButton>
-                </div>
-                <BlueButton class="w-[35px]! p-2!" @click="routeTo('payment.events.create')">
-                    <Ico type="plus" />
+            <div class="month-picker-container">
+                <BlueButton :onClick="prevMonthButtonClickHandler">
+                    <Ico type="arrow-left" />
                 </BlueButton>
-           </div>
+
+                <span> {{ currentDate.toFormat('dd.MM.yyyy') }} </span>
+
+                <BlueButton :onClick="nextMonthButtonClickHandler">
+                    <Ico type="arrow-right" />
+                </BlueButton>
+            </div>
+        </template>
+
+        <template #colgroup>
+            <col width="100px">
+            <col width="auto">
         </template>
 
         <template #tbody>
-            <div
-                v-if="loading"
-                class="not-data-cell"
-            >
-                <Ico type="spinner" class="animate-spin text-4xl!" />
-                <span class="text">Загрузка...</span>
-            </div>
-            <div v-else-if="isPaymentDataEmpty" vertical="center" horizontal="center" class="not-data-cell">
-                <Ico type="database"/>
-                <span class="text">Данных нет :(</span>
-            </div>
-            <template v-else v-for="(events, date) in paymentEvents">
+            <template v-for="(events, date) in paymentEvents">
                 <TableRow>
-                    <TableTd :rowspan="events.length + 1" class="w-[400px]">
+                    <TableTd :rowspan="events.length + 1">
                         {{ getDateFormatted(date) }}
                     </TableTd>
                 </TableRow>
@@ -123,9 +94,26 @@ export default {
                         <TableTd>
                             {{ event.data.payment.name }}
                         </TableTd>
+                        <!-- HACK Отображать только администратору -->
                         <TableTd class="w-[56px]">
-                            <BlueButton class="size-[35px]! p-2!" @click="routeTo('payment.events.edit', event.data.id)">
-                                <Ico type="pen" class="p-[3px]!"/>
+                            <BlueButton class="size-[35px]! p-2!"
+                                @click="() => editButtonClickHandler (event)">
+                                <Ico type="pen" class="p-[3px]!" />
+                            </BlueButton>
+                        </TableTd>
+
+                        <TableTd class="w-[56px]">
+                            <BlueButton class="size-[35px]! p-2!"
+                                @click="() => showButtonClickHandler (event)">
+                                <Ico type="file" class="p-[3px]!" />
+                            </BlueButton>
+                        </TableTd>
+
+                        <!-- HACK Отображать только администратору -->
+                        <TableTd class="w-[56px]">
+                            <BlueButton class="size-[35px]! p-2!"
+                                @click="() => goToBunksButtonClickHandler (event)">
+                                <Ico type="building-columns" class="p-[3px]!" />
                             </BlueButton>
                         </TableTd>
                     </TableRow>
@@ -136,24 +124,15 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-#event-calendar-table:deep()
-    tr
-        &:nth-child(even)
-            background: none
-        &:hover
-            background: none
-
-    .not-data-cell
-        height: 250px
-        padding: 35px 0px
-
-        border-bottom: $table-border
-        border-top: $table-border
-
+#event-calendar-table
+    .month-picker-container
         display: flex
-        flex-direction: column
+        gap: 10px
+
         align-items: center
-        gap: 25px
 
         font-size: 1.2rem
+        .button
+            width: 35px
+            height: 25px
 </style>

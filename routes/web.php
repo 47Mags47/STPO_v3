@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // DEV
-if(config('app.env') === 'local'){
+if (config('app.env') === 'local') {
     Route::get('/test', fn() => Inertia::render('test'));
     Route::get('/view', fn() => Inertia::render('view'));
 }
@@ -18,10 +18,9 @@ Route::get('/', fn() => redirect()->route('appeal.appeals.index'))->name('home')
 Route::name('upload.')->prefix('/upload')->group(function () {
     Route::post('files/startUpload',    [App\Http\Controllers\Base\UploadController::class, 'startUpload'])->name('startUpload');
     Route::post('chunks/{chunk}',       [App\Http\Controllers\Base\UploadController::class, 'writeChunk'])->name('writeChunk');
-
 });
 
-Route::name('files.')->prefix('/files')->group(function(){
+Route::name('files.')->prefix('/files')->group(function () {
     Route::get('/{file}/download',      [App\Http\Controllers\Base\FileController::class, 'download'])->name('download');
     Route::get('/{file}/errors',        [App\Http\Controllers\Base\FileErrorController::class, 'index'])->name('errors');
 });
@@ -37,9 +36,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/login',            fn() => Inertia::render('auth/login'))->name('login');
 
     Route::name('auth.')->group(function () {
-        Route::post('/login',                                       [App\Http\Controllers\Auth\UserController::class,  'login'])    ->name('users.login');
-        Route::get('/users/create',                                 [App\Http\Controllers\Auth\UserController::class,  'create'])   ->name('users.create');
-        Route::post('/users/create',                                [App\Http\Controllers\Auth\UserController::class,  'store'])    ->name('users.store');
+        Route::post('/login',                                       [App\Http\Controllers\Auth\UserController::class,  'login'])->name('users.login');
+        Route::get('/users/create',                                 [App\Http\Controllers\Auth\UserController::class,  'create'])->name('users.create');
+        Route::post('/users/create',                                [App\Http\Controllers\Auth\UserController::class,  'store'])->name('users.store');
     });
 });
 
@@ -51,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
     // AUTH
     Route::name('auth.')->group(function () {
-        Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])  ->name('logout');
+        Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
         Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
@@ -77,11 +76,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('/them-groups',                             App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
         Route::resource('/thems',                                   App\Http\Controllers\Appeal\ThemController::class)->except('show');
         Route::resource('/appeals',                                 App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
-        Route::resource('/appeals/{appeal}/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
-
-        Route::post('/appeals/{appeal}/accept',                     [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
-        Route::post('/appeals/{appeal}/close',                      [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
-        Route::post('/appeals/{appeal}/reaccept',                   [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');
+        Route::prefix('/appeals/{appeal}')->group(function () {
+            Route::resource('/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
+            Route::post('/accept',                     [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
+            Route::post('/close',                      [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
+            Route::post('/reaccept',                   [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');
+        });
     });
 
     Route::name('sfr.')->prefix('/sfr')->group(function () {
@@ -98,6 +98,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::name('payment.')->prefix('/payment')->group(function () {
-        Route::resource('/events',                                  App\Http\Controllers\Payment\EventController::class)->except('show');
+        Route::resource('/events',                                      App\Http\Controllers\Payment\EventController::class)->except('show');
+        Route::prefix('/events/{event}')->group(function () {
+            Route::resource('/payment-files',                               App\Http\Controllers\Payment\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+            Route::resource('/payment-files/{paymentFile}/recipients',      App\Http\Controllers\Payment\RecipientController::class)->except('show');
+            Route::resource('/banks',                                       App\Http\Controllers\Payment\BankController::class)->only('index');
+            Route::resource('/banks/{bank}/raports',                        App\Http\Controllers\Payment\RaportToBankController::class)->only(['index', 'store', 'show']);
+        });
     });
 });

@@ -40,6 +40,7 @@ import {
     faCircleCheck,
 
     faDatabase,
+    faBuildingColumns,
 
     faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
@@ -85,6 +86,7 @@ library.add(
     faCircleCheck,
 
     faDatabase,
+    faBuildingColumns,
 
     faPaperPlane
 );

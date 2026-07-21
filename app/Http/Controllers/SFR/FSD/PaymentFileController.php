@@ -27,8 +27,7 @@ class PaymentFileController extends Controller
     {
         foreach ($request->input('file_ids') as $uploadFileId) {
             $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated(), [
-                // HACK поправить на реальное id
-                'division_id' => 1
+                'division_id' => user()->division->id
             ]));
 
             ReadPaymentFileJob::dispatch($paymentFile);
