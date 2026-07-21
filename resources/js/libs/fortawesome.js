@@ -40,6 +40,8 @@ import {
     faCircleCheck,
 
     faDatabase,
+
+    faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -82,7 +84,9 @@ library.add(
     faCircleExclamation,
     faCircleCheck,
 
-    faDatabase
+    faDatabase,
+
+    faPaperPlane
 );
 
 dom.watch();
