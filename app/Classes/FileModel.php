@@ -105,6 +105,15 @@ abstract class FileModel extends BaseModel
     }
 
     /**
+     * get file content
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->file->getContent();
+    }
+
+    /**
      * Moves the file to the file storage
      *
      * @param  ?string  $newDisk

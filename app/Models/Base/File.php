@@ -124,6 +124,15 @@ class File extends BaseModel
         return Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name);
     }
 
+    /**
+     * get file content
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return Storage::disk($this->disk)->get($this->getLocalPath());
+    }
+
     ### Связи
     ##################################################
     public function status(): BelongsTo

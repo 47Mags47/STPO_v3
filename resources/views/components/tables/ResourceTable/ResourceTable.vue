@@ -41,7 +41,6 @@ export default {
             hoveredFilterIndex: null,
             isFilterOpen: false,
             resetKey: 0,
-            isLoading: false,
         }
     },
 
@@ -114,6 +113,7 @@ export default {
                 let hasInvalidType = value.filter((input) => {
                     return ![
                         'checkbox',
+                        'datepicker',
                         'singleSelect',
                         'multiSelect',
                         'numberBetween',
@@ -274,6 +274,17 @@ export default {
 
             return Object.get(row, collumn.dataIndex)
         },
+
+        statusColor(row, collumn) {
+            if (collumn.title?.toLowerCase() !== 'статус') return
+
+            const statusName = this.getCellValue(row, collumn).toLowerCase()
+            if (statusName === "новая")             return "text-blue-700"
+            if (statusName === "в работе")          return "text-yellow-800"
+            if (statusName === "ожидание ответа")   return "text-indigo-700"
+            if (statusName === "закрыта")           return "text-green-700"
+            if (statusName === "в доработке")       return "text-orange-700"
+        }
     },
 
     mounted() {
@@ -300,22 +311,14 @@ export default {
 
             Echo.channel(channel.name)
                 .listen(channel.event, channel.onEvent)
-        })
-    },
 
+        })
+    }
 }
 </script>
 
 <template>
     <Table class="resource-table">
-        <template #colgroup>
-            <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
-
-            <col v-if="hasDeleteButton && data.length > 0" width="60px" />
-            <col v-if="hasShowButton && data.length > 0" width="60px" />
-            <col v-if="hasEditButton && data.length > 0" width="60px" />
-        </template>
-
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
@@ -359,6 +362,14 @@ export default {
             </div>
         </template>
 
+        <template #colgroup>
+            <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+
+            <col v-if="hasDeleteButton && data.length > 0" width="60px" />
+            <col v-if="hasShowButton && data.length > 0" width="60px" />
+            <col v-if="hasEditButton && data.length > 0" width="60px" />
+        </template>
+
         <template #thead>
             <TableRow>
                 <template v-for="column in collumns">
@@ -393,14 +404,6 @@ export default {
                 <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
                 <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)" /></TableTd>
 
-                <!-- <TableTd v-for="link in rowLinks"
-                    class="table-button-cell"
-                    position="center-center"
-                >
-                    <BlueButton :onclick="() => link.onClick(row)" class="ico-button">
-                        <Ico :type="link.ico" />
-                    </BlueButton>
-                </TableTd> -->
                 <RowLink v-for="link in rowLinks" v-bind="{...link, row}" />
             </TableRow>
             <tr v-else>
