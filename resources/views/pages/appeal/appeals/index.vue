@@ -73,9 +73,7 @@ export default {
                 type: 'dateFilter',
                 isRange: true,
                 label: 'Дата создания',
-                name: 'created',
-                labelKey: 'created',
-                options: appeals.data
+                name: 'created_at',
             },
             {
                 type: 'multiSelect',

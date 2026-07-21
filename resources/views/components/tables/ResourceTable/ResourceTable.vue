@@ -327,7 +327,7 @@ export default {
                         <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <Checkbox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <!-- <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter).name" :label="filter.label" /> -->
+                        <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                     </div>
                 </div>
                 <div class="filter-btns">
