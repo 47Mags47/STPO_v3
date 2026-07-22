@@ -42,7 +42,8 @@ import {
     faDatabase,
     faBuildingColumns,
 
-    faPaperPlane
+    faPaperPlane,
+    faMessage
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -88,7 +89,8 @@ library.add(
     faDatabase,
     faBuildingColumns,
 
-    faPaperPlane
+    faPaperPlane,
+    faMessage
 );
 
 dom.watch();

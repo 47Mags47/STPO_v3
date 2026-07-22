@@ -45,13 +45,8 @@ class NotificationFactory extends Factory
         }
 
          if ($type->code === 'new_message') {
-            $message = Message::factory()->create();
-
             return array_merge($attributes, [
                 'message' => $this->faker->sentence(),
-                'context' => [
-                    'message_id' => $message->id
-                ],
             ]);
         }
 
