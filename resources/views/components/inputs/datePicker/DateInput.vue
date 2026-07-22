@@ -56,10 +56,10 @@ export default {
             isPopupOpen: false,
             selectedDate: this.value !== null ? this.value : null,
 
-            popupStyle: {
-                bottom: null,
-                position: 'absolute',
-            },
+            // popupStyle: {
+            //     bottom: null,
+            //     position: 'absolute',
+            // },
         };
     },
     methods: {
@@ -114,56 +114,60 @@ export default {
 
 <template>
     <div class="date-input-wrapper" ref="wrapper">
-        <input
-            type="date"
-            class="custom-date-input"
-            ref="inputRef"
-            :name
-            :disabled
-            :placeholder
-            :value="selectedDate !== null ? selectedDate.toFormat('yyyy-MM-dd') : value"
-            @blur="inputBlurHandler"
-        />
-        <div class="overlay-calendar"></div>
-        <!-- HACK добавить иконку календаря -->
-        <div class="w-[16px] mr-2! cursor-pointer">
+
+        <div class="date-input-container flex items-center">
+            <input
+                type="date"
+                class="custom-date-input"
+                ref="inputRef"
+                :name
+                :disabled
+                :placeholder
+                :value="selectedDate !== null ? selectedDate.toFormat('yyyy-MM-dd') : value"
+                @blur="inputBlurHandler"
+            />
+        </div>
+
+        <div class="w-[16px] mr-2! cursor-pointer shrink-0">
             <Ico type="calendar" @click="popupButtonClickHandler" />
         </div>
-        <!-- <Transition name="popup"> -->
-            <DateInputPopup
-                :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
-                ref="dateInputPopup"
-                :isRange
-                :style="popupStyle"
-                :checkValid
-                :startInterval
-                :endInterval
-                :onClick="dayClickHandler"
-                :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-            />
-        <!-- </Transition> -->
+        <DateInputPopup
+            :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
+            ref="dateInputPopup"
+            :isRange
+            :checkValid
+            :startInterval
+            :endInterval
+            :onClick="dayClickHandler"
+            :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
+        />
     </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .date-input-wrapper
+    @include input()
     position: relative
-    display: inline-block
+    display: flex
+    align-items: center
     width: 100%
+    min-width: 100px
 
-    .overlay-calendar
-        position: absolute
-        right: 35px
-        top: 50%
-        transform: translateY(-50%)
+    .date-input-container
+        position: relative
 
-        width: 25px
-        height: 25px
-        background: white
+        &::after
+            content: ""
+            position: absolute
+            background: white
+            top: 0
+            right: 1px
+
+            width: 25px
+            height: 100%
 
     .custom-date-input
-        @include input()
-        flex: 1
+        width: 100%
 
     .calendar-icon
         position: absolute
@@ -175,21 +179,4 @@ export default {
         display: flex
         align-items: center
         justify-content: center
-
-
-.popup-enter-active,
-.popup-leave-active
-    transition: all .2s ease
-
-
-.popup-enter-from,
-.popup-leave-to
-    opacity: 0
-    transform: scale(.95)
-
-
-.popup-enter-to,
-.popup-leave-from
-    opacity: 1
-    transform: scale(1)
 </style>

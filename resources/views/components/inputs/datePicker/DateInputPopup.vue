@@ -255,7 +255,7 @@ export default {
     width: 340px
 
     top: 100%
-    z-index: 100
+    z-index: 1000
 
     transition: opacity .3s ease, scale .3s ease
 

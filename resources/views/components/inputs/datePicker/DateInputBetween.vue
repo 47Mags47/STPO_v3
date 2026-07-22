@@ -56,30 +56,12 @@ export default {
             selectedDateFrom:   this.value?.from ? this.value.from : null,
             selectedDateTo:     this.value?.to   ? this.value.to   : null,
             selectedDate:       null,
-
-            popupStyle: {
-                bottom: null,
-                position: 'absolute',
-            },
         };
     },
     methods: {
         popupButtonClickHandler() {
             this.isPopupOpen = !this.isPopupOpen
-
-            this.isPopupOpen ? this.fixPopupBottomPosition() : null
-        },
-
-        async fixPopupBottomPosition() {
-            await this.$nextTick()
-
-            const popupRect = this.$refs.dateInputPopup.$el.getBoundingClientRect()
-            const vh = window.innerHeight
-
-            if (popupRect.bottom > vh) {
-                this.popupStyle.position = 'fixed'
-                this.popupStyle.bottom = '10px'
-            }
+            this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
         },
 
         //  Пикер
@@ -135,107 +117,94 @@ export default {
 </script>
 
 <template>
-    <div class="date-input-wrapper" ref="wrapper">
-        <input
-            type="date"
-            class="custom-date-input"
-            ref="inputFromRef"
-            :name="`${name}_from`"
-            :disabled
-            :placeholder
-            :value="selectedDateFrom !== null ? selectedDateFrom.toFormat('yyyy-MM-dd') : null"
-            @blur="inputFromBlurHandler"
-        />
-        <div class="overlay-calendar-from"></div>
-        <input
-            type="date"
-            class="custom-date-input"
-            ref="inputToRef"
-            :name="`${name}_to`"
-            :disabled
-            :placeholder
-            :value="selectedDateTo !== null ? selectedDateTo.toFormat('yyyy-MM-dd') : null"
-            @blur="inputToBlurHandler"
-        />
-        <div class="overlay-calendar-to"></div>
-        <div class="w-[16px] mr-2! cursor-pointer">
+    <div class="date-input-between-wrapper" ref="wrapper">
+        <div class="date-input-wrapper-from flex items-center">
+            <input
+                type="date"
+                class="custom-date-input"
+                ref="inputFromRef"
+                :name="`${name}_from`"
+                :disabled
+                :placeholder
+                :value="selectedDateFrom !== null ? selectedDateFrom.toFormat('yyyy-MM-dd') : null"
+                @blur="inputFromBlurHandler"
+            />
+        </div>
+
+        <div class="date-input-wrapper-to flex items-center">
+            <input
+                type="date"
+                class="custom-date-input"
+                ref="inputToRef"
+                :name="`${name}_to`"
+                :disabled
+                :placeholder
+                :value="selectedDateTo !== null ? selectedDateTo.toFormat('yyyy-MM-dd') : null"
+                @blur="inputToBlurHandler"
+            />
+        </div>
+
+        <div class="w-[16px] mr-2! cursor-pointer shrink-0">
             <Ico type="calendar" @click="popupButtonClickHandler" />
         </div>
-        <Transition name="popup">
-            <DateInputPopup v-show="isPopupOpen"
-                ref="dateInputPopup"
-                :isRange
-                :style="popupStyle"
-                :checkValid
-                :onClick="dayClickHandler"
-                :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-                :selectedDateBetween="{
-                    from: selectedDateFrom?.toFormat('yyyy-MM-dd'),
-                    to:   selectedDateTo?.toFormat('yyyy-MM-dd')
-                }"
-            />
-        </Transition>
+        <DateInputPopup
+            ref="dateInputPopup"
+            :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
+            :isRange
+            :checkValid
+            :onClick="dayClickHandler"
+            :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
+            :selectedDateBetween="{
+                from: selectedDateFrom?.toFormat('yyyy-MM-dd'),
+                to:   selectedDateTo?.toFormat('yyyy-MM-dd')
+            }"
+        />
     </div>
 </template>
 
-<style lang="sass">
-.date-input-wrapper
+<style lang="sass" scoped>
+.date-input-between-wrapper
     @include input()
 
     position: relative
     display: flex
     width: 100%
-    padding: 0
+    padding: 4px 6px
 
-    .overlay-calendar-from
-        position: absolute
-        left: 205px
-        top: 50%
-        transform: translateY(-50%)
+    .date-input-wrapper-from
+        flex: 1
+        min-width: 1
+        height: 100%
+        position: relative
 
-        width: 28px
-        height: 25px
-        background: white
+        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
+        &::after
+            content: ""
+            position: absolute
+            background: white
+            top: 0
+            right: 0
 
-    .overlay-calendar-to
-        position: absolute
-        right: 30px
-        top: 50%
-        transform: translateY(-50%)
+            width: 25px
+            height: 100%
 
-        width: 25px
-        height: 25px
-        background: white
+    .date-input-wrapper-to
+        flex: 1
+        height: 100%
+        position: relative
+
+        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
+        &::after
+            content: ""
+            position: absolute
+            background: white
+            top: 0
+            right: 0
+
+            width: 25px
+            height: 100%
 
     .custom-date-input
+        width: 100%
         border: 0
-        min-width: 150px
-        flex: 1
-
-    .calendar-icon
-        position: absolute
-        right: 12px
-        top: 50%
-        transform: translateY(-50%)
-        color: #6b7280
-        cursor: pointer
-        display: flex
-        align-items: center
-        justify-content: center
-
-.popup-enter-active,
-.popup-leave-active
-    transition: all .2s ease
-
-
-.popup-enter-from,
-.popup-leave-to
-    opacity: 0
-    transform: scale(.95)
-
-
-.popup-enter-to,
-.popup-leave-from
-    opacity: 1
-    transform: scale(1)
 </style>

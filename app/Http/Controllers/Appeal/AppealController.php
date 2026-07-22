@@ -6,20 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\AppealStoreRequest;
 use App\Http\Resources\Appeal\AppealResource;
 use App\Http\Resources\Appeal\ThemGROUPBYGroupResource;
-use App\Http\Resources\Appeal\ThemResource;
-use App\Http\Resources\Appeal\WorkerResource;
-use App\Http\Resources\Base\UserResource;
 use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
 use App\Models\Base\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class AppealController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // dump($request->input('filters'));
         return Inertia::render('appeal/appeals/index', [
             'appeals'   => fn() => AppealResource::collection(Appeal::filter()->hasPermission()->get()),
             'senders'   => fn() => User::whereIn('id', Appeal::select('sender_id')->distinct()->pluck('sender_id'))->get()->toResourceCollection(),
