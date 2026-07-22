@@ -29,7 +29,7 @@ export default {
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <Form method="GET" :action="currrentURL" v-slot="{ processing }">
+                <Form method="GET" :action="currrentURL">
                     <slot name="filters"></slot>
                 </Form>
             </div>

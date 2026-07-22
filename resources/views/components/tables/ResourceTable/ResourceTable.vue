@@ -38,9 +38,7 @@ export default {
 
     data() {
         return {
-            hoveredFilterIndex: null,
             isFilterOpen: false,
-            resetKey: 0,
         }
     },
 
@@ -153,13 +151,11 @@ export default {
 
     methods: {
         resetFilters() {
-            this.resetKey++;
-
             router.get(
                 window.location.pathname,
                 {},
                 {
-                    preserveState: true,
+                    preserveState: false,
                     replace: true
                 }
             );
@@ -331,10 +327,10 @@ export default {
                     </div>
                 </div>
                 <div class="filter-btns">
-                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }" @click="resetFilters">
+                    <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button                 class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                    <button class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Применить
                     </button>
                     <button type="button"   class="filter-showbtn"
