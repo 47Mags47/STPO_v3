@@ -55,11 +55,6 @@ export default {
         return {
             isPopupOpen: false,
             selectedDate: this.value !== null ? this.value : null,
-
-            // popupStyle: {
-            //     bottom: null,
-            //     position: 'absolute',
-            // },
         };
     },
     methods: {
