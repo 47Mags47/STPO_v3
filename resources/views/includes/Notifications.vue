@@ -91,6 +91,7 @@ export default {
                     <NewMessageNotification v-if="notification.type.code === 'new_message'"
                         :sender="notification.sender"
                         :message="notification.message"
+                        :appeal-id="notification.context.appeal_id"
                         :isReaded="notification.is_readed"
                         :createdAt="notification.created_at"
                     />

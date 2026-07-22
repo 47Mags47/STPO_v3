@@ -39,14 +39,19 @@ class NotificationFactory extends Factory
             return array_merge($attributes, [
                 'message'       => 'Файл ' . $file->origin_name . ' доступен для загрузки',
                 'context'       => [
-                    'file_id'   => $file->id
+                    'file_id'   => $file->id,
                 ]
             ]);
         }
 
-         if ($type->code === 'new_message') {
+        if ($type->code === 'new_message') {
+            $message = Message::factory()->create();
             return array_merge($attributes, [
-                'message' => $this->faker->sentence(),
+                'message'   => $message->message,
+                'context'       => [
+                    'message_id'  => $message->id,
+                    'appeal_id'   => $message->appeal_id
+                ]
             ]);
         }
 
