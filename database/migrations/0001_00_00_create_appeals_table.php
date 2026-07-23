@@ -4,6 +4,7 @@ use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
+use App\Models\Base\Chat;
 use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
@@ -49,27 +50,13 @@ return new class extends Migration
 
             $table->string('comment');
 
+            $table->foreignId('chat_id')->constrained(Chat::getTableName());
             $table->foreignId('sender_id')->constrained(User::getTableName());
             $table->foreignId('worker_id')->nullable()->constrained(User::getTableName());
             $table->foreignId('them_id')->constrained(Them::getTableName());
             $table->foreignId('status_id')->constrained(Status::getTableName());
 
             $table->timestamps();
-        });
-
-        Schema::create('appeal__messages', function (Blueprint $table) {
-            $table->id();
-
-            $table->text('message');
-
-            $table->boolean('readed')->default(false);
-
-            $table->foreignId('file_id')->nullable()->default(null)->constrained(File::getTableName());
-            $table->foreignId('appeal_id')->constrained(Appeal::getTableName());
-            $table->foreignId('sender_id')->constrained(User::getTableName());
-
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -78,7 +65,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appeal__messages');
         Schema::dropIfExists('appeal__appeals');
         Schema::dropIfExists('appeal__statuses');
         Schema::dropIfExists('appeal__thems');

@@ -1,16 +1,16 @@
 <?php
 
-namespace Database\Factories\Appeal;
+namespace Database\Factories\Base;
 
-use App\Models\Appeal\Appeal;
+use App\Models\Base\Chat;
 use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appeal\Message>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Base\ChatMessages>
  */
-class MessageFactory extends Factory
+class ChatMessagesFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,20 +19,20 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
-        $appeal = Appeal::randomOrCreate();
+        $chat = Chat::randomOrCreate();
         $file = rand(0, 1)
             ? File::factory()->create([
                 'disk' => 'appeals',
-                'path' => 'messages/' . $appeal->id
+                'path' => 'messages/' . $chat->id
             ])
             : null;
 
         return [
             'message' => $this->faker->text(250),
             'readed' => $this->faker->boolean(),
+            'chat_id' => $chat->id,
+            'context' => null,
             'file_id' => $file?->id,
-            'sender_id' => User::randomOrCreate()->id,
-            'appeal_id' => $appeal->id,
         ];
     }
 }

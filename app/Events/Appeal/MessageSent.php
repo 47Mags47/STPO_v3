@@ -2,7 +2,7 @@
 
 namespace App\Events\Appeal;
 
-use App\Models\Appeal\Message;
+use App\Models\Base\ChatMessages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 class MessageSent implements ShouldBroadcastNow
 {
     public function __construct(
-        public Message $message,
+        public ChatMessages $message,
         public int $appealId
     ) {}
 

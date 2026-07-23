@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Models\Appeal;
+namespace App\Models\Base;
 
 use App\Classes\BaseModel;
-use App\Models\Base\User;
-use App\Traits\ThisFileModel;
+use App\Models\Base\Chat;
+use App\Models\Base\File;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Message extends BaseModel
+class ChatMessages extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
     ### Настройки
     ##################################################
-    protected $table = 'appeal__messages';
+    protected $table = 'base__chat_messages';
 
     protected $fillable = [
         'message',
         'readed',
+        'context',
+        'chat_id',
         'file_id',
-        'appeal_id',
-        'sender_id',
     ];
 
     protected function casts(): array
@@ -34,13 +34,13 @@ class Message extends BaseModel
 
     ### Связи
     ##################################################
-    public function sender(): BelongsTo
+    public function chat(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(Chat::class, 'chat_id');
     }
 
-    public function appeal(): BelongsTo
+    public function file(): BelongsTo
     {
-        return $this->belongsTo(Appeal::class, 'appeal_id');
+        return $this->belongsTo(File::class, 'file_id');
     }
 }

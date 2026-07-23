@@ -3,6 +3,7 @@
 namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
+use App\Models\Base\Chat;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,7 @@ class Appeal extends BaseModel
 
     protected $fillable = [
         'comment',
+        'chat_id',
         'sender_id',
         'worker_id',
         'status_id',
@@ -44,6 +46,10 @@ class Appeal extends BaseModel
 
     ### Связи
     ##################################################
+    public function chat(): BelongsTo
+    {
+        return $this->belongsTo(Chat::class, 'chat_id');
+    }
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
@@ -62,10 +68,5 @@ class Appeal extends BaseModel
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function messages(): HasMany
-    {
-        return $this->hasMany(Message::class, 'appeal_id');
     }
 }

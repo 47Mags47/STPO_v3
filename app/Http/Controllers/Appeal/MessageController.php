@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\MessageStoreRequest;
 use App\Http\Resources\Appeal\MessageResource;
 use App\Models\Appeal\Appeal;
-use App\Models\Appeal\Message;
+use App\Models\Base\ChatMessages;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,7 +27,7 @@ class MessageController extends Controller
 
     public function store(MessageStoreRequest $request, Appeal $appeal)
     {
-        $message = Message::create([
+        $message = ChatMessages::create([
             'message'       => $request->message,
             'sender_id'     => user()->id,
             'appeal_id'     => $appeal->id,
@@ -56,7 +56,7 @@ class MessageController extends Controller
         return redirect()->route('appeal.messages.index', ['appeal' => $appeal]);
     }
 
-    public function show(Appeal $appeal, Message $message)
+    public function show(Appeal $appeal, ChatMessages $message)
     {
         if ($message->file_id !== null)
             return response()->file($message->getFullPath());
@@ -64,7 +64,7 @@ class MessageController extends Controller
         return abort(404);
     }
 
-    public function update(Request $request, Appeal $appeal, Message $message)
+    public function update(Request $request, Appeal $appeal, ChatMessages $message)
     {
         $message->update($request->validated());
 
@@ -73,7 +73,7 @@ class MessageController extends Controller
             ->with('success', 'Запись успешно обновлена');
     }
 
-    public function destroy(Message $message)
+    public function destroy(ChatMessages $message)
     {
         $message->delete();
 
