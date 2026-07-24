@@ -6,6 +6,7 @@ use App\Models\Base\File;
 use App\Models\Base\Template;
 use App\Writers\Payment\RosselhozWriter;
 use App\Writers\Payment\SberWriter;
+use App\Writers\Payment\VTBWriter;
 use Illuminate\Database\Seeder;
 
 class TemplateSeeder extends Seeder
@@ -15,8 +16,8 @@ class TemplateSeeder extends Seeder
         File::createChildren(Template::class, [
             'disk'          => 'templates',
             'path'          => 'payment',
-            'origin_name'   => 'RaportToBank_Sber.blade.php',
-            'name'          => 'RaportToBank_Sber.blade.php',
+            'origin_name'   => 'Raport_Sber.blade.php',
+            'name'          => 'Raport_Sber.blade.php',
 
             'description'   => 'Файл выгрузки выплаты в Сбербанк',
             'writer' => SberWriter::class,
@@ -25,11 +26,21 @@ class TemplateSeeder extends Seeder
         File::createChildren(Template::class, [
             'disk'          => 'templates',
             'path'          => 'payment',
-            'origin_name'   => 'RaportToBank_UralSib.blade.php',
-            'name'          => 'RaportToBank_UralSib.blade.php',
+            'origin_name'   => 'Raport_UralSib.blade.php',
+            'name'          => 'Raport_UralSib.blade.php',
 
             'description'   => 'Файл выгрузки выплаты в Россельхоз банк',
             'writer' => RosselhozWriter::class,
+        ]);
+
+        File::createChildren(Template::class, [
+            'disk'          => 'templates',
+            'path'          => 'payment',
+            'origin_name'   => 'Raport_VTB.blade.php',
+            'name'          => 'Raport_VTB.blade.php',
+
+            'description'   => 'Файл выгрузки выплаты в Россельхоз банк',
+            'writer' => VTBWriter::class,
         ]);
     }
 }

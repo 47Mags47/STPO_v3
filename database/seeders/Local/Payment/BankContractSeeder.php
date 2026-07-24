@@ -17,7 +17,7 @@ class BankContractSeeder extends Seeder
                 'code'  => 'test_Sber',
                 'name'  => 'Сбербанк (тест)'
             ])->id,
-            'template_id' => Template::whereKey(File::where('origin_name', 'RaportToBank_Sber.blade.php')->get()->first()->id)->first()->id,
+            'template_id' => Template::whereKey(File::where('origin_name', 'Raport_Sber.blade.php')->get()->first()->id)->first()->id,
         ]);
 
         BankContract::factory()->create([
@@ -25,7 +25,15 @@ class BankContractSeeder extends Seeder
                 'code'  => 'test_Rosselhoz',
                 'name'  => 'Россельхоз (тест)'
             ])->id,
-            'template_id' => Template::whereKey(File::where('origin_name', 'RaportToBank_UralSib.blade.php')->get()->first()->id)->first()->id,
+            'template_id' => Template::whereKey(File::where('origin_name', 'Raport_UralSib.blade.php')->get()->first()->id)->first()->id,
+        ]);
+
+        BankContract::factory()->create([
+            'bank_id' => Bank::factory()->create([
+                'code'  => 'test_VTB',
+                'name'  => 'ВТБ (тест)'
+            ])->id,
+            'template_id' => Template::whereKey(File::where('origin_name', 'Raport_VTB.blade.php')->get()->first()->id)->first()->id,
         ]);
     }
 }

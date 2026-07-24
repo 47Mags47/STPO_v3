@@ -143,9 +143,9 @@ abstract class FileModel extends BaseModel
      * @param  ?string  $content
      * @return bool
      */
-    public function write(string $content): bool
+    public function write(string $content, ?string $encoding = 'UTF-8'): bool
     {
-        return $this->file->write($content);
+        return $this->file->write($content, $encoding);
     }
 
     /**

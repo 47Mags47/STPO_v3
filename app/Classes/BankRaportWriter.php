@@ -16,9 +16,10 @@ use ZipArchive;
 
 class BankRaportWriter extends Writer
 {
-    public ?int $delimiter = null;
+    protected ?int $delimiter = null;
+    protected ?string $encoding = 'UTF-8';
 
-    public BankRaport $raport;
+    protected BankRaport $raport;
 
     protected Bank $bank;
     protected BankContract $contract;
@@ -66,7 +67,7 @@ class BankRaportWriter extends Writer
                 'origin_name'   => $this->fileName($npp),
             ]);
             $files[] = $file;
-            $file->write(Blade::render($this->template->getContent(), $this->fileData($recipients)));
+            $file->write(Blade::render($this->template->getContent(), $this->fileData($recipients)), $this->encoding);
             $npp++;
         }
 
