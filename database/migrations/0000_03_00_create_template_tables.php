@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('description');
+            $table->string('writer')->nullable();
+
             $table->foreignId('file_id')->constrained(File::getTableName());
 
             $table->timestamps();

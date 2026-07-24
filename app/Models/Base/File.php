@@ -34,6 +34,14 @@ class File extends BaseModel
         ];
     }
 
+    public static function booted()
+    {
+        self::deleted(function ($model) {
+            Storage::disk($model->disk)->delete($model->getLocalPath());
+            $model->delete();
+        });
+    }
+
     ### Методы модели
     ##################################################
     public static function createChildren(string $model, ?array $attributes = [])
@@ -120,7 +128,8 @@ class File extends BaseModel
         return Storage::disk($this->disk)->put($this->getLocalPath(), $content);
     }
 
-    public function download(): StreamedResponse{
+    public function download(): StreamedResponse
+    {
         return Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name);
     }
 

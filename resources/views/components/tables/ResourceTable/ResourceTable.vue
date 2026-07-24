@@ -28,6 +28,7 @@ export default {
         Ico:            defineAsyncComponent(() => import("../../Ico.vue")),
         Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
         BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+        RedButton:      defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
 
         Checkbox:       defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
         SingleSelect:   defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
@@ -148,6 +149,11 @@ export default {
         rowClasses: {
             type: [Array, String, Function],
             default: null
+        },
+
+        actions: {
+            type: Array,
+            default: [],
         }
     },
 
@@ -358,6 +364,14 @@ export default {
             </div>
             <div class="table-actions-container">
                 <slot name="actions" />
+                <template v-for="action in actions">
+                    <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
+                        <Ico :type="action.ico" />
+                    </BlueButton>
+                    <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
+                        <Ico :type="action.ico" />
+                    </RedButton>
+                </template>
                 <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
             </div>
         </template>
@@ -535,6 +549,14 @@ export default {
     :deep()
         .table-header
             padding: 0 15px
+        .toolbar
+            .table-actions-container
+                display: flex
+                gap: 10px
+                .button
+                    padding: 7px
+                    width: 35px
+                    height: 35px
 
         .table-content
             .not-data-cell .table-cell-container

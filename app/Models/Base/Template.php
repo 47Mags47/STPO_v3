@@ -11,6 +11,7 @@ class Template extends FileModel
     protected $table = 'base__templates';
 
     protected $fillable = [
+        'writer',
         'description',
         'file_id',
     ];

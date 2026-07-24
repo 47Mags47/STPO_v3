@@ -6,6 +6,7 @@ export default {
     components: {
         ResourceTable,
     },
+
     computed: {
         banks: () => usePage().props.banks,
         event: () => usePage().props.event.data,
@@ -23,9 +24,16 @@ export default {
 </script>
 <template>
     <ResourceTable
-        caption="Выплаты (Сводка по банкам)"
+        caption="Выплаты (Свод по банкам)"
         :data="banks.data"
         :meta="banks.meta"
+        :actions="[
+            {
+                color: 'blue',
+                ico: 'file-zipper',
+                onClick: () => {}
+            }
+        ]"
         :rowLinks="[
             {
                 'ico': 'file',

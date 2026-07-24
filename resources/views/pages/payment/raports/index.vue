@@ -32,6 +32,7 @@ export default {
     <FileResourceTable
         caption="Выплаты (отчет на банк)"
         fileChannel="payment.raports"
+        :hasErrorCollumn="false"
         :hasCreateButton="true"
         :onCreateButtonClick="createButtonClickHandler"
         :rowLinks="[
@@ -48,9 +49,9 @@ export default {
             },
             {
                 title: 'Создан',
-                type: 'date',
+                type: 'datetime',
                 dataIndex: 'created_at',
-                width: '100px',
+                width: '150px',
             },
         ]"
     />

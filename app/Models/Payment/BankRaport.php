@@ -5,12 +5,13 @@ namespace App\Models\Payment;
 use App\Classes\FileModel;
 use App\Models\Administrate\Bank;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class RaportToBank extends FileModel
+class BankRaport extends FileModel
 {
     ### Настройки
     ##################################################
-    protected $table = 'payment__raports_to_bank';
+    protected $table = 'payment__bank_raports';
 
     protected $fillable = [
         'file_id',
@@ -22,17 +23,20 @@ class RaportToBank extends FileModel
     public static string|null $storage_file_path = 'raports-to-bank';
     public static string|null $channel = 'payment.raports';
 
-    ### Методы
-    ##################################################
-    //
-
     ### Связи
     ##################################################
-    public function bank(): BelongsTo {
+    public function bank(): BelongsTo
+    {
         return $this->belongsTo(Bank::class, 'bank_id');
     }
 
-    public function event(): BelongsTo {
+    public function event(): BelongsTo
+    {
         return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function paymentFiles(): HasMany
+    {
+        return $this->hasMany(PaymentFile::class, 'raport_id');
     }
 }
