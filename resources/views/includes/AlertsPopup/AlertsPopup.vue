@@ -13,14 +13,10 @@ export default {
     computed: {
         alerts: () => usePage().props.flash,
     },
-
-    methods: {
-    }
 }
 </script>
 
 <template>
-    <!-- {{ isSuccessPopUpOpen }} -->
     <div class="alerts-popup-container">
         <template v-if="'info' in alerts">
             <template v-for="alert in alerts.info ?? []">

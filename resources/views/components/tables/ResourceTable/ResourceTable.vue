@@ -360,19 +360,22 @@ export default {
             </div>
             <div class="table-actions-container">
                 <slot name="actions" />
-                <template v-for="action in actions">
-                    <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                        <Ico :type="action.ico" />
-                    </BlueButton>
-                    <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                        <Ico :type="action.ico" />
-                    </RedButton>
-                </template>
-                <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
+                <div class="resource-table-actions-container">
+                    <template v-for="action in actions">
+                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </BlueButton>
+                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </RedButton>
+                    </template>
+                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
+                </div>
             </div>
         </template>
 
         <template #colgroup>
+            <slot name="colgroup" />
             <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
 
             <col v-if="hasDeleteButton && data.length > 0" width="60px" />
@@ -381,6 +384,7 @@ export default {
         </template>
 
         <template #thead>
+            <slot name="thead" />
             <TableRow>
                 <template v-for="column in collumns">
                     <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
@@ -399,6 +403,7 @@ export default {
         </template>
 
         <template #tbody>
+            <slot name="tbody" />
             <TableRow v-if="data.length > 0" v-for="row in data" :class="getRowClasses(row)" >
                 <template v-for="collumn in collumns">
                     <TableTd v-if="checkCellVisible(row, collumn)"
@@ -416,7 +421,7 @@ export default {
 
                 <RowLink v-for="link in rowLinks" v-bind="{...link, row}" />
             </TableRow>
-            <tr v-else>
+            <tr v-else-if="!('tbody' in $slots)">
                 <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
                     <Ico type="database" />
                     <span class="text">Данных нет :(</span>
@@ -550,7 +555,7 @@ export default {
                 display: flex
                 gap: 10px
                 .button
-                    padding: 7px
+                    padding: 9px
                     width: 35px
                     height: 35px
 

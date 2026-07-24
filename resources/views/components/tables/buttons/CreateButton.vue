@@ -23,7 +23,11 @@ export default {
 </script>
 
 <template>
-    <BlueButton @click="clickHandler" class="ico-button">
+    <BlueButton
+        class="ico-button"
+        title="Добавить"
+        @click="clickHandler"
+    >
         <Ico type="plus" />
     </BlueButton>
 </template>

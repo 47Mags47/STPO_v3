@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class SberWriter extends BankRaportWriter
 {
     public function __construct(BankRaport $raport) {
-        $this->delimiter = 5000;
+        $this->delimiter = 25000;
         parent::__construct($raport);
     }
 
