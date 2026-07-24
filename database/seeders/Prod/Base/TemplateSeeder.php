@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Prod\Base;
 
+use App\Models\Administrate\Template;
 use App\Models\Base\File;
-use App\Models\Base\Template;
 use App\Writers\Payment\RosselhozWriter;
 use App\Writers\Payment\SberWriter;
 use App\Writers\Payment\VTBWriter;

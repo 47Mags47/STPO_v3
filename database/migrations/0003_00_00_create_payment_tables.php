@@ -3,8 +3,8 @@
 use App\Models\Administrate\Bank;
 use App\Models\Administrate\Division;
 use App\Models\Administrate\Payment;
+use App\Models\Administrate\Template;
 use App\Models\Base\File;
-use App\Models\Base\Template;
 use App\Models\Payment\Archive;
 use App\Models\Payment\BankRaport;
 use App\Models\Payment\Event;

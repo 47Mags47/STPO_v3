@@ -3,7 +3,7 @@
 namespace Database\Seeders\Local\Payment;
 
 use App\Models\Administrate\Bank;
-use App\Models\Base\Template;
+use App\Models\Administrate\Template;
 use App\Models\Payment\BankContract;
 use App\Models\Payment\Event;
 use App\Models\Payment\PaymentFile;

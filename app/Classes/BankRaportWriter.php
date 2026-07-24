@@ -3,8 +3,8 @@
 namespace App\Classes;
 
 use App\Models\Administrate\Bank;
+use App\Models\Administrate\Template;
 use App\Models\Base\File;
-use App\Models\Base\Template;
 use App\Models\Payment\BankContract;
 use App\Models\Payment\Event;
 use App\Models\Payment\PaymentFile;
