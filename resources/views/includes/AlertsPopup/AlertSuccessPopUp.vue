@@ -35,10 +35,6 @@ export default {
             this.isClose = true
         }, 3000)
     },
-
-    updated() {
-        console.log(1, this.isHidden)
-    }
 }
 </script>
 

@@ -49,3 +49,9 @@ Broadcast::channel('payment.raports', function (User $user) {
     // DEV дописать логику проверки
     return true;
 });
+
+Broadcast::channel('payment.archives', function (User $user) {
+    // DEV дописать логику проверки
+    return true;
+});
+

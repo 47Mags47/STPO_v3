@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('/payment-files/{paymentFile}/recipients',      App\Http\Controllers\Payment\RecipientController::class)->except('show');
             Route::resource('/banks',                                       App\Http\Controllers\Payment\BankController::class)->only('index');
             Route::resource('/banks/{bank}/raports',                        App\Http\Controllers\Payment\BankRaportController::class)->only(['index', 'store', 'show']);
+            Route::resource('/archives',                                    App\Http\Controllers\Payment\ArchiveController::class)->only(['index', 'store', 'show']);
         });
     });
 });

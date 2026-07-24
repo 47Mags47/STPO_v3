@@ -18,7 +18,12 @@ export default {
                 'event': this.event.id,
                 'bank': bank.id
             }))
-        }
+        },
+        goToArchivesButtonClickhandler(){
+            router.get(route('payment.archives.index', {
+                'event': this.event.id,
+            }))
+        },
     }
 }
 </script>
@@ -31,7 +36,7 @@ export default {
             {
                 color: 'blue',
                 ico: 'file-zipper',
-                onClick: () => {}
+                onClick: goToArchivesButtonClickhandler
             }
         ]"
         :rowLinks="[

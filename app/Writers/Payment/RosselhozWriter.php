@@ -2,11 +2,11 @@
 
 namespace App\Writers\Payment;
 
-use App\Classes\PaymentRaportWriter;
+use App\Classes\BankRaportWriter;
 use App\Models\Payment\BankRaport;
 use Illuminate\Support\Collection;
 
-class RosselhozWriter extends PaymentRaportWriter
+class RosselhozWriter extends BankRaportWriter
 {
     public function __construct(BankRaport $raport) {
         parent::__construct($raport);
