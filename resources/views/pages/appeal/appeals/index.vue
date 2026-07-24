@@ -73,7 +73,7 @@ export default {
                 type: 'dateFilter',
                 isRange: true,
                 label: 'Дата создания',
-                name: 'created_at'
+                name: 'created_at',
             },
             {
                 type: 'multiSelect',

@@ -11,7 +11,8 @@ export default {
             type: String,
             default: null,
             validator: (value) => [
-                'download-file-notification'
+                'download-file-notification',
+                'new-message-notification'
             ].includes(value)
         },
         sender: {
@@ -29,6 +30,10 @@ export default {
         createdAt: {
             type: String,
             default: null
+        },
+        ico: {
+            type: String,
+            default: 'circle-exclamation'
         }
     },
     computed: {
@@ -54,7 +59,7 @@ export default {
 <template>
     <div class="notification-container" :class="classes">
         <div class="notification-header">
-            <Ico type="file" />
+            <Ico :type="ico" />
             <span class="sender-container">{{ sender?.full_name ?? 'SYSTEM' }}</span>
             <span class="date-container">{{ createdAtObject.toFormat('dd.MM T') }}</span>
         </div>

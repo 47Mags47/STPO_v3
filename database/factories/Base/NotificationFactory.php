@@ -3,6 +3,7 @@
 namespace Database\Factories\Base;
 
 use App\Models\Base\File;
+use App\Models\Appeal\Message;
 use App\Models\Base\Notification;
 use App\Models\Base\NotificationType;
 use App\Models\Base\User;
@@ -38,7 +39,18 @@ class NotificationFactory extends Factory
             return array_merge($attributes, [
                 'message'       => 'Файл ' . $file->origin_name . ' доступен для загрузки',
                 'context'       => [
-                    'file_id'   => $file->id
+                    'file_id'   => $file->id,
+                ]
+            ]);
+        }
+
+        if ($type->code === 'new_message') {
+            $message = Message::factory()->create();
+            return array_merge($attributes, [
+                'message'   => $message->message,
+                'context'       => [
+                    'message_id'  => $message->id,
+                    'appeal_id'   => $message->appeal_id
                 ]
             ]);
         }

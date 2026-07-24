@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Base\Notification;
+use App\Models\Base\NotificationType;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -25,7 +26,7 @@ return new class extends Migration
 
             $table->foreignId('recipient_id')->constrained(User::getTableName());
             $table->foreignId('sender_id')->nullable()->constrained(User::getTableName());
-            $table->foreignId('type_id')->constrained(Notification::getTableName());
+            $table->foreignId('type_id')->constrained(NotificationType::getTableName());
 
             $table->timestamps();
         });

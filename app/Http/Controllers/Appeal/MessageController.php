@@ -53,8 +53,7 @@ class MessageController extends Controller
             $appeal->id
         ))->toOthers();
 
-        return redirect()
-            ->route('appeal.messages.index', ['appeal' => $appeal]);
+        return redirect()->route('appeal.messages.index', ['appeal' => $appeal]);
     }
 
     public function show(Appeal $appeal, Message $message)

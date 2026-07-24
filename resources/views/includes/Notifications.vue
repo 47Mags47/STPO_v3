@@ -7,6 +7,7 @@ import axios from 'axios';
 export default {
     components: {
         Ico,
+        NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
         DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
     },
     data() {
@@ -84,6 +85,13 @@ export default {
                         :sender="notification.sender"
                         :message="notification.message"
                         :file="notification.context"
+                        :isReaded="notification.is_readed"
+                        :createdAt="notification.created_at"
+                    />
+                    <NewMessageNotification v-if="notification.type.code === 'new_message'"
+                        :sender="notification.sender"
+                        :message="notification.message"
+                        :appeal-id="notification.context.appeal_id"
                         :isReaded="notification.is_readed"
                         :createdAt="notification.created_at"
                     />

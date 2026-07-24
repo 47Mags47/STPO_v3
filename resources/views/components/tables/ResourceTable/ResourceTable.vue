@@ -39,9 +39,7 @@ export default {
 
     data() {
         return {
-            hoveredFilterIndex: null,
             isFilterOpen: false,
-            resetKey: 0,
         }
     },
 
@@ -159,13 +157,11 @@ export default {
 
     methods: {
         resetFilters() {
-            this.resetKey++;
-
             router.get(
                 window.location.pathname,
                 {},
                 {
-                    preserveState: true,
+                    preserveState: false,
                     replace: true
                 }
             );
@@ -333,14 +329,14 @@ export default {
                         <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <Checkbox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <!-- <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter).name" :label="filter.label" /> -->
+                        <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                     </div>
                 </div>
                 <div class="filter-btns">
-                    <button type="button"   class="filter-btn"  :class="{ filterShow: isFilterOpen }" @click="resetFilters">
+                    <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button                 class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                    <button class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Применить
                     </button>
                     <button type="button"   class="filter-showbtn"
