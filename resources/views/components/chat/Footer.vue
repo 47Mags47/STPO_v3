@@ -36,9 +36,11 @@ export default {
         },
 
         onDrop(files) {
-            this.prepareFiles(files)
+            console.log(files)
+            this.prepareFile(files)
         },
         handlePaste(e) {
+            console.log(e)
             const items = e.clipboardData?.items
             if (!items) return
 

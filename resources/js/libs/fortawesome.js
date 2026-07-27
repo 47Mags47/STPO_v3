@@ -42,6 +42,8 @@ import {
     faDatabase,
     faBuildingColumns,
 
+    faSpinner,
+
     faPaperPlane,
     faMessage,
     faReply,
@@ -89,6 +91,8 @@ library.add(
 
     faDatabase,
     faBuildingColumns,
+
+    faSpinner,
 
     faPaperPlane,
     faMessage,
