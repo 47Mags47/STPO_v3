@@ -76,7 +76,7 @@ export default {
 
             <div v-if="message.file">
                 <!-- спиннер если картинки не загружаются-->
-                <div v-if="message.context.isImage && !loadedImages[message.file_url]" class="flex gap-2 items-center" :class="isMine ? 'justify-end' : 'justify-start'">
+                <div v-if="message.context.is_image && !loadedImages[message.file_url]" class="flex gap-2 items-center" :class="isMine ? 'justify-end' : 'justify-start'">
                     <div class="inset-0 size-[1lh] flex items-center justify-center">
                         <Ico
                         type="spinner"
@@ -86,7 +86,7 @@ export default {
                 </div>
 
                 <!-- контейнер картинки -->
-                <div v-if="message.context.isImage"
+                <div v-if="message.context.is_image"
                 class="relative group shrink w-[324px] mb-1!">
                     <img
                     loading="lazy"

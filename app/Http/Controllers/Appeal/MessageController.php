@@ -31,6 +31,7 @@ class MessageController extends Controller
             $upload_file = $request->file('file');
 
             $message = File::createChildren(ChatMessages::class, [
+                'name' => $upload_file->hashName(),
                 'path' => ChatMessages::$storage_file_path . '/' . $appeal->chat_id,
                 'origin_name' => $upload_file->getClientOriginalName(),
 
@@ -42,7 +43,7 @@ class MessageController extends Controller
                 'chat_id'       => $appeal->chat_id,
             ]);
 
-            $message->write($upload_file->getContent());
+            $message->file->write($upload_file->getContent());
 
         } else {
             $message = ChatMessages::create([

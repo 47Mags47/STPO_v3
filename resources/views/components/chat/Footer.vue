@@ -70,7 +70,7 @@ export default {
                 name: file.name,
                 size: file.size,
                 context: {
-                    isImage: file.type.startsWith('image/'),
+                    is_image: file.type.startsWith('image/'),
                 },
                 file_url: URL.createObjectURL(file),
                 file,

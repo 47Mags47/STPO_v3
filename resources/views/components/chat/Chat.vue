@@ -140,6 +140,9 @@ export default {
                             created_at: msg.created_at,
                             id: msg.id,
                             message: msg.message,
+                            context: msg.context,
+                            file: msg.file,
+                            file_url: msg.file_url,
                             sender: {
                                 id: msg.sender_id,
                             }

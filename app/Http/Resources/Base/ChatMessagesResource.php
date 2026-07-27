@@ -27,7 +27,9 @@ class ChatMessagesResource extends JsonResource
             'file' => $this->file_id !== null
                 ? $this->file->toResource()
                 : null,
-            'file_url' => route('files.show', ['file' => $this]),
+            'file_url' => $this->file_id !== null
+                ? route('files.show', ['file' => $this->file_id])
+                : null,
             'created_at' => $this->created_at,
         ];
     }

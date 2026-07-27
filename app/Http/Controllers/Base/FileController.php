@@ -14,12 +14,6 @@ class FileController extends Controller
     }
 
     public function show(File $file){
-       dd([
-    'db_name' => $file->name,
-    'db_path' => $file->path,
-    'real_files' => Storage::disk($file->disk)
-        ->files($file->path),
-]);
         return response()->file($file->getFullPath());
     }
 }
