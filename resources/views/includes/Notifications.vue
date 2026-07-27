@@ -5,71 +5,72 @@ import { Ico } from '@components';
 import axios from 'axios';
 
 export default {
-    components: {
-        Ico,
-        NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
-        DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
-    },
-    data() {
-        return {
-            isOpen: false,
-            isLoaded: false,
-            notifications: [],
-            channel: null
-        }
-    },
-    computed: {
-        currentUser: () => usePage().props.current_user?.data,
+    // components: {
+    //     Ico,
+    //     NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
+    //     DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
+    // },
+    // data() {
+    //     return {
+    //         isOpen: false,
+    //         isLoaded: false,
+    //         notifications: [],
+    //         channel: null
+    //     }
+    // },
+    // computed: {
+    //     currentUser: () => usePage().props.current_user?.data,
 
-        numberNots() {
-            return this.notifications.filter(notification => !notification.is_readed).length
-        },
-    },
-    methods: {
-        togleOpen() {
-            this.isOpen = !this.isOpen
-        },
+    //     numberNots() {
+    //         return this.notifications.filter(notification => !notification.is_readed).length
+    //     },
+    // },
+    // methods: {
+    //     togleOpen() {
+    //         this.isOpen = !this.isOpen
+    //     },
 
-        outsideClickHandler() {
-            this.isOpen = false
-        },
-    },
+    //     outsideClickHandler() {
+    //         this.isOpen = false
+    //     },
+    // },
 
-    watch: {
-        isOpen(newVal){
-            //Прокрутка
-            if(newVal)
-                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
+    // watch: {
+    //     isOpen(newVal){
+    //         //Прокрутка
+    //         if(newVal)
+    //             this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
 
-            // Помечаем оповещения прочитанными
-            if(newVal && this.numberNots > 0)
-                axios.post(route('notifications-readAll'))
+    //         // Помечаем оповещения прочитанными
+    //         if(newVal && this.numberNots > 0)
+    //             axios.post(route('notifications-readAll'))
 
-            // Обновляем список непрочитаных
-            if(!newVal && this.numberNots > 0)
-                this.notifications = this.notifications.map((notification) => ({...notification, is_readed: true}))
-        }
-    },
+    //         // Обновляем список непрочитаных
+    //         if(!newVal && this.numberNots > 0)
+    //             this.notifications = this.notifications.map((notification) => ({...notification, is_readed: true}))
+    //     }
+    // },
 
-    mounted(){
-        this.channel = `user.${this.currentUser.id}.notifications`
-        this.notifications = this.currentUser.notifications
+    // mounted(){
+    //     this.channel = `user.${this.currentUser.id}.notifications`
+    //     this.notifications = this.currentUser.notifications
 
-        Echo.private(this.channel)
-            .listen('.new-notification', (data) => {
-                this.notifications.push(data.notification)
-            });
-    },
+    //     Echo.private(this.channel)
+    //         .listen('.new-notification', (data) => {
+    //             this.notifications.push(data.notification)
+    //         });
+    // },
 
-    unmounted(){
-        Echo.leave(this.channel)
-    }
+    // unmounted(){
+    //     Echo.leave(this.channel)
+    // }
 }
 </script>
 
 <template>
-    <div class="notifications-container" v-outsideClick="outsideClickHandler">
-        <!-- Колокольчик -->
+    nots
+    <!-- <div class="notifications-container" v-outsideClick="outsideClickHandler">
+
         <div class="bell-container" @click="togleOpen">
             <Ico type="bell" />
             <div v-show="numberNots > 0" class="couner-container">
@@ -78,7 +79,7 @@ export default {
         </div>
 
         <div class="notification-list-container" :class="{ 'open': isOpen }">
-            <!-- Уведомления -->
+
             <div class="notification-list" v-if="notifications.length > 0" ref="notificationList">
                 <template v-for="notification in notifications">
                     <DownloadFileNotification v-if="notification.type.code === 'file_generated'"
@@ -97,13 +98,13 @@ export default {
                     />
                 </template>
             </div>
-            <!-- Уведомлений нет -->
+
             <div v-else class="empty-notifications-container">
                 <Ico type="circle-check" />
                 <span> уведомлений нет </span>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style lang="sass" scoped>

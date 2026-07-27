@@ -15,9 +15,19 @@ class MessageStoreRequest extends FormRequest
     {
         //DEV Переделать на required_unless
         return [
+            'message' => [
+                'nullable',
+                'required_without:file',
+                'string',
+                'max:25000',
+            ],
 
-            'message' => ['required_if:file, null', 'string', 'max:25000'],
-            'file' => ['required_if:message, null', 'file', 'max:2048'],
+            'file' => [
+                'nullable',
+                'required_without:message',
+                'file',
+                'max:2048',
+            ],
         ];
     }
 }

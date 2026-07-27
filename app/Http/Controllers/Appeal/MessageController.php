@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Appeal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\MessageStoreRequest;
-use App\Http\Resources\Appeal\MessageResource;
+use App\Http\Resources\Base\ChatMessagesResource;
 use App\Models\Appeal\Appeal;
 use App\Models\Base\ChatMessages;
-use App\Models\File;
+use App\Models\Base\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,7 +19,7 @@ class MessageController extends Controller
     {
         return Inertia::render('appeal/messages/index', [
             'appeal' => $appeal->toResource(),
-            'messages' => Inertia::scroll(fn() => MessageResource::collection($appeal->messages()
+            'messages' => Inertia::scroll(fn() => ChatMessagesResource::collection($appeal->chat->messages()
                 ->orderBy('id', 'desc')
                 ->cursorPaginate(25))),
         ]);
@@ -27,26 +27,31 @@ class MessageController extends Controller
 
     public function store(MessageStoreRequest $request, Appeal $appeal)
     {
-        $message = ChatMessages::create([
-            'message'       => $request->message,
-            'sender_id'     => user()->id,
-            'appeal_id'     => $appeal->id,
-        ]);
-
-        // DEV Переделать в отдельную модель
         if ($request->hasFile('file')) {
-            $file = File::factory()->create([
-                'disk' => 'appeals',
-                'path' => 'messages/' . $appeal->id,
-                'origin_name' => $request->file('file')->getBasename(),
+            $upload_file = $request->file('file');
+
+            $message = File::createChildren(ChatMessages::class, [
+                'path' => ChatMessages::$storage_file_path . '/' . $appeal->chat_id,
+                'origin_name' => $upload_file->getClientOriginalName(),
+
+                'message'       => $request->message,
+                'context'       => [
+                    'is_image'  => str_starts_with($upload_file->getMimeType(), 'image/'),
+                ],
+                'sender_id'     => user()->id,
+                'chat_id'       => $appeal->chat_id,
             ]);
 
-            $request->file('file')->storeAs($file->path, $file->name, $file->disk);
+            $message->write($upload_file->getContent());
 
-            $message->file_id = $file->id;
+        } else {
+            $message = ChatMessages::create([
+                'message'       => $request->message,
+                'sender_id'     => user()->id,
+                'chat_id'       => $appeal->chat_id,
+            ]);
         }
 
-        $message->save();
 
         broadcast(new MessageSent(
             $message,
@@ -54,14 +59,6 @@ class MessageController extends Controller
         ))->toOthers();
 
         return redirect()->route('appeal.messages.index', ['appeal' => $appeal]);
-    }
-
-    public function show(Appeal $appeal, ChatMessages $message)
-    {
-        if ($message->file_id !== null)
-            return response()->file($message->getFullPath());
-
-        return abort(404);
     }
 
     public function update(Request $request, Appeal $appeal, ChatMessages $message)

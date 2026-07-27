@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Appeal;
+namespace App\Http\Resources\Base;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MessageResource extends JsonResource
+class ChatMessagesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,13 +18,16 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'message' => $this->message,
             'readed' => (bool) $this->readed,
-            'sender' => $this->sender->toResource(),
+            'chat_id' => $this->chat_id,
+            'context' => $this->context,
+            'sender' => [
+                'id' => $this->sender->id,
+                'name' => $this->sender->full_name,
+            ],
             'file' => $this->file_id !== null
-                ? [
-                    'url' => route('appeal.messages.show', ['appeal' => $this->appeal, 'message' => $this]),
-                    'originName' => $this->originName,
-                ]
+                ? $this->file->toResource()
                 : null,
+            'file_url' => route('files.show', ['file' => $this]),
             'created_at' => $this->created_at,
         ];
     }

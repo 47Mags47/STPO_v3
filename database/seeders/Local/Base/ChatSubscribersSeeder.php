@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Local\Base;
 
+use App\Models\Base\Chat;
 use App\Models\Base\ChatSubscribers;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,10 @@ class ChatSubscribersSeeder extends Seeder
      */
     public function run(): void
     {
-        ChatSubscribers::factory(10)->create();
+        Chat::all()->each(function($chat){
+            ChatSubscribers::factory(2)->create([
+                'chat_id' => $chat->id
+            ]);
+        });
     }
 }

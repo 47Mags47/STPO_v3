@@ -20,6 +20,7 @@ class ChatMessagesFactory extends Factory
     public function definition(): array
     {
         $chat = Chat::randomOrCreate();
+
         $file = rand(0, 1)
             ? File::factory()->create([
                 'disk' => 'appeals',
@@ -27,9 +28,12 @@ class ChatMessagesFactory extends Factory
             ])
             : null;
 
+        $subscribers = $chat->subscribers;
+
         return [
             'message' => $this->faker->text(250),
             'readed' => $this->faker->boolean(),
+            'sender_id' => $subscribers->random()->user_id,
             'chat_id' => $chat->id,
             'context' => null,
             'file_id' => $file?->id,

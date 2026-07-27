@@ -22,6 +22,7 @@ Route::name('upload.')->prefix('/upload')->group(function () {
 
 Route::name('files.')->prefix('/files')->group(function () {
     Route::get('/{file}/download',      [App\Http\Controllers\Base\FileController::class, 'download'])->name('download');
+    Route::get('/{file}/show',          [App\Http\Controllers\Base\FileController::class, 'show'])->name('show');
     Route::get('/{file}/errors',        [App\Http\Controllers\Base\FileErrorController::class, 'index'])->name('errors');
 });
 

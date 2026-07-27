@@ -17,6 +17,7 @@ abstract class FileModel extends BaseModel
     public static string|null $channel = null;
 
     public static bool $deleteInStorage = true;
+    public static bool $createInStorage = true;
 
     /**
      * Perform any actions required after the model boots.
@@ -26,7 +27,7 @@ abstract class FileModel extends BaseModel
     public static function booted()
     {
         self::creating(function($model){
-            if($model->file_id === null){
+            if($model::$createInStorage && $model->file_id === null){
                 $model->file_id = File::factory()->create([
                     'disk' => self::$storage_file_disk,
                     'path' => self::$storage_file_path,
@@ -78,7 +79,7 @@ abstract class FileModel extends BaseModel
      */
     public function save(array $options = [])
     {
-        $parent_flag = $this->file->save();
+        $parent_flag = $this->file?->save();
         $child_flag = parent::save($options);
 
         return $parent_flag and $child_flag;

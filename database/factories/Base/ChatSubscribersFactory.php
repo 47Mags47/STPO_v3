@@ -19,9 +19,11 @@ class ChatSubscribersFactory extends Factory
      */
     public function definition(): array
     {
+        $chat = Chat::randomOrCreate();
+
         return [
-            'chat_id' => Chat::randomOrCreate()->id,
-            'user_id' => User::randomOrCreate()->id,
+            'chat_id' => $chat->id,
+            'user_id' => User::whereNotIn('id', $chat->subscribers->pluck('user_id'))->get()->random()->id,
         ];
     }
 }

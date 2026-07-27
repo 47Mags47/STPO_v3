@@ -64,15 +64,15 @@ export default {
             <slot name="header" />
         </div>
 
-        <div class="relative custom-scrollbar w-full h-fit">
-            <div class="size-full bg-white flex flex-col items-center px-4! pt-6! pb-2! gap-2">
+        <div class="relative w-full h-fit">
+            <div class="size-full bg-white flex flex-col items-center px-4! pt-8! pb-4! gap-2">
                 <h1 class="text-black font-bold! text-2xl!"> Успех! </h1>
 
                 <span class="text-black">{{ message }}</span>
 
                 <button
                     class="border-1 rounded-md w-[80px] h-[36px] cursor-pointer hover:bg-gray-50"
-                    :class="'border-' + mainColor"
+                    :class="`border-${mainColor}`"
                     @click="closeClickhandler"
                 >
                     <span :class="'text-' + mainColor">закрыть</span>
@@ -104,25 +104,5 @@ export default {
             display: none
             opacity: 0
             transform: translateX(10px)
-
-.custom-scrollbar
-    overflow-y: auto
-    &::-webkit-scrollbar
-        width: 4px
-
-
-    &::-webkit-scrollbar-track
-        background: #3d9bd16c
-        border-radius: 10px
-
-
-    &::-webkit-scrollbar-thumb
-        background: #3d9ad1
-        border-radius: 10px
-
-        &:hover
-            background: #6cbbe9
-
-
 
 </style>

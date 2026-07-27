@@ -18,6 +18,7 @@ class AppealResource extends JsonResource
             'id' => $this->id,
             'created' => $this->created_at->format('d.m.Y'),
             'comment' => $this->comment,
+            'chat_id' => $this->chat_id,
             'them' => [
                 'id' => $this->them->id,
                 'name' => $this->them->name,

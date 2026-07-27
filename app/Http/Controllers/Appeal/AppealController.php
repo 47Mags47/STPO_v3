@@ -10,6 +10,7 @@ use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
+use App\Models\Base\Chat;
 use App\Models\Base\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ class AppealController extends Controller
             'status_id' => Status::byCode('new')->id,
             'sender_id' => user()->id,
             'them_id'   => $request->input('theme'),
+            'chat_id'   => Chat::create()->id,
             'comment'   => $request->input('comment')
         ])->toArray());
 
