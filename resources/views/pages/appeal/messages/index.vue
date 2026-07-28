@@ -10,6 +10,13 @@ export default {
         Ico,
         BlueButton,
     },
+
+    data() {
+        return {
+            status: {},
+        }
+    },
+
     methods: {
         backClickHandler() {
             router.visit(route("appeal.appeals.index"))
@@ -19,7 +26,7 @@ export default {
         appeal: () => usePage().props.appeal.data,
         messages: () => usePage().props.messages.data,
         statusColor() {
-            const code = this.appeal.status.code
+            const code = this.status.code
 
             if (code === 'new') return 'text-blue-700'
             if (code === 'closed') return 'text-green-700'
@@ -29,6 +36,15 @@ export default {
 
             return ''
         }
+    },
+
+    mounted() {
+        this.status = this.appeal.status
+
+        Echo.channel('statuses')
+            .listen('.status.changed', (data) => {
+               this.status = data.status
+            });
     }
 }
 </script>
@@ -57,7 +73,7 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Статус: </span>
-                <span :class="statusColor"> {{ appeal.status.name }} </span>
+                <span :class="statusColor"> {{ status?.name }} </span>
             </div>
         </div>
 
