@@ -92,8 +92,7 @@ class AppealController extends Controller
     public function reaccept(Appeal $appeal)
     {
         $appeal->update([
-            'status_id' => 4,
-            'worker_id' => user()->id,
+            'status_id' => 4
         ]);
 
         ChatSubscribers::create([
