@@ -171,8 +171,8 @@ export default {
                                 ? 'grab'
                                 : 'default'
                         }"
-                        class="max-w-[95vw]
-                        max-h-[95vh]
+                        class="
+                        max-h-[80vh]!
                         cursor-pointer
                         hover:b
                         object-contain
@@ -182,12 +182,28 @@ export default {
                         [-webkit-user-drag:none]"
                     />
 
-                    <span
-                        class="absolute bottom-15 text-white text-xl! cursor-pointer hover:text-blue-300"
-                        @click="closeImagePreview"
-                    >
-                        нажмит для закрытия
-                    </span>
+                    <div class="absolute bottom-7 flex justify-around w-full">
+                        <span
+                            class="
+                                text-white text-2xl!
+                                cursor-pointer hover:text-blue-300
+                                [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]"
+                            @click="closeImagePreview"
+                        >
+                            нажмите для закрытия
+                        </span>
+
+                        <a
+                            :href="previewImageUrl"
+                            :download="message.file.name"
+                            class="text-white! text-2xl!
+                                transition-none!
+                                cursor-pointer hover:text-blue-300!
+                                [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]"
+                        >
+                            скачать
+                        </a>
+                    </div>
                 </div>
             </Transition>
         </Teleport>
