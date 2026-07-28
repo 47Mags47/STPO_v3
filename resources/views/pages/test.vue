@@ -8,6 +8,6 @@ export default {
 
 </template>
 
-<style lang="sass">z
+<style lang="sass">
 
 </style>
