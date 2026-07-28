@@ -47,7 +47,8 @@ Route::middleware('guest')->group(function () {
 ##################################################
 Route::middleware('auth')->group(function () {
     // SYSTEM
-    Route::post('/notification-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
+    Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
+    Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
 
     // AUTH
     Route::name('auth.')->group(function () {

@@ -7,6 +7,7 @@ use App\Models\Base\Notification;
 use App\Models\Base\NotificationType;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Base\Chat;
 
 /**
  * @extends Factory<Notification>
@@ -43,16 +44,23 @@ class NotificationFactory extends Factory
             ]);
         }
 
-        // if ($type->code === 'new_message') {
-        //     $message = Message::factory()->create();
-        //     return array_merge($attributes, [
-        //         'message'   => $message->message,
-        //         'context'       => [
-        //             'message_id'  => $message->id,
-        //             'appeal_id'   => $message->appeal_id
-        //         ]
-        //     ]);
-        // }
+        if ($type->code === 'new_message') {
+            $chat = Chat::whereHas('messages')
+                ->whereHas('appeal')
+                ->inRandomOrder()
+                ->first();
+            $message = $chat->messages()->get()->random();
+            $appeal = $chat->appeal()->get()->random();
+
+            return array_merge($attributes, [
+                'message'   => $message->message,
+                'context'       => [
+                    'chat_id'     => $message->chat_id,
+                    'message_id'  => $message->id,
+                    'appeal_id'   => $appeal->appeal_id
+                ]
+            ]);
+        }
 
         return $attributes;
     }

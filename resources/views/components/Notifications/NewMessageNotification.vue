@@ -16,6 +16,10 @@ export default {
         appealId: {
             type: Number,
             required: true
+        },
+        closePopup: {
+            type: Function,
+            default: () => {}
         }
     },
     data() {
@@ -27,6 +31,7 @@ export default {
     methods: {
         goToNewMessage() {
             router.get(route('appeal.messages.index', { appeal: this.appealId }))
+            this.closePopup()
         }
     }
 };

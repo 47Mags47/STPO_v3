@@ -22,7 +22,6 @@ export default {
     },
     methods: {
         dropFilesHandler(e){
-            console.log(2, e)
             this.isActive = false
 
             let files = e.dataTransfer.files

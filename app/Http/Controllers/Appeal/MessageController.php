@@ -8,6 +8,8 @@ use App\Http\Resources\Base\ChatMessagesResource;
 use App\Models\Appeal\Appeal;
 use App\Models\Base\ChatMessages;
 use App\Models\Base\File;
+use App\Models\Base\Notification;
+use App\Events\Base\SendNotificationEvent;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -56,8 +58,36 @@ class MessageController extends Controller
 
         broadcast(new MessageSent(
             $message,
-            $appeal->id
+            $appeal->id,
         ))->toOthers();
+
+
+        $createNotification = true;
+        if ($createNotification) {
+
+            $recipients = $message->chat->subscribers
+                ->pluck('user_id')
+                ->reject(fn ($id) => $id === user()->id)
+                ->values()
+                ->toArray();
+
+            foreach($recipients as $resipiend_id) {
+                $notification = Notification::create([
+                    'recipient_id' => $resipiend_id,
+                    'message' => $message->message,
+                    'sender_id' => $message->sender_id,
+                    'type_id' => 2,
+                    'context' => [
+                        'message_id' => $message->id,
+                        'chat_id' => $message->chat_id,
+                        'appeal_id' => $appeal->id
+                    ]
+                ]);
+
+                broadcast(new SendNotificationEvent($notification))->toOthers();
+            }
+        }
+
 
         return redirect()->route('appeal.messages.index', ['appeal' => $appeal]);
     }

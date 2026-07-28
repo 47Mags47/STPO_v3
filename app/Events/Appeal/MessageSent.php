@@ -6,13 +6,12 @@ use App\Models\Base\ChatMessages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use App\Http\Resources\Base\ChatMessagesResource;
 
 class MessageSent implements ShouldBroadcastNow
 {
     public function __construct(
         public ChatMessages $message,
-        public int $appealId
+        public int $appealId,
     ) {}
 
     public function broadcastOn(): Channel

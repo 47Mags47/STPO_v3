@@ -20,6 +20,7 @@ class Notification extends BaseModel
         'recipient_id',
         'type_id',
         'message',
+        'sender_id',
         'is_readed',
         'context',
     ];

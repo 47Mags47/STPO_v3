@@ -5,71 +5,83 @@ import { Ico } from '@components';
 import axios from 'axios';
 
 export default {
-    // components: {
-    //     Ico,
-    //     NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
-    //     DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
-    // },
-    // data() {
-    //     return {
-    //         isOpen: false,
-    //         isLoaded: false,
-    //         notifications: [],
-    //         channel: null
-    //     }
-    // },
-    // computed: {
-    //     currentUser: () => usePage().props.current_user?.data,
+    components: {
+        Ico,
+        NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
+        DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
+    },
+    data() {
+        return {
+            isOpen: false,
+            isLoaded: false,
+            notifications: [],
+            channel: null
+        }
+    },
+    computed: {
+        currentUser: () => usePage().props.current_user?.data,
 
-    //     numberNots() {
-    //         return this.notifications.filter(notification => !notification.is_readed).length
-    //     },
-    // },
-    // methods: {
-    //     togleOpen() {
-    //         this.isOpen = !this.isOpen
-    //     },
+        numberNots() {
+            return this.notifications.filter(notification => !notification.is_readed).length
+        },
+    },
+    methods: {
+        togleOpen() {
+            this.isOpen = !this.isOpen
+        },
 
-    //     outsideClickHandler() {
-    //         this.isOpen = false
-    //     },
-    // },
+        closePopup() {
+            this.isOpen = false
+        },
 
-    // watch: {
-    //     isOpen(newVal){
-    //         //Прокрутка
-    //         if(newVal)
-    //             this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
+        outsideClickHandler() {
+            this.isOpen = false
+        },
+    },
 
-    //         // Помечаем оповещения прочитанными
-    //         if(newVal && this.numberNots > 0)
-    //             axios.post(route('notifications-readAll'))
+    watch: {
+        isOpen(newVal){
+            //Прокрутка
+            if(newVal)
+                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
 
-    //         // Обновляем список непрочитаных
-    //         if(!newVal && this.numberNots > 0)
-    //             this.notifications = this.notifications.map((notification) => ({...notification, is_readed: true}))
-    //     }
-    // },
+            // Помечаем оповещения прочитанными
+            if(newVal && this.numberNots > 0)
+                axios.post(route('notifications-readAll'))
 
-    // mounted(){
-    //     this.channel = `user.${this.currentUser.id}.notifications`
-    //     this.notifications = this.currentUser.notifications
+            // Обновляем список непрочитаных
+            if(!newVal && this.numberNots > 0)
+                this.notifications = this.notifications.map((notification) => ({...notification, is_readed: true}))
+        }
+    },
 
-    //     Echo.private(this.channel)
-    //         .listen('.new-notification', (data) => {
-    //             this.notifications.push(data.notification)
-    //         });
-    // },
+    mounted(){
+        this.channel = `user.${this.currentUser.id}.notifications`
+        this.notifications = this.currentUser.notifications
 
-    // unmounted(){
-    //     Echo.leave(this.channel)
-    // }
+        Echo.private(this.channel)
+            .listen('.new-notification', (data) => {
+                this.notifications.push(data.notification)
+
+                if (
+                    route().current('appeal.messages.index') &&
+                    data.notification.type.code === 'new_message' &&
+                    Number(route().params.appeal) === data.notification.context.appeal_id
+                ) {
+                    axios.post(route('notification-read'), { id: data.notification.id })
+                    data.notification.is_readed = true
+                }
+            });
+    },
+
+    unmounted(){
+        Echo.leave(this.channel)
+    }
 }
 </script>
 
 <template>
-    nots
-    <!-- <div class="notifications-container" v-outsideClick="outsideClickHandler">
+    <div class="notifications-container" v-outsideClick="outsideClickHandler">
 
         <div class="bell-container" @click="togleOpen">
             <Ico type="bell" />
@@ -93,6 +105,7 @@ export default {
                         :sender="notification.sender"
                         :message="notification.message"
                         :appeal-id="notification.context.appeal_id"
+                        :close-popup="closePopup"
                         :isReaded="notification.is_readed"
                         :createdAt="notification.created_at"
                     />
@@ -104,7 +117,7 @@ export default {
                 <span> уведомлений нет </span>
             </div>
         </div>
-    </div> -->
+    </div>
 </template>
 
 <style lang="sass" scoped>

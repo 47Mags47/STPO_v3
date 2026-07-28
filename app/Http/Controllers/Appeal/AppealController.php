@@ -11,6 +11,7 @@ use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
 use App\Models\Base\Chat;
+use App\Models\Base\ChatSubscribers;
 use App\Models\Base\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -37,13 +38,20 @@ class AppealController extends Controller
 
     public function store(AppealStoreRequest $request)
     {
+        $chat_id = Chat::create()->id;
+
         Appeal::create(collect($request->validated())->merge([
             'status_id' => Status::byCode('new')->id,
             'sender_id' => user()->id,
             'them_id'   => $request->input('theme'),
-            'chat_id'   => Chat::create()->id,
+            'chat_id'   => $chat_id,
             'comment'   => $request->input('comment')
         ])->toArray());
+
+        ChatSubscribers::create([
+            'chat_id'   => $chat_id,
+            'user_id'   => user()->id
+        ]);
 
         return redirect()->route('appeal.appeals.index')->with('success', 'Запись успешно создана');
     }
@@ -53,6 +61,11 @@ class AppealController extends Controller
         $appeal->update([
             'status_id' => 2,
             'worker_id' => user()->id,
+        ]);
+
+        ChatSubscribers::create([
+            'chat_id'   => $appeal->chat_id,
+            'user_id'   => user()->id
         ]);
 
         return back();
@@ -72,6 +85,11 @@ class AppealController extends Controller
         $appeal->update([
             'status_id' => 4,
             'worker_id' => user()->id,
+        ]);
+
+        ChatSubscribers::create([
+            'chat_id'   => $appeal->chat_id,
+            'user_id'   => user()->id
         ]);
 
         return back();
