@@ -24,7 +24,7 @@ export default {
             if (code === 'new') return 'text-blue-700'
             if (code === 'closed') return 'text-green-700'
             if (code === 'in_work') return 'text-yellow-700'
-            if (code === 'in_revision') return 'text-red-700'
+            if (code === 'reaccepted') return 'text-red-700'
             if (code === 'pending') return 'text-indigo-700'
 
             return ''
