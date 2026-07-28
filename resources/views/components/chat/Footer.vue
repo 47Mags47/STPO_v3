@@ -36,25 +36,16 @@ export default {
         },
 
         onDrop(files) {
-            console.log(files)
             this.prepareFile(files)
         },
-        handlePaste(e) {
-            console.log(e)
-            const items = e.clipboardData?.items
+        // HACK если нужно много файлов доработать
+        handlePaste(event) {
+            const items = event.clipboardData?.items
             if (!items) return
 
-            const file = []
-            for (const item of items) {
-                if (item.kind !== 'file') continue
-                const file = item.getAsFile()
+            const file = items[0].getAsFile()
 
-                if (!file) continue
-                files.push(file)
-            }
-
-            if (files.length) this.prepareFile(file)
-
+            this.prepareFile([file])
         },
         uploadFileHandler(){
             this.$refs.fileInput.click()
@@ -62,6 +53,7 @@ export default {
         onFileChange(event) {
             this.prepareFile(event.target.files)
         },
+        // HACK если нужно много файлов доработать
         prepareFile(files) {
             const file = files[0]
 
@@ -79,7 +71,6 @@ export default {
             }
 
             this.selectedFile = preparedFile
-
             this.$refs.fileInput.value = null
         },
     },
