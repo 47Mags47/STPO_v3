@@ -68,9 +68,9 @@ class AppealController extends Controller
             'worker_id' => user()->id,
         ]);
 
-        ChatSubscribers::create([
-            'chat_id'   => $appeal->chat_id,
-            'user_id'   => user()->id
+        ChatSubscribers::updateOrCreate([
+            'chat_id' => $appeal->chat_id,
+            'user_id' => user()->id
         ]);
 
         broadcast(new StatusChanged($appeal))->toOthers();
@@ -95,9 +95,9 @@ class AppealController extends Controller
             'status_id' => 4
         ]);
 
-        ChatSubscribers::create([
-            'chat_id'   => $appeal->chat_id,
-            'user_id'   => user()->id
+        ChatSubscribers::updateOrCreate([
+            'chat_id' => $appeal->chat_id,
+            'user_id' => user()->id
         ]);
 
         broadcast(new StatusChanged($appeal))->toOthers();
