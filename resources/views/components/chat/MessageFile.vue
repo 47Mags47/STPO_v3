@@ -18,19 +18,89 @@ export default {
             loadedImages: {},
             errorImages: {},
             previewImageUrl: null,
+
             imagePreviewScale: 1,
+            translateImgPrevX: 0,
+            translateImgPrevY: 0,
+
+             isDraggingImg: false,
+            dragStartX: 0,
+            dragStartY: 0,
+            dragStartTranslateX: 0,
+            dragStartTranslateY: 0,
         }
     },
 
     methods: {
         openImagePreview(file) {
             this.previewImageUrl = this.message.file_url
+
+            this.imagePreviewScale = 1
+            this.translateImgPrevX = 0
+            this.translateImgPrevY = 0
         },
         closeImagePreview() {
             this.previewImageUrl = null
         },
         onImageLoad(url) {
             this.loadedImages[url] = true
+        },
+        zoomImage(event) {
+            const img = this.$refs.imgPreviewRef
+            const rect = img.getBoundingClientRect()
+
+            const mouseX = event.clientX - (rect.left + rect.width / 2)
+            const mouseY = event.clientY - (rect.top + rect.height / 2)
+
+            const oldScale = this.imagePreviewScale
+            const factor = event.deltaY < 0 ? 1.1 : 0.9
+
+            let newScale = oldScale * factor
+
+            newScale = Math.min(
+                Math.max(newScale, 1),
+                5
+            )
+
+            // если вернулись к исходному размеру — центрируем
+            if (newScale === 1) {
+                this.imagePreviewScale = 1
+                this.translateImgPrevX = 0
+                this.translateImgPrevY = 0
+                return
+            }
+
+            this.translateImgPrevX += mouseX * (1 - newScale / oldScale)
+            this.translateImgPrevY += mouseY * (1 - newScale / oldScale)
+
+            this.imagePreviewScale = newScale
+        },
+
+        startDragImage(event) {
+            if (this.imagePreviewScale <= 1) return
+
+            this.isDraggingImg = true
+
+            this.dragStartX = event.clientX
+            this.dragStartY = event.clientY
+
+            this.dragStartTranslateX = this.translateImgPrevX
+            this.dragStartTranslateY = this.translateImgPrevY
+        },
+        dragImage(event) {
+            if (!this.isDraggingImg) return
+
+            const deltaX = event.clientX - this.dragStartX
+            const deltaY = event.clientY - this.dragStartY
+
+            this.translateImgPrevX =
+                this.dragStartTranslateX + deltaX
+
+            this.translateImgPrevY =
+                this.dragStartTranslateY + deltaY
+        },
+        stopDragImage() {
+            this.isDraggingImg = false
         },
     }
 }
@@ -81,12 +151,26 @@ export default {
                     bg-black/60
                     backdrop-blur-md
                     flex flex-col items-center justify-center
-                    p-24!"
+                    px-24! pt-24! pb-8! gap-5"
                 >
                     <img
                         :src="previewImageUrl"
-                        @click="closeImagePreview"
+                        ref="imgPreviewRef"
+                        @mousedown="startDragImage"
+                        @mousemove="dragImage"
+                        @mouseup="stopDragImage"
+                        @mouseleave="stopDragImage"
+                        draggable="false"
                         @wheel.prevent="zoomImage"
+                        :style="{
+                            transform: `
+                                translate(${translateImgPrevX}px, ${translateImgPrevY}px)
+                                scale(${imagePreviewScale})
+                            `,
+                            cursor: imagePreviewScale > 1
+                                ? 'grab'
+                                : 'default'
+                        }"
                         class="max-w-[95vw]
                         max-h-[95vh]
                         cursor-pointer
@@ -94,11 +178,16 @@ export default {
                         object-contain
                         rounded-2xl
                         shadow-xl
-                        select-none
-                        transition-transform duration-150"
+                        select-none!
+                        [-webkit-user-drag:none]"
                     />
 
-                    <span class="text-white text-xl!">нажмите на изображение для закрытия</span>
+                    <span
+                        class="absolute bottom-15 text-white text-xl! cursor-pointer hover:text-blue-300"
+                        @click="closeImagePreview"
+                    >
+                        нажмит для закрытия
+                    </span>
                 </div>
             </Transition>
         </Teleport>
