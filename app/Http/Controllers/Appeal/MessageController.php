@@ -37,7 +37,7 @@ class MessageController extends Controller
                 'path' => ChatMessages::$storage_file_path . '/' . $appeal->chat_id,
                 'origin_name' => $upload_file->getClientOriginalName(),
 
-                'message'       => $request->message,
+                'message'       => 'Вам прислали файл: ' . $upload_file->getClientOriginalName(),
                 'context'       => [
                     'is_image'  => str_starts_with($upload_file->getMimeType(), 'image/'),
                 ],

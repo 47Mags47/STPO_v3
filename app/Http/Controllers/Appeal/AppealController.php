@@ -13,8 +13,11 @@ use App\Models\Appeal\ThemGroup;
 use App\Models\Base\Chat;
 use App\Models\Base\ChatSubscribers;
 use App\Models\Base\User;
+use App\Events\Appeal\AppealCreated;
+use App\Events\Appeal\StatusChanged;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+
 
 class AppealController extends Controller
 {
@@ -40,7 +43,7 @@ class AppealController extends Controller
     {
         $chat_id = Chat::create()->id;
 
-        Appeal::create(collect($request->validated())->merge([
+        $appeal = Appeal::create(collect($request->validated())->merge([
             'status_id' => Status::byCode('new')->id,
             'sender_id' => user()->id,
             'them_id'   => $request->input('theme'),
@@ -52,6 +55,8 @@ class AppealController extends Controller
             'chat_id'   => $chat_id,
             'user_id'   => user()->id
         ]);
+
+        broadcast(new AppealCreated($appeal))->toOthers();
 
         return redirect()->route('appeal.appeals.index')->with('success', 'Запись успешно создана');
     }
@@ -68,6 +73,8 @@ class AppealController extends Controller
             'user_id'   => user()->id
         ]);
 
+        broadcast(new StatusChanged($appeal))->toOthers();
+
         return back();
     }
 
@@ -76,6 +83,8 @@ class AppealController extends Controller
         $appeal->update([
             'status_id' => 3,
         ]);
+
+        broadcast(new StatusChanged($appeal))->toOthers();
 
         return back();
     }
@@ -91,6 +100,8 @@ class AppealController extends Controller
             'chat_id'   => $appeal->chat_id,
             'user_id'   => user()->id
         ]);
+
+        broadcast(new StatusChanged($appeal))->toOthers();
 
         return back();
     }

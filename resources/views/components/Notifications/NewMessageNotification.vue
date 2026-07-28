@@ -14,8 +14,9 @@ export default {
     },
     props: {
         appealId: {
+            // HACK добавить required, когда допишутся сидеры
             type: Number,
-            required: true
+            default: null
         },
         closePopup: {
             type: Function,

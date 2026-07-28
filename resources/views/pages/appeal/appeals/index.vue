@@ -19,17 +19,18 @@ export default {
         return {
             BlueButton: shallowRef(BlueButton),
             RedButton: shallowRef(RedButton),
-            router, hasPermission
+            appealList: [],
+            router, hasPermission,
         }
     },
 
     methods: {
         getAppealActions(row) {
-            const status = row.status.code;
+            const status   = row.status.code;
 
             const isSender = this.current_user.id === row.sender.id;
             const isWorker = this.current_user.id === row.worker?.id;
-            const canWork = hasPermission('appeal_work');
+            const canWork  = hasPermission('appeal_work');
 
             const canAccept   = status === 'new' && canWork && !isSender
             const canGo       = isSender || isWorker
@@ -60,13 +61,37 @@ export default {
             };
         }
     },
+
+    watch: {
+        appeals(newData) {
+            this.appealList = this.appeals.data
+        }
+    },
+
+    mounted() {
+        this.appealList = this.appeals.data
+
+        Echo.channel('appeals')
+            .listen('.appeal.created', (data) => {
+                this.appealList.unshift(data)
+            });
+
+        Echo.channel('statuses')
+            .listen('.status.changed', (data) => {
+               const index = this.appealList.findIndex(appeal => appeal.id === data.id)
+
+                if (index !== -1) {
+                    this.appealList[index].status = data.status
+                }
+            });
+    }
 };
 </script>
 
 <template>
     <ResourceTable
         :hasCreateButton="true"
-        :data="appeals.data"
+        :data="appealList"
         :meta="appeals.meta"
         :filters="[
             {
