@@ -36,7 +36,7 @@ export default {
         :class="isMine ? 'items-end bg-sky-100' : 'items-start bg-gray-100'">
 
 
-            <MessageFile v-if="message.file" :message="message"/>
+            <MessageFile :is-mine="isMine" v-if="message.file" :message="message"/>
             <MessageText v-else :message="message.message"/>
 
             <!-- время -->

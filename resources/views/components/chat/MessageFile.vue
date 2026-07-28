@@ -10,6 +10,10 @@ export default {
         message: {
             type: Object,
             default: () => { }
+        },
+        isMine: {
+            type: Boolean,
+            required: true
         }
     },
 
@@ -107,7 +111,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="size-full">
         <!-- спиннер если картинки не загружаются-->
         <div v-if="message.context.is_image && !loadedImages[message.file_url]"
             class="flex gap-2 items-center h-[312px] w-[256px] overflow-hidden p-12!"
@@ -126,16 +130,23 @@ export default {
         <a v-else
             :href="message.file_url"
             :download="message.file.name"
-            class="flex flex-col group h-fit! gap-2 w-fit mb-1!"
+            class="flex flex-col group h-fit! gap-2 w-full mb-1!"
         >
-            <div class="flex justify-end h-full gap-2">
-                <div class="flex flex-col justify-end items-end h-full">
+            <div class="flex justify-end h-full w-full gap-2">
+                <div
+                    class="flex flex-col justify-end h-full w-full truncate"
+                    :class="isMine ? 'order-1 items-end' : 'order-2 items-start'"
+                >
                     <span>
                         {{ message.file.name }}
                     </span>
                 </div>
-                <Ico type="file"
-                    class="text-gray-600 h-[48px]! w-fit! group-hover:text-gray-400 transition duration-300" />
+
+                <Ico
+                    type="file"
+                    class="text-gray-600 h-[48px]! w-fit! shrink-0"
+                    :class="isMine ? 'order-2' : 'order-1'"
+                />
             </div>
         </a>
 
