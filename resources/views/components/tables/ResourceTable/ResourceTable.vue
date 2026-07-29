@@ -436,8 +436,6 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.test
-    height: 25px
 .resource-table
     .container-table-filters
         width: 100%

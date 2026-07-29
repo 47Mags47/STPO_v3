@@ -42,7 +42,7 @@ table
             border-top: none
         th
             position: relative
-            background: var(--table-background-color)
+            background: var(--table-header-background-color)
             &:first-child
                 border-right: none
             &:last-child
