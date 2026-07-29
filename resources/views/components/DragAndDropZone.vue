@@ -55,9 +55,9 @@ export default {
     justify-content: center
     align-items: center
 
-    border: 1px dashed $blue-button-background
+    border: 1px dashed var(--button-background-color)
 
-    color: $blue-button-background
+    color: var(--button-background-color)
 
     opacity: .5
     &.isActive

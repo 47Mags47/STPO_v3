@@ -503,7 +503,7 @@ export default {
                 height: 35px
                 padding: 8px
                 border-radius: 8px
-                background: $blue-button-background
+                background: var(--button-background-color)
                 color: white
                 font-weight: bold
                 align-self: flex-end
@@ -517,7 +517,7 @@ export default {
                     visibility: visible
 
                 &:hover
-                    background: $blue-button-backgroun-hover
+                    background: var(--button-background-color-hover)
                     cursor: pointer
 
             :deep(.filter-showbtn)
@@ -527,14 +527,14 @@ export default {
                 height: 35px
                 padding: 8px
                 border-radius: 8px
-                background: $blue-button-background
+                background: var(--button-background-color)
                 color: white
                 align-self: flex-end
                 transition: .2s ease
                 font-weight: bold
 
                 &:hover
-                    background: $blue-button-backgroun-hover
+                    background: var(--button-background-color-hover)
                     cursor: pointer
 
                 &.active

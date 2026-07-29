@@ -126,8 +126,8 @@ export default {
         justify-content: space-between
         gap: 4px
         padding: 0 6px
-        border: $input-border
-        border-radius: $input-border-radius
+        border: var(--input-border)
+        border-radius: var(--input-border-radius)
         background: white
         height: 30px
         line-height: 30px

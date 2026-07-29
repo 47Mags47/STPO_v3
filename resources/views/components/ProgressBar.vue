@@ -55,7 +55,7 @@ export default {
 
         .progress
             height: 100%
-            background: $input-border-color
+            background: var(--input-border-color)
             border-radius: 5px
             &.finish
                 background: #29ba1c

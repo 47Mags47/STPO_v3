@@ -84,7 +84,7 @@ export default {
             width: 0
             height: calc(100vh - 60px)
 
-            background: $meny-background
+            background: var(--menu-background-color)
             padding: 5px 0
 
             overflow: hidden
@@ -97,9 +97,9 @@ export default {
             .list-item-container
                 font-size: 1.2rem
                 &:hover
-                    background: $meny-background-hover
+                    background: var(--menu-background-color-hover)
             .list-group-container .list-group-label
                 font-size: 1.2rem
                 &:hover
-                    background: $meny-background-hover
+                    background: var(--menu-background-color-hover)
 </style>

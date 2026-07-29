@@ -5,13 +5,15 @@ import Ico from './../components/Ico.vue';
 import Menu from './Menu.vue';
 import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
+import Theme from './Theme.vue';
 
 export default {
     components: {
         Ico,
         Menu,
         Notifications,
-        AlertsPopup
+        AlertsPopup,
+        Theme
     },
 
     data() {
@@ -46,6 +48,7 @@ export default {
             </div>
         </div>
 
+        <Theme/>
         <Notifications v-if="current_user"/>
         <Menu />
         <AlertsPopup />
@@ -55,7 +58,7 @@ export default {
 <style lang="sass" scoped>
 .header-container
     position: relative
-    height: $meny-height
+    height: 60px
     padding: 0 20px
 
     display: flex
@@ -63,8 +66,8 @@ export default {
     justify-content: space-between
     gap: 15px
 
-    color: $meny-color
-    background: $meny-background
+    color: white
+    background: var(--menu-background-color)
 
     z-index: 1000
 

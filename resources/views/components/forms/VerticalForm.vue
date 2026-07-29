@@ -29,7 +29,7 @@ export default {
     overflow: auto
 
     display:  grid
-    @include scroll
+    @include scroll()
     :deep()
         form
             margin: auto
@@ -37,7 +37,7 @@ export default {
             width: 550px
             padding: 25px
 
-            border-radius: $default-border-radius
+            border-radius: var(--border-radius)
             box-shadow: 2px 2px 8px 4px #eee
             .form-body-container
                 display: flex

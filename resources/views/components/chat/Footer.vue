@@ -107,7 +107,7 @@ export default {
 
         <!-- кнопка загрузки файлов -->
         <button class="h-full w-fit p-4! rounded-xl shrink-0
-        text-white bg-(--blue-button-background)
+        text-white bg-(--button-background)
         hover:text-gray-400  active:text-gray-200 cursor-pointer"
         @click="uploadFileHandler">
             <!-- иконка загрузки файлов -->
@@ -116,7 +116,7 @@ export default {
 
         <!-- кнопка отправки -->
         <button class="h-full w-fit p-4! rounded-xl shrink-0
-        text-white bg-(--blue-button-background)
+        text-white bg-(--button-background)
         hover:text-gray-400  active:text-gray-200 cursor-pointer"
         @click="sendMessageHandler">
             <Ico type="paper-plane" class="p-0.5!"/>

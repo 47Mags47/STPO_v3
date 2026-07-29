@@ -140,7 +140,7 @@ export default {
         .file-style-ico
             grid-area: A
             &.file-style-upload
-                color: $blue-button-background
+                color: var(--button-background-color)
             &.file-style-success
                 color: green
             &.file-style-error
@@ -158,6 +158,6 @@ export default {
             &.delete-file-button
                 color: red
             &.refresh-file-button
-                color: $blue-button-background
+                color: var(--button-background-color)
 
 </style>

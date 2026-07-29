@@ -56,7 +56,7 @@ export default {
         gap: 5px
 
     &[data-orientation="horizontal"]
-        height: $input-height
+        height: var(--input-height)
         display: flex
         justify-content: flex-end
         align-items: center
@@ -69,7 +69,7 @@ export default {
         gap: 5px
 
     &[data-orientation="horizontal-reverse"]
-        height: $input-height
+        height: var(--input-height)
         display: flex
         justify-content: flex-end
         align-items: center

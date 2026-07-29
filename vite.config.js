@@ -18,7 +18,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/main.css',
-                'resources/sass/app.sass',
+                'resources/sass2/app.sass',
                 'resources/js/app.js'
             ],
             refresh: false,
@@ -30,8 +30,7 @@ export default defineConfig({
         preprocessorOptions: {
             sass: {
                 additionalData: `
-                    @use '/resources/sass/abstracts/variables' as *;\n
-                    @use '/resources/sass/abstracts/mixins' as *;\n
+                    @use '/resources/sass2/abstracts' as *
                 `,
             },
         },

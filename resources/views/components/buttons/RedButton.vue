@@ -23,8 +23,8 @@ export default {
 
 <style lang="sass" scoped>
 .button.red-button
-    background: $red-button-background
+    background: var(--danger-button-background-color)
     &:hover, &.active
-        background: $red-button-backgroun-hover
-        box-shadow: $red-button-shadow
+        background: var(--danger-button-background-color-hover)
+        box-shadow: var(--danger-button-shadow)
 </style>

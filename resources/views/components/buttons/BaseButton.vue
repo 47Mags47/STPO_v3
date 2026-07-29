@@ -62,18 +62,18 @@ export default {
     gap: 5px
     width: 100%
     height: 100%
-    min-height: $input-height
+    min-height: var(--input-height)
 
     border: none
     background: none
 
     padding: 5px
 
-    border-radius: $default-border-radius
+    border-radius: $button-border-radius
 
     font-size: 1rem
     font-weight: 600
-    color: $button-color
+    color: white
 
     cursor: pointer
 

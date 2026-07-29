@@ -262,11 +262,11 @@ export default {
 
         z-index: 9
 
-        background: $input-background
+        background: var(--input-background-color)
 
 
-        border-radius: 0 0 $input-border-radius $input-border-radius
-        border: $input-border
+        border-radius: 0 0 var(--input-border-radius) var(--input-border-radius)
+        border: var(--input-border-color)
 
         opacity: 0
 
@@ -284,7 +284,7 @@ export default {
 
         .search-input-container
             padding: 10px
-            border-bottom: $input-border
+            border-bottom: var(--input-border)
         ul
             max-height: 250px
             overflow: auto
@@ -296,11 +296,11 @@ export default {
                 transition: .2s
 
                 &:hover
-                    background: $option-background-hover
+                    background: var(--option-background-color-hover)
                 &.active
-                    background: $option-background-hover
+                    background: var(--option-background-color-hover)
                 &.selected
-                    background: $option-background-selected
+                    background: var(--option-background-color-selected)
 
     &:hover .input-container .ico-container
         color: #000

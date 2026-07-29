@@ -94,10 +94,10 @@ export default {
         @include input()
 
         &:hover
-            background-color: $blue-button-background
-            color: $blue-button-color
+            background-color: $button-background
+            color: white
             .ico-chevron
-                color: $blue-button-color
+                color: white
 
         .ico-chevron
             position: absolute

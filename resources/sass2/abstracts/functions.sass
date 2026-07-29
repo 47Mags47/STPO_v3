@@ -1,0 +1,8 @@
+@use "sass:map"
+
+@function get-theme($key)
+    @if map-has-key($theme, $key)
+        @return map-get($theme, $key)
+
+    @error "Ключ '#{$key}' темы не найден"
+

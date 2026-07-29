@@ -187,7 +187,7 @@ export default {
         width: 350px
         height: 0
 
-        background: $meny-background
+        background: var(--menu-background-color)
 
         overflow: hidden
 

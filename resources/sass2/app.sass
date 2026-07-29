@@ -1,0 +1,16 @@
+@use "abstracts"
+@use "base"
+@use "components"
+@use "layouts"
+@use "pages"
+@use "themes"
+
+:root[data-theme="light"]
+    @include abstracts.create-theme(themes.$theme-light)
+
+
+:root[data-theme="dark"]
+    @include abstracts.create-theme(themes.$theme-dark)
+
+div
+    transition: background .5s ease

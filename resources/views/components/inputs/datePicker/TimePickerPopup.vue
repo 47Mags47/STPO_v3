@@ -116,9 +116,9 @@ function scrollToSelected() {
   font-weight: 500
   transition: 0.15s background, 0.15s color
   &:hover
-    background: var(--blue-button-background-color)
+    background: var(--button-background-color)
     color: white
   &.selected
-    background: var(--blue-button-background-color-hover)
+    background: var(--button-background-color-hover)
     color: white
 </style>

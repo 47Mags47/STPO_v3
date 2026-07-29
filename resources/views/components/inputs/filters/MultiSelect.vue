@@ -96,14 +96,14 @@ export default {
         width: 100%
         padding: 6px 4px
         border-radius: 12px
-        border: 1px solid $blue-button-background
+        border: 1px solid var(--button-border-color)
         cursor: pointer
         transition: .5s ease
         @include input()
 
         &:hover
-            background-color: $blue-button-background
-            color: $blue-button-color
+            background-color: var(--button-border-color)
+            color: white
 
         .ico-chevron
             position: absolute

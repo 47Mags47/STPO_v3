@@ -19,13 +19,13 @@ export default {
         -webkit-appearance: none
         width: 25px
         height: 25px
-        border:$input-border
-        border-radius: $input-border-radius
+        border: var(--input-border)
+        border-radius: var(--input-border-radius)
         cursor: pointer
         position: relative
 
         &:checked
-            background-color: $input-border-color
+            background-color: var(--input-border-color)
 
         &:checked::after
             content: ""
