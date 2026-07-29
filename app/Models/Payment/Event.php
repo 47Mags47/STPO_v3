@@ -8,7 +8,6 @@ use App\Models\Administrate\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Builder;
 
 class Event extends BaseModel
 {
@@ -46,8 +45,13 @@ class Event extends BaseModel
         return $this->hasMany(PaymentFile::class, 'event_id')->orderBy('created_at', 'desc');
     }
 
-    public function raportsToBank(Bank $bank): HasMany
+    public function bankRaports(Bank $bank): HasMany
     {
-        return $this->hasMany(RaportToBank::class, 'event_id')->where('bank_id', $bank->id)->orderBy('id', 'desc');
+        return $this->hasMany(BankRaport::class, 'event_id')->where('bank_id', $bank->id)->orderBy('id', 'desc');
+    }
+
+    public function archives()
+    {
+        return $this->hasMany(Archive::class, 'event_id')->orderBy('created_at', 'desc');
     }
 }

@@ -12,10 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('base__templates', function (Blueprint $table) {
+        Schema::create('administrate__templates', function (Blueprint $table) {
             $table->id();
 
             $table->string('description');
+            $table->string('writer')->nullable();
+
             $table->foreignId('file_id')->constrained(File::getTableName());
 
             $table->timestamps();
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('base__templates');
+        Schema::dropIfExists('administrate__templates');
     }
 };

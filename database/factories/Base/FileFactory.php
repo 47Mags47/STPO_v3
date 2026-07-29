@@ -13,9 +13,9 @@ class FileFactory extends Factory
         return [
             'disk' => config('filesystems.default'),
             'path' => '',
-            'name' => Str::random(40) . '.txt',
+            'name' => Str::random(40),
             'origin_name' => Str::random(40),
-            'status_id' => FileStatus::byCode('ok')->id,
+            'status_id' => FileStatus::byCode('creating')->id,
         ];
     }
 }

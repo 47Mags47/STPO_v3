@@ -16,16 +16,19 @@ export default {
             type: String,
             default: null
         },
-
         rowLinks: {
             type: Array,
             default: () => []
+        },
+        hasErrorCollumn: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
         files: () => usePage().props.files,
         newCollumns() {
-            let statusCollumns = [
+            return [
                 {
                     title: '',
                     type: 'render',
@@ -43,19 +46,18 @@ export default {
                         }
                     },
                 }
-            ]
-
-            return statusCollumns.concat(this.collumns)
+            ].concat(this.collumns)
         },
         newRowLinks(){
             let links = this.rowLinks
 
-            links.push({
-                visible: (file) => file.file.errors > 0,
-                ico: 'bug',
-                color: 'red',
-                onClick: (file) => router.get(route('files.errors', {file: file.file.id}))
-            })
+            if(this.hasErrorCollumn)
+                links.push({
+                    visible: (file) => file.file.errors > 0,
+                    ico: 'bug',
+                    color: 'red',
+                    onClick: (file) => router.get(route('files.errors', {file: file.file.id}))
+                })
 
             return links
         }

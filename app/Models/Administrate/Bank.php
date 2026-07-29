@@ -2,13 +2,13 @@
 
 namespace App\Models\Administrate;
 
+
 use App\Classes\BaseModel;
-use App\Models\Base\Template;
+use App\Models\Administrate\Template;
 use App\Models\Payment\BankContract;
 use App\Models\Payment\PaymentFile;
 use App\Traits\HasCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;

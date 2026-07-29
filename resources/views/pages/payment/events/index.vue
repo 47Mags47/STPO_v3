@@ -3,13 +3,15 @@ import { DateTime } from "luxon";
 import { router, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js"
 
-import { Table, TableRow, TableTd, BlueButton, Ico } from "@components"
+import { Table, TableRow, TableTd, BlueButton, Ico, ResourceTable, EditButton } from "@components"
 
 export default {
     components: {
         Table, TableRow, TableTd,
         Ico,
         BlueButton,
+        EditButton,
+        ResourceTable,
     },
 
     computed: {
@@ -62,26 +64,28 @@ export default {
 </script>
 
 <template>
-    <Table :caption="'Календарь выплат'" id="event-calendar-table">
-        <template #toolbar>
+    <ResourceTable
+        caption="Календарь выплат"
+        id="payment-event-resource-table"
+        :hasCreateButton="true"
+    >
+        <template #actions>
             <div class="month-picker-container">
                 <BlueButton :onClick="prevMonthButtonClickHandler">
                     <Ico type="arrow-left" />
                 </BlueButton>
 
-                <span> {{ currentDate.toFormat('dd.MM.yyyy') }} </span>
+                <span> {{  currentDate.setLocale('ru').toFormat('LLLL yyyy') }} </span>
 
                 <BlueButton :onClick="nextMonthButtonClickHandler">
                     <Ico type="arrow-right" />
                 </BlueButton>
             </div>
         </template>
-
         <template #colgroup>
             <col width="100px">
             <col width="auto">
         </template>
-
         <template #tbody>
             <template v-for="(events, date) in paymentEvents">
                 <TableRow>
@@ -96,14 +100,12 @@ export default {
                         </TableTd>
                         <!-- HACK Отображать только администратору -->
                         <TableTd class="w-[56px]">
-                            <BlueButton class="size-[35px]! p-2!"
-                                @click="() => editButtonClickHandler (event)">
-                                <Ico type="pen" class="p-[3px]!" />
-                            </BlueButton>
+                            <EditButton :onClick="() => editButtonClickHandler (event)"/>
                         </TableTd>
 
                         <TableTd class="w-[56px]">
                             <BlueButton class="size-[35px]! p-2!"
+                                title="Файлы на выплату"
                                 @click="() => showButtonClickHandler (event)">
                                 <Ico type="file" class="p-[3px]!" />
                             </BlueButton>
@@ -112,6 +114,7 @@ export default {
                         <!-- HACK Отображать только администратору -->
                         <TableTd class="w-[56px]">
                             <BlueButton class="size-[35px]! p-2!"
+                                title="Файлы в банк"
                                 @click="() => goToBunksButtonClickHandler (event)">
                                 <Ico type="building-columns" class="p-[3px]!" />
                             </BlueButton>
@@ -120,19 +123,19 @@ export default {
                 </template>
             </template>
         </template>
-    </Table>
+    </ResourceTable>
 </template>
 
 <style lang="sass" scoped>
-#event-calendar-table
-    .month-picker-container
-        display: flex
-        gap: 10px
+#payment-event-resource-table
+    :deep()
+        .table-actions-container
+            flex: 1
+            justify-content: space-between
+            .month-picker-container
+                display: flex
+                align-items: center
+                gap: 10px
 
-        align-items: center
-
-        font-size: 1.2rem
-        .button
-            width: 35px
-            height: 25px
+                font-size: 1.2rem
 </style>

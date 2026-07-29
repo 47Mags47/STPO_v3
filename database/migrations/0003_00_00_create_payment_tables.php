@@ -3,8 +3,10 @@
 use App\Models\Administrate\Bank;
 use App\Models\Administrate\Division;
 use App\Models\Administrate\Payment;
+use App\Models\Administrate\Template;
 use App\Models\Base\File;
-use App\Models\Base\Template;
+use App\Models\Payment\Archive;
+use App\Models\Payment\BankRaport;
 use App\Models\Payment\Event;
 use App\Models\Payment\PaymentFile;
 use Illuminate\Database\Migrations\Migration;
@@ -68,7 +70,7 @@ return new class extends Migration
             $table->text('p_div')->nullable();
         });
 
-        Schema::create('payment__raports_to_bank', function (Blueprint $table) {
+        Schema::create('payment__bank_raports', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('file_id')->constrained(File::getTableName());
@@ -77,10 +79,54 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('payment__bank_raport_files', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('file_id')
+                ->constrained(File::getTableName());
+
+            $table->foreignId('raport_id')
+                ->constrained(BankRaport::getTableName())
+                ->cascadeOnDelete();
+
+            $table->integer('npp');
+
+            $table->timestamps();
+        });
+
+        Schema::create('payment__archives', function (Blueprint $table) {
+           $table->id();
+
+            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('event_id')->constrained(Event::getTableName());
+
+            $table->timestamps();
+        });
+
+        Schema::create('payment__archive_files', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('file_id')
+                ->constrained(File::getTableName());
+
+            $table->foreignId('archive_id')
+                ->constrained(Archive::getTableName())
+                ->cascadeOnDelete();
+
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('payment__archive_files');
+        Schema::dropIfExists('payment__archives');
+        Schema::dropIfExists('payment__bank_files');
+        Schema::dropIfExists('payment__bank_raports');
+        Schema::dropIfExists('payment__recipients');
+        Schema::dropIfExists('payment__payment_files');
         Schema::dropIfExists('payment__events');
+        Schema::dropIfExists('payment__bank_contracts');
     }
 };

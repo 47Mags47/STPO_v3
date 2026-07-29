@@ -30,7 +30,7 @@ export default {
             name: 'payment_id',
             label: 'Выплата',
             options: payments,
-            value: event.payment.id
+            value: event.payment
         },
     ]"
 />

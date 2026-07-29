@@ -57,6 +57,12 @@ return [
             'report' => false,
         ],
 
+        'temp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/temp'),
+            'throw' => true,
+        ],
+
         'templates' => [
             'driver' => 'local',
             'root' => storage_path('app/private/templates'),

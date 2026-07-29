@@ -3,7 +3,7 @@
 namespace Database\Factories\Payment;
 
 use App\Models\Administrate\Bank;
-use App\Models\Base\Template;
+use App\Models\Administrate\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

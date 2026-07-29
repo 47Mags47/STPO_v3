@@ -13,10 +13,10 @@ export { default as Table } from './tables/Table.vue'
 export { default as TableRow } from './tables/components/TableRow.vue'
 export { default as TableTh } from './tables/components/TableTh.vue'
 export { default as TableTd } from './tables/components/TableTd.vue'
+export { default as EditButton } from './tables/buttons/EditButton.vue'
 
 export { default as ResourceTable } from './tables/ResourceTable/ResourceTable.vue'
 export { default as FileResourceTable } from './tables/FileResourceTable/FileResourceTable.vue'
-
 
 export { default as Select } from './inputs/Select.vue'
 export { default as DatePicker } from './inputs/datePicker/DatePicker.vue'

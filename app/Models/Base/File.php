@@ -6,7 +6,6 @@ use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -32,6 +31,14 @@ class File extends BaseModel
         return [
             'is_disabled' => 'boolean',
         ];
+    }
+
+    public static function booted()
+    {
+        self::deleted(function ($model) {
+            Storage::disk($model->disk)->delete($model->getLocalPath());
+            $model->delete();
+        });
     }
 
     ### Методы модели
@@ -115,12 +122,13 @@ class File extends BaseModel
      * @param  ?string  $content
      * @return bool
      */
-    public function write(string $content): bool
+    public function write(string $content, ?string $encoding = 'UTF-8'): bool
     {
-        return Storage::disk($this->disk)->put($this->getLocalPath(), $content);
+        return Storage::disk($this->disk)->put($this->getLocalPath(), $encoding === 'UTF-8' ? $content : mb_convert_encoding($content, $encoding, 'UTF-8'));
     }
 
-    public function download(): StreamedResponse{
+    public function download(): StreamedResponse
+    {
         return Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name);
     }
 

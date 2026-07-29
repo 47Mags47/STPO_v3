@@ -8,21 +8,18 @@ export default {
     },
     computed: {
         files: () => usePage().props.files,
-        bank: () => usePage().props.bank.data,
         event: () => usePage().props.event.data,
     },
     methods: {
         createButtonClickHandler(){
-            router.post(route('payment.raports.store', {
+            router.post(route('payment.archives.store', {
                 'event': this.event.id,
-                'bank': this.bank.id,
             }))
         },
         downloadButtonClickHandler(file){
-            window.open(route('payment.raports.show', {
+            window.open(route('payment.archives.show', {
                 'event': this.event.id,
-                'bank': this.bank.id,
-                'raport': file.id
+                'archive': file.id
             }))
         }
     },
@@ -30,8 +27,8 @@ export default {
 </script>
 <template>
     <FileResourceTable
-        caption="Выплаты (отчет на банк)"
-        fileChannel="payment.raports"
+        caption="Выплаты (отчет по выплате)"
+        fileChannel="payment.archives"
         :hasErrorCollumn="false"
         :hasCreateButton="true"
         :onCreateButtonClick="createButtonClickHandler"

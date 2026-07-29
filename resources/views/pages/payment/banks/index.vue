@@ -6,6 +6,7 @@ export default {
     components: {
         ResourceTable,
     },
+
     computed: {
         banks: () => usePage().props.banks,
         event: () => usePage().props.event.data,
@@ -17,15 +18,27 @@ export default {
                 'event': this.event.id,
                 'bank': bank.id
             }))
-        }
+        },
+        goToArchivesButtonClickhandler(){
+            router.get(route('payment.archives.index', {
+                'event': this.event.id,
+            }))
+        },
     }
 }
 </script>
 <template>
     <ResourceTable
-        caption="Выплаты (Сводка по банкам)"
+        caption="Выплаты (Свод по банкам)"
         :data="banks.data"
         :meta="banks.meta"
+        :actions="[
+            {
+                color: 'blue',
+                ico: 'file-zipper',
+                onClick: goToArchivesButtonClickhandler
+            }
+        ]"
         :rowLinks="[
             {
                 'ico': 'file',

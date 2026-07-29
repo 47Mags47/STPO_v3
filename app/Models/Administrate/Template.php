@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Base;
+namespace App\Models\Administrate;
 
 use App\Classes\FileModel;
 
@@ -8,9 +8,10 @@ class Template extends FileModel
 {
     ### Настройки
     ##################################################
-    protected $table = 'base__templates';
+    protected $table = 'administrate__templates';
 
     protected $fillable = [
+        'writer',
         'description',
         'file_id',
     ];

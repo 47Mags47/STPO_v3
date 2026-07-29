@@ -20,6 +20,7 @@ import {
     faFileCirclePlus,
     faFileCircleCheck,
     faFileCircleExclamation,
+    faFileZipper,
     faDownload,
     faPaperclip,
 
@@ -70,6 +71,7 @@ library.add(
     faFileCirclePlus,
     faFileCircleCheck,
     faFileCircleExclamation,
+    faFileZipper,
     faDownload,
     faPaperclip,
 
