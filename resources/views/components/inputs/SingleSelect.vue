@@ -114,5 +114,5 @@ export default {
             transition: .15s ease
 
             &:hover
-                background: ghostwhite
+                background: var(--option-background-color-hover)
 </style>

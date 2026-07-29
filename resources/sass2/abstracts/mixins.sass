@@ -56,6 +56,10 @@
 
     transition: .3s
 
+    &:focus
+        border: var(--input-border-focus)
+        outline: none
+
 @mixin create-theme($theme)
     @each $key, $value in $theme
         --#{$key}: #{$value}
