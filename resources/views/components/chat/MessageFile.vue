@@ -27,7 +27,7 @@ export default {
             translateImgPrevX: 0,
             translateImgPrevY: 0,
 
-             isDraggingImg: false,
+            isDraggingImg: false,
             dragStartX: 0,
             dragStartY: 0,
             dragStartTranslateX: 0,
@@ -48,6 +48,7 @@ export default {
         },
         onImageLoad(url) {
             this.loadedImages[url] = true
+            this.errorImages[url]  = true
         },
         zoomImage(event) {
             const img = this.$refs.imgPreviewRef
@@ -106,6 +107,20 @@ export default {
         stopDragImage() {
             this.isDraggingImg = false
         },
+
+        onKeyDown(e) {
+            if (e.key === 'Escape') {
+                this.closeImagePreview();
+            }
+        }
+    },
+
+    mounted() {
+        window.addEventListener('keydown', this.onKeyDown);
+    },
+
+    unmounted() {
+        window.removeEventListener('keydown', this.onKeyDown);
     }
 }
 </script>
@@ -113,16 +128,17 @@ export default {
 <template>
     <div class="size-full">
         <!-- спиннер если картинки не загружаются-->
-        <div v-if="message.context.is_image && !loadedImages[message.file_url]"
-            class="flex gap-2 items-center h-[312px] w-[256px] overflow-hidden p-12!"
+        <div v-if="message.context?.is_image && !loadedImages[message.file_url]"
+            class="flex gap-2 items-center justify-center h-[312px] w-[256px] overflow-hidden p-12!"
         >
             <Ico type="spinner" class="animate-spin text-gray-500" />
         </div>
 
         <!-- картинка -->
-        <div v-if="message.context.is_image" class="relative group shrink w-[324px] mb-1!">
+        <div v-if="message.context?.is_image" class="relative group shrink w-[324px] mb-1!">
             <img loading="lazy" :src="message.file_url" @click="openImagePreview"
                 @load="onImageLoad(message.file_url)"
+                @error="onImageLoad(message.file_url)"
                 class="rounded-xl w-full cursor-pointer hover:brightness-[0.9] transition" />
         </div>
 
