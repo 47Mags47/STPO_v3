@@ -13,6 +13,9 @@ export default {
         isDark() {
             return theme.value === 'dark';
         },
+        currentTheme() {
+            return this.isDark ? 'moon' : 'sun'
+        }
     },
 
     methods: {
@@ -22,9 +25,16 @@ export default {
 </script>
 
 <template>
-    <Ico
-        type="pen"
-        class="cursor-pointer hover:text-[#ccc] transition duration-300"
-        @click="toggleTheme"
-    />
+    <div class="h-[24px] w-[25px]" @click="toggleTheme">
+        <Ico
+            v-if="isDark"
+            type="moon"
+            class="cursor-pointer hover:text-[#ccc] transition duration-300"
+        />
+        <Ico
+            v-else
+            type="sun"
+            class="cursor-pointer hover:text-[#ccc] transition duration-300"
+        />
+    </div>
 </template>

@@ -4,13 +4,19 @@ export default {
         type: {
             type: String,
         }
+    },
+
+    computed: {
+        getType () {
+            return this.type
+        }
     }
 };
 </script>
 
 <template>
     <div class="ico-container">
-        <i :class="['fa-solid', `fa-${type}`]"></i>
+        <i :class="['fa-solid', `fa-${getType}`]"></i>
     </div>
 </template>
 

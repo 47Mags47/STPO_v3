@@ -13,19 +13,18 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.base-input
-    &[type="checkbox"]
+.base-input[type="checkbox"]
         appearance: none
         -webkit-appearance: none
-        width: 25px
-        height: 25px
+        width: 26px !important
+        height: 26px !important
         border: var(--input-border)
         border-radius: $input-border-radius
         cursor: pointer
         position: relative
 
         &:checked
-            background-color: var(--input-border-color)
+            background-color: var(--button-background-color)
 
         &:checked::after
             content: ""

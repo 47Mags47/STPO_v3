@@ -13,7 +13,7 @@
     @routes
 </head>
 
-<body>
+<body class="bg-(--background-color)">
 
     @inertia
 

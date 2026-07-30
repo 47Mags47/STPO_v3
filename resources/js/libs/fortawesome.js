@@ -48,6 +48,9 @@ import {
     faPaperPlane,
     faMessage,
     faReply,
+
+    faMoon,
+    faSun
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -98,7 +101,10 @@ library.add(
 
     faPaperPlane,
     faMessage,
-    faReply
+    faReply,
+
+    faMoon,
+    faSun
 );
 
 dom.watch();

@@ -29,7 +29,7 @@ export default {
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <Form method="GET" :action="currrentURL">
+                <Form method="GET" :action="currrentURL" class="pt-0!">
                     <slot name="filters"></slot>
                 </Form>
             </div>
@@ -104,8 +104,8 @@ export default {
                     transition: background 0.15s ease
 
                     &:nth-child(even)
-                        background: #f9fafb
+                        background: var(--table-row-background-color)
 
                     &:hover
-                        background: #eef2ff
+                        background: var(--table-row-background-color-hover)
 </style>

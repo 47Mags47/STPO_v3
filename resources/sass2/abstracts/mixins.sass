@@ -4,9 +4,9 @@
 @mixin scroll()
     /*IE*/
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
-        scrollbar-face-color: colors.$blue-300
-        scrollbar-track-color: colors.$blue-300
-        scrollbar-3dlight-color: colors.$blue-300
+        scrollbar-face-color: red
+        scrollbar-track-color: red
+        scrollbar-3dlight-color: red
         scrollbar-darkshadow-color: colors.$blue-300
         scrollbar-arrow-color: colors.$blue-300
         -ms-overflow-style: -ms-autohiding-scrollbar
@@ -17,13 +17,13 @@
             width: 6px
             height: 5px
         &::-webkit-scrollbar-track
-            background-color: colors.$blue-300
+            background-color: var(--scroll-track-background-color)
             border-radius: 20px
         &::-webkit-scrollbar-thumb
-            background: colors.$blue-300
+            background: var(--scroll-background-color)
             border-radius: 0
         &::-webkit-scrollbar-thumb:hover
-            background-color: colors.$blue-300
+            background-color: var(--scroll-background-color-hover)
     /* for firefox */
     @-moz-document url-prefix()
         scrollbar-width: auto

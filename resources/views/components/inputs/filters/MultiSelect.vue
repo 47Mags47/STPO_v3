@@ -127,7 +127,7 @@ export default {
         border: 0 solid var(--input-border-color)
 
         background: white
-        @include scroll
+        @include scroll()
 
         &.active
             max-height: 300px
@@ -135,6 +135,7 @@ export default {
 
         .multi-select-content
             display: flex
+            align-items: center
             gap: 6px
             width: 100%
             padding: 6px 4px

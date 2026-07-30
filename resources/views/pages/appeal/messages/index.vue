@@ -51,7 +51,7 @@ export default {
 
 <template>
     <div class="size-full flex flex-col">
-        <div class="flex gap-5 h-[50px] items-center px-4! py-5! border-b border-b-gray-200">
+        <div class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-gray-200">
             <BlueButton @click="backClickHandler" class="w-[48px]!">
                 <Ico type="arrow-left" />
             </BlueButton>
