@@ -35,6 +35,7 @@ export default {
         <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
         :class="isMine ? 'items-end bg-sky-100' : 'items-start bg-gray-100'">
 
+            <span class="font-bold!"> {{ message.sender.name }} </span>
 
             <MessageFile :is-mine="isMine" v-if="message.file" :message="message"/>
             <MessageText v-else :message="message.message"/>
