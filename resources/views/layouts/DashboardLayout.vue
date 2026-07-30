@@ -47,7 +47,7 @@ export default {
 
             <div v-if="isLoading" class="size-full flex justify-center items-center">
                 <div class="size-[128px] animate-spin">
-                    <Ico type="circle-notch"/>
+                    <Ico type="spinner"/>
                 </div>
             </div>
 
