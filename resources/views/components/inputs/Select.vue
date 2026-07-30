@@ -266,7 +266,7 @@ export default {
 
 
         border-radius: 0 0 $input-border-radius $input-border-radius
-        border: var(--input-border-color)
+        border: var(--input-border)
 
         opacity: 0
 

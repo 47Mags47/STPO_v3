@@ -20,7 +20,7 @@ export default {
         width: 25px
         height: 25px
         border: var(--input-border)
-        border-radius: var(--input-border-radius)
+        border-radius: $input-border-radius
         cursor: pointer
         position: relative
 

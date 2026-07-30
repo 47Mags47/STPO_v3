@@ -173,7 +173,6 @@ export default {
 
     .date-input-wrapper-from
         flex: 1
-        min-width: 1
         height: 100%
         position: relative
 
@@ -187,6 +186,10 @@ export default {
 
             width: 25px
             height: 100%
+
+        .custom-date-input
+            width: 100%
+            border: 0
 
     .date-input-wrapper-to
         flex: 1
@@ -204,7 +207,7 @@ export default {
             width: 25px
             height: 100%
 
-    .custom-date-input
-        width: 100%
-        border: 0
+        .custom-date-input
+            width: 100%
+            border: 0
 </style>

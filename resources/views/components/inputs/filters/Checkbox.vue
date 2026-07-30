@@ -45,11 +45,11 @@ export default {
     @include input()
 
     &.active
-        background-color: $button-background
+        background-color: var(--button-background-color)
         color: white
 
     &:hover
-        background-color: $button-background
+        background-color: var(--button-background-color)
         color: white
 
     input

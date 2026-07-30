@@ -63,11 +63,15 @@ export default {
     </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .date-input-container
     position: relative
     width: 100%
     min-width: 120px
+
+    :deep(.date-input-wrapper),
+    :deep(.date-input-between-wrapper)
+        border: 0
 
     .date-input
         position: relative
@@ -76,7 +80,7 @@ export default {
         @include input()
 
         &:hover
-            background-color: var(--button-background-color-hover)
+            background-color: var(--button-background-color)
             color: white
             .ico-chevron
                 color: white
@@ -103,17 +107,16 @@ export default {
 
         display: flex
         align-items: center
-        justify-content: space-between
         transition: .5s ease
         background: white
-        padding: 0px 8px
         z-index: 10
-        border: 0 solid lightgray
+        border: 0 solid var(--input-border-color)
 
         cursor: auto
 
         &.active
             animation: open .5s ease forwards
+            border: var(--input-border)
         &:not(.active)
             animation: close .5s ease forwards
 
@@ -121,22 +124,16 @@ export default {
     from
         overflow: hidden
         max-height: 0
-        padding: 0px 8px
     to
         overflow: visible
         max-height: 40px
-        padding: 5px 8px
-        border: 1px solid lightgray
 
 @keyframes close
     from
         overflow: visible
         max-height: 40px
-        padding: 5px 8px
-        border: 1px solid lightgray
     to
         overflow: hidden
         max-height: 0
-        padding: 0 8px
 
 </style>

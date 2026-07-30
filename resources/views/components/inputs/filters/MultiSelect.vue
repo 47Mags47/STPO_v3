@@ -102,7 +102,7 @@ export default {
         @include input()
 
         &:hover
-            background-color: var(--button-border-color)
+            background-color: var(--button-background-color)
             color: white
 
         .ico-chevron
@@ -113,8 +113,6 @@ export default {
             right: 10px
 
             transition: .4s ease
-            color: black
-
             &.active
                 transform: rotate(540deg)
 
@@ -126,14 +124,14 @@ export default {
         overflow: auto
         transition: .5s ease
         z-index: 10
-        border: 0 solid lightgray
+        border: 0 solid var(--input-border-color)
 
         background: white
         @include scroll
 
         &.active
             max-height: 300px
-            border: 1px solid lightgray
+            border: 1px solid var(--input-border-color)
 
         .multi-select-content
             display: flex
@@ -145,5 +143,5 @@ export default {
                 width: 100%
                 height: 100%
             &:hover
-                background-color: ghostwhite
+                background-color: var(--option-background-color-hover)
 </style>

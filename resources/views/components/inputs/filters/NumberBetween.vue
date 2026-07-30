@@ -61,13 +61,13 @@ export default {
         padding: 6px 4px
         width: 100%
         transition: .5s ease
-        border: 1px solid $button-background
+        border: 1px solid var(--input-border-color)
         cursor: pointer
 
         @include input()
 
         &:hover
-            background: $button-background-hover
+            background: var(--button-background-color)
             color: white
 
         .ico-chevron
