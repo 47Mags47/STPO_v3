@@ -1,17 +1,33 @@
-@forward './core'
+@use "abstracts"
+@use "base"
+@use "components"
+@use "layouts"
+@use "pages"
+@use "themes"
 
-:root
-    --input-height: #{$input-height}
-    --meny-background: #3d9ad1
+:root[data-theme="light"]
+    @include abstracts.create-theme(themes.$theme-light)
 
-    --scroll-color: red()
-    --scroll-color-hover:           #{$scroll-color-hover}
-    --scroll-background:            #{$scroll-background}
-    --input-border-radius:          #{$input-border-radius}
-    --input-border-color:           #{$input-border-color}
-    --input-border:                 #{$input-border}
-    --blue-button-background:       #{$blue-button-background}
-    --blue-button-background-hover: #{$blue-button-backgroun-hover}
 
-.base-input
-    @include input()
+:root[data-theme="dark"]
+    @include abstracts.create-theme(themes.$theme-dark)
+html, body
+    height: 100vh
+
+body,
+button,
+input,
+textarea,
+select,
+table,
+th,
+td,
+a,
+div
+    transition: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease
+
+
+.my-class
+    display: flex
+    background: red
+
