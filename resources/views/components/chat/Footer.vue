@@ -87,7 +87,7 @@ export default {
 
 <template>
     <!-- файлы -->
-    <footer class="relative h-[76px] w-full bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.08)] flex gap-3 justify-center px-4! py-4!">
+    <div class="relative h-[76px] w-full shadow-[0_-4px_10px_rgba(0,0,0,0.08)] flex gap-3 justify-center px-4! py-4!">
         <!-- инпут -->
         <div
         class="input-message"
@@ -144,7 +144,7 @@ export default {
             ref="fileInput"
             @change="onFileChange"
         />
-    </footer>
+    </div>
 </template>
 
 <style lang="sass" scoped>

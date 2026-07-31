@@ -29,7 +29,10 @@ class MessageSent implements ShouldBroadcastNow
         return [
             'id'         => $this->message->id,
             'message'    => $this->message->message,
-            'sender_id'  => $this->message->sender_id,
+            'sender'  => [
+              'id' => $this->message->sender->id,
+              'name' => $this->message->sender->full_name,
+            ],
             'created_at' => $this->message->created_at,
             'file' => $this->message->file !== null
                 ? [

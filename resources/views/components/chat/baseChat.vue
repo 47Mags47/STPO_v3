@@ -5,15 +5,20 @@
 <template>
     <div class="size-full flex flex-col overflow-hidden">
         <main id="messagesContainer"
-        class="size-full bg-white min-h-0">
+        class="chat-content-wrapper size-full min-h-0">
             <slot name="content" />
         </main>
 
-        <footer>
+        <footer class="chat-footer">
             <slot name="footer" />
         </footer>
     </div>
 </template>
 
 <style lang="sass" scoped>
+.chat-content-wrapper
+    background: var(--chat-background-color)
+
+.chat-footer
+    background: var(--background-color)
 </style>

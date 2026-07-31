@@ -44,7 +44,7 @@ export default {
             <div class="h-full w-full flex items-center gap-1 leading-none"
             :class="isMine ? 'justify-start' : 'justify-end'">
                 <Ico
-                v-if="current_user.id === message.sender_id"
+                v-if="current_user.id === message.sender.id"
                 type="check-double"
                 class="h-[1lh]! w-fit!"
                 :class="message.readed ? 'text-blue-600' : 'text-gray-600'"/>

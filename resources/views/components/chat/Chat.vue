@@ -84,7 +84,7 @@ export default {
                 message: message.text,
                 sender: {
                     id: this.current_user.id,
-                    full_name: this.current_user.full_name
+                    name: this.current_user.full_name
                 }
             })
 
@@ -135,7 +135,7 @@ export default {
             Echo
                 .private(this.channelName)
                 .listen('.message.sent', (msg) => {
-                    if (this.current_user.id !== msg.sender_id) {
+                    if (this.current_user.id !== msg.sender.id) {
                         this.localMessages.unshift({
                             created_at: msg.created_at,
                             id: msg.id,
@@ -144,7 +144,8 @@ export default {
                             file: msg.file,
                             file_url: msg.file_url,
                             sender: {
-                                id: msg.sender_id,
+                                id: msg.sender.id,
+                                name: msg.sender.name
                             }
                         })
                     }
@@ -171,7 +172,7 @@ export default {
                     :class="{
                         'mt-16!':
                         index   <       localMessages.length - 1
-                                &&      localMessages[index + 1].sender_id !== message.sender_id
+                                &&      localMessages[index + 1].sender.id !== message.sender.id
                                 &&      !isShowDateSeparator(index)
                     }"/>
                     <!-- разделитель даты -->
