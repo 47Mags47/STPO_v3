@@ -180,7 +180,7 @@ export default {
         &::after
             content: ""
             position: absolute
-            background: white
+            background: var(--input-background-color)
             top: 0
             right: 0
 
@@ -200,7 +200,7 @@ export default {
         &::after
             content: ""
             position: absolute
-            background: white
+            background: var(--input-background-color)
             top: 0
             right: 0
 

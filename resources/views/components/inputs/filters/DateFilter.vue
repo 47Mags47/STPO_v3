@@ -108,7 +108,7 @@ export default {
         display: flex
         align-items: center
         transition: .5s ease
-        background: white
+        background: var(--input-background-color)
         z-index: 10
         border: 0 solid var(--input-border-color)
 

@@ -38,7 +38,7 @@ export default {
 </script>
 
 <template>
-    <div :class="containerClasses">
+    <div :class="containerClasses" class="form-container">
         <Form :class="classes" :method="method.toUpperCase()" :action="action">
             <div class="form-header-container">
                 <template v-if="'header' in $slots">
@@ -62,6 +62,7 @@ export default {
 .form-container
     width: 100%
     height: 100%
+    background-color: var(--form-background-color)
     :deep()
         form
             .form-header-container

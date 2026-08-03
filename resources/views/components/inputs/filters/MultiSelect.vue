@@ -126,7 +126,7 @@ export default {
         z-index: 10
         border: 0 solid var(--input-border-color)
 
-        background: white
+        background: var(--input-background-color)
         @include scroll()
 
         &.active

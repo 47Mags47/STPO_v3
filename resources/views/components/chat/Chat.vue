@@ -178,20 +178,20 @@ export default {
                     <!-- разделитель даты -->
                     <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
                         <div class="flex items-center gap-3 w-full max-w-[320px]">
-                            <div class="h-px flex-1 bg-gray-300"></div>
-                                <span
-                                class="shrink-0
-                                px-2! py-1!
-                                rounded-full
-                                bg-white
-                                border border-gray-200
-                                text-gray-500
-                                text-[12px]!
-                                font-medium
-                                shadow-sm">
-                                    {{ formatMessageDateSeporator(message.created_at) }}
-                                </span>
-                            <div class="h-px flex-1 bg-gray-300"></div>
+                            <div class="h-px flex-1 bg-gray-200"></div>
+                            <span
+                            class="shrink-0
+                            px-2! py-1!
+                            rounded-full
+                            bg-gray-100
+                            border border-gray-200
+                            text-gray-600
+                            text-[12px]!
+                            font-medium
+                            shadow-sm">
+                                {{ formatMessageDateSeporator(message.created_at) }}
+                            </span>
+                            <div class="h-px flex-1 bg-gray-200"></div>
                         </div>
                     </div>
                 </template>
