@@ -17,7 +17,7 @@
 
 <style lang="sass" scoped>
 .chat-content-wrapper
-    background: var(--chat-background-color)
+    background: var(--background-color)
 
 .chat-footer
     background: var(--background-color)

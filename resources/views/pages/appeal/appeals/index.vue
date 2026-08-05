@@ -151,10 +151,10 @@ export default {
                 width: '125px',
                 cellClasses: (value, row) => (
                     {
-                        new:            'text-blue-700',
-                        closed:         'text-green-700',
-                        in_work:        'text-yellow-700',
-                        reaccepted:     'text-red-700',
+                        new:            'text-(--appeal-status-new)',
+                        closed:         'text-(--appeal-status-closed)',
+                        in_work:        'text-(--appeal-status-work)',
+                        reaccepted:     'text-(--appeal-status-reaccepted)',
                     }[row.status.code] ?? ''
                 )
             },

@@ -55,7 +55,7 @@ export default {
     justify-content: center
     align-items: center
 
-    border: 1px dashed var(--button-background-color)
+    border: 1px dashed var(--border-color)
 
     color: var(--button-background-color)
 

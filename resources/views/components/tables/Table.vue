@@ -102,6 +102,7 @@ export default {
             tbody
                 tr
                     transition: background 0.15s ease
+                    color: var(--text-color)
 
                     &:nth-child(even)
                         background: var(--table-row-background-color)

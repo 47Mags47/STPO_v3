@@ -155,6 +155,8 @@ export default {
 td
     border: var(--border)
     position: relative
+    p
+        color: inherit
 .table-cell-container
     width: 100%
     height: 100%

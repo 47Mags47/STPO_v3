@@ -85,7 +85,7 @@ export default {
             height: calc(100vh - 60px)
 
             background: var(--menu-background-color)
-            padding: 5px 0
+            padding: 5px
 
             overflow: hidden
             z-index: 1000
