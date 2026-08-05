@@ -249,7 +249,7 @@ export default {
 
     background: white
 
-    border: 1px solid var(--input-border-color)
+    border: 1px solid var(--border-color)
     border-radius: 12px
 
     width: 340px

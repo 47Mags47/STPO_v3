@@ -60,13 +60,13 @@ export default {
     <div class="notification-container" :class="classes">
         <div class="notification-header">
             <Ico :type="ico" />
-            <span class="sender-container">{{ sender?.full_name ?? 'SYSTEM' }}</span>
-            <span class="date-container">{{ createdAtObject.toFormat('dd.MM T') }}</span>
+            <span class="sender-container text-white!">{{ sender?.full_name ?? 'SYSTEM' }}</span>
+            <span class="date-container text-white!">{{ createdAtObject.toFormat('dd.MM T') }}</span>
         </div>
 
         <div class="notification-content">
             <div class="message-container">
-                <span>{{ message }}</span>
+                <span class="text-white!">{{ message }}</span>
             </div>
             <div class="action-container" v-if="'actions' in this.$slots">
                 <slot name="actions" />

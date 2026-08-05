@@ -51,16 +51,15 @@
 
     padding: variables.$input-padding
 
-    border: var(--input-border)
+    border: var(--border)
     border-radius: variables.$input-border-radius
 
     font-size: variables.$input-font-size
-    color: #333
+    color: var(--text-color)
 
     transition: .3s
 
     &:focus
-        border: var(--input-border-focus)
         outline: none
 
 @mixin create-theme($theme)

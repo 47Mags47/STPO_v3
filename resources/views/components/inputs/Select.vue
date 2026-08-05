@@ -212,7 +212,7 @@ export default {
                     :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
                     @click="() => selectHandler(option)"
                 >
-                    {{ getLabel(option) }}
+                    <span> {{ getLabel(option) }} </span>
                 </li>
             </ul>
         </div>
@@ -238,7 +238,7 @@ export default {
             pointer-events: none
             transition: 0.3s
 
-            color: #666
+            color: var(--text-color)
 
             &.rotated
                 transform: translateY(-50%) rotate(540deg)
@@ -262,11 +262,11 @@ export default {
 
         z-index: 9
 
-        background: var(--input-background-color)
+        background: var(--background-color)
 
 
         border-radius: 0 0 $input-border-radius $input-border-radius
-        border: var(--input-border)
+        border: var(--border)
 
         opacity: 0
 
@@ -284,7 +284,7 @@ export default {
 
         .search-input-container
             padding: 10px
-            border-bottom: var(--input-border)
+            border-bottom: var(--border)
         ul
             max-height: 250px
             overflow: auto
@@ -301,7 +301,4 @@ export default {
                     background: var(--option-background-color-hover)
                 &.selected
                     background: var(--option-background-color-selected)
-
-    &:hover .input-container .ico-container
-        color: #000
 </style>

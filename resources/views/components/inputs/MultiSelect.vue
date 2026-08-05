@@ -8,7 +8,6 @@ export default {
     data() {
         return {
             isSelectClicked: false,
-            selectedValues: [],
         }
     },
     props: {
@@ -48,7 +47,6 @@ export default {
 <template>
     <div class="multi-select-wrapper" v-outsideClick="clickOutsideHandler">
         <div class="multi-select" @click="isSelectClicked = !isSelectClicked" :class="{ focus: isSelectClicked}">
-            <!-- <span> {{ selectedValues.length ? `Выбрано: ${selectedValues.length}` : placeholder }} </span> -->
              <span> {{ placeholder }} </span>
         </div>
         <div v-show="isSelectClicked" class="multi-select-content">
@@ -56,7 +54,6 @@ export default {
             :key="index"
             class="multi-select-content-option">
                 <input type="checkbox"
-                 v-model="selectedValues"
                 :value="option.value ? option.value : option.label"
                 :name="`${name}[]`" />
 

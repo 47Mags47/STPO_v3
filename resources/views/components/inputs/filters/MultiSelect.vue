@@ -59,7 +59,7 @@ export default {
 <template>
     <div class="multi-select-container" v-outsideClick="clickOutsideHandler">
         <div class="multi-select" @click="selectClickHandler">
-            {{ label }}
+            <span> {{ label }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -96,7 +96,7 @@ export default {
         width: 100%
         padding: 6px 4px
         border-radius: 12px
-        border: 1px solid var(--button-border-color)
+        border: 1px solid var(--border-color)
         cursor: pointer
         transition: .5s ease
         @include input()
@@ -112,6 +112,8 @@ export default {
             top: 0
             right: 10px
 
+            color: var(--text-color)
+
             transition: .4s ease
             &.active
                 transform: rotate(540deg)
@@ -124,14 +126,14 @@ export default {
         overflow: auto
         transition: .5s ease
         z-index: 10
-        border: 0 solid var(--input-border-color)
+        border: 0 solid var(--border-color)
 
-        background: var(--input-background-color)
+        background: var(--background-color)
         @include scroll()
 
         &.active
             max-height: 300px
-            border: 1px solid var(--input-border-color)
+            border: 1px solid var(--border-color)
 
         .multi-select-content
             display: flex

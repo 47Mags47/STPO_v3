@@ -388,7 +388,7 @@ export default {
             <TableRow>
                 <template v-for="column in collumns">
                     <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
-                        {{ column.title }}
+                        <span> {{ column.title }} </span>
                     </TableTh>
                 </template>
 
@@ -423,7 +423,7 @@ export default {
             </TableRow>
             <tr v-else-if="!('tbody' in $slots)">
                 <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
-                    <Ico type="database" />
+                    <Ico class="text-(--text-color)" type="database" />
                     <span class="text">Данных нет :(</span>
                 </TableTd>
             </tr>

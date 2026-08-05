@@ -126,7 +126,7 @@ export default {
 <style lang="sass">
 .avaible-date-container
     font-size: .8rem
-    color: white
+    color: var(--text-color)
 
 .form-item-container
     width: 100%

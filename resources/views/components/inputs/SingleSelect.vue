@@ -66,18 +66,18 @@ export default {
 
     &:hover
         .single-select
-            border-color: #bdbdbd
+            border-color: var(--border-color)
     .single-select
         width: 100%
         min-width: 132px
         min-height: 30px
         padding: 4px 38px 4px 12px
 
-        border: 1px solid #d8d8d8
-        border-radius: 10px
+        border: 1px solid var(--border-color)
+        border-radius: $input-border-radius
 
         background-color: white
-        color: #222
+        color: var(--text-color)
 
         font-size: 14px
         line-height: 1.4
@@ -90,7 +90,7 @@ export default {
             border-color: #3b82f6
 
     .single-select-content-wrapper
-        border: 1px solid gray
+        border: var(--border)
 
         position: absolute
         display: flex
@@ -102,7 +102,7 @@ export default {
         min-width: 120px
         width: 100%
 
-        background-color: white
+        background-color: var(--background-color)
 
         .single-select-content-option
             display: flex

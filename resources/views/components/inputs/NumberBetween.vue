@@ -45,7 +45,7 @@ export default {
     input
         width: 64px
         padding: 4px 10px
-        border: 1px solid #d8d8d8
+        border: var(--border)
         border-radius: 8px
         font-size: 14px
         line-height: 1.4

@@ -11,20 +11,20 @@
 html, body
     height: 100vh
 
-body,
-button,
-input,
-textarea,
-select,
-table,
-th,
-td,
-a,
-div
-    transition: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease
+// body,
+// button,
+// input,
+// textarea,
+// select,
+// table,
+// th,
+// td,
+// a,
+// div
+//     transition: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease
 
+::view-transition-old(root)
+    animation: none
 
-.my-class
-    display: flex
-    background: red
-
+::view-transition-new(root)
+    animation: none

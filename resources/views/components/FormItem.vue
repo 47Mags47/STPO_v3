@@ -47,7 +47,7 @@ export default {
 .form-item-container
     label
         padding-left: 7px
-        color: #333
+        color: var(--text-color)
         font-weight: bold
 
     &[data-orientation="vertical"]

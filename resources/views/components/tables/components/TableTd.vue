@@ -153,7 +153,7 @@ export default {
 
 <style lang="sass" scoped>
 td
-    border: var(--table-border)
+    border: var(--border)
     position: relative
 .table-cell-container
     width: 100%

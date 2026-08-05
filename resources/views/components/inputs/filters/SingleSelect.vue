@@ -57,7 +57,7 @@ export default {
 <template>
     <div class="single-select-container" v-outsideClick="clickOutsideHandler">
         <div class="single-select" @click="selectClickHandler">
-            {{ label }}
+            <span> {{ label }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -107,7 +107,7 @@ export default {
             right: 10px
 
             transition: .4s ease
-            color: black
+            color: var(--text-color)
 
             &.active
                 transform: rotate(540deg)
@@ -119,13 +119,13 @@ export default {
         transition: .5s ease
         z-index: 10
         width: 100%
-        border: 0 solid var(--input-border-color)
+        border: 0 solid var(--border-color)
 
         @include scroll
 
         &.active
             max-height: 300px
-            border: 1px solid var(--input-border-color)
+            border: 1px solid var(--border-color)
 
         .single-select-content
             display: flex
@@ -133,7 +133,7 @@ export default {
             width: 100%
             padding: 6px 4px
             cursor: pointer
-            background: white
+            background: var(--background-color)
             span
                 overflow: hidden
                 text-overflow: ellipsis

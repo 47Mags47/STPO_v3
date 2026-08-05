@@ -6,6 +6,7 @@ import Menu from './Menu.vue';
 import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
+import BlueButton from '../components/buttons/BlueButton.vue';
 
 export default {
     components: {
@@ -13,7 +14,8 @@ export default {
         Menu,
         Notifications,
         AlertsPopup,
-        Theme
+        Theme,
+        BlueButton
     },
 
     data() {
@@ -36,17 +38,17 @@ export default {
 <template>
     <div class="header-container">
         <div class="logo-container">
-            <h3>СТПО</h3>
+            <h3 class="text-white!">СТПО</h3>
         </div>
 
-        <div class="user-info-container" v-if="current_user" @click="toDashboard">
+        <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
             <div class="user-logo">
                 <Ico type="user" />
             </div>
             <div class="user-name">
                 <span>{{ current_user?.full_name }}</span>
             </div>
-        </div>
+        </BlueButton>
 
         <Theme/>
         <Notifications v-if="current_user"/>
@@ -59,7 +61,7 @@ export default {
 .header-container
     position: relative
     height: 60px
-    padding: 0 20px
+    padding: 10px 20px
 
     display: flex
     align-items: center
@@ -83,6 +85,7 @@ export default {
         display: flex
         align-items: center
         gap: 10px
+        width: fit-content
 
         padding: 7px 10px
         border: 2px solid white

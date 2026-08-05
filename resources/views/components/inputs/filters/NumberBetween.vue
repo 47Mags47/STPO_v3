@@ -39,7 +39,7 @@ export default {
 <template>
     <div class="number-between-container" v-outsideClick="clickOutsideHandler">
         <div class="number-between-label-container" @click="labelClickHandler">
-            {{ label }}
+            <span> {{ label }}</span>
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
         <div class="number-between-content-container" :class="{ 'active': isOpen }">
@@ -61,7 +61,7 @@ export default {
         padding: 6px 4px
         width: 100%
         transition: .5s ease
-        border: 1px solid var(--input-border-color)
+        border: 1px solid var(--border-color)
         cursor: pointer
 
         @include input()
@@ -78,7 +78,7 @@ export default {
             right: 10px
 
             transition: .4s ease
-            color: black
+            color: var(--text-color)
 
             &.active
                 transform: rotate(540deg)
@@ -94,7 +94,7 @@ export default {
         align-items: center
         justify-content: space-between
         transition: .5s ease
-        background: white
+        background: var(--background-color)
         padding: 0px 8px
         z-index: 10
         border: 0 solid lightgray

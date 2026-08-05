@@ -63,7 +63,7 @@ export default {
     <div :class="{'list-group-container': true, 'open': isOpen}">
         <div class="list-group-label" @click="openToggle">
             <div class="label-text-container">
-                {{ label }}
+                <span> {{ label }} </span>
             </div>
             <div class="label-ico-container">
                 <Ico type="chevron-right"/>

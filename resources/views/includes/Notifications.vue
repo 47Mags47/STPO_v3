@@ -192,6 +192,7 @@ export default {
         overflow: hidden
 
         transition: .5s
+
         &.open
             height: 400px
             width: 350px

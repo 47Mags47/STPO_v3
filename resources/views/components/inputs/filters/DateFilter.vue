@@ -48,7 +48,7 @@ export default {
 <template>
     <div class="date-input-container" v-outsideClick="clickOutsideHandler">
         <div class="date-input" @click="selectClickHandler">
-            {{ label }}
+            <span> {{ label }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -93,12 +93,10 @@ export default {
             right: 10px
 
             transition: .4s ease
-            color: black
+            color: var(--text-color)
 
             &.active
                 transform: rotate(540deg)
-
-
 
     .date-input-content-container
         width: 100%
@@ -108,15 +106,15 @@ export default {
         display: flex
         align-items: center
         transition: .5s ease
-        background: var(--input-background-color)
+        background: var(--background-color)
         z-index: 10
-        border: 0 solid var(--input-border-color)
+        border: 0 solid var(--border-color)
 
         cursor: auto
 
         &.active
             animation: open .5s ease forwards
-            border: var(--input-border)
+            border: var(--border)
         &:not(.active)
             animation: close .5s ease forwards
 

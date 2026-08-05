@@ -16,12 +16,13 @@ export default {
 .base-input[type="checkbox"]
         appearance: none
         -webkit-appearance: none
-        width: 26px !important
-        height: 26px !important
-        border: var(--input-border)
+        width: 20px !important
+        height: 20px !important
+        border: var(--border)
         border-radius: $input-border-radius
         cursor: pointer
         position: relative
+        padding: 0
 
         &:checked
             background-color: var(--button-background-color)
