@@ -131,7 +131,7 @@ export default {
         <div v-if="message.context?.is_image && !loadedImages[message.file_url]"
             class="flex gap-2 items-center justify-center h-[312px] w-[256px] overflow-hidden p-12!"
         >
-            <Ico type="spinner" class="animate-spin text-gray-500" />
+            <Ico type="spinner" class="animate-spin text-gray-500!" />
         </div>
 
         <!-- картинка -->
@@ -160,7 +160,7 @@ export default {
 
                 <Ico
                     type="file"
-                    class="text-gray-600 h-[48px]! w-fit! shrink-0"
+                    class="text-gray-800! h-[48px]! w-fit! shrink-0"
                     :class="isMine ? 'order-2' : 'order-1'"
                 />
             </div>

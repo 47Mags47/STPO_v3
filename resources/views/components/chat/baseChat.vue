@@ -20,5 +20,5 @@
     background: var(--background-color)
 
 .chat-footer
-    background: var(--background-color)
+    background: var(--chat-footer-background-color)
 </style>

@@ -11,7 +11,7 @@ export default {
 
 <template>
     <div>
-        <span class="wrap-anywhere rounded-xl ">
+        <span class="wrap-anywhere rounded-xl">
             <slot name=default>
                 {{ message }}
             </slot>

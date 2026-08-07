@@ -185,7 +185,7 @@ export default {
                             rounded-full
                             bg-gray-100
                             border border-gray-200
-                            text-gray-600
+                            text-gray-600!
                             text-[12px]!
                             font-medium
                             shadow-sm">

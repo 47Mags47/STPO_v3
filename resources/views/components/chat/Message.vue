@@ -33,7 +33,7 @@ export default {
     <div class="h-fit w-full flex flex-col my-1.5!" :class="isMine ? 'items-end' : 'items-start'">
         <!-- контейнер сообщения -->
         <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
-        :class="isMine ? 'items-end bg-sky-100' : 'items-start bg-gray-100'">
+        :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
 
             <span class="font-bold!"> {{ message.sender.name }} </span>
 
@@ -47,8 +47,8 @@ export default {
                 v-if="current_user.id === message.sender.id"
                 type="check-double"
                 class="h-[1lh]! w-fit!"
-                :class="message.readed ? 'text-blue-600' : 'text-gray-600'"/>
-                <span class="text-gray-600 italic">
+                :class="message.readed ? 'text-blue-600!' : 'text-gray-600!'"/>
+                <span class="italic">
                     {{ date_created_at }}
                 </span>
             </div>
