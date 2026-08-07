@@ -103,7 +103,12 @@ export default {
 
         &:hover
             background-color: var(--button-background-color)
-            color: white
+            span
+                transition: .5s ease
+                color: white
+
+            .ico-chevron
+                color: white
 
         .ico-chevron
             position: absolute

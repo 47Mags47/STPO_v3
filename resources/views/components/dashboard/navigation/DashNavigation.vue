@@ -70,14 +70,14 @@ export default {
                 <span v-for="(item, i) in navItems"
                 :key="i"
                 @click="navItemClickHandler(item)"
-                class="rounded px-2! text-lg! hover:text-gray-600 active:text-black cursor-pointer select-none"
-                :class="chosenNavItem?.url === item.url ? 'text-gray-600' : null">
+                class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none"
+                :class="chosenNavItem?.url === item.url ? 'text-gray-600!' : null">
                     {{ item.name }}
                 </span>
 
                 <div class="h-full w-full flex justify-end items-center select-none">
                     <button class="group cursor-pointer" @click="logout">
-                        <span class="text-red-600 text-lg! rounded px-2! group-hover:text-red-400 group-active:text-red-600"> выход </span>
+                        <span class="text-red-400! text-lg! rounded px-2! group-hover:text-red-300! group-active:text-red-600!"> выход </span>
                     </button>
                 </div>
 

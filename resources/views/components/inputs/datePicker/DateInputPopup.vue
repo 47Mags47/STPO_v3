@@ -247,7 +247,7 @@ export default {
     display: flex
     flex-direction: column
 
-    background: white
+    background: var(--background-color)
 
     border: 1px solid var(--border-color)
     border-radius: 12px
@@ -297,13 +297,13 @@ export default {
                 justify-content: center
                 align-items: center
 
-                background: white
+                background: var(--background-color)
                 border-radius: 50%
                 overflow: hidden
 
-                color: #333
+                color: var(--text-color)
                 &.current-day
-                    color: var(--button-background-color)
+                    color: orange
                 &.selected-day
                     color: #a770ff
                 &.in-range
@@ -311,12 +311,10 @@ export default {
                 &.available
                     cursor: pointer
                     &:hover
-                        background: #eee
+                        background: #a3a3a3
                 &.disabled, &.other-month
                     cursor: not-allowed
-                    color: #ddd
-
-
+                    color: #aaa
 
 .select-wrapper
     width: 64px
