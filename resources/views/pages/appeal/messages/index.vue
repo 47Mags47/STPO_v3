@@ -22,17 +22,17 @@ export default {
             router.visit(route("appeal.appeals.index"))
         }
     },
+
     computed: {
         appeal: () => usePage().props.appeal.data,
         messages: () => usePage().props.messages.data,
         statusColor() {
             const code = this.status.code
 
-            if (code === 'new') return 'text-blue-700'
-            if (code === 'closed') return 'text-green-700'
-            if (code === 'in_work') return 'text-yellow-700'
-            if (code === 'reaccepted') return 'text-red-700'
-            if (code === 'pending') return 'text-indigo-700'
+            if (code === 'new') return 'text-(--appeal-status-new)!'
+            if (code === 'closed') return 'text-(--appeal-status-closed)!'
+            if (code === 'in_work') return 'text-(--appeal-status-work)!'
+            if (code === 'reaccepted') return 'text-(--appeal-status-reaccepted)!'
 
             return ''
         }
