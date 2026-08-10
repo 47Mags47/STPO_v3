@@ -19,10 +19,10 @@ export default {
     },
     computed: {
         current_user: () => usePage().props.current_user?.data,
-        date_created_at(){
+        date_created_at() {
             return DateTime.fromISO(this.message.created_at).setLocale('ru').toFormat('HH:mm')
         },
-        isMine(){
+        isMine() {
             return this.current_user.id === this.message.sender.id
         },
     }
@@ -33,21 +33,26 @@ export default {
     <div class="h-fit w-full flex flex-col my-1.5!" :class="isMine ? 'items-end' : 'items-start'">
         <!-- контейнер сообщения -->
         <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
-        :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
+            :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
 
             <span class="font-bold!"> {{ message.sender.name }} </span>
 
-            <MessageFile :is-mine="isMine" v-if="message.file" :message="message"/>
-            <MessageText v-else :message="message.message"/>
+            <MessageFile :is-mine="isMine" v-if="message.file" :message="message" />
+            <MessageText v-else :message="message.message" />
 
             <!-- время -->
             <div class="h-full w-full flex items-center gap-1 leading-none"
-            :class="isMine ? 'justify-start' : 'justify-end'">
+                :class="isMine ? 'justify-start' : 'justify-end'">
+
                 <Ico
-                v-if="current_user.id === message.sender.id"
-                type="check-double"
-                class="h-[1lh]! w-fit!"
-                :class="message.readed ? 'text-blue-600!' : 'text-gray-600!'"/>
+                    v-if="current_user.id === message.sender.id && message.readed"
+                    type="check-double"
+                    class="h-[1lh]! w-[14px]! text-(--chat-message-readed-color)!"
+                />
+                <Ico
+                    v-else-if="current_user.id === message.sender.id && !message.readed"
+                    type="check"
+                    class="h-[1lh]! w-[14px]! text-(--chat-message-not-readed-color)!"/>
                 <span class="italic">
                     {{ date_created_at }}
                 </span>

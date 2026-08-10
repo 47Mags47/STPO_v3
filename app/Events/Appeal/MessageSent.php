@@ -33,6 +33,7 @@ class MessageSent implements ShouldBroadcastNow
               'id' => $this->message->sender->id,
               'name' => $this->message->sender->full_name,
             ],
+            'readed' => $this->message->readed,
             'created_at' => $this->message->created_at,
             'file' => $this->message->file !== null
                 ? [
@@ -43,7 +44,7 @@ class MessageSent implements ShouldBroadcastNow
             'file_url'   => $this->message->file !== null
                 ? route('files.show', ['file' => $this->message->file->id])
                 : null,
-            'context'    => $this->message->context,
+            'context'    => $this->message->context
         ];
     }
 }

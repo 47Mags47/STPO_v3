@@ -12,7 +12,6 @@ use App\Models\Base\Notification;
 use App\Events\Base\SendNotificationEvent;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 use App\Events\Appeal\MessageSent;
 
 class MessageController extends Controller
@@ -55,6 +54,7 @@ class MessageController extends Controller
             ]);
         }
 
+        $message->refresh();
 
         broadcast(new MessageSent(
             $message,

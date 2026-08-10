@@ -50,7 +50,10 @@ import {
     faReply,
 
     faMoon,
-    faSun
+    faSun,
+
+    faCheck,
+    faCheckDouble,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -104,7 +107,10 @@ library.add(
     faReply,
 
     faMoon,
-    faSun
+    faSun,
+
+    faCheck,
+    faCheckDouble,
 );
 
 dom.watch();

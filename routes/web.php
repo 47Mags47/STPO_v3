@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     // SYSTEM
     Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
     Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
+    Route::post('/messages-readed',                                  [App\Http\Controllers\Base\MessageController::class, 'readAll'])->name('message-readAll');
 
     // AUTH
     Route::name('auth.')->group(function () {

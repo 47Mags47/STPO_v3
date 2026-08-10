@@ -14,7 +14,7 @@ export default {
         Message,
         Footer,
     },
-    data(){
+    data() {
         return {
             localMessages: [],
         }
@@ -72,7 +72,7 @@ export default {
             return currentDate !== prevDate
         },
 
-        async sendMessage(message){
+        async sendMessage(message) {
             const file = message.file
 
             const DateNow = DateTime.now().toISO()
@@ -91,12 +91,12 @@ export default {
             router.post(this.postURL ?? location.href,
                 {
                     message: message.text === '' ? null : message.text,
-                    file:    message.file?.file,
+                    file: message.file?.file,
                     created_at: DateNow,
                 }, {
-                    preserveScroll: true,
-                    forceFormData: true,
-                }
+                preserveScroll: true,
+                forceFormData: true,
+            }
             )
 
             this.scrollToBottom()
@@ -105,7 +105,7 @@ export default {
         onScroll(e) {
             const el = e.target
 
-            const isTop = -1*el.scrollTop >= ( el.scrollHeight - el.clientHeight - 200 )
+            const isTop = -1 * el.scrollTop >= (el.scrollHeight - el.clientHeight - 200)
 
             if (isTop) {
                 this.loadMore()
@@ -122,13 +122,18 @@ export default {
         }
     },
     computed: {
-        current_user:   () => usePage().props.current_user?.data,
-        chat_id:        () => usePage().props.appeal?.data.chat_id,
-        links:          () => usePage().props.messages?.links,
+        current_user: () => usePage().props.current_user?.data,
+        chat_id: () => usePage().props.appeal?.data.chat_id,
+        links: () => usePage().props.messages?.links,
+        actualMessages() {
+            return this.messages
+        }
     },
     mounted() {
         // копия из Inertia props
         this.localMessages = [...this.messages]
+
+        axios.post(route('message-readAll'), { chat_id: this.chat_id, user_id: this.current_user.id })
 
         // DEV дописать пушинг файлов
         if (this.channelName !== null)
@@ -139,6 +144,7 @@ export default {
                         this.localMessages.unshift({
                             created_at: msg.created_at,
                             id: msg.id,
+                            readed: msg.readed,
                             message: msg.message,
                             context: msg.context,
                             file: msg.file,
@@ -148,7 +154,23 @@ export default {
                                 name: msg.sender.name
                             }
                         })
+
+                        axios.post(route('message-readAll'), { chat_id: this.chat_id, user_id: this.current_user.id })
                     }
+
+                    this.localMessages[0].id = msg.id
+                })
+                .listen('.message.readed', (data) => {
+                    data.messages.forEach((newMessage) => {
+
+                        const message = this.localMessages.find(
+                            message => message.id === newMessage.id
+                        );
+
+                        if (message) {
+                            message.readed = newMessage.readed;
+                        }
+                    });
                 })
     },
     beforeUnmount() {
@@ -157,6 +179,7 @@ export default {
                 if (file.isImage) URL.revokeObjectURL(file.url)
             })
         })
+        Echo.leave(this.channelName);
     }
 }
 </script>
@@ -165,22 +188,18 @@ export default {
     <baseChat>
         <template #content>
             <div class="flex flex-col-reverse custom-scrollbar h-full w-full px-4! pb-4!" @scroll="onScroll">
-                <template v-for="(message, index) in localMessages"
-                :key="message.id">
-                    <Message
-                    :message="message"
-                    :class="{
+                <template v-for="(message, index) in localMessages" :key="message.id">
+                    <Message :message="message" :class="{
                         'mt-16!':
-                        index   <       localMessages.length - 1
-                                &&      localMessages[index + 1].sender.id !== message.sender.id
-                                &&      !isShowDateSeparator(index)
-                    }"/>
+                            index < localMessages.length - 1
+                            && localMessages[index + 1].sender.id !== message.sender.id
+                            && !isShowDateSeparator(index)
+                    }" />
                     <!-- разделитель даты -->
                     <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
                         <div class="flex items-center gap-3 w-full max-w-[320px]">
                             <div class="h-px flex-1 bg-gray-200"></div>
-                            <span
-                            class="shrink-0
+                            <span class="shrink-0
                             px-2! py-1!
                             rounded-full
                             bg-gray-100
@@ -199,7 +218,7 @@ export default {
         </template>
 
         <template #footer>
-            <Footer :send-message="sendMessage"/>
+            <Footer :send-message="sendMessage" />
         </template>
     </baseChat>
 </template>
