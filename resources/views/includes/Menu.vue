@@ -84,8 +84,6 @@ export default {
             width: 0
             height: calc(100vh - 60px)
 
-            padding: 0
-
             background: var(--menu-background-color)
 
             overflow: hidden
@@ -93,7 +91,7 @@ export default {
             transition: .5s
             &.open
                 width: 350px
-                padding: 5px
+
     .list-container
         :deep()
             .list-item-container

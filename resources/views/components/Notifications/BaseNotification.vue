@@ -87,7 +87,7 @@ export default {
     gap: 5px
 
     &:not(.is_readed)
-        background: color.mix(#3d9ad1, #fff, 90%)
+        background: var(--notification-not-readed-background-color)
 
     .notification-header
         display: flex
