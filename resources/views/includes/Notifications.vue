@@ -86,7 +86,7 @@ export default {
         <div class="bell-container" @click="togleOpen">
             <Ico type="bell" />
             <div v-show="numberNots > 0" class="couner-container">
-                <span> {{ numberNots <= 99 ? numberNots : '99+' }} </span>
+                <span class="text-white!"> {{ numberNots <= 99 ? numberNots : '99+' }} </span>
             </div>
         </div>
 
