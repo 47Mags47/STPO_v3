@@ -112,6 +112,10 @@ export default {
             if (e.key === 'Escape') {
                 this.closeImagePreview();
             }
+        },
+
+        outsideClickHandler(){
+            this.previewImageUrl = null
         }
     },
 
@@ -212,8 +216,8 @@ export default {
                     <div class="absolute bottom-7 flex justify-around w-full">
                         <span
                             class="
-                                text-white text-2xl!
-                                cursor-pointer hover:text-blue-300
+                                text-white! text-2xl!
+                                cursor-pointer hover:text-blue-300!
                                 [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]"
                             @click="closeImagePreview"
                         >
