@@ -15,6 +15,10 @@ import {
     faArrowRotateLeft,
 
     faCircle,
+    faCircleExclamation,
+    faCircleCheck,
+    faCircleXmark,
+    faCircleInfo,
 
     faFile,
     faFileCirclePlus,
@@ -36,9 +40,6 @@ import {
     faBars,
     faX,
     faBug,
-
-    faCircleExclamation,
-    faCircleCheck,
 
     faDatabase,
     faBuildingColumns,
@@ -72,6 +73,10 @@ library.add(
     faArrowRotateLeft,
 
     faCircle,
+    faCircleExclamation,
+    faCircleCheck,
+    faCircleXmark,
+    faCircleInfo,
 
     faFile,
     faFileCirclePlus,
@@ -93,9 +98,6 @@ library.add(
     faBars,
     faX,
     faBug,
-
-    faCircleExclamation,
-    faCircleCheck,
 
     faDatabase,
     faBuildingColumns,

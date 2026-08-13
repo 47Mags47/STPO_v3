@@ -8,23 +8,15 @@ export default {
         BaseAlertPopUp,
         Ico
     },
-    props: {
-        message: {
-            type: String,
-            default: ''
-        },
-    },
 }
 </script>
 
 <template>
     <BaseAlertPopUp type="info">
         <template #header>
-            <div class="h-full w-full bg-(--meny-background)">
-                 <div class="absolute! left-1/2 top-[25%] -translate-x-1/2 bg-sky-200 rounded-full p-1.5! size-fit">
-                    <Ico type="circle-question"
-                    class="size-[30px]!
-                    text-(--meny-background)"/>
+            <div class="size-full flex flex-col justify-center items-center">
+                 <div class="bg-sky-50 rounded-full p-1.5! size-fit">
+                    <Ico type="circle-info" class="size-[25px]! text-sky-500"/>
                  </div>
             </div>
         </template>
