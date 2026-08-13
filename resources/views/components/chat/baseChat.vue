@@ -5,7 +5,7 @@
 <template>
     <div class="size-full flex flex-col overflow-hidden">
         <main id="messagesContainer"
-        class="chat-content-wrapper size-full min-h-0">
+        class="chat-content-wrapper overflow-y-auto size-full min-h-0">
             <slot name="content" />
         </main>
 
