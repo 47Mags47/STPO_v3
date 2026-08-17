@@ -212,10 +212,11 @@ export default {
                                 v-if="checkValid(dayInterval.start) && checkDateInMonth(dayInterval.start) && checkSelectable(dayInterval.start)"
                                 class="day-cell-container available"
                                 :class="{
-                                    'current-day'   : dayInterval.start.toMillis()   == now.startOf('day').toMillis(),
-                                    'selected-day'  : !(dayInterval.start.toMillis() == now.startOf('day').toMillis()) &&
+                                    'current-day'   : dayInterval.start.toMillis()   === now.startOf('day').toMillis(),
+                                    'selected-day'  : dayInterval.start.toMillis()   !== now.startOf('day').toMillis() &&
                                         dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.from ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.to,
+                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.to   ||
+                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate,
                                     'in-range'      : !(dayInterval.start.toMillis() == now.startOf('day').toMillis()) &&inRange(dayInterval.start),
                                 }"
                                 @click="() => dayClickHandler(dayInterval.start)"
@@ -262,8 +263,8 @@ export default {
 
     .header-container
         width: 100%
-        height: 40px
-        padding: 5px 7px
+        height: 60px
+        padding: 12px 7px
 
         display: flex
         justify-content: space-between
