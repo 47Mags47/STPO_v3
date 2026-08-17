@@ -29,7 +29,7 @@ class ReadTransitFileChunkJob implements ShouldQueue
             if (strlen(trim($line)) == 0)
                 continue;
 
-            if(!$this->checkValidLine($line))
+            if (!$this->checkValidLine($line))
                 continue;
 
             $row = str_getcsv($line, self::CSV_SEPARATOR);
@@ -37,20 +37,25 @@ class ReadTransitFileChunkJob implements ShouldQueue
             $snils = str_pad($row[0], 11, '0', STR_PAD_LEFT);
 
             try {
-                TransitRecipient::firstOrCreate([
-                    'SNILS'             => $snils[0] . $snils[1] . $snils[2] . '-' . $snils[3] . $snils[4] . $snils[5] . '-' . $snils[6] . $snils[7] . $snils[8] . ' ' . $snils[9] . $snils[10],
-                    'date_start'        => Carbon::createFromTimestamp($row[1] + 8 * 60 * 60, config('app.timezone', null)),
-                    'date_end'          => Carbon::createFromTimestamp($row[2] + 8 * 60 * 60, config('app.timezone', null)),
-                    'wp_category_id'    => $row[3],
-                    'file_id'           => $this->transitFile->id,
-                ]);
+                TransitRecipient::updateOrCreate(
+                    [
+                        'SNILS'             => $snils[0] . $snils[1] . $snils[2] . '-' . $snils[3] . $snils[4] . $snils[5] . '-' . $snils[6] . $snils[7] . $snils[8] . ' ' . $snils[9] . $snils[10],
+                        'date_start'        => Carbon::createFromTimestamp($row[1] + 8 * 60 * 60, config('app.timezone', null)),
+                        'date_end'          => Carbon::createFromTimestamp($row[2] + 8 * 60 * 60, config('app.timezone', null)),
+                    ],
+                    [
+                        'wp_category_id'    => $row[3],
+                        'file_id'           => $this->transitFile->id,
+                    ]
+                );
             } catch (\Throwable $th) {
                 Log::error($th);
             }
         }
     }
 
-     public function checkValidLine(string $line){
+    public function checkValidLine(string $line)
+    {
         // Проверка паттерна строки
         $line_pattern = implode('\\' . self::CSV_SEPARATOR, [
             str_replace(['/', '\\'], '', PATTERNS('TIMESTAMP')),
