@@ -37,22 +37,22 @@ class WriteResultFile implements ShouldQueue
         waitDisabledFile($this->resultFile->SFRFile);
         $this->resultFile->SFRFile->setDisabled();
         $this->resultFile->SFRFile->setStatus('reading');
-        Log::info('SFRFile');
+        Log::info('SFRFile created in DB');
 
         $this->resultFile->setDisabled();
         $this->resultFile->setStatus('creating');
         $this->resultFile = $this->resultFile->fresh();
-        Log::info('resultFile');
+        Log::info('resultFile created in DB');
 
         $this->fromFileCursor = fopen($this->resultFile->SFRFile->getFullPath(), 'r');
         $this->toFileCursor = fopen($this->resultFile->getFullPath(), 'w');
 
-        $date_start = $this->resultFile->SFRFile->date_start;
-        $date_end = $this->resultFile->SFRFile->date_end;
-
         while (!feof($this->fromFileCursor)) {
             $recipientLine = fgets($this->fromFileCursor);
             fwrite($this->toFileCursor, $recipientLine);
+
+            $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
+            $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
 
             // Проверяем, является ли строка записью типа О
             $recipientLine = mb_convert_encoding($recipientLine, 'UTF-8', 'CP-866');
@@ -71,7 +71,7 @@ class WriteResultFile implements ShouldQueue
                     'financingType'
                 ])
                 ->where('SNILS', $snils)
-                ->whereHas('paymentFile', fn($query) => $query->whereBetween('in_date', [$date_start, $date_end]))
+                ->whereHas('paymentFile', fn($query) => $query->whereBetween('in_date', [$periodDateStart, $periodDateEnd]))
                 ->orderBy('financing_type_id')
                 ->get();
 
@@ -81,8 +81,6 @@ class WriteResultFile implements ShouldQueue
             }
 
             // Пишем Эквиваленты
-            $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
-            $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
             $birth = Carbon::make(mb_substr($recipientLine, 150, 10));
             foreach ($periodDateStart->toPeriod($periodDateEnd)->month()->days(0) as $month) {
                 // HACK Вынести запрос за цикл по каждой строке
