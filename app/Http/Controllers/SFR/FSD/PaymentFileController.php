@@ -26,9 +26,7 @@ class PaymentFileController extends Controller
     public function store(PaymentFileStoreRequest $request)
     {
         foreach ($request->input('file_ids') as $uploadFileId) {
-            $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated(), [
-                'division_id' => user()->division->id
-            ]));
+            $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated()));
 
             ReadPaymentFileJob::dispatch($paymentFile);
         }

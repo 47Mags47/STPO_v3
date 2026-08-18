@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Administrate\Division;
 use App\Models\Administrate\FinancingType;
 use App\Models\Base\File;
 use App\Models\SFR\FSD\ASPPaymentCategory;
@@ -67,7 +66,6 @@ return new class extends Migration
 
             $table->date('in_date');
 
-            $table->foreignId('division_id')->constrained(Division::getTableName());
             $table->foreignId('file_id')->constrained(File::getTableName())
                 ->cascadeOnDelete();
 
