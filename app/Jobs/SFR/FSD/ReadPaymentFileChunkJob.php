@@ -97,7 +97,8 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         if (strlen(trim($line)) == 0)
             return false;
 
-        if (!preg_match('/^[0-9а-яА-ЯёЁ %;\.\(\)\-]*$/u', $line)){
+
+        if (!preg_match('/[0-9а-яА-ЯёЁ\s%;\.\(\)\-]*$/u', str_replace(["\r", "\r\n", "\n"], '', $line))){
             Log::driver('check')->info('Строка "'. $line .'" содержит недопустимые символы');
             $this->paymentFile->addError('Строка "'. $line .'" содержит недопустимые символы');
             return false;

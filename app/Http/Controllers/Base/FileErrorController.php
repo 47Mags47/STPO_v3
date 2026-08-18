@@ -8,9 +8,10 @@ use Inertia\Inertia;
 
 class FileErrorController extends Controller
 {
-    public function index(File $file){
+    public function index(File $file)
+    {
         return Inertia::render('base/file-errors/index', [
-            'errors' => fn()=> $file->errors->toResourceCollection()
+            'errors' => fn() => $file->errors()->paginate(getRequestPaginate())->toResourceCollection()
         ]);
     }
 }
