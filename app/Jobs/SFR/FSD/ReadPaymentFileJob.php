@@ -17,7 +17,7 @@ class ReadPaymentFileJob implements ShouldQueue
 
     public $timeout = 300;
 
-    const CHUNK_SIZE = 1000;
+    const CHUNK_SIZE = 250;
 
     public function __construct(public PaymentFile $paymentFile) {
         $this->onQueue('SFR-FSD');
