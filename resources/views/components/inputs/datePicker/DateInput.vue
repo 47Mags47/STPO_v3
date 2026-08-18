@@ -150,6 +150,7 @@ export default {
 
     .date-input-container
         position: relative
+        width: 100%
 
         &::after
             content: ""
@@ -161,8 +162,8 @@ export default {
             width: 25px
             height: 100%
 
-    .custom-date-input
-        width: 100%
+        .custom-date-input
+            width: 100%
 
     .calendar-icon
         position: absolute
