@@ -113,6 +113,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '100% компенсация по оплате кап.ремонта (108-ОЗ)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация по оплате кап.ремонта (108-ОЗ)']);
 
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кемеровской области']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'ПКО ветеранам боевых действий(ст11 № 8-ОЗ 14.01.19']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса-2000 рублей']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса-900рублей']);
