@@ -1,12 +1,34 @@
 <script>
 import Header from "../includes/Header.vue";
 import BaseLayout from "./BaseLayout.vue";
+import { Ico } from "@components";
+import { router } from "@inertiajs/vue3";
 
 export default {
     components: {
         BaseLayout,
         Header,
+        Ico
     },
+
+    data() {
+        return {
+            isLoading: false
+        }
+    },
+
+    mounted() {
+        this.unsubscribeStart = router.on('start', () => {
+            this.isLoading = true
+        })
+        this.unsubscribeFinish = router.on('finish', () => {
+            this.isLoading = false
+        })
+    },
+    unmounted() {
+        this.unsubscribeStart()
+        this.unsubscribeFinish()
+    }
 };
 </script>
 
@@ -14,7 +36,10 @@ export default {
     <BaseLayout name="auth-layout">
         <Header />
         <div class="content">
-            <slot />
+            <div v-if="isLoading" class="size-full flex items-center justify-center">
+                <Ico type="spinner" class="animate-spin size-[160px]!" />
+            </div>
+            <slot v-else/>
         </div>
     </BaseLayout>
 </template>
