@@ -73,9 +73,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->lines as $line) {
-            if (strlen(trim($line)) == 0)
-                continue;
-
             if (!$this->checkValidLine($line))
                 continue;
 
@@ -97,11 +94,21 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function checkValidLine(string $line)
     {
+        if (strlen(trim($line)) == 0)
+            return false;
+
+
+        if (!preg_match('/[0-9а-яА-ЯёЁ\s%;\.\(\)\-]*$/u', str_replace(["\r", "\r\n", "\n"], '', $line))){
+            Log::driver('check')->info('Строка "'. $line .'" содержит недопустимые символы');
+            $this->paymentFile->addError('Строка "'. $line .'" содержит недопустимые символы');
+            return false;
+        }
+
         $row = str_getcsv($line, self::CSV_SEPARATOR);
         $flag = true;
 
         foreach ($this->ROW_KEYS as $key) {
-            if (!preg_match('/' . $key['pattern'] . '/', $line)) {
+            if (!preg_match('/' . $key['pattern'] . '/u', $line)) {
                 Log::driver('check')->info('Строка "'. clearString($row[$key['row_number']]) .'" не соответсвует паттерну '. $key['pattern']);
                 $this->paymentFile->addError('Поле "'. $key['name'] .'" не соответсвует формату в cтроке ' . clearString($row[$key['row_number']]));
 

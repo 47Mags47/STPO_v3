@@ -60,37 +60,31 @@ return [
         'temp' => [
             'driver' => 'local',
             'root' => storage_path('app/private/temp'),
-            'throw' => true,
         ],
 
         'templates' => [
             'driver' => 'local',
             'root' => storage_path('app/private/templates'),
-            'throw' => true,
         ],
 
         'uploads' => [
             'driver' => 'local',
             'root' => storage_path('app/private/uploads'),
-            'throw' => true,
         ],
 
         'fsd' => [
             'driver' => 'local',
             'root' => storage_path('app/private/fsd'),
-            'throw' => true,
         ],
 
         'payments' => [
             'driver' => 'local',
             'root' => storage_path('app/private/payments'),
-            'throw' => true,
         ],
 
         'appeals' => [
             'driver' => 'local',
             'root' => storage_path('app/private/appeals'),
-            'throw' => true,
         ],
     ],
 

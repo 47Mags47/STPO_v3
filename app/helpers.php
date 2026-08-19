@@ -30,7 +30,7 @@ if (! function_exists('getRequestPaginate')) {
             return (int) request()->input('paginate');
         }
 
-        return 50;
+        return 25;
     }
 }
 
