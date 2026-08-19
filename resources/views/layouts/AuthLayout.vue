@@ -37,7 +37,7 @@ export default {
         <Header />
         <div class="content">
             <div v-if="isLoading" class="fixed z-1000 size-full flex items-center justify-center backdrop-blur-[2px]">
-                <Ico type="spinner" class="animate-spin size-[160px]!" />
+                <Ico type="spinner" class="animate-spin size-[128px]!" />
             </div>
             <slot />
         </div>
@@ -53,6 +53,5 @@ export default {
     .content
         flex: 1
         overflow: auto
-        scrollbar-gutter: stable
         @include scroll()
 </style>

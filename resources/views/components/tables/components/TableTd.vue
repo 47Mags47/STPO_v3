@@ -153,7 +153,7 @@ export default {
 
 <style lang="sass" scoped>
 td
-    border: var(--border)
+    border: var(--table-border)
     position: relative
     p
         color: inherit
