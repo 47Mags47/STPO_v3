@@ -127,9 +127,15 @@ class File extends BaseModel
         return Storage::disk($this->disk)->put($this->getLocalPath(), $encoding === 'UTF-8' ? $content : mb_convert_encoding($content, $encoding, 'UTF-8'));
     }
 
+    /**
+     * download file
+     * @return StreamedResponse
+     */
     public function download(): StreamedResponse
     {
-        return Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name);
+        return Storage::disk($this->disk)->exists($this->getLocalPath())
+            ? Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name)
+            : abort(404);
     }
 
     /**
