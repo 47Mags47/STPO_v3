@@ -41,11 +41,13 @@ Route::middleware('guest')->group(function () {
         Route::get('/users/create',                                 [App\Http\Controllers\Auth\UserController::class,  'create'])->name('users.create');
         Route::post('/users/create',                                [App\Http\Controllers\Auth\UserController::class,  'store'])->name('users.store');
     });
+
+    Route::resource('/select-division',                                 App\Http\Controllers\Base\SelectDivisionController::class)->only('index', 'store')->middleware('auth');
 });
 
 ### AUTH
 ##################################################
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'current.division'])->group(function () {
     // SYSTEM
     Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
     Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
@@ -57,6 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
     });
 
+    Route::resource('/select-division',                             App\Http\Controllers\Base\SelectDivisionController::class)->only('index', 'store');
     Route::get('/dashboard', fn() => Inertia::render('dashboard/dashboard'))->name('dashboard');
 
     // EMAIL

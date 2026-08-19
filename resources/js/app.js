@@ -22,7 +22,7 @@ createInertiaApp({
 
         const page = await importPage();
 
-        const exceptions = ['httpErrors/', 'NoEmail']
+        const exceptions = ['httpErrors/', 'NoEmail', 'SelectDivision', 'auth/']
         const isException = exceptions.some(n => name.startsWith(n))
 
         if (!isException) {

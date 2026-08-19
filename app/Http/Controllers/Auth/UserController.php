@@ -23,7 +23,7 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->route('home');
+            return redirect()->route('select-division.index');
         }
 
         return back()->withErrors([
@@ -48,13 +48,16 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $user = User::create($request->validated());
+        $data = $request->validated();
+
+        $user = User::create(collect($data)->except('division')->toArray());
+        $user->divisions()->attach($data['division']);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('selectDivision');
     }
 
     public function edit(User $user)

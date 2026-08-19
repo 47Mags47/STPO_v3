@@ -79,9 +79,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     ### Связи
     ##################################################
-    public function division(): BelongsToMany
+    public function divisions(): BelongsToMany
     {
-        return $this->belongsToMany(Division::class, 'auth_user_division');
+        return $this->belongsToMany(Division::class, 'base__user_pivot_divisions');
     }
 
     public function notifications(): HasMany

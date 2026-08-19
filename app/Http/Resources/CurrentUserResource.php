@@ -27,6 +27,10 @@ class CurrentUserResource extends JsonResource
             'is_email_verified' => $this->email_verified_at !== null,
             'notifications'     => $this->notifications->toResourceCollection(),
             'permissions'       => $this->getPermissions()->toResourceCollection(),
+            'divisions' => $this->divisions->map(fn($division) => [
+                'id' => $division->id,
+                'name' => $division->name,
+            ])->values(),
         ];
     }
 }
