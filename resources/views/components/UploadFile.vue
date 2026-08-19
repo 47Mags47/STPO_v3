@@ -120,7 +120,7 @@ export default {
                 @click="refreshFileButtonClickHandler" />
 
         </div>
-        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" />
+        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" :label="file.name?.slice(0, 10) + '.. ' + '.' + file.name?.split('.').pop()"/>
     </div>
 </template>
 
