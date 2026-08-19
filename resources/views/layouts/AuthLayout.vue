@@ -36,10 +36,10 @@ export default {
     <BaseLayout name="auth-layout">
         <Header />
         <div class="content">
-            <div v-if="isLoading" class="size-full flex items-center justify-center">
+            <div v-if="isLoading" class="fixed z-1000 size-full flex items-center justify-center backdrop-blur-[2px]">
                 <Ico type="spinner" class="animate-spin size-[160px]!" />
             </div>
-            <slot v-else/>
+            <slot />
         </div>
     </BaseLayout>
 </template>
