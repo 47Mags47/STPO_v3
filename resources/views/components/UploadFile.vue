@@ -42,7 +42,7 @@ export default {
                 this.errorText = error
 
             return error
-        }
+        },
     },
     methods: {
         deleteFileButtonClickHandler() {
@@ -97,6 +97,13 @@ export default {
                 .catch(() => {
                     this.uploadChunk(chunkId, content, attempt + 1)
                 })
+        },
+
+        getFileName(file) {
+            if (file.name.length > 60)
+                return file.name?.slice(0, 60) + '.. ' + '.' + file.name?.split('.').pop()
+
+            return file.name
         }
     },
     mounted() {
@@ -112,7 +119,7 @@ export default {
             <Ico v-if="status == 'success'" class="file-style-ico file-style-success" type="file-circle-check" />
             <Ico v-if="status == 'error' || error" class="file-style-ico file-style-error" type="file-circle-exclamation" />
 
-            <div class="file-name">{{ file.name }}</div>
+            <div v-if="status == 'error' || error" class="file-name">{{ file.name }}</div>
 
             <Ico v-if="status == 'success'" type="x" class="file-action-button delete-file-button"
                 @click="deleteFileButtonClickHandler" />
@@ -120,7 +127,7 @@ export default {
                 @click="refreshFileButtonClickHandler" />
 
         </div>
-        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" :label="file.name?.slice(0, 10) + '.. ' + '.' + file.name?.split('.').pop()"/>
+        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" :label="getFileName(file)"/>
     </div>
 </template>
 
@@ -159,5 +166,4 @@ export default {
                 color: red
             &.refresh-file-button
                 color: var(--button-background-color)
-
 </style>
