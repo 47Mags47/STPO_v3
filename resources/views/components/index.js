@@ -1,5 +1,6 @@
 export { default as ResourceForm } from './forms/ResourceForm.vue'
 export { default as VerticalForm } from './forms/VerticalForm.vue'
+export { default as FileGeneratorForm } from './forms/FileGeneratorForm/FileGeneratorForm.vue'
 
 export { default as List } from './List/List.vue'
 export { default as BlueButton } from './buttons/BlueButton.vue'

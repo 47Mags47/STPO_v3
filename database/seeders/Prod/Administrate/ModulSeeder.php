@@ -64,6 +64,14 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
 
+        // Templates
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Шаблоны',
+            'route_name'    => 'administrate.templates.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+
         ### Appeals
         ##################################################
         Modul::firstOrCreate([

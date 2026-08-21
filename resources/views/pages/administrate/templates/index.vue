@@ -6,6 +6,7 @@ export default {
     components: {
         ResourceTable,
     },
+
     computed: {
         templates: () => usePage().props.templates,
     },
@@ -21,23 +22,20 @@ export default {
         :hasEditButton="true"
 
         :data="templates.data"
-        :meta="divisions.meta"
+        :meta="templates.meta"
         :collumns="[
             {
-                title: 'Наименование',
-                dataIndex: 'name',
+                title: 'Writer',
+                dataIndex: 'writer',
+                width: '250px'
             },
             {
-                title: 'Вид',
-                dataIndex: 'style.name',
+                title: 'Описание',
+                dataIndex: 'description',
             },
             {
-                title: 'Тип',
-                dataIndex: 'type.name',
-            },
-            {
-                title: 'Разбивать',
-                dataIndex: 'chunk',
+                title: 'Файл шаблона',
+                dataIndex: 'file.name',
             },
         ]"
     />

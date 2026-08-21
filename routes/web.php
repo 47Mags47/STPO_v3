@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/payments',                                App\Http\Controllers\Administrate\PaymentController::class)->except('show');
         Route::resource('/banks',                                   App\Http\Controllers\Administrate\BankController::class)->except('show');
         Route::resource('/financing-types',                         App\Http\Controllers\Administrate\FinancingTypeController::class)->except('show');
+        Route::resource('/templates',                               App\Http\Controllers\Administrate\TemplateController::class)->except('show');
     });
 
     Route::name('appeal.')->prefix('/appeal')->group(function () {
