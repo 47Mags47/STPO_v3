@@ -3,6 +3,7 @@ import Header from "../includes/Header.vue";
 import BaseLayout from "./BaseLayout.vue";
 import { Ico } from "@components";
 import { router } from "@inertiajs/vue3";
+import { silentRoutes } from '@/silentRoutes'
 
 export default {
     components: {
@@ -19,6 +20,15 @@ export default {
 
     mounted() {
         this.unsubscribeStart = router.on('start', () => {
+            const routeObj = event.detail.visit
+
+            const isSilent = silentRoutes.some(silentRoute => {
+                return new RegExp(`^${silentRoute.url}$`).test(routeObj.url.href) && silentRoute.method === routeObj.method
+            })
+
+            if (isSilent)
+                return
+
             this.isLoading = true
         })
         this.unsubscribeFinish = router.on('finish', () => {
