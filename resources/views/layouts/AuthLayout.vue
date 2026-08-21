@@ -22,11 +22,11 @@ export default {
         this.unsubscribeStart = router.on('start', () => {
             const routeObj = event.detail.visit
 
-            const isSilent = silentRoutes.some(silentRoute => {
+            const isSilentRoute = silentRoutes.some(silentRoute => {
                 return new RegExp(`^${silentRoute.url}$`).test(routeObj.url.href) && silentRoute.method === routeObj.method
             })
 
-            if (isSilent)
+            if (isSilentRoute)
                 return
 
             this.isLoading = true
