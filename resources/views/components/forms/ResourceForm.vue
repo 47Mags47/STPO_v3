@@ -11,7 +11,7 @@ export default {
         FormItem:           defineAsyncComponent(() => import('../FormItem.vue')),
 
         StringInput:        defineAsyncComponent(() => import('../inputs/StringInput.vue')),
-        Textinput:          defineAsyncComponent(() => import('../inputs/Textinput.vue')),
+        TextInput:          defineAsyncComponent(() => import('../inputs/TextInput.vue')),
         PhoneInput:         defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
         EmailInput:         defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
         PasswordInput:      defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
@@ -102,7 +102,7 @@ export default {
                 :orientation="getFormItemOrientation(input)"
             >
                 <StringInput        v-if="input.type === 'string'"          v-bind="prepareProps(input)" />
-                <Textinput          v-if="input.type === 'text'"            v-bind="prepareProps(input)" />
+                <TextInput          v-if="input.type === 'text'"            v-bind="prepareProps(input)" />
                 <NumberInput        v-if="input.type === 'number'"          v-bind="prepareProps(input)" />
                 <PhoneInput         v-if="input.type === 'phone'"           v-bind="prepareProps(input)" />
                 <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'"     v-bind="prepareProps(input)" />
