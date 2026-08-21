@@ -40,11 +40,11 @@ export default {
 <template>
     <div :class="containerClasses" class="form-container">
         <Form :class="classes" :method="method.toUpperCase()" :action="action">
-            <div class="form-header-container">
+            <div v-if="'header' in $slots || header !== null" class="form-header-container">
                 <template v-if="'header' in $slots">
                     <slot name="header" />
                 </template>
-                <template v-else>
+                <template v-if="header !== null">
                     <h3>{{ header }}</h3>
                 </template>
             </div>
