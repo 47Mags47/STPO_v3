@@ -37,7 +37,7 @@ export default {
         <Header />
         <div class="content">
             <div v-if="isLoading" class="fixed z-1000 size-full flex items-center justify-center backdrop-blur-[2px]">
-                <Ico type="spinner" class="animate-spin size-[128px]!" />
+                <Ico type="spinner" class="animate-spin size-[128px]! text-(--text-color)!" />
             </div>
             <slot />
         </div>
