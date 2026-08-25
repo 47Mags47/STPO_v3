@@ -16,7 +16,6 @@ export default {
             defaul: 'main'
         },
     },
-<<<<<<< HEAD
 
     mounted() {
         this.unsubscribeStart = router.on('start', () => {
@@ -31,8 +30,6 @@ export default {
         this.unsubscribeStart()
         this.unsubscribeFinish()
     },
-=======
->>>>>>> dev
 };
 </script>
 
