@@ -1,28 +1,11 @@
 <?php
 
-use App\Models\Administrate\Bank;
-use App\Models\Administrate\Template;
-use App\Models\Payment\BankRaport;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // DEV
 if (config('app.env') === 'local') {
-    Route::get('/test', function(){
-        $template = Template::where('writer', 'App\Writers\Payment\VTBWriter')->get()->first();
-        $bank = Bank::where('code', 'test_VTB')->get()->first();
-
-        DB::enableQueryLog();
-        $raport = BankRaport::factory()->create([
-            'bank_id' => $bank->id,
-        ]);
-
-        $writer = new ($template->writer)($raport);
-        $writer->write();
-
-        dd($writer, collect(DB::getQueryLog())->map(fn($query) => $query['query']));
-    });
+    Route::get('/test', fn() => Inertia::render('test'));
     Route::get('/view', fn() => Inertia::render('view'));
 }
 
