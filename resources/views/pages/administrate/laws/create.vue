@@ -10,17 +10,17 @@ export default {
 
 <template>
 <ResourceForm
-    header="Новая запись (банк)"
+    header="Новая запись (закон)"
     sbm="Добавить"
-    :action="route('administrate.banks.store')"
+    :action="route('administrate.laws.store')"
     :inputs="[
         {
             type: 'string',
-            name: 'code',
-            label: 'Код',
+            name: 'number',
+            label: 'номер',
         },
         {
-            type: 'string',
+            type: 'text',
             name: 'name',
             label: 'Наименование',
         },

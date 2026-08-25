@@ -31,7 +31,7 @@ class LawController extends Controller
 
     public function edit(Law $law)
     {
-        return Inertia::render('administrate/financing-types/edit', [
+        return Inertia::render('administrate/laws/edit', [
             'law' => fn() => $law->toResource(),
         ]);
     }

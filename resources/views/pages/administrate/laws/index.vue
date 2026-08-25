@@ -7,24 +7,24 @@ export default {
         ResourceTable
     },
     computed: {
-        banks: () => usePage().props.banks
+        laws: () => usePage().props.laws
     }
 }
 </script>
 
 <template>
     <ResourceTable
-        caption="Банки"
+        caption="Законы"
         :hasCreateButton="true"
         :hasDeleteButton="true"
         :hasEditButton="true"
-        :data="banks.data"
-        :meta="banks.meta"
+        :data="laws.data"
+        :meta="laws.meta"
         :collumns="[
             {
-                title: 'Код',
-                dataIndex: 'code',
-                width: '100px'
+                title: 'Номер',
+                dataIndex: 'number',
+                width: '125px'
             },
             {
                 title: 'Наименование',

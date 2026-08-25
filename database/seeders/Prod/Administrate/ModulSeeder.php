@@ -64,6 +64,14 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('administrate')->id,
         ]);
 
+        // Laws
+        Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Законы',
+            'route_name'    => 'administrate.laws.index',
+            'group_id'      => ModulGroup::byCode('administrate')->id,
+        ]);
+
         ### Appeals
         ##################################################
         Modul::firstOrCreate([

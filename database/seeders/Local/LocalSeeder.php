@@ -18,6 +18,7 @@ class LocalSeeder extends Seeder
         $this->call(Administrate\DivisionSeeder::class);
         $this->call(Administrate\BankSeeder::class);
         $this->call(Administrate\PaymentSeeder::class);
+        $this->call(Administrate\LawSeeder::class);
 
         $this->call(Base\UserSeeder::class);
 

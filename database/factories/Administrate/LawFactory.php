@@ -18,8 +18,8 @@ class LawFactory extends Factory
     public function definition(): array
     {
         return [
-            'number' => rand(1, 999) . '-' . (bool) rand(0, 1) ? 'ФЗ' : 'ОЗ',
-            'name' => $this->faker->text(),
+            'number' => rand(1, 999) . '-' . ((bool) rand(0, 1) ? 'ФЗ' : 'ОЗ'),
+            'name' => 'test ' . $this->faker->text(),
         ];
     }
 }
