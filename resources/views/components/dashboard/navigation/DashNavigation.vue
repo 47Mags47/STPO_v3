@@ -1,6 +1,5 @@
 <script>
 import { router, usePage } from "@inertiajs/vue3";
-
 import Ico from '../../Ico.vue';
 import BaseDashNavigation from './components/BaseDashNavigation.vue';
 
@@ -9,10 +8,17 @@ export default {
         Ico,
         BaseDashNavigation
     },
+
     data() {
         return {
-            chosenNavItem: null,
-            navItems: [
+            chosenNavItem: null
+        }
+    },
+
+    computed: {
+        current_user: () => usePage().props.current_user.data,
+        navItems() {
+            return [
                 {
                     url: route('dashboard'),
                     name: 'данные',
@@ -28,16 +34,13 @@ export default {
                     name: 'настройки',
                     isHover: false,
                 },
-                {
+                this.current_user.divisions.length > 1 ? {
                     url: route('select-division.index'),
                     name: 'сменить организацию',
                     isHover: false,
-                },
-            ],
-        }
-    },
-
-    props: {
+                } : null,
+            ].filter(Boolean)
+        },
     },
 
     methods: {

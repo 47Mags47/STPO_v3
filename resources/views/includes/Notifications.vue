@@ -42,8 +42,9 @@ export default {
     watch: {
         isOpen(newVal){
             //Прокрутка
-            if(newVal)
-                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
+            if (newVal && this.$refs.notificationList) {
+                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight
+            }
 
             // Помечаем оповещения прочитанными
             if(newVal && this.numberNots > 0)
@@ -113,7 +114,7 @@ export default {
             </div>
 
             <div v-else class="empty-notifications-container">
-                <Ico type="circle-check" />
+                <Ico type="circle-check"/>
                 <span> уведомлений нет </span>
             </div>
         </div>
@@ -174,10 +175,11 @@ export default {
         .ico-container
             width: 125px
             height: 125px
-            color: #7bf1a8
+            color: var(--notifications-empty-ico-color)
         span
             font-size: 2rem
             font-weight: bold
+            color: white
 
     .notification-list-container
         position: absolute
