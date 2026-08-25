@@ -45,17 +45,21 @@ class File extends BaseModel
     ##################################################
     public static function createChildren(string $model, ?array $attributes = [])
     {
-        $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
         $childAttributes = array_intersect_key($attributes, array_flip(new $model()->getFillable()));
-
-        $fileModel = self::factory()->create(array_merge([
-            'disk' => $model::$storage_file_disk,
-            'path' => $model::$storage_file_path,
-        ], $fileAttributes));
+        $fileModel = self::createFromChildren($model, $attributes);
 
         return $model::create(array_merge([
             'file_id' => $fileModel->id,
         ], $childAttributes));
+    }
+
+    public static function createFromChildren(string $model, ?array $attributes = []): self {
+        $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
+
+        return self::factory()->create(array_merge([
+            'disk' => $model::$storage_file_disk,
+            'path' => $model::$storage_file_path,
+        ], $fileAttributes));
     }
 
     /**

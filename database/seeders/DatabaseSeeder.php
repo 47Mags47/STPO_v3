@@ -14,14 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        exec('php artisan app:create-folders');
-
         switch (config('app.env')) {
             case 'production':
                 $this->call(Prod\ProdSeeder::class);
                 break;
             case 'local':
                 $this->call(Prod\ProdSeeder::class);
+
+                if(is_dir(database_path('seeders/Hidden')) and file_exists(database_path('seeders/Hidden/HiddenSeeder.php')))
+                    $this->call(Hidden\HiddenSeeder::class);
+
                 $this->call(Local\LocalSeeder::class);
                 break;
 

@@ -29,7 +29,6 @@ class LocalSeeder extends Seeder
 
         $this->call(Base\NotificationSeeder::class);
 
-        $this->call(Payment\BankContractSeeder::class);
         $this->call(Payment\EventSeeder::class);
         $this->call(Payment\PaymentFileSeeder::class);
         $this->call(Payment\RecipientSeeder::class);
