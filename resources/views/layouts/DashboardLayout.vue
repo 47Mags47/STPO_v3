@@ -1,13 +1,14 @@
 <script>
 import { router } from "@inertiajs/vue3";
-
 import AuthLayout from "./AuthLayout.vue";
 import DashNavigation from "../components/dashboard/navigation/DashNavigation.vue";
+import Ico from "../components/Ico.vue";
 
 export default {
     components: {
         AuthLayout,
         DashNavigation,
+        Ico
     },
 
     props: {
@@ -15,20 +16,6 @@ export default {
             type: String,
             defaul: 'main'
         },
-    },
-
-    mounted() {
-        this.unsubscribeStart = router.on('start', () => {
-            this.isLoading = true
-        })
-        this.unsubscribeFinish = router.on('finish', () => {
-            this.isLoading = false
-        })
-    },
-    unmounted() {
-        // Важно отписаться, чтобы не было утечек памяти
-        this.unsubscribeStart()
-        this.unsubscribeFinish()
     },
 };
 </script>
@@ -38,13 +25,7 @@ export default {
         <div class="size-full flex flex-col ">
             <DashNavigation />
 
-            <div v-if="isLoading" class="size-full flex justify-center items-center">
-                <div class="size-[128px] animate-spin">
-                    <Ico type="spinner" />
-                </div>
-            </div>
-
-            <div v-else class="size-full">
+            <div class="size-full">
                 <div class="size-full">
                     <slot name="default" />
                 </div>

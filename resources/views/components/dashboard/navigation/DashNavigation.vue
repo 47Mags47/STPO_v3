@@ -58,7 +58,7 @@ export default {
 
     created() {
         // по умолчанию выбранный элемент это объект, у которого свойство url = текущему url
-        this.chosenNavItem = this.navItems.find(navItem => navItem.url === usePage().url)
+        this.chosenNavItem = this.navItems.find(navItem => navItem.url === location.href)
     },
 }
 </script>
@@ -72,7 +72,7 @@ export default {
                 :key="i"
                 @click="navItemClickHandler(item)"
                 class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none whitespace-nowrap"
-                :class="chosenNavItem?.url === item.url ? 'text-gray-600!' : null">
+                :class="chosenNavItem?.url === item.url ? 'text-gray-400!' : null">
                     {{ item.name }}
                 </span>
 
