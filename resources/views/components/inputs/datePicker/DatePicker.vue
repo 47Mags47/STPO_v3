@@ -88,9 +88,7 @@ export default {
 </script>
 
 <template>
-    <FormItem :name="name">
-        <!--    HACK убрать isRange из пропсов у инпутов, он должен быть только у пикера
-                В идеале вынести пикер в этот компонент DatePicker -->
+    <div>
         <DateInputBetween v-if="isRange"
             :name
             :isRange
@@ -120,7 +118,7 @@ export default {
                 Доступны даты с {{ start.toFormat('dd.MM.yyyy') }} по {{ end.toFormat('dd.MM.yyyy') }}
             </template>
         </div>
-    </FormItem>
+    </div>
 </template>
 
 <style lang="sass">

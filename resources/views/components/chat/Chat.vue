@@ -1,7 +1,6 @@
 <script>
 import { usePage, router } from "@inertiajs/vue3";
 import { DateTime } from "luxon";
-
 import Ico from "../Ico.vue";
 import baseChat from "./baseChat.vue";
 import Message from "./Message.vue";
@@ -14,6 +13,7 @@ export default {
         Message,
         Footer,
     },
+
     data() {
         return {
             localMessages: [],
@@ -73,6 +73,8 @@ export default {
         },
 
         async sendMessage(message) {
+            this.ignoreLoading = true
+
             const file = message.file
 
             const DateNow = DateTime.now().toISO()
@@ -88,15 +90,16 @@ export default {
                 }
             })
 
+            // HACK заменить на axios
             router.post(this.postURL ?? location.href,
                 {
                     message: message.text === '' ? null : message.text,
                     file: message.file?.file,
                     created_at: DateNow,
                 }, {
-                preserveScroll: true,
-                forceFormData: true,
-            }
+                    preserveScroll: true,
+                    forceFormData: true,
+                }
             )
 
             this.scrollToBottom()

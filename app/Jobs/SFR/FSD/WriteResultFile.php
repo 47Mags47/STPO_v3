@@ -51,11 +51,12 @@ class WriteResultFile implements ShouldQueue
             $recipientLine = fgets($this->fromFileCursor);
             fwrite($this->toFileCursor, $recipientLine);
 
+            $recipientLine = mb_convert_encoding($recipientLine, 'UTF-8', 'CP-866');
+
             $periodDateStart = Carbon::make(mb_substr($recipientLine, 1184, 10));
             $periodDateEnd = Carbon::make(mb_substr($recipientLine, 1194, 10));
 
             // Проверяем, является ли строка записью типа О
-            $recipientLine = mb_convert_encoding($recipientLine, 'UTF-8', 'CP-866');
             if (!preg_match("/^О[0-9]{3}-[0-9]{3}-[0-9]{3}.*$/", $recipientLine))
                 continue;
 

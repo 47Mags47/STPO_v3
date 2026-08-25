@@ -3,26 +3,20 @@ import { router } from "@inertiajs/vue3";
 
 import AuthLayout from "./AuthLayout.vue";
 import DashNavigation from "../components/dashboard/navigation/DashNavigation.vue";
-import Ico from "../components/Ico.vue";
-
 
 export default {
     components: {
         AuthLayout,
         DashNavigation,
-        Ico
     },
-    data() {
-        return {
-            isLoading: false,
-        }
-    },
+
     props: {
         content: {
             type: String,
             defaul: 'main'
         },
     },
+<<<<<<< HEAD
 
     mounted() {
         this.unsubscribeStart = router.on('start', () => {
@@ -37,6 +31,8 @@ export default {
         this.unsubscribeStart()
         this.unsubscribeFinish()
     },
+=======
+>>>>>>> dev
 };
 </script>
 

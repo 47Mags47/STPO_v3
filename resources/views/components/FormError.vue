@@ -29,6 +29,7 @@ export default {
     border: var(--error-border)
     padding: 5px 7px
     border-radius: 6px
+    opacity: .75
 
     span
         font-size: .9rem

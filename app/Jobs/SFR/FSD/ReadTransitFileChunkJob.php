@@ -40,8 +40,8 @@ class ReadTransitFileChunkJob implements ShouldQueue
                 TransitRecipient::updateOrCreate(
                     [
                         'SNILS'             => $snils[0] . $snils[1] . $snils[2] . '-' . $snils[3] . $snils[4] . $snils[5] . '-' . $snils[6] . $snils[7] . $snils[8] . ' ' . $snils[9] . $snils[10],
-                        'date_start'        => Carbon::createFromTimestamp($row[1] + 8 * 60 * 60, config('app.timezone', null)),
-                        'date_end'          => Carbon::createFromTimestamp($row[2] + 8 * 60 * 60, config('app.timezone', null)),
+                        'date_start'        => Carbon::createFromTimestamp($row[1] + 8 * 60 * 60, config('app.timezone', null))->startOfDay(),
+                        'date_end'          => Carbon::createFromTimestamp($row[2] + 8 * 60 * 60, config('app.timezone', null))->startOfDay(),
                     ],
                     [
                         'wp_category_id'    => $row[3],

@@ -432,7 +432,6 @@ export default {
         flex-direction: column
         z-index: 100
 
-
         :deep(.table-filters)
             display: flex
             max-height: 0
@@ -561,5 +560,4 @@ export default {
                 height: 30px
             .table-file-status-cell .table-cell-container
                 padding: 5px
-
 </style>

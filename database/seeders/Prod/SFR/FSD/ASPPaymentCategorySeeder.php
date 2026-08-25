@@ -107,7 +107,13 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация оплаты за газоснабжение']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату Эл.Эн. на ОДН (ком.услуг']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '100% компенсация по доставке твердого топлива']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% скидка по оплате за газоснабжение']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсац.по погрузке, выгрузке тверд. топлива']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату Эл.Эн. на ОДН (жил.услуг']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '100% компенсация по оплате кап.ремонта (108-ОЗ)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация по оплате кап.ремонта (108-ОЗ)']);
 
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кемеровской области']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'ПКО ветеранам боевых действий(ст11 № 8-ОЗ 14.01.19']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса-2000 рублей']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса-900рублей']);
@@ -150,6 +156,12 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-2000 рублей']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-900 рублей (2)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО - 10000 рублей']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО члену семьи гр-на, посмертно удост. зв. ']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-950 рублей']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-900рублей']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-920 рублей']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-2150 рублей']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия КО-1050 рублей (2)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса члену семьи погиб(ум) сотрудн. ОВД']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кузбасса члену семьи гр-на, посмертно удост']);
 
