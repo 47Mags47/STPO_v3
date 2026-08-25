@@ -16,26 +16,30 @@ class CurrentDivisionMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (user()->hasRole('system_user'))
-            return $next($request);
-
         $division_id = request()->session()->get('current_division_id');
-        if (!$division_id) {
-            abort(404, 'Сотрудник не состоит ни в одной организации.');
+
+        if ($division_id === null) {
+            // Если в сессии нет id организации, значит сессия была начата без указания организации
+            // редиректим человека на страницу выбора организации
+            return redirect()->route('select-division.index');
         }
 
-        $division = Division::find($division_id);
-        if (!$division) {
-            abort(404, 'Организации не существует.');
+        $division = Division::whereKey($division_id)->first();
+
+        if ($division === null) {
+            // Если в сессии есть ключ организации, но такой организации не существует
+            // возможно, что человек подменил сессию, или организация была удалена
+            // сбрасываем current_division_id и редиректим человека на страницу выбора организации
+            session()->forget('current_division_id');
+            return redirect()->route('select-division.index');
         }
 
-        abort_unless(
-            user()->divisions()->wherePivot('division_id', $division_id)->exists(),
-            403,
-            'Сотрудник не состоит в выбранной организации.'
-        );
-
-        $request->user()->setRelation('current_division', $division);
+        if(!user()->divisions()->wherePivot('division_id', $division_id)->exists()){
+            // Скорее всего человек пытаеться подменить сессию
+            // сбрасываем current_division_id и редиректим человека на страницу выбора организации
+            session()->forget('current_division_id');
+            return redirect()->route('select-division.index');
+        }
 
         return $next($request);
     }

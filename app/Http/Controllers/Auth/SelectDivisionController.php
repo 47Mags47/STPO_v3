@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Base;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,18 +19,7 @@ class SelectDivisionController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(
-            [
-                'division_id' => ['required', 'integer'],
-            ],
-            [
-                'division_id.required' => 'Необходимо выбрать организацию'
-            ]
-        );
-
-        $division_id = $data['division_id'];
-
-        $request->session()->put('current_division_id', $division_id);
+        $request->session()->put('current_division_id', $request->input('division_id'));
 
         return redirect()->route('dashboard');
     }

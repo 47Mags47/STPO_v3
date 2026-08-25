@@ -23,10 +23,7 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
-            if (user()->hasRole('system_user'))
-                return redirect('dashboard');
-
-            return redirect()->route('select-division.index');
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([

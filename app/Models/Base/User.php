@@ -13,13 +13,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Auth\Role;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Auth\UserPivotRole;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -85,15 +84,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Notification::class, 'recipient_id')->orderBy('created_at');
     }
 
-    // public function roles()
-    // {
-    //     return $this->belongsToMany(Role::class, 'auth__users_pivot_roles', 'user_id', 'role_id')
-    //         ->withPivot([
-    //             'division_id',
-    //             'modul_id',
-    //         ]);
-    // }
-
     public function divisions()
     {
         return $this->belongsToMany(Division::class, 'auth__users_pivot_roles', 'user_id', 'division_id')
@@ -103,9 +93,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             ]);
     }
 
-    public function division(){
-        // dd(Division::whereKey(session()->get('current_division_id')));
-        return Division::whereKey(session()->get('current_division_id'));
-        // return $this->divisions()->wherePivot('division_id', session()->get('current_division_id'));
+    public function division(): HasOneThrough{
+        return $this
+            ->hasOneThrough(Division::class, UserPivotRole::class, 'user_id', 'id', 'id', 'division_id')
+            ->where('division_id', session()->get('current_division_id'));
     }
 }
