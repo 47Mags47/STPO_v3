@@ -16,4 +16,22 @@ class SelectDivisionController extends Controller
             'divisions' => fn() => $divisions
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate(
+            [
+                'division_id' => ['required', 'integer'],
+            ],
+            [
+                'division_id.required' => 'Необходимо выбрать организацию'
+            ]
+        );
+
+        $division_id = $data['division_id'];
+
+        $request->session()->put('current_division_id', $division_id);
+
+        return redirect()->route('dashboard');
+    }
 }

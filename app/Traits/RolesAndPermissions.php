@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
+use App\Models\Administrate\Division;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use Illuminate\Support\Collection;
@@ -45,9 +46,11 @@ trait RolesAndPermissions
         return $this;
     }
 
-    public function hasRole(mixed $role): bool
+    public function hasRole(string $role, ?Division $division = null): bool
     {
-        return $this->roles()->where('role_id', Role::getId($role))->exists();
+        return $division === null
+            ? $this->roles()->where('code', $role)->exists()
+            : $this->roles()->where('code', $role)->wherePivot('division_id', $division->id)->exists();
     }
 
     public function hasPermission(mixed $permission): bool

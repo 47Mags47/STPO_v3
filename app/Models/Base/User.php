@@ -15,10 +15,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Auth\Role;
+
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -79,13 +80,26 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     ### Связи
     ##################################################
-    public function divisions(): BelongsToMany
-    {
-        return $this->belongsToMany(Division::class, 'base__user_pivot_divisions');
-    }
-
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'recipient_id')->orderBy('created_at');
+    }
+
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class, 'auth__users_pivot_roles', 'user_id', 'role_id')
+    //         ->withPivot([
+    //             'division_id',
+    //             'modul_id',
+    //         ]);
+    // }
+
+    public function divisions()
+    {
+        return $this->belongsToMany(Division::class, 'auth__users_pivot_roles', 'user_id', 'division_id')
+            ->withPivot([
+                'role_id',
+                'modul_id',
+            ]);
     }
 }

@@ -36,7 +36,7 @@ export default {
         // Важно отписаться, чтобы не было утечек памяти
         this.unsubscribeStart()
         this.unsubscribeFinish()
-    }
+    },
 };
 </script>
 
@@ -47,17 +47,13 @@ export default {
 
             <div v-if="isLoading" class="size-full flex justify-center items-center">
                 <div class="size-[128px] animate-spin">
-                    <Ico type="spinner"/>
+                    <Ico type="spinner" />
                 </div>
             </div>
 
             <div v-else class="size-full">
                 <div class="size-full">
                     <slot name="default" />
-                    <slot name="main" />
-                    <slot name="userdata" />
-                    <slot name="administrate" />
-                    <slot name="settings" />
                 </div>
             </div>
         </div>

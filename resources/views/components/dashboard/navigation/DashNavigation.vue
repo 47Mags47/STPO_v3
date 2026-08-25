@@ -15,7 +15,7 @@ export default {
             navItems: [
                 {
                     ico: 'faUser',
-                    url: '/show',
+                    url: '/dashboard',
                     name: 'данные',
                     isHover: false,
                 },
@@ -40,11 +40,7 @@ export default {
 
     methods: {
         routeTo(routeName) {
-            try {
-                router.visit(routeName);
-            } catch (error) {
-                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
-            }
+            router.get(routeName);
         },
         navItemClickHandler(item) {
             this.chosenNavItem = item

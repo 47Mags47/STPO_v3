@@ -19,4 +19,5 @@ export { default as ResourceTable } from './tables/ResourceTable/ResourceTable.v
 export { default as FileResourceTable } from './tables/FileResourceTable/FileResourceTable.vue'
 
 export { default as Select } from './inputs/Select.vue'
+export { default as SwitcherInput } from './inputs/SwitcherInput.vue'
 export { default as DatePicker } from './inputs/datePicker/DatePicker.vue'

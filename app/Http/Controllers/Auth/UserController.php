@@ -23,6 +23,9 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
+            if (user()->hasRole('system_user'))
+                return redirect('dashboard');
+
             return redirect()->route('select-division.index');
         }
 
@@ -50,14 +53,17 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
+        // HACK дописать Role::byCode('code')
         $user = User::create(collect($data)->except('division')->toArray());
-        $user->divisions()->attach($data['division']);
+        $user->divisions()->attach($data['division'], [
+            'role_id' => 3
+        ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect()->route('selectDivision');
+        return redirect()->route('select-division.index');
     }
 
     public function edit(User $user)

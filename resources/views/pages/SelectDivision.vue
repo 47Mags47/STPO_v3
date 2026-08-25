@@ -17,12 +17,12 @@ export default {
     <ResourceForm
         header="Выберите подразделение"
         sbm="дальше"
-        method="get"
-        :action="route('dashboard')"
+        method="post"
+        :action="route('select-division.store')"
         :inputs="[
             {
                 type: 'select',
-                name: 'divisions',
+                name: 'division_id',
                 hasSearch: false,
                 options: current_user.divisions
             }

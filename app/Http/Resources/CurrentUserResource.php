@@ -31,6 +31,12 @@ class CurrentUserResource extends JsonResource
                 'id' => $division->id,
                 'name' => $division->name,
             ])->values(),
+            'current_division' => $this->current_division
+                ? [
+                    'id' => $this->current_division->id,
+                    'name' => $this->current_division->name,
+                ]
+                : null,
         ];
     }
 }

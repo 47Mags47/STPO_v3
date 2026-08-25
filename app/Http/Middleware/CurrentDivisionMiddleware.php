@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Administrate\Division;
 use Symfony\Component\HttpFoundation\Response;
 
 class CurrentDivisionMiddleware
@@ -16,29 +16,26 @@ class CurrentDivisionMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd(
-            user()->id
-        );
-        if (user()->hasRole('admin')) {
-            return redirect('dashboard');
+        if (user()->hasRole('system_user'))
+            return $next($request);
+
+        $division_id = request()->session()->get('current_division_id');
+        if (!$division_id) {
+            abort(404, 'Сотрудник не состоит ни в одной организации.');
         }
 
-        // $divisionId = $request->input('division_id');
+        $division = Division::find($division_id);
+        if (!$division) {
+            abort(404, 'Организации не существует.');
+        }
 
-        // if (!$divisionId) {
-        //     return $next($request);
-        // }
+        abort_unless(
+            user()->divisions()->wherePivot('division_id', $division_id)->exists(),
+            403,
+            'Сотрудник не состоит в выбранной организации.'
+        );
 
-        // $division = user()
-        //     ->divisions()
-        //     ->wherePivot('division_id', $divisionId)
-        //     ->first();
-
-        // if (!$division) {
-        //     abort(404, 'Сотрудник не состоит ни в одной организации.');
-        // }
-
-        // session()->put('current_division_id', $division->id);
+        $request->user()->setRelation('current_division', $division);
 
         return $next($request);
     }
