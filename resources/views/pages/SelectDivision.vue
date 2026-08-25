@@ -1,31 +1,27 @@
 <script>
-import { usePage } from '@inertiajs/vue3';
-import { ResourceForm } from '@components';
+import { usePage, router } from '@inertiajs/vue3';
+import { SelectDivisionForm } from '@components';
 
 export default {
     components: {
-        ResourceForm
+        SelectDivisionForm
     },
 
     computed: {
         current_user: () => usePage().props.current_user.data
+    },
+
+    methods: {
+        clickHandler(division_id) {
+            router.post(route('select-division.store', { division_id: division_id }))
+        }
     }
 }
 </script>
 
 <template>
-    <ResourceForm
-        header="Выберите подразделение"
-        sbm="дальше"
-        method="post"
-        :action="route('select-division.store')"
-        :inputs="[
-            {
-                type: 'select',
-                name: 'division_id',
-                hasSearch: false,
-                options: current_user.divisions
-            }
-        ]"
+    <SelectDivisionForm
+        :divisions="current_user.divisions"
+        :clickHandler="clickHandler"
     />
 </template>

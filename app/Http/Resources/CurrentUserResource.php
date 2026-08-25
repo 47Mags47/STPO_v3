@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Auth\Role;
 
 class CurrentUserResource extends JsonResource
 {
@@ -30,11 +31,20 @@ class CurrentUserResource extends JsonResource
             'divisions' => $this->divisions->map(fn($division) => [
                 'id' => $division->id,
                 'name' => $division->name,
+                'role' => [
+                    'id' => $division->pivot?->role_id,
+                    'name' => Role::roleById($division->pivot?->role_id)?->name
+                ]
             ])->values(),
-            'current_division' => $this->current_division
+            'current_division' => $this->division
                 ? [
-                    'id' => $this->current_division->id,
-                    'name' => $this->current_division->name,
+                    'id' => $this->division->id,
+                    'name' => $this->division->name,
+                    'role' => [
+                        'id' => $this->role?->id,
+                        'code' => $this->role?->code,
+                        'name' => $this->role?->name,
+                    ]
                 ]
                 : null,
         ];

@@ -14,21 +14,23 @@ export default {
             chosenNavItem: null,
             navItems: [
                 {
-                    ico: 'faUser',
-                    url: '/dashboard',
+                    url: route('dashboard'),
                     name: 'данные',
                     isHover: false,
                 },
                 {
-                    ico: 'faUserGear',
                     url: '/admin',
                     name: 'администрирование',
                     isHover: false,
                 },
                 {
-                    ico: 'faGear',
                     url: '/settings',
                     name: 'настройки',
+                    isHover: false,
+                },
+                {
+                    url: route('select-division.index'),
+                    name: 'сменить организацию',
                     isHover: false,
                 },
             ],
@@ -66,7 +68,7 @@ export default {
                 <span v-for="(item, i) in navItems"
                 :key="i"
                 @click="navItemClickHandler(item)"
-                class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none"
+                class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none whitespace-nowrap"
                 :class="chosenNavItem?.url === item.url ? 'text-gray-600!' : null">
                     {{ item.name }}
                 </span>

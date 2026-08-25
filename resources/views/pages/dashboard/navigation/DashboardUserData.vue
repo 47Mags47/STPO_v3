@@ -26,9 +26,12 @@ export default {
                     return this.isEmailVerified ? "text-gray-400!" : 'text-gray-400! border-(--warning-border-color)!'
 
                 return 'border-(--warning-border-color)!'
+            }
+            if (name === 'division') {
+                return 'text-gray-400! border-gray-400!'
+            }
 
-            } else
-                return this.isReadonly ? 'border-gray-400! text-gray-400!' : ''
+            return this.isReadonly ? 'border-gray-400! text-gray-400!' : ''
         },
     },
     computed: {
@@ -95,7 +98,7 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
+                    class: this.inputsClasses('division'),
                     type: 'string',
                     name: 'division_id',
                     label: 'организация',

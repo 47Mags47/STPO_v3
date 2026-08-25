@@ -27,7 +27,7 @@ export default {
 
     .content
         flex: 1
-        overflow: auto
+        overflow-x: hidden
         scrollbar-gutter: stable
         @include scroll()
 </style>

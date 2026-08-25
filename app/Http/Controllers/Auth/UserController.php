@@ -23,7 +23,13 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->route('dashboard');
+            if (user()->divisions->count() === 1) {
+                $request->session()->put('current_division_id', user()->divisions()->first()->id);
+
+                return redirect()->route('dashboard');
+            }
+
+            return redirect()->route('select-division.index');
         }
 
         return back()->withErrors([
@@ -60,7 +66,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('select-division.index');
+        return redirect()->route('dashboard');
     }
 
     public function edit(User $user)

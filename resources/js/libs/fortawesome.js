@@ -55,6 +55,8 @@ import {
 
     faCheck,
     faCheckDouble,
+
+    faBuildingUser,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -113,6 +115,8 @@ library.add(
 
     faCheck,
     faCheckDouble,
+
+    faBuildingUser,
 );
 
 dom.watch();

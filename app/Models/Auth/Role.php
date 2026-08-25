@@ -42,6 +42,10 @@ class Role extends BaseModel
         }
     }
 
+    public static function roleById($id) {
+        return self::find($id);
+    }
+
     ### Связи
     ##################################################
     public function permissions(): BelongsToMany
