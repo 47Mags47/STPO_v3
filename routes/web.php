@@ -5,7 +5,9 @@ use Inertia\Inertia;
 
 // DEV
 if (config('app.env') === 'local') {
-    Route::get('/test', fn() => Inertia::render('test'));
+    Route::get('/test', function(){
+        dd(session()->all(), user()->division);
+    });
     Route::get('/view', fn() => Inertia::render('view'));
 }
 

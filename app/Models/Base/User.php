@@ -19,7 +19,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Auth\Role;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -101,5 +101,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 'role_id',
                 'modul_id',
             ]);
+    }
+
+    public function division(){
+        // dd(Division::whereKey(session()->get('current_division_id')));
+        return Division::whereKey(session()->get('current_division_id'));
+        // return $this->divisions()->wherePivot('division_id', session()->get('current_division_id'));
     }
 }
