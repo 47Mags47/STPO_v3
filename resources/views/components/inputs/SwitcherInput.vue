@@ -38,8 +38,8 @@ export default {
             :class="!value ? 'bg-(--switcher-background-on-color)' : 'bg-(--switcher-background-off-color)'"
         >
             <div
-                class="size-4 rounded-full bg-white transition-transform duration-200"
-                :class="!value ? 'translate-x-[17px]' : 'translate-x-0'"
+                class="size-3 rounded-full bg-white transition-transform duration-200"
+                :class="!value ? 'translate-x-[20px]' : 'translate-x-0'"
             ></div>
         </div>
 

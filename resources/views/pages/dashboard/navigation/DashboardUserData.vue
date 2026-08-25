@@ -23,9 +23,9 @@ export default {
         inputsClasses(name = null) {
             if (name === 'email') {
                 if (this.isReadonly)
-                    return this.isEmailVerified ? "text-gray-400!" : 'text-gray-400! border-(--warning-border-color)!'
+                    return this.isEmailVerified ? "text-gray-400! border-gray-400!" : 'text-gray-400! border-(--warning-border-color)!'
 
-                return 'border-(--warning-border-color)!'
+                return this.isEmailVerified ? '' : 'border-(--warning-border-color)!'
             }
             if (name === 'division') {
                 return 'text-gray-400! border-gray-400!'
