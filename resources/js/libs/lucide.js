@@ -58,5 +58,6 @@ export {
     Building2                   as 'building-user',
 
     CircleQuestionMark,
-    FaceAngry,
+    MessageSquare               as 'message-square',
+    ClipboardList
 } from '@lucide/vue';

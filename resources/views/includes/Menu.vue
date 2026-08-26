@@ -1,12 +1,14 @@
 <script>
 import { router, usePage } from "@inertiajs/vue3";
 import Ico from "../components/Ico.vue";
+import BlueButton from "../components/buttons/BlueButton.vue";
 import { List } from "./../components/List";
 
 export default {
     components: {
         Ico,
-        List
+        List,
+        BlueButton
     },
 
     data() {
@@ -59,14 +61,14 @@ export default {
 </script>
 
 <template>
-    <div class="menu-container" v-outsideClick="outsideClickHandler">
+    <BlueButton class="menu-container w-fit!" v-outsideClick="outsideClickHandler">
         <div class="button-container" @click="togleOpen">
             <Ico type="bars" />
         </div>
         <div :class="{ 'menu-list-container': true, open: isOpen }">
             <List :items="menuList" :onItemClick="(item) => menuItemClickHandler(item)" />
         </div>
-    </div>
+    </BlueButton>
 </template>
 
 <style lang="sass" scoped>

@@ -7,6 +7,7 @@ import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
+import Appeal from './Appeal.vue';
 
 export default {
     components: {
@@ -15,6 +16,7 @@ export default {
         Notifications,
         AlertsPopup,
         Theme,
+        Appeal,
         BlueButton
     },
 
@@ -50,6 +52,7 @@ export default {
             </div>
         </BlueButton>
 
+        <Appeal />
         <Theme/>
         <Notifications v-if="current_user"/>
         <Menu />
@@ -66,7 +69,7 @@ export default {
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 15px
+    gap: 10px
 
     color: white
     background: var(--menu-background-color)

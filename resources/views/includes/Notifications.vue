@@ -1,12 +1,12 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
-import { Ico } from '@components';
+import { Ico, BlueButton } from '@components';
 import axios from 'axios';
 
 export default {
     components: {
-        Ico,
+        Ico, BlueButton,
         NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
         DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
     },
@@ -84,12 +84,12 @@ export default {
 <template>
     <div class="notifications-container" v-outsideClick="outsideClickHandler">
 
-        <div class="bell-container" @click="togleOpen">
+        <BlueButton class="bell-container w-fit! h-[40px]!" @click="togleOpen">
             <Ico type="bell" />
             <div v-show="numberNots > 0" class="couner-container">
                 <span class="text-white!"> {{ numberNots <= 99 ? numberNots : '99+' }} </span>
             </div>
-        </div>
+        </BlueButton>
 
         <div class="notification-list-container" :class="{ 'open': isOpen }">
 
@@ -124,21 +124,7 @@ export default {
 <style lang="sass" scoped>
 .notifications-container
     .bell-container
-        width: 25px
-        height: 25px
         position: relative
-        cursor: pointer
-
-        transition: .3s
-
-        &:active
-            filter: brightness(75%)
-        &:hover
-            filter: brightness(75%)
-
-        .ico-container
-            width: 25px
-            height: 25px
         .couner-container
             position: absolute
 
