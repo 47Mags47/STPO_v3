@@ -85,15 +85,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Notification::class, 'recipient_id')->orderBy('created_at');
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Division::class, 'auth__users_pivot_roles', 'user_id', 'role_id')
-            ->withPivot([
-                'division_id',
-                'modul_id',
-            ]);
-    }
-
     public function role(): HasOneThrough
     {
         return $this
