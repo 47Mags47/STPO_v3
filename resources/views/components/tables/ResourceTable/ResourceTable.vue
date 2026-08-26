@@ -569,7 +569,7 @@ export default {
                 .filter-btn-item-icon
                     color: lightgray
                     height: 100%
-                    width: 14px
+                    width: fit-content
                     transition: .2s ease
                     transform: rotate(0deg)
     :deep()

@@ -89,7 +89,7 @@ export default {
 
         .ico-chevron
             position: absolute
-            width: 14px
+            width: 22px
 
             top: 0
             right: 10px
