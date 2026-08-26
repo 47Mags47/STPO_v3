@@ -22,13 +22,13 @@ class EventController extends Controller
 
         $date_end = $date_start->endOfMonth();
 
+        $events = Event::whereBetween('in_day', [$date_start, $date_end])
+            ->orderBy('in_day')
+            ->paginate();
+
         return Inertia::render('payment/events/index', [
-            'events' => fn() => Event::whereBetween('in_day', [$date_start, $date_end])
-                ->orderBy('in_day')
-                ->get()
-                ->toResourceCollection()
-                ->groupBy('in_day'),
-            'current_date' => $date_start,
+            'events' => fn() => $events->toResourceCollection(),
+            'current_date' => $date_start
         ]);
     }
 

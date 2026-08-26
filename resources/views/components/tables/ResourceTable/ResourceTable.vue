@@ -276,6 +276,13 @@ export default {
 
             return Object.get(row, collumn.dataIndex)
         },
+        getCellRowspan(row, column, index) {
+            if (typeof column.rowspan === 'function') {
+                return column.rowspan(row, index, this.data)
+            }
+
+            return column.rowspan
+        },
     },
 
     mounted() {
@@ -392,27 +399,59 @@ export default {
         </template>
 
         <template #tbody>
-            <slot name="tbody" />
-            <TableRow v-if="data.length > 0" v-for="row in data" :class="getRowClasses(row)" >
-                <template v-for="collumn in collumns">
-                    <TableTd v-if="checkCellVisible(row, collumn)"
-                        v-bind="{
-                            ...collumn,
-                            row,
-                            value: getCellValue(row, collumn)
-                        }"
+            <template v-if="data.length > 0">
+                <TableRow
+                    v-for="(row, index) in data"
+                    :key="row.id ?? index"
+                    :class="getRowClasses(row)"
+                >
+                    <template v-for="collumn in collumns" :key="collumn.dataIndex">
+                        <TableTd
+                            v-if="
+                                checkCellVisible(row, collumn)
+                                && getCellRowspan(row, collumn, index) !== 0
+                            "
+                            v-bind="{
+                                ...collumn,
+                                row,
+                                value: getCellValue(row, collumn),
+                                rowspan: getCellRowspan(row, collumn, index)
+                            }"
+                        />
+                    </template>
+
+                    <TableTd v-if="checkRowHasDeleteButton(row)">
+                        <DeleteButton @click="() => deleteButtonClickHandler(row)" />
+                    </TableTd>
+
+                    <TableTd v-if="checkRowHasShowButton(row)">
+                        <ShowButton @click="() => showButtonClickHandler(row)" />
+                    </TableTd>
+
+                    <TableTd v-if="checkRowHasEditButton(row)">
+                        <EditButton @click="() => editButtonClickHandler(row)" />
+                    </TableTd>
+
+                    <RowLink
+                        v-for="link in rowLinks"
+                        :key="link.name ?? link"
+                        v-bind="{ ...link, row }"
                     />
-                </template>
+                </TableRow>
+            </template>
 
-                <TableTd v-if="checkRowHasDeleteButton(row)"><DeleteButton @click="() => deleteButtonClickHandler(row)" /></TableTd>
-                <TableTd v-if="checkRowHasShowButton(row)"><ShowButton @click="() => showButtonClickHandler(row)" /></TableTd>
-                <TableTd v-if="checkRowHasEditButton(row)"><EditButton @click="() => editButtonClickHandler(row)" /></TableTd>
+            <tr v-else>
+                <TableTd
+                    :colspan="collumns.length + rowLinks.length"
+                    vertical="center"
+                    horizontal="center"
+                    class="not-data-cell"
+                >
+                    <Ico
+                        class="text-(--text-color)"
+                        type="database"
+                    />
 
-                <RowLink v-for="link in rowLinks" v-bind="{...link, row}" />
-            </TableRow>
-            <tr v-else-if="!('tbody' in $slots)">
-                <TableTd :colspan="collumns.length + rowLinks.length" vertical="center" horizontal="center" class="not-data-cell">
-                    <Ico class="text-(--text-color)" type="database" />
                     <span class="text">Данных нет :(</span>
                 </TableTd>
             </tr>
