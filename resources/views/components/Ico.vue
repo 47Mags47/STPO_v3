@@ -1,14 +1,17 @@
 <script>
+import * as lucide from '@/libs/lucide.js';
+
 export default {
     props: {
         type: {
             type: String,
+            required: true
         }
     },
 
     computed: {
-        getType () {
-            return this.type
+        currentIcon() {
+            return lucide[this.type] ?? lucide.CircleQuestionMark;
         }
     }
 };
@@ -16,21 +19,16 @@ export default {
 
 <template>
     <div class="ico-container">
-        <i :class="['fa-solid', `fa-${getType}`]"></i>
+        <component
+            :is="currentIcon"
+            class="size-full"
+            :stroke-width="2"
+        />
     </div>
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .ico-container
     width: 100%
     height: 100%
-
-    position: relative
-
-    display: flex
-
-    overflow: hidden
-    svg
-        width: 100%
-        height: 100%
 </style>

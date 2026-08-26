@@ -1,6 +1,6 @@
 import { usePage } from "@inertiajs/vue3";
 
-const current_user__permissions = usePage().props.current_user.data.permissions;
+const current_user__permissions = usePage().props?.current_user.data.permissions;
 
 export function hasPermission(code) {
     if (typeof code !== 'string') {
@@ -8,7 +8,7 @@ export function hasPermission(code) {
         return false
     }
 
-    return current_user__permissions.some(permission => permission.code === code) ?? false
+    return current_user__permissions?.some(permission => permission.code === code) ?? false
 }
 
 window.hasPermission = hasPermission;

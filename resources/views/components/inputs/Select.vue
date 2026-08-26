@@ -193,7 +193,7 @@ export default {
                 @keydown="onKey"
             />
 
-            <Ico type="chevron-down" />
+            <Ico type="chevron-down" :class="{ 'rotated': open }" />
         </div>
 
         <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
@@ -232,8 +232,8 @@ export default {
             right: 10px
             transform: translateY(-50%)
 
-            width: 15px
-            height: 15px
+            width: 25px
+            height: 25px
 
             pointer-events: none
             transition: 0.3s

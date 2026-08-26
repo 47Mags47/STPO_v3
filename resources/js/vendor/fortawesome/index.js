@@ -1,2 +1,0 @@
-import './fontawesome'
-import './solid'

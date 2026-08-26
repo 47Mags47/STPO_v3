@@ -1,6 +1,5 @@
 import './bootstrap'
 import './helpers';
-import './libs/fortawesome.js';
 import { initTheme } from './theme';
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";

@@ -448,7 +448,7 @@ export default {
                     class="not-data-cell"
                 >
                     <Ico
-                        class="text-(--text-color)"
+                        class="text-(--text-color) h-[148px]!"
                         type="database"
                     />
 

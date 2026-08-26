@@ -1,6 +1,5 @@
 <script>
-import { router, usePage } from "@inertiajs/vue3";
-import { readonly } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import { DashboardLayout } from "@layouts";
 import { ResourceForm, Ico, SwitcherInput } from '@components';
 
