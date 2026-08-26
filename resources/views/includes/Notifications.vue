@@ -1,6 +1,6 @@
 <script>
 import { defineAsyncComponent } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import { Ico, BlueButton } from '@components';
 import axios from 'axios';
 
@@ -84,7 +84,7 @@ export default {
 <template>
     <div class="notifications-container" v-outsideClick="outsideClickHandler">
 
-        <BlueButton class="bell-container w-fit! h-[40px]!" @click="togleOpen">
+        <BlueButton class="bell-container size-[40px]!" @click="togleOpen">
             <Ico type="bell" />
             <div v-show="numberNots > 0" class="couner-container">
                 <span class="text-white!"> {{ numberNots <= 99 ? numberNots : '99+' }} </span>

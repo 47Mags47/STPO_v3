@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-    <BlueButton class="w-fit!" @click="toggleTheme">
+    <BlueButton class="size-[40px]!" @click="toggleTheme">
         <Ico
             v-if="isDark"
             type="moon"

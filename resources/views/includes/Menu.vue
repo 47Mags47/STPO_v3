@@ -62,7 +62,7 @@ export default {
 
 <template>
     <div class="menu-container" v-outsideClick="outsideClickHandler">
-        <BlueButton class="button-container w-fit! h-[40px]!" @click="togleOpen">
+        <BlueButton class="button-container size-[40px]!" @click="togleOpen">
             <Ico type="bars" />
         </BlueButton>
         <div :class="{ 'menu-list-container': true, open: isOpen }">

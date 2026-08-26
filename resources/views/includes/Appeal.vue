@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-    <BlueButton @click="clickHandler" class="w-fit!">
-        <Ico type="ClipboardList" class="size-[25px]!"/>
+    <BlueButton @click="clickHandler" class="size-[40px]!">
+        <Ico type="ClipboardList" />
     </BlueButton>
 </template>
