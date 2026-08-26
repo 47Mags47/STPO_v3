@@ -61,14 +61,14 @@ export default {
 </script>
 
 <template>
-    <BlueButton class="menu-container w-fit!" v-outsideClick="outsideClickHandler">
-        <div class="button-container" @click="togleOpen">
+    <div class="menu-container" v-outsideClick="outsideClickHandler">
+        <BlueButton class="button-container w-fit! h-[40px]!" @click="togleOpen">
             <Ico type="bars" />
-        </div>
+        </BlueButton>
         <div :class="{ 'menu-list-container': true, open: isOpen }">
             <List :items="menuList" :onItemClick="(item) => menuItemClickHandler(item)" />
         </div>
-    </BlueButton>
+    </div>
 </template>
 
 <style lang="sass" scoped>
