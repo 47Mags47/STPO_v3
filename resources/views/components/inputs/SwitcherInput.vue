@@ -39,7 +39,7 @@ export default {
         >
             <div
                 class="size-3 rounded-full bg-white transition-transform duration-200"
-                :class="!value ? 'translate-x-[20px]' : 'translate-x-0'"
+                :class="!value ? 'translate-x-[21px]' : 'translate-x-0'"
             ></div>
         </div>
 
