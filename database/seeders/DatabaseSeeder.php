@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
             case 'testing':
                 $this->call(Prod\ProdSeeder::class);
-                $this->call(TestSeeder::class);
+                $this->call(Test\TestSeeder::class);
                 break;
         }
     }

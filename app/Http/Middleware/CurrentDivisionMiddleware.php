@@ -16,6 +16,9 @@ class CurrentDivisionMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(user()->hasRole('system_user'))
+            return $next($request);
+
         $division_id = request()->session()->get('current_division_id');
 
         if ($division_id === null) {

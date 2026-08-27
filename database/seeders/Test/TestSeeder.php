@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Test;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -9,11 +9,11 @@ class TestSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $this->call(Administrate\CitySeeder::class);
+        $this->call(Administrate\DivisionSeeder::class);
+
+        $this->call(Base\UserSeeder::class);
     }
 }
