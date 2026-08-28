@@ -17,7 +17,6 @@ class City extends BaseModel
     protected $table = 'administrate__cities';
 
     protected $fillable = [
-        'id',
         'name'
     ];
 

@@ -12,7 +12,7 @@ use App\Models\Administrate\City;
 
 class CityController extends Controller
 {
-     public function index()
+    public function index()
     {
         return Inertia::render('administrate/cities/index', [
             'cities' => fn() => City::getResource(),
@@ -21,7 +21,7 @@ class CityController extends Controller
 
     public function create()
     {
-        return Inertia::render('administrate/cities/create');
+        return Inertia::render('administrate/cities/create', []);
     }
 
     public function store(CityStoreRequest $request)
@@ -45,9 +45,10 @@ class CityController extends Controller
         return redirect()->route('administrate.cities.index')->with('success', 'Запись успешно обновлена');
     }
 
-    public function destroy(City $city) {
+    public function destroy(City $city)
+    {
         $city->delete();
 
-        return redirect()->back()->with('success', 'Запись удалена');
+        return redirect()->route('administrate.cities.index')->with('success', 'Запись удалена');
     }
 }

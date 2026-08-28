@@ -5,6 +5,7 @@ namespace App\Classes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 abstract class BaseModel extends Model
 {
@@ -24,20 +25,25 @@ abstract class BaseModel extends Model
         }
 
         $relativeNamespace = Str::after($modelClass, '\\Models\\');
-        $path = Str::before($modelClass, 'App\\Models');
+
+        $namespace_parts = explode('\\', $modelClass);
+        $path = Str::before($modelClass, 'Models') . 'Models';
+
+        $class_name = end($namespace_parts);
+        $class_path = Str::before($relativeNamespace, '\\' . $class_name);
 
         $names = [
             'class'             => $modelClass,
             'className'         => $relativeNamespace,
             'path'              => $path,
             'factory'           => self::getClassKnowingFolderAndEnding('Database\\Factories', $relativeNamespace, 'Factory'),
-            'localseeder'       => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Local', $relativeNamespace, 'Seeder'),
-            'prodseeder'        => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Prod', $relativeNamespace, 'Seeder'),
+            'localSeeder'       => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Local', $relativeNamespace, 'Seeder'),
+            'prodSeeder'        => self::getClassKnowingFolderAndEnding('Database\\Seeders\\Prod', $relativeNamespace, 'Seeder'),
             'filter'            => self::getClassKnowingFolderAndEnding('App\\Filters', $relativeNamespace, 'Filter'),
             'controller'        => self::getClassKnowingFolderAndEnding('App\\Http\\Controllers', $relativeNamespace, 'Controller'),
             'policy'            => self::getClassKnowingFolderAndEnding('App\\Policies', $relativeNamespace, 'Policy'),
-            'storerequest'      => self::getClassKnowingFolderAndEnding('App\\Http\\Requests', 'Store' . $relativeNamespace, 'Request'),
-            'updaterequest'     => self::getClassKnowingFolderAndEnding('App\\Http\\Requests', 'Update' . $relativeNamespace, 'Request'),
+            'storeRequest'      => self::getClassKnowingFolderAndEnding('App\\Http\\Requests', $class_path . '\\' . $class_name . 'Store', 'Request'),
+            'updateRequest'     => self::getClassKnowingFolderAndEnding('App\\Http\\Requests', $class_path . '\\' . $class_name . 'Update', 'Request'),
             'resource'          => self::getClassKnowingFolderAndEnding('App\\Http\\Resources', $relativeNamespace, 'Resource'),
         ];
 
@@ -48,7 +54,6 @@ abstract class BaseModel extends Model
 
     public function scopeFilter(Builder $builder): Builder
     {
-        // dd(self::getGuessNames('filter'));
         return self::getGuessNames('filter')
             ? new (self::getGuessNames('filter'))($builder)->apply()
             : new \App\Classes\Filter($builder)->apply();
@@ -92,9 +97,6 @@ abstract class BaseModel extends Model
         $path = str_replace('\\', '/', $path);
         $path = str_replace('/App/', '/app/', $path);
         $path = $path . '.php';
-
-        if (!file_exists($path))
-            return false;
 
         if (class_exists($namespace . '\\' . $class . $ending))
             return $namespace . '\\' . $class . $ending;

@@ -5,6 +5,7 @@ namespace App\Http\Requests\Administrate;
 use Illuminate\Foundation\Http\FormRequest;
 
 use App\Models\Administrate\City;
+use Illuminate\Validation\Rule;
 
 class CityUpdateRequest extends FormRequest
 {
@@ -16,7 +17,7 @@ class CityUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => ['required', 'string', 'max:255', 'unique:' . City::class . ',name,'. $this->route('city')->id],
+            'name'  => ['required', 'string', 'max:255', Rule::unique(City::class, 'name')->ignore($this->route('city'))],
         ];
     }
 }
