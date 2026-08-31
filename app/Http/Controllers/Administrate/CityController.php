@@ -15,7 +15,7 @@ class CityController extends Controller
     public function index()
     {
         return Inertia::render('administrate/cities/index', [
-            'cities' => fn() => City::getResource(),
+            'cities' => fn() => City::getResource()
         ]);
     }
 
@@ -49,6 +49,6 @@ class CityController extends Controller
     {
         $city->delete();
 
-        return redirect()->route('administrate.cities.index')->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }
