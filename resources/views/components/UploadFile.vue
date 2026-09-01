@@ -147,7 +147,7 @@ export default {
         .file-style-ico
             grid-area: A
             &.file-style-upload
-                color: var(--button-background-color)
+                color: lightblue
             &.file-style-success
                 color: green
             &.file-style-error
@@ -157,6 +157,7 @@ export default {
             overflow: hidden
             text-overflow: ellipsis
             white-space: nowrap
+            color: var(--text-color)
         .file-action-button
             grid-area: C
             width: 20px

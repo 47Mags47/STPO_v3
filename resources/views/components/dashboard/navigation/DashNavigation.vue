@@ -1,6 +1,5 @@
 <script>
 import { router, usePage } from "@inertiajs/vue3";
-
 import Ico from '../../Ico.vue';
 import BaseDashNavigation from './components/BaseDashNavigation.vue';
 
@@ -9,42 +8,44 @@ export default {
         Ico,
         BaseDashNavigation
     },
+
     data() {
         return {
-            chosenNavItem: null,
-            navItems: [
+            chosenNavItem: null
+        }
+    },
+
+    computed: {
+        current_user: () => usePage().props.current_user.data,
+        navItems() {
+            return [
                 {
-                    ico: 'faUser',
-                    url: '/show',
+                    url: route('dashboard'),
                     name: 'данные',
                     isHover: false,
                 },
                 {
-                    ico: 'faUserGear',
                     url: '/admin',
                     name: 'администрирование',
                     isHover: false,
                 },
                 {
-                    ico: 'faGear',
                     url: '/settings',
                     name: 'настройки',
                     isHover: false,
                 },
-            ],
-        }
-    },
-
-    props: {
+                this.current_user.divisions.length > 1 ? {
+                    url: route('select-division.index'),
+                    name: 'сменить организацию',
+                    isHover: false,
+                } : null,
+            ].filter(Boolean)
+        },
     },
 
     methods: {
         routeTo(routeName) {
-            try {
-                router.visit(routeName);
-            } catch (error) {
-                console.error("Ошибка Ziggy: Возможно, имени роута не существует в Laravel.", error);
-            }
+            router.get(routeName);
         },
         navItemClickHandler(item) {
             this.chosenNavItem = item
@@ -57,7 +58,7 @@ export default {
 
     created() {
         // по умолчанию выбранный элемент это объект, у которого свойство url = текущему url
-        this.chosenNavItem = this.navItems.find(navItem => navItem.url === usePage().url)
+        this.chosenNavItem = this.navItems.find(navItem => navItem.url === location.href)
     },
 }
 </script>
@@ -70,8 +71,8 @@ export default {
                 <span v-for="(item, i) in navItems"
                 :key="i"
                 @click="navItemClickHandler(item)"
-                class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none"
-                :class="chosenNavItem?.url === item.url ? 'text-gray-600!' : null">
+                class="rounded px-2! text-lg! hover:text-gray-400! active:text-black! cursor-pointer select-none whitespace-nowrap"
+                :class="chosenNavItem?.url === item.url ? 'text-gray-400!' : null">
                     {{ item.name }}
                 </span>
 

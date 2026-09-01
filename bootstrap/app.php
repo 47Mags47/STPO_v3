@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\CurrentDivisionMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,7 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
-            HandleInertiaRequests::class,
+            HandleInertiaRequests::class
+        ]);
+
+        $middleware->alias([
+            'current.division' => CurrentDivisionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

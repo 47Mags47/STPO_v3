@@ -116,6 +116,15 @@ export default {
 
         outsideClickHandler(){
             this.previewImageUrl = null
+        },
+    },
+
+    computed: {
+        getFileName() {
+            if (this.message.file.name.length > 40)
+                return this.message.file.name?.slice(0, 40) + '.. ' + '.' + this.message.file.name?.split('.').pop()
+
+            return this.message.file.name
         }
     },
 
@@ -158,13 +167,13 @@ export default {
                     :class="isMine ? 'order-1 items-end' : 'order-2 items-start'"
                 >
                     <span>
-                        {{ message.file.name }}
+                        {{ getFileName }}
                     </span>
                 </div>
 
                 <Ico
                     type="file"
-                    class="text-gray-800! h-[48px]! w-fit! shrink-0"
+                    class="text-gray-500! group-hover:text-gray-400! transition h-[48px]! w-fit! shrink-0"
                     :class="isMine ? 'order-2' : 'order-1'"
                 />
             </div>

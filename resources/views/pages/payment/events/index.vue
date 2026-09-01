@@ -37,19 +37,19 @@ export default {
 
         editButtonClickHandler(event){
             router.get(route('payment.events.edit', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
         showButtonClickHandler(event){
             router.get(route('payment.payment-files.index', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
         goToBunksButtonClickHandler(event){
             router.get(route('payment.banks.index', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
@@ -68,6 +68,44 @@ export default {
         caption="Календарь выплат"
         id="payment-event-resource-table"
         :hasCreateButton="true"
+        :data="paymentEvents.data"
+        :meta="paymentEvents.meta"
+        :collumns="[
+            {
+                title: 'Дата',
+                dataIndex: 'in_date',
+                rowspan: (row, index, data) => {
+                    const previous = data[index - 1]
+
+                    if (previous?.in_date === row.in_date) {
+                        return 0
+                    }
+
+                    return data.filter(item => item.in_date === row.in_date).length
+                },
+            },
+            {
+                title: 'код',
+                dataIndex: 'payment.code',
+            },
+        ]"
+        :rowLinks="[
+            {
+                color: 'blue',
+                ico: 'pen',
+                onClick: editButtonClickHandler
+            },
+            {
+                color: 'blue',
+                ico: 'file',
+                onClick: showButtonClickHandler
+            },
+            {
+                color: 'blue',
+                ico: 'building-columns',
+                onClick: goToBunksButtonClickHandler
+            },
+        ]"
     >
         <template #actions>
             <div class="month-picker-container">
@@ -85,43 +123,6 @@ export default {
         <template #colgroup>
             <col width="100px">
             <col width="auto">
-        </template>
-        <template #tbody>
-            <template v-for="(events, date) in paymentEvents">
-                <TableRow>
-                    <TableTd :rowspan="events.length + 1">
-                        {{ getDateFormatted(date) }}
-                    </TableTd>
-                </TableRow>
-                <template v-for="event in events">
-                    <TableRow>
-                        <TableTd>
-                            {{ event.data.payment.name }}
-                        </TableTd>
-                        <!-- HACK Отображать только администратору -->
-                        <TableTd class="w-[56px]">
-                            <EditButton :onClick="() => editButtonClickHandler (event)"/>
-                        </TableTd>
-
-                        <TableTd class="w-[56px]">
-                            <BlueButton class="size-[35px]! p-2!"
-                                title="Файлы на выплату"
-                                @click="() => showButtonClickHandler (event)">
-                                <Ico type="file" class="p-[3px]!" />
-                            </BlueButton>
-                        </TableTd>
-
-                        <!-- HACK Отображать только администратору -->
-                        <TableTd class="w-[56px]">
-                            <BlueButton class="size-[35px]! p-2!"
-                                title="Файлы в банк"
-                                @click="() => goToBunksButtonClickHandler (event)">
-                                <Ico type="building-columns" class="p-[3px]!" />
-                            </BlueButton>
-                        </TableTd>
-                    </TableRow>
-                </template>
-            </template>
         </template>
     </ResourceTable>
 </template>

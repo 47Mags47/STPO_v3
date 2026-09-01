@@ -1,12 +1,12 @@
 <script>
 import { defineAsyncComponent } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
-import { Ico } from '@components';
+import { usePage } from '@inertiajs/vue3';
+import { Ico, BlueButton } from '@components';
 import axios from 'axios';
 
 export default {
     components: {
-        Ico,
+        Ico, BlueButton,
         NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
         DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
     },
@@ -42,8 +42,9 @@ export default {
     watch: {
         isOpen(newVal){
             //Прокрутка
-            if(newVal)
-                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight;
+            if (newVal && this.$refs.notificationList) {
+                this.$refs.notificationList.scrollTop = this.$refs.notificationList.scrollHeight
+            }
 
             // Помечаем оповещения прочитанными
             if(newVal && this.numberNots > 0)
@@ -83,12 +84,12 @@ export default {
 <template>
     <div class="notifications-container" v-outsideClick="outsideClickHandler">
 
-        <div class="bell-container" @click="togleOpen">
+        <BlueButton class="bell-container size-[40px]!" @click="togleOpen">
             <Ico type="bell" />
             <div v-show="numberNots > 0" class="couner-container">
                 <span class="text-white!"> {{ numberNots <= 99 ? numberNots : '99+' }} </span>
             </div>
-        </div>
+        </BlueButton>
 
         <div class="notification-list-container" :class="{ 'open': isOpen }">
 
@@ -113,7 +114,7 @@ export default {
             </div>
 
             <div v-else class="empty-notifications-container">
-                <Ico type="circle-check" />
+                <Ico type="circle-check"/>
                 <span> уведомлений нет </span>
             </div>
         </div>
@@ -123,21 +124,7 @@ export default {
 <style lang="sass" scoped>
 .notifications-container
     .bell-container
-        width: 25px
-        height: 25px
         position: relative
-        cursor: pointer
-
-        transition: .3s
-
-        &:active
-            filter: brightness(75%)
-        &:hover
-            filter: brightness(75%)
-
-        .ico-container
-            width: 25px
-            height: 25px
         .couner-container
             position: absolute
 
@@ -174,10 +161,11 @@ export default {
         .ico-container
             width: 125px
             height: 125px
-            color: #7bf1a8
+            color: var(--notifications-empty-ico-color)
         span
             font-size: 2rem
             font-weight: bold
+            color: white
 
     .notification-list-container
         position: absolute

@@ -1,14 +1,9 @@
 import './bootstrap'
 import './helpers';
-import './libs/fortawesome.js';
-
 import { initTheme } from './theme';
-
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-
 import * as derectives from "./derectives";
-
 import { ZiggyVue } from "ziggy-js";
 import AuthLayout from "../views/layouts/AuthLayout.vue";
 
@@ -22,7 +17,7 @@ createInertiaApp({
 
         const page = await importPage();
 
-        const exceptions = ['httpErrors/', 'NoEmail']
+        const exceptions = ['httpErrors/', 'NoEmail', 'SelectDivision', 'auth/']
         const isException = exceptions.some(n => name.startsWith(n))
 
         if (!isException) {

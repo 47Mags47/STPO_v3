@@ -1,6 +1,8 @@
 export { default as ResourceForm } from './forms/ResourceForm.vue'
 export { default as VerticalForm } from './forms/VerticalForm.vue'
 
+export { default as SelectDivisionForm } from './selectDivision/SelectDivisionForm.vue'
+
 export { default as List } from './List/List.vue'
 export { default as BlueButton } from './buttons/BlueButton.vue'
 export { default as RedButton } from './buttons/RedButton.vue'
@@ -19,4 +21,5 @@ export { default as ResourceTable } from './tables/ResourceTable/ResourceTable.v
 export { default as FileResourceTable } from './tables/FileResourceTable/FileResourceTable.vue'
 
 export { default as Select } from './inputs/Select.vue'
+export { default as SwitcherInput } from './inputs/SwitcherInput.vue'
 export { default as DatePicker } from './inputs/datePicker/DatePicker.vue'

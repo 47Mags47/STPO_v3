@@ -25,16 +25,16 @@ export default {
 </script>
 
 <template>
-    <div class="h-[24px] w-[25px]" @click="toggleTheme">
+    <BlueButton class="size-[40px]!" @click="toggleTheme">
         <Ico
             v-if="isDark"
             type="moon"
-            class="cursor-pointer hover:text-[#ccc] transition duration-300"
+            class="cursor-pointer"
         />
         <Ico
             v-else
             type="sun"
-            class="cursor-pointer hover:text-[#ccc] transition duration-300"
+            class="cursor-pointer"
         />
-    </div>
+    </BlueButton>
 </template>

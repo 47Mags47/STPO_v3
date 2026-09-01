@@ -23,7 +23,13 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->route('home');
+            if (user()->divisions->count() === 1) {
+                $request->session()->put('current_division_id', user()->divisions()->first()->id);
+
+                return redirect()->route('dashboard');
+            }
+
+            return redirect()->route('select-division.index');
         }
 
         return back()->withErrors([
@@ -48,7 +54,13 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $user = User::create($request->validated());
+        $data = $request->validated();
+
+        // HACK дописать Role::byCode('code')
+        $user = User::create(collect($data)->except('division')->toArray());
+        $user->divisions()->attach($data['division'], [
+            'role_id' => 3
+        ]);
 
         event(new Registered($user));
 
