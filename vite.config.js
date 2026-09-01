@@ -21,7 +21,6 @@ export default defineConfig({
                 'resources/sass/app.sass',
                 'resources/js/app.js'
             ],
-            refresh: false,
         }),
         vue(),
         tailwindcss()

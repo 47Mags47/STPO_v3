@@ -32,6 +32,13 @@ class Recipient extends BaseModel
         'p_div',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'd_rojd' => 'date',
+        ];
+    }
+
     ### Связи
     ##################################################
     public function paymentFile(): BelongsTo

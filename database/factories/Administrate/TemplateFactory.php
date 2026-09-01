@@ -2,13 +2,14 @@
 
 namespace Database\Factories\Administrate;
 
-use App\Models\Administrate\Bank;
+use App\Models\Administrate\Template;
+use App\Models\Base\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Bank>
+ * @extends Factory<Template>
  */
-class BankFactory extends Factory
+class TemplateFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +19,9 @@ class BankFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => $this->faker->unique()->word(),
-            'name' => $this->faker->unique()->company(),
-            'number' => $this->faker->numerify('##'),
+            'description' => $this->faker->text(50),
+            'writer' => null,
+            'file_id' => File::createFromChildren(Template::class)->id
         ];
     }
 }

@@ -16,7 +16,7 @@ class EventResource extends JsonResource
     {
         return [
             'id'        => $this->id,
-            'in_day'    => $this->in_day->format('Y-m-d'),
+            'in_date'   => $this->in_date->format('Y-m-d'),
             'payment'   => $this->payment->toResource(),
         ];
     }

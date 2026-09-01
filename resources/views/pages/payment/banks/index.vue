@@ -47,6 +47,11 @@ export default {
         ]"
         :collumns="[
             {
+                title: 'Код',
+                dataIndex: 'number',
+                 width: '75px',
+            },
+            {
                 title: 'Наименование',
                 dataIndex: 'name',
             },

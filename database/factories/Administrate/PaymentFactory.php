@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Administrate;
 
+use App\Models\Administrate\Law;
 use App\Models\Administrate\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,9 +21,10 @@ class PaymentFactory extends Factory
         $code = $this->faker->unique()->numerify('###');
 
         return [
-            'code' => $code,
-            'name' => 'Выплата №' . $code . ' ' . $this->faker->word() . ' ' . $this->faker->word(),
-            'kbk' => $this->faker->numerify('88810030240#########'),
+            'code'      => $code,
+            'name'      => 'Выплата №' . $code . ' ' . $this->faker->word() . ' ' . $this->faker->word(),
+            'kbk'       => $this->faker->numerify('88810030240#########'),
+            'law_id'    => Law::randomOrCreate()->id,
         ];
     }
 }

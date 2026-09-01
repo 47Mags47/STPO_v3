@@ -17,6 +17,7 @@ class BankResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'number' => $this->number,
             'payment-files' => [
                 'count' => $this->payment_paymentFiles()->count(),
                 'division_count' => $this->payment_paymentFiles->groupBy('division_id')->count()

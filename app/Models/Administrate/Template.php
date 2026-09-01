@@ -3,9 +3,12 @@
 namespace App\Models\Administrate;
 
 use App\Classes\FileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Template extends FileModel
 {
+    use HasFactory;
+
     ### Настройки
     ##################################################
     protected $table = 'administrate__templates';

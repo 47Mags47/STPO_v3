@@ -16,6 +16,11 @@ export default {
     :inputs="[
         {
             type: 'string',
+            name: 'number',
+            label: 'Номер',
+        },
+        {
+            type: 'string',
             name: 'code',
             label: 'Код',
         },

@@ -23,8 +23,6 @@ class DatabaseSeeder extends Seeder
 
                 if(is_dir(database_path('seeders/Hidden')) and file_exists(database_path('seeders/Hidden/HiddenSeeder.php')))
                     $this->call(Hidden\HiddenSeeder::class);
-
-                $this->call(Local\LocalSeeder::class);
                 break;
 
             case 'testing':

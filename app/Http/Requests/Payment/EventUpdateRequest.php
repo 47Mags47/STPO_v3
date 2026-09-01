@@ -11,7 +11,7 @@ class EventUpdateRequest extends FormRequest
     {
         return [
             'payment_id'    => ['required', 'exists:' . Payment::class . ',id'],
-            'in_day'        => ['required', 'date_format:Y-m-d'],
+            'in_date'        => ['required', 'date_format:Y-m-d'],
         ];
     }
 }

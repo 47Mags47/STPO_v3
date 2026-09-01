@@ -3,7 +3,10 @@
 namespace App\Classes;
 
 use App\Models\Administrate\Bank;
+use App\Models\Administrate\Law;
+use App\Models\Administrate\Payment;
 use App\Models\Administrate\Template;
+use App\Models\Base\Config;
 use App\Models\Base\File;
 use App\Models\Payment\BankContract;
 use App\Models\Payment\BankRaport;
@@ -17,12 +20,16 @@ use ZipArchive;
 
 class BankRaportWriter extends FileWriter
 {
+    protected string $template_type = 'blade';
+
     protected ?int $delimiter = null;
 
     protected BankRaport $raport;
     protected Bank $bank;
     protected BankContract $contract;
     protected Event $event;
+    protected Payment $payment;
+    protected Law $law;
     protected Template $template;
     protected array $data = [];
     protected array $files = [];
@@ -39,7 +46,9 @@ class BankRaportWriter extends FileWriter
                 'bank',
                 'bank.payment_template',
                 'bank.payment_contract',
-                'event'
+                'event',
+                'event.payment',
+                'event.payment.law'
             ])
             ->get()
             ->first();
@@ -47,6 +56,8 @@ class BankRaportWriter extends FileWriter
         $this->bank         = $this->raport->bank;
         $this->contract     = $this->raport->bank->payment_contract;
         $this->event        = $this->raport->event;
+        $this->payment      = $this->raport->event->payment;
+        $this->law          = $this->raport->event->payment->law;
         $this->template     = $this->raport->bank->payment_template;
 
         $this->npp = $this->getFileNPP();
@@ -69,7 +80,11 @@ class BankRaportWriter extends FileWriter
             'bank'          => $this->bank,
             'contract'      => $this->contract,
             'event'         => $this->event,
-            'division_name' => "ГОСУДАРСТВЕННОЕ КАЗЕННОЕ УЧРЕЖДЕНИЕ \"ЦЕНТР СОЦИАЛЬНЫХ ВЫПЛАТ И ИНФОРМАТИЗАЦИИ МИНИСТЕРСТВА СОЦИАЛЬНОЙ ЗАЩИТЫ НАСЕЛЕНИЯ КУЗБАССА\""
+            'raport'        => $this->raport,
+            'payment'       => $this->payment,
+            'npp'           => $this->npp,
+            'law'           => $this->law,
+            'config'      => Config::array('payments'),
         ];
     }
 
@@ -77,7 +92,7 @@ class BankRaportWriter extends FileWriter
     {
         return BankRaportFile::query()
             ->whereHas('raport', fn($query) => $query->where('bank_id', $this->bank->id)->where('event_id', $this->event->id))
-            ->whereHas('raport.event', fn($query) => $query->whereBetween('in_day', [$this->event->in_day->startOfYear(), $this->event->in_day->endOfYear()]))
+            ->whereHas('raport.event', fn($query) => $query->whereBetween('in_date', [$this->event->in_date->startOfYear(), $this->event->in_date->endOfYear()]))
             ->max('npp') + 1;
     }
 
@@ -96,13 +111,10 @@ class BankRaportWriter extends FileWriter
 
             $data = array_merge($this->data, [
                 'recipients'    => $recipients,
-                'npp'           => $file->npp
+                'npp'           => $file->npp,
             ]);
 
-            $template_content = $this->template->getContent();
-            $file_content = Blade::render($template_content, $data);
-            $file_content = mb_convert_encoding($file_content, $this->encoding, 'UTF-8');
-            $file->write($file_content);
+            $this->writeFileContent($file, $data);
         }
 
         // HACK прописать в job генерацию файла. по завершению пихать в архив
@@ -117,7 +129,24 @@ class BankRaportWriter extends FileWriter
         return $flag;
     }
 
-    public function getFileName(int $in_raport_npp): string {
+    public function writeFileContent(FileModel $file, array $data): void
+    {
+        $file_content = 'empty';
+        $template_content = $this->template->getContent();
+        $file_content = Blade::render($template_content, $data, true);
+        $file_content = $this->afterTemplateRender($file_content, $data);
+        $file_content = mb_convert_encoding($file_content, $this->encoding, 'UTF-8');
+        $file->write($file_content);
+    }
+
+    public function getFileName(int $in_raport_npp): string
+    {
+        // HACK сделать разбивку на имя файла и расширение
         return $this->fileName . '_' . $in_raport_npp;
+    }
+
+    public function afterTemplateRender(string $content, array $data): string
+    {
+        return $content;
     }
 }

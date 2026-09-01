@@ -23,7 +23,8 @@ class Bank extends BaseModel
 
     protected $fillable = [
         'code',
-        'name'
+        'name',
+        'number'
     ];
 
     ### Методы

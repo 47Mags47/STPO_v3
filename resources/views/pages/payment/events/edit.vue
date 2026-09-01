@@ -21,9 +21,9 @@ export default {
     :inputs="[
         {
             type: 'date',
-            name: 'in_day',
+            name: 'in_date',
             label: 'Дата',
-            value: event.in_day
+            value: event.in_date
         },
         {
             type: 'select',

@@ -14,7 +14,7 @@ class VTBWriter extends BankRaportWriter
             'Z_' .
             str_pad('281997', 10, '0', STR_PAD_LEFT) .
             '_' .
-            $this->raport->event->in_day->format('Ymd') .
+            $this->raport->event->in_date->format('Ymd') .
             '_' .
             str_pad($this->npp, 10, '0', STR_PAD_LEFT);
 
