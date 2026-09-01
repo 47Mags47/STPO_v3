@@ -20,7 +20,7 @@ export default {
     :inputs="[
         {
             type: 'datePicker',
-            name: 'in_day',
+            name: 'in_date',
             label: 'Дата',
         },
         {

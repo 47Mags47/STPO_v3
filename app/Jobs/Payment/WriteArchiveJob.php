@@ -35,7 +35,7 @@ class WriteArchiveJob implements ShouldQueue
             $raport = File::createChildren(BankRaport::class, [
                 'bank_id' => $bank->id,
                 'event_id' => $this->archive->event_id,
-                'origin_name' => $bank->name . '.zip',
+                'origin_name' => $bank->number . ' ' . $bank->name . '.zip',
             ]);
 
             $writer = new ($bank->payment_template->writer)($raport);

@@ -18,14 +18,14 @@ class Event extends BaseModel
     protected $table = 'payment__events';
 
     protected $fillable = [
-        'in_day',
+        'in_date',
         'payment_id'
     ];
 
     protected function casts(): array
     {
         return [
-            'in_day' => 'date',
+            'in_date' => 'date',
         ];
     }
 

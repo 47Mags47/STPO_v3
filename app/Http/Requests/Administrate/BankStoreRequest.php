@@ -10,8 +10,9 @@ class BankStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'  => ['required', 'string', 'max:255', 'unique:'. Bank::class .',code'],
-            'name'  => ['required', 'string', 'max:255'],
+            'code'      => ['required', 'string', 'max:255', 'unique:'. Bank::class .',code'],
+            'name'      => ['required', 'string', 'max:255'],
+            'number'    => ['required', 'string', 'max:15']
         ];
     }
 }

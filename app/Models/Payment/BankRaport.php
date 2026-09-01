@@ -4,11 +4,14 @@ namespace App\Models\Payment;
 
 use App\Classes\FileModel;
 use App\Models\Administrate\Bank;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BankRaport extends FileModel
 {
+    use HasFactory;
+
     ### Настройки
     ##################################################
     protected $table = 'payment__bank_raports';

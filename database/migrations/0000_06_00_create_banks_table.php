@@ -12,7 +12,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('code')->unique();
+            $table->string('number');
             $table->string('name');
+
 
             $table->timestamps();
         });
@@ -20,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('payment__banks');
+        Schema::dropIfExists('administrate__banks');
     }
 };

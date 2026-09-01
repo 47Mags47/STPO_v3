@@ -48,23 +48,9 @@ return [
             'report' => false,
         ],
 
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-        ],
-
         'temp' => [
             'driver' => 'local',
             'root' => storage_path('app/private/temp'),
-        ],
-
-        'templates' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/templates'),
         ],
 
         'uploads' => [
@@ -85,6 +71,20 @@ return [
         'appeals' => [
             'driver' => 'local',
             'root' => storage_path('app/private/appeals'),
+        ],
+
+        'templates' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/templates'),
+        ],
+
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
         ],
     ],
 

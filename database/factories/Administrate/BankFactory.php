@@ -20,6 +20,7 @@ class BankFactory extends Factory
         return [
             'code' => $this->faker->unique()->word(),
             'name' => $this->faker->unique()->company(),
+            'number' => $this->faker->numerify('##'),
         ];
     }
 }

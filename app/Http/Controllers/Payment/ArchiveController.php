@@ -22,7 +22,7 @@ class ArchiveController extends Controller
     public function store(Event $event){
         $archive = File::createChildren(Archive::class, [
             'event_id' => $event->id,
-            'origin_name' => 'Отчет по ' . $event->payment->code .'.zip',
+            'origin_name' => 'Отчет по ' . $event->payment->code . ' выплате на ' . $event->in_date->format('Y-m-d') . '.zip',
         ]);
 
         WriteArchiveJob::dispatch($archive);

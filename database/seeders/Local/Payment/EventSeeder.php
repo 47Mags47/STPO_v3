@@ -10,7 +10,7 @@ class EventSeeder extends Seeder
     public function run(): void
     {
         Event::factory(3)->create([
-            'in_day' => now(),
+            'in_date' => now(),
         ]);
     }
 }

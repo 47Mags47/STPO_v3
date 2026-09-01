@@ -3,9 +3,12 @@
 namespace App\Models\Administrate;
 
 use App\Classes\FileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Template extends FileModel
 {
+    use HasFactory;
+
     ### Настройки
     ##################################################
     protected $table = 'administrate__templates';
@@ -20,7 +23,11 @@ class Template extends FileModel
     public static string|null $storage_file_path = 'payment';
     ### Методы
     ##################################################
-    //
+    public function writeTemplate(){
+        dd(new ($this->writer)());
+        if($this->writer !== null)
+            new ($this->writer)();
+    }
 
     ### Связи
     ##################################################

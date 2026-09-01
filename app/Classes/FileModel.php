@@ -26,11 +26,11 @@ abstract class FileModel extends BaseModel
      */
     public static function booted()
     {
-        self::creating(function($model){
-            if($model::$createInStorage && $model->file_id === null){
+        self::creating(function ($model) {
+            if ($model::$createInStorage && $model->file_id === null) {
                 $model->file_id = File::factory()->create([
-                    'disk' => self::$storage_file_disk,
-                    'path' => self::$storage_file_path,
+                    'disk' => $model::$storage_file_disk,
+                    'path' => $model::$storage_file_path,
                 ])->id;
             }
 
@@ -38,7 +38,7 @@ abstract class FileModel extends BaseModel
         });
 
         self::deleted(function ($model) {
-            if($model::$deleteInStorage)
+            if ($model::$deleteInStorage)
                 $model->file->delete();
         });
     }
@@ -154,7 +154,8 @@ abstract class FileModel extends BaseModel
      *
      * @return StreamedResponse
      */
-    public function download(): StreamedResponse {
+    public function download(): StreamedResponse
+    {
         return $this->file->download();
     }
 
@@ -164,18 +165,19 @@ abstract class FileModel extends BaseModel
      * @param FileStatus|string $status
      * @return bool
      */
-    public function setStatus(FileStatus|string $status): bool{
-        if(is_string($status))
+    public function setStatus(FileStatus|string $status): bool
+    {
+        if (is_string($status))
             $status = FileStatus::byCode($status);
 
         $is_updated = $this->file->update([
             'status_id' => $status->id,
         ]);
 
-        if($is_updated === false)
+        if ($is_updated === false)
             return false;
 
-        if($this::$channel !== null)
+        if ($this::$channel !== null)
             FileChangeStatusEvent::dispatch($this);
 
         return true;
@@ -187,7 +189,8 @@ abstract class FileModel extends BaseModel
      * @param bool $disabled
      * @return bool
      */
-    public function setDisabled(bool $disabled = true): bool{
+    public function setDisabled(bool $disabled = true): bool
+    {
         return $this->file->update([
             'is_disabled' => $disabled,
         ]);

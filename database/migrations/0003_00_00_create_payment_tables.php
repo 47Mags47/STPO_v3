@@ -32,7 +32,7 @@ return new class extends Migration
         Schema::create('payment__events', function (Blueprint $table) {
             $table->id();
 
-            $table->date('in_day');
+            $table->date('in_date');
             $table->foreignId('payment_id')->constrained(Payment::getTableName());
 
             $table->timestamps();

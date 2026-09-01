@@ -1,5 +1,4 @@
 <script>
-import { usePage } from '@inertiajs/vue3';
 import { ResourceForm } from '@components';
 
 export default {
@@ -15,6 +14,11 @@ export default {
     sbm="Добавить"
     :action="route('administrate.banks.store')"
     :inputs="[
+        {
+            type: 'string',
+            name: 'number',
+            label: 'Номер',
+        },
         {
             type: 'string',
             name: 'code',

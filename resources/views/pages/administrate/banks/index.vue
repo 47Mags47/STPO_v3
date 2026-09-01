@@ -14,7 +14,7 @@ export default {
 
 <template>
     <ResourceTable
-        caption="Выплаты (список банков)"
+        caption="Банки"
         :hasCreateButton="true"
         :hasDeleteButton="true"
         :hasEditButton="true"

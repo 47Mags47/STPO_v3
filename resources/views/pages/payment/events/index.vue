@@ -37,19 +37,19 @@ export default {
 
         editButtonClickHandler(event){
             router.get(route('payment.events.edit', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
         showButtonClickHandler(event){
             router.get(route('payment.payment-files.index', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
         goToBunksButtonClickHandler(event){
             router.get(route('payment.banks.index', {
-                event: event.data.id,
+                event: event.id,
             }))
         },
 
@@ -73,20 +73,37 @@ export default {
         :collumns="[
             {
                 title: 'Дата',
-                dataIndex: 'in_day',
+                dataIndex: 'in_date',
                 rowspan: (row, index, data) => {
                     const previous = data[index - 1]
 
-                    if (previous?.in_day === row.in_day) {
+                    if (previous?.in_date === row.in_date) {
                         return 0
                     }
 
-                    return data.filter(item => item.in_day === row.in_day).length
+                    return data.filter(item => item.in_date === row.in_date).length
                 },
             },
             {
                 title: 'код',
                 dataIndex: 'payment.code',
+            },
+        ]"
+        :rowLinks="[
+            {
+                color: 'blue',
+                ico: 'pen',
+                onClick: editButtonClickHandler
+            },
+            {
+                color: 'blue',
+                ico: 'file',
+                onClick: showButtonClickHandler
+            },
+            {
+                color: 'blue',
+                ico: 'building-columns',
+                onClick: goToBunksButtonClickHandler
             },
         ]"
     >

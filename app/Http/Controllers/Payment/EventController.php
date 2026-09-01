@@ -22,8 +22,8 @@ class EventController extends Controller
 
         $date_end = $date_start->endOfMonth();
 
-        $events = Event::whereBetween('in_day', [$date_start, $date_end])
-            ->orderBy('in_day')
+        $events = Event::whereBetween('in_date', [$date_start, $date_end])
+            ->orderBy('in_date')
             ->paginate();
 
         return Inertia::render('payment/events/index', [
