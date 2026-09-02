@@ -40,12 +40,4 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.download-file-notification
-    .notification-content
-        display: flex
-        justify-content: space-between
-        .button
-            width: 30px
-            height: 30px
-            padding: 5px
 </style>

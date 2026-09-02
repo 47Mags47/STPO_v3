@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import Ico from '../Ico.vue';
 
 export default {
-    components:{
+    components: {
         Ico
     },
     props: {
@@ -37,7 +37,7 @@ export default {
         }
     },
     computed: {
-        classes(){
+        classes() {
             let classes = {}
 
             classes[this.type] = true
@@ -45,7 +45,7 @@ export default {
 
             return classes
         },
-        createdAtObject(){
+        createdAtObject() {
             return DateTime.fromISO(this.createdAt)
         }
     },
@@ -110,7 +110,9 @@ export default {
 
             display: flex
             justify-content: end
-            :deep()
-                .button
-                    width: 30px
+
+            :deep(.button, .red-button)
+                height: 100%
+                width: fit-content
+                min-height: 0
 </style>

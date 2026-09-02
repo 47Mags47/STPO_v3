@@ -57,7 +57,7 @@ class NotificationFactory extends Factory
                 'context'       => [
                     'chat_id'     => $message->chat_id,
                     'message_id'  => $message->id,
-                    'appeal_id'   => $appeal->appeal_id
+                    'appeal_id'   => $appeal->id
                 ]
             ]);
         }

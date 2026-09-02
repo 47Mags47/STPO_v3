@@ -128,8 +128,8 @@ export default {
         .couner-container
             position: absolute
 
-            top: -25%
-            right: -25%
+            top: -5%
+            right: 0%
 
             width: 19px
             height: 19px
