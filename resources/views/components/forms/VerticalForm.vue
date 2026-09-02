@@ -26,10 +26,9 @@ export default {
     padding-bottom: 25px
 
     max-height: 100vh
-    overflow: auto
+    overflow: hidden
 
     display:  grid
-    @include scroll()
     :deep()
         form
             margin: auto
