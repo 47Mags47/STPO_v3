@@ -26,11 +26,6 @@ export default {
 
                 return this.isEmailVerified ? '' : 'border-(--warning-border-color)!'
             }
-            if (name === 'division') {
-                return 'text-gray-400! border-gray-400!'
-            }
-
-            return this.isReadonly ? 'border-gray-400! text-gray-400!' : ''
         },
     },
     computed: {
@@ -50,7 +45,6 @@ export default {
         inputsForm() {
             return [
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'first_name',
                     label: 'Имя',
@@ -58,7 +52,6 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'last_name',
                     label: 'Фамилия',
@@ -66,7 +59,6 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'middle_name',
                     label: 'Отчество',
@@ -74,14 +66,12 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'password',
                     name: 'password',
                     label: 'Пароль',
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'login',
                     label: ' Логин',
@@ -97,7 +87,6 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses('division'),
                     type: 'string',
                     name: 'division_id',
                     label: 'организация',
@@ -105,7 +94,6 @@ export default {
                     readonly: true
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'phone',
                     label: 'Телефон',
@@ -113,7 +101,6 @@ export default {
                     readonly: this.isReadonly
                 },
                 {
-                    class: this.inputsClasses(),
                     type: 'string',
                     name: 'phone_dob',
                     label: 'Доп. телефон',
