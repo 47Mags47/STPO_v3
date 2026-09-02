@@ -71,7 +71,7 @@ export default {
     mounted() {
         this.appealList = this.appeals.data
 
-        Echo.channel('appeals')
+        Echo.private('appeals')
             .listen('.appeal.created', (data) => {
                 this.appealList.unshift(data)
             });
