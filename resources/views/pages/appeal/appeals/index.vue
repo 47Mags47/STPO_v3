@@ -71,10 +71,12 @@ export default {
     mounted() {
         this.appealList = this.appeals.data
 
-        Echo.private('appeals')
-            .listen('.appeal.created', (data) => {
-                this.appealList.unshift(data)
-            });
+        if (hasPermission('appeal_work')) {
+            Echo.private('appeals')
+                .listen('.appeal.created', (data) => {
+                    this.appealList.unshift(data)
+                });
+        }
 
         Echo.channel('statuses')
             .listen('.status.changed', (data) => {
