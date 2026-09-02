@@ -33,6 +33,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        readonly: {
+            type: Boolean,
+            default: false,
+        },
 
         onInput: {
             type: Function,
@@ -71,7 +75,7 @@ export default {
 <template>
     <input
         ref="input"
-        :class="{ 'base-input': true, 'hidden': hidden }"
+        :class="{ 'base-input': true, 'hidden': hidden, 'readonly': readonly }"
         :type
         :id
         :name
@@ -79,6 +83,7 @@ export default {
         :required
         :autocomplete
         :value
+        :readonly
         @input="inputHandler"
         @click="clickHandler"
         @change="changeHandler"
@@ -90,4 +95,9 @@ export default {
     @include input()
     &.hidden
         display: none
+
+    &.readonly
+        color: #aaa
+        border: 1px solid #aaa
+        cursor: not-allowed
 </style>

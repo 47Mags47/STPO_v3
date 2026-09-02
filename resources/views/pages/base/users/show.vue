@@ -1,63 +1,80 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import DashboardLayout from "../../../layouts/DashboardLayout.vue";
+import { ResourceForm } from "@components";
 
 export default {
     components: {
-        DashboardLayout,
+        ResourceForm,
     },
-    data() {
-        return {
-            user: usePage().props.user.data,
-        };
-    },
+
+    computed: {
+        user() {
+            return usePage().props.user?.data
+        },
+    }
 };
 </script>
 
 <template>
-    <DashboardLayout>
-         <ResourceForm
+    <ResourceForm
+    :header="`Пользователь ${user.full_name}`"
+    :has-submit="false"
     :inputs="[
         {
             type: 'string',
             name: 'first_name',
-            label: 'Имя'
+            label: 'Имя',
+            value: user.first_name,
+            readonly: true
         },
         {
             type: 'string',
             name: 'last_name',
-            label: 'Фамилия'
+            label: 'Фамилия',
+            value: user.last_name,
+            readonly: true
         },
         {
             type: 'string',
             name: 'middle_name',
-            label: 'Отчество'
-        },
-        {
-            type: 'password',
-            name: 'password',
-            label: 'Пароль'
-        },
-        {
-            type: 'string',
-            name: 'login',
-            label: ' Логин'
+            label: 'Отчество',
+            value: user.middle_name,
+            readonly: true
         },
         {
             type: 'string',
             name: 'email',
-            label: 'Почта'
+            label: 'Почта',
+            value: user.email,
+            readonly: true
         },
         {
             type: 'string',
             name: 'phone',
-            label: 'Телефон'
+            label: 'Телефон',
+            value: user.phone,
+            readonly: true
         },
         {
             type: 'string',
             name: 'phone_dob',
-            label: 'Доп. телефон'
+            label: 'Доп. телефон',
+            value: user.phone_dob,
+            readonly: true
         },
-    ]"/>
-    </DashboardLayout>
+        {
+            type: 'string',
+            name: 'division',
+            label: 'Подразделение',
+            value: user.phone_dob,
+            readonly: true
+        },
+        {
+            type: 'string',
+            name: 'role',
+            label: 'Роль',
+            value: user.phone_dob,
+            readonly: true
+        },
+    ]" />
 </template>

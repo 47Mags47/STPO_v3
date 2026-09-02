@@ -39,7 +39,6 @@ export default {
 
             border-radius: $border-radius
             border: var(--border)
-            // box-shadow: 2px 2px 8px 4px #eee
             .form-body-container
                 display: flex
                 flex-direction: column
