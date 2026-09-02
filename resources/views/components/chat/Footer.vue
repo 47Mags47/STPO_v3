@@ -123,17 +123,20 @@ export default {
             <Ico type="paper-plane" class="p-0.5!"/>
         </BlueButton>
 
+        <!-- список загруженных файлов -->
         <div
             class="absolute w-full h-full -top-full bg-black/60 flex items-center gap-5 px-5! py-3! transition"
             :class="selectedFile ? 'opacity-100 max-h-full translate-x-0' : 'opacity-0 -translate-x-10 pointer-events-none'"
         >
             <div class=" relative flex items-center gap-2 border border-white rounded h-full w-[124px] p-2!">
-                <Ico type="file" class="text-white w-[36px]! shrink-0"/>
+                <div class="py-2! bg-black/30 h-full flex items-center justify-center rounded">
+                    <Ico type="file" class="text-white w-[36px]! shrink-0"/>
+                </div>
+                <span class="text-white! truncate"> {{ selectedFile?.name }} </span>
                 <span
-                    class="absolute top-0 right-1 text-red-300 hover:text-red-400 cursor-pointer"
+                    class="text-red-300! hover:text-red-400! cursor-pointer"
                     @click="selectedFile = null"
                 > X </span>
-                <span class="text-white truncate"> {{ selectedFile?.name }} </span>
             </div>
         </div>
 
