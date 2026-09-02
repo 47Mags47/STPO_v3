@@ -45,7 +45,7 @@ export default {
 
     computed: {
         subHeaderHeight() {
-            const maxScroll = 600;
+            const maxScroll = 100;
             const maxHeight = 30;
 
             return Math.max(
