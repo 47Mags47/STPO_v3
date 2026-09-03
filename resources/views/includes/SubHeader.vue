@@ -71,7 +71,7 @@ export default {
 
     width: 100%
     height: 0
-    padding: 0 10px
+    padding: 0 20px
 
     overflow: hidden
 
