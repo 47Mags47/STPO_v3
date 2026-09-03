@@ -1,10 +1,11 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
-import { ResourceForm } from "@components";
+import { ResourceForm, ResourceTable } from "@components";
 
 export default {
     components: {
         ResourceForm,
+        ResourceTable
     },
 
     computed: {
@@ -62,19 +63,30 @@ export default {
             value: user.phone_dob,
             readonly: true
         },
-        {
-            type: 'string',
-            name: 'division',
-            label: 'Подразделение',
-            value: user.phone_dob,
-            readonly: true
-        },
-        {
-            type: 'string',
-            name: 'role',
-            label: 'Роль',
-            value: user.phone_dob,
-            readonly: true
-        },
-    ]" />
+    ]">
+        <template #footer>
+            <ResourceTable
+            caption="Подразделения"
+            :data="user.divisions"
+            :collumns="[
+                {
+                    title: 'Наименование',
+                    dataIndex: 'name',
+                },
+                {
+                    title: 'Роль',
+                    dataIndex: 'role.name',
+                },
+            ]" />
+        </template>
+    </ResourceForm>
 </template>
+
+<style lang="sass" scoped>
+.table-container
+    margin-bottom: 0
+    padding-bottom: 0
+
+    :deep(td)
+        border-right: var(--table-border)
+</style>

@@ -25,9 +25,6 @@ export default {
     padding-right: calc( (100% - 550px - 50px) / 2 )
     padding-bottom: 25px
 
-    max-height: 100vh
-    overflow: hidden
-
     display:  grid
     :deep()
         form

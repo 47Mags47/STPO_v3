@@ -59,7 +59,7 @@ export default {
             </table>
         </div>
 
-        <div class="table-footer">
+        <div v-if="['footer', 'pagination'].some(slot => slot in $slots)" class="table-footer">
             <slot v-if="'pagination' in $slots" name="pagination" />
         </div>
     </div>
