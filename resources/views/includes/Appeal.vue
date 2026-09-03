@@ -23,9 +23,3 @@ export default {
         <span class="text-white! group-hover:text-blue-100!">обращения</span>
     </div>
 </template>
-
-<style lang="sass">
-.button.blue-button
-    min-width: 0
-    min-height: 0
-</style>
