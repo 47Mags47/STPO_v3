@@ -145,7 +145,7 @@ export default {
         </div>
 
         <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" @click="popupButtonClickHandler" />
+            <Ico type="calendar" class="text-(--text-color)!" @click="popupButtonClickHandler" />
         </div>
         <DateInputPopup
             ref="dateInputPopup"

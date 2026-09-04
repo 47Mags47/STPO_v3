@@ -11,6 +11,10 @@ Broadcast::channel('user.{userId}.notifications', function (User $user, int $use
 
 ### APPEALS
 ##################################################
+Broadcast::channel('appeals', function (User $user) {
+    return $user->hasPermission('appeal_work');
+});
+
 Broadcast::channel('appeal.{appealId}', function (User $user, $appealId) {
     // DEV дописать логику проверки
     return true;

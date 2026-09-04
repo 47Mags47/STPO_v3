@@ -6,7 +6,12 @@ export default {
         type: {
             type: String,
             required: true
-        }
+        },
+
+        fill: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
@@ -23,6 +28,7 @@ export default {
             :is="currentIcon"
             class="size-full"
             :stroke-width="2"
+            :fill="fill ? 'currentColor' : 'none'"
         />
     </div>
 </template>
@@ -31,4 +37,5 @@ export default {
 .ico-container
     width: 100%
     height: 100%
+    color: var(--ico-color)
 </style>

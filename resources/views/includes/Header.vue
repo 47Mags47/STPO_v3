@@ -7,7 +7,6 @@ import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
-import Appeal from './Appeal.vue';
 
 export default {
     components: {
@@ -16,12 +15,13 @@ export default {
         Notifications,
         AlertsPopup,
         Theme,
-        Appeal,
-        BlueButton
+        BlueButton,
     },
 
     data() {
-        return {}
+        return {
+            showLinks: false,
+        }
     },
 
     methods: {
@@ -39,8 +39,9 @@ export default {
 
 <template>
     <div class="header-container">
-        <div class="logo-container">
+        <div class="logo-container flex items-center gap-[10px]">
             <h3 class="text-white!">СТПО</h3>
+            <Theme/>
         </div>
 
         <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
@@ -52,8 +53,6 @@ export default {
             </div>
         </BlueButton>
 
-        <Appeal />
-        <Theme/>
         <Notifications v-if="current_user"/>
         <Menu />
         <AlertsPopup />

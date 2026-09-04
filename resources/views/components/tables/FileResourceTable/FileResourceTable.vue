@@ -41,7 +41,8 @@ export default {
                             props: {
                                 type: 'circle',
                                 title: this.getFileTitle(row.file),
-                                style: `color: ${this.getStatusColor(row.file)}`
+                                style: `color: ${this.getStatusColor(row.file)}`,
+                                fill: true
                             }
                         }
                     },

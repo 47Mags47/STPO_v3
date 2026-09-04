@@ -1,14 +1,16 @@
 <script>
 import Ico from '../Ico.vue';
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import { DateTime } from 'luxon';
 import MessageText from './MessageText.vue';
 import MessageFile from './MessageFile.vue';
+import BlueButton from '../buttons/BlueButton.vue';
 
 export default {
     components: {
         Ico,
-        MessageText, MessageFile
+        MessageText, MessageFile,
+        BlueButton,
     },
 
     props: {
@@ -17,6 +19,7 @@ export default {
             default: {}
         }
     },
+
     computed: {
         current_user: () => usePage().props.current_user?.data,
         date_created_at() {
@@ -34,6 +37,13 @@ export default {
         <!-- контейнер сообщения -->
         <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
             :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
+
+            <!-- <div class="w-full flex items-center gap-2">
+                <BlueButton v-if="!isMine" class="size-[30px]! min-h-0!" :on-click="friendClickHandler">
+                    <Ico type="user"/>
+                </BlueButton>
+                <span class="font-bold!"> {{ message.sender.name }} </span>
+            </div> -->
 
             <span class="font-bold!"> {{ message.sender.name }} </span>
 

@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::get('/dashboard', fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
+        Route::get('/users/show/{user}',                                  [App\Http\Controllers\Auth\UserController::class,  'show'])->name('users.show');
 
         // EMAIL
         Route::name('verification.')->prefix('/email')->group(function () {

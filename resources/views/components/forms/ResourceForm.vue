@@ -73,6 +73,10 @@ export default {
             type: String,
             default: "Сохранить",
         },
+        hasSubmit: {
+            type: Boolean,
+            default: true,
+        },
     },
     slots: ["default"],
     methods: {
@@ -118,7 +122,7 @@ export default {
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
                 <MonthSelect        v-if="input.type === 'monthSelect'"     v-bind="prepareProps(input)" />
             </FormItem>
-            <BlueButton type="submit">{{ sbm }}</BlueButton>
+            <BlueButton v-if="hasSubmit" type="submit">{{ sbm }}</BlueButton>
         </template>
     </VerticalForm>
 </template>

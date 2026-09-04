@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
                 break;
             case 'local':
                 $this->call(Prod\ProdSeeder::class);
+                $this->call(Local\LocalSeeder::class);
 
                 if(is_dir(database_path('seeders/Hidden')) and file_exists(database_path('seeders/Hidden/HiddenSeeder.php')))
                     $this->call(Hidden\HiddenSeeder::class);

@@ -1,5 +1,6 @@
 export { default as ResourceForm } from './forms/ResourceForm.vue'
 export { default as VerticalForm } from './forms/VerticalForm.vue'
+export { default as FormItem } from './FormItem.vue'
 
 export { default as SelectDivisionForm } from './selectDivision/SelectDivisionForm.vue'
 
