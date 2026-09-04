@@ -36,6 +36,7 @@ class Recipient extends BaseModel
     {
         return [
             'd_rojd' => 'date',
+            'p_date' => 'date',
         ];
     }
 

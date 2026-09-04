@@ -22,7 +22,7 @@ class PaymentFileSeeder extends Seeder
 
         $banks->each(function ($bank) {
             Event::all()->each(function ($event) use ($bank) {
-                PaymentFile::factory(5)->create([
+                PaymentFile::factory(3)->create([
                     'event_id' => $event->id,
                     'bank_id' => $bank->id
                 ]);

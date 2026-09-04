@@ -34,12 +34,15 @@ class BankRaportWriter extends FileWriter
     protected array $data = [];
     protected array $files = [];
     protected int $npp;
+    protected array $config = [];
 
     protected LazyCollection|Collection $recipientChunks;
 
     public function __construct(BankRaport $raport)
     {
         parent::__construct();
+
+        $this->config = Config::array('payments');
 
         $this->raport = BankRaport::whereKey($raport)
             ->with([
@@ -84,7 +87,7 @@ class BankRaportWriter extends FileWriter
             'payment'       => $this->payment,
             'npp'           => $this->npp,
             'law'           => $this->law,
-            'config'      => Config::array('payments'),
+            'config'        => $this->config,
         ];
     }
 
