@@ -38,7 +38,7 @@ export default {
 <template>
     <div class="form-item-container" :data-orientation="orientation">
         <FormError :name="name" />
-        <label :for>{{ label }}</label>
+        <label v-if="label" :for>{{ label }}</label>
         <slot name="default" />
     </div>
 </template>
@@ -47,7 +47,7 @@ export default {
 .form-item-container
     label
         padding-left: 7px
-        color: #333
+        color: var(--text-color)
         font-weight: bold
 
     &[data-orientation="vertical"]
@@ -56,7 +56,7 @@ export default {
         gap: 5px
 
     &[data-orientation="horizontal"]
-        height: $input-height
+        height: var(--input-height)
         display: flex
         justify-content: flex-end
         align-items: center
@@ -69,7 +69,7 @@ export default {
         gap: 5px
 
     &[data-orientation="horizontal-reverse"]
-        height: $input-height
+        height: var(--input-height)
         display: flex
         justify-content: flex-end
         align-items: center

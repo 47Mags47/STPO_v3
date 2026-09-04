@@ -64,8 +64,9 @@ export default {
         <input v-for="(fileId, i) in value" type="hidden" :name="`${name}[${i}]`" :value="fileId">
 
         <div class="file-list-container">
-            <UploadFile v-for="file in files"
+            <UploadFile v-for="(file, i) in files"
                 :file="file.file"
+                :key="i + Math.random"
                 :onFileUploaded="fileUploadedHandler"
                 :onDeleteFileButtonClick="deleteFileButtonClickHandler"
             />
@@ -76,12 +77,12 @@ export default {
         <div class="add-file-container">
             <RedButton class="list-action-button clear-file-list-button" :onClick="clearFileListButtonClickHandler">
                 <span>Очистить</span>
-                <Ico type="faTrash" />
+                <Ico type="trash" />
             </RedButton>
             <div class="empty-box"></div>
             <BlueButton class="list-action-button add-file-button" :onClick="addFileButtonClickHandler">
                 <span>Добавить файлы</span>
-                <Ico type="faPaperclip" />
+                <Ico type="paperclip" />
             </BlueButton>
         </div>
     </div>
@@ -114,6 +115,4 @@ export default {
                 width: 250px
             &.add-file-button
                 width: 450px
-
-
 </style>

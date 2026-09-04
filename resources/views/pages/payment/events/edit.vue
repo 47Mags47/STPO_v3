@@ -21,20 +21,16 @@ export default {
     :inputs="[
         {
             type: 'date',
-            name: 'in_day',
+            name: 'in_date',
             label: 'Дата',
-            value: event.in_day
+            value: event.in_date
         },
         {
             type: 'select',
             name: 'payment_id',
             label: 'Выплата',
-            options: {
-                labelKey: 'name',
-                valueKey: 'id',
-                data: payments,
-            },
-            value: event.payment.id
+            options: payments,
+            value: event.payment
         },
     ]"
 />

@@ -48,6 +48,36 @@ return [
             'report' => false,
         ],
 
+        'temp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/temp'),
+        ],
+
+        'uploads' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/uploads'),
+        ],
+
+        'fsd' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/fsd'),
+        ],
+
+        'payments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/payments'),
+        ],
+
+        'appeals' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/appeals'),
+        ],
+
+        'templates' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/templates'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -55,30 +85,6 @@ return [
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
-        ],
-
-        'templates' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/templates'),
-            'throw' => true,
-        ],
-
-        'uploads' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/uploads'),
-            'throw' => true,
-        ],
-
-        'fsd' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/fsd'),
-            'throw' => true,
-        ],
-
-        'appeals' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/appeals'),
-            'throw' => true,
         ],
     ],
 

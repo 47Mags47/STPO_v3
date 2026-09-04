@@ -8,8 +8,9 @@ export default {
     },
     data() {
         const division = usePage().props.division.data;
+        const cities   = usePage().props.cities.data;
 
-        return { division };
+        return { division, cities };
     },
 };
 </script>
@@ -19,7 +20,7 @@ export default {
         header="Редактировать запись (организация)"
         sbm="Сохранить"
         method="put"
-        :action="route('divisions.update', { division: division.id })"
+        :action="route('administrate.divisions.update', { division: division.id })"
         :inputs="[
             {
                 type: 'string',
@@ -27,6 +28,14 @@ export default {
                 label: 'Наименование',
                 value: division.name,
                 placeholder: division.name,
+            },
+            {
+                type: 'select',
+                name: 'city_id',
+                label: 'Город',
+                options: cities,
+                value: division.city,
+                placeholder: 'Выберите город',
             },
         ]"
     >

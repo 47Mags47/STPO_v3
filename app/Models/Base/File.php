@@ -3,11 +3,11 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class File extends BaseModel
 {
@@ -22,27 +22,133 @@ class File extends BaseModel
         'path',
         'name',
         'origin_name',
-        'upload_at',
+        'is_disabled',
         'status_id',
     ];
 
-    ### Методы
-    ##################################################
-    public function deleteInStorage(){
-        return Storage::disk($this->disk)->delete($this->path . '/' . $this->name);
-    }
-
-    public function addError(string $error){
-        $this->errors()->create(['error' => $error]);
-    }
-
-    ### Аттрибуты
-    ##################################################
-    protected function hasToStorage(): Attribute
+    protected function casts(): array
     {
-        return new Attribute(
-            get: fn() => Storage::disk($this->disk)->has($this->path . '/' . $this->name),
+        return [
+            'is_disabled' => 'boolean',
+        ];
+    }
+
+    public static function booted()
+    {
+        self::deleted(function ($model) {
+            Storage::disk($model->disk)->delete($model->getLocalPath());
+            $model->delete();
+        });
+    }
+
+    ### Методы модели
+    ##################################################
+    public static function createChildren(string $model, ?array $attributes = [])
+    {
+        $childAttributes = array_intersect_key($attributes, array_flip(new $model()->getFillable()));
+        $fileModel = self::createFromChildren($model, $attributes);
+
+        return $model::create(array_merge([
+            'file_id' => $fileModel->id,
+        ], $childAttributes));
+    }
+
+    public static function createFromChildren(string $model, ?array $attributes = []): self {
+        $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
+
+        return self::factory()->create(array_merge([
+            'disk' => $model::$storage_file_disk,
+            'path' => $model::$storage_file_path,
+        ], $fileAttributes));
+    }
+
+    /**
+     * Adds an error to the record
+     * @param string $error
+     */
+    public function addError(string $error): self
+    {
+        $error = str_replace(PHP_EOL, '', trim($error));
+
+        $this->errors()->create(
+            ['error' => $error]
         );
+
+        return $this;
+    }
+
+    ### Методы хранилища
+    ##################################################
+    /**
+     * Return local path
+     * @return string
+     */
+    public function getLocalPath(): string
+    {
+        return $this->path !== null
+            ? $this->path . '/' . $this->name
+            : $this->name;
+    }
+
+    /**
+     * Return full path
+     * @return string
+     */
+    public function getFullPath(): string
+    {
+        return Storage::disk($this->disk)->path($this->getLocalPath());
+    }
+
+    /**
+     * Moves the file to the file storage
+     *
+     * @param  ?string  $newDisk
+     * @param  ?string  $newPath
+     * @param  ?string  $newName
+     * @return bool
+     */
+    public function move(?string $newName = null, ?string $newPath = null, ?string $newDisk = null): bool
+    {
+        $from_path = $this->getFullPath();
+
+        $newName = $newName ?? $this->name;
+        $newPath = $newPath ?? $this->path;
+        $newDisk = $newDisk ?? $this->disk;
+
+        $toPath = Storage::disk($newDisk)->path($newPath !== null ? ($newPath . '/' . $newName) : $newName);
+
+        return Storage::move($from_path, $toPath);
+    }
+
+    /**
+     * Adds a line to the file
+     *
+     * @param  ?string  $content
+     * @return bool
+     */
+    public function write(string $content, ?string $encoding = 'UTF-8'): bool
+    {
+        return Storage::disk($this->disk)->put($this->getLocalPath(), $encoding === 'UTF-8' ? $content : mb_convert_encoding($content, $encoding, 'UTF-8'));
+    }
+
+    /**
+     * download file
+     * @return StreamedResponse
+     */
+    public function download(): StreamedResponse
+    {
+        return Storage::disk($this->disk)->exists($this->getLocalPath())
+            ? Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name)
+            : abort(404);
+    }
+
+    /**
+     * get file content
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return Storage::disk($this->disk)->get($this->getLocalPath());
     }
 
     ### Связи

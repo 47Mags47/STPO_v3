@@ -2,38 +2,34 @@
 
 namespace App\Models\Administrate;
 
-use App\Classes\BaseModel;
-use App\Models\Base\TemplateStyle;
-use App\Models\Base\TemplateType;
-use App\Traits\ThisFileModel;
+use App\Classes\FileModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Template extends BaseModel
+class Template extends FileModel
 {
-    use HasFactory, ThisFileModel;
+    use HasFactory;
 
     ### Настройки
     ##################################################
     protected $table = 'administrate__templates';
 
     protected $fillable = [
-        'name',
+        'writer',
+        'description',
         'file_id',
-        'style_id',
-        'type_id',
-        'chunk',
     ];
+
+    public static string|null $storage_file_disk = 'templates';
+    public static string|null $storage_file_path = 'payment';
+    ### Методы
+    ##################################################
+    public function writeTemplate(){
+        dd(new ($this->writer)());
+        if($this->writer !== null)
+            new ($this->writer)();
+    }
 
     ### Связи
     ##################################################
-    public function type(): BelongsTo
-    {
-        return $this->belongsTo(TemplateType::class, 'type_id');
-    }
-
-    public function style(): BelongsTo
-    {
-        return $this->belongsTo(TemplateStyle::class, 'style_id');
-    }
+    //
 }

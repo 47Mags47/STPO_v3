@@ -9,10 +9,8 @@ class EventSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (now()->minus(0, 1)->startOfMonth()->toPeriod(now()->add('1 month')->endOfMonth()) as $day) {
-            Event::factory(rand(0, 3))->create([
-                'in_day' => $day,
-            ]);
-        }
+        Event::factory(3)->create([
+            'in_date' => now(),
+        ]);
     }
 }

@@ -1,42 +1,41 @@
 <script>
-import * as icons from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import * as lucide from '@/libs/lucide.js';
 
 export default {
-    components: {
-        FontAwesomeIcon,
-    },
     props: {
         type: {
             type: String,
-            validator(value){
-                return value in icons
-            }
+            required: true
+        },
+
+        fill: {
+            type: Boolean,
+            default: false
         },
     },
-    data() {
-        return {
-            icons
+
+    computed: {
+        currentIcon() {
+            return lucide[this.type] ?? lucide.CircleQuestionMark;
         }
-    },
+    }
 };
 </script>
 
 <template>
     <div class="ico-container">
-        <FontAwesomeIcon :icon="icons[type]" />
+        <component
+            :is="currentIcon"
+            class="size-full"
+            :stroke-width="2"
+            :fill="fill ? 'currentColor' : 'none'"
+        />
     </div>
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .ico-container
     width: 100%
     height: 100%
-
-    position: relative
-
-    overflow: hidden
-    svg
-        width: 100%
-        height: 100%
+    color: var(--ico-color)
 </style>

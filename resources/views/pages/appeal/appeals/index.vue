@@ -8,14 +8,84 @@ export default {
         ResourceTable,
     },
     computed: {
-        appeals: () => usePage().props.appeals,
+        appeals:            () => usePage().props.appeals,
+        current_user:       () => usePage().props.current_user.data,
+
+        senders:            () => usePage().props.senders.data,
+        themes:             () => usePage().props.themes.data,
+        statuses:           () => usePage().props.statuses.data,
     },
     data(){
         return {
             BlueButton: shallowRef(BlueButton),
             RedButton: shallowRef(RedButton),
-            router
+            appealList: [],
+            router, hasPermission,
         }
+    },
+
+    methods: {
+        getAppealActions(row) {
+            const status   = row.status.code;
+
+            const isSender = this.current_user.id === row.sender.id;
+            const isWorker = this.current_user.id === row.worker?.id;
+            const canWork  = hasPermission('appeal_work');
+
+            const canAccept   = status === 'new' && canWork && !isSender
+            const canGo       = isSender || isWorker
+            const canClose    = (status === 'new' || status === 'in_work' || status === 'reaccepted') && (isSender || isWorker)
+            const canReaccept = status === 'closed' && (isSender || isWorker)
+
+            return {
+                first: {
+                    component: (canAccept || canGo) ? this.BlueButton : null,
+                    text: canAccept ? 'Принять' : canGo ? 'Перейти' : null,
+                    onClick: () => {
+                        if (canAccept)
+                            router.post(route('appeal.accept', { appeal: row.id }))
+                        else if (canGo)
+                            router.get(route('appeal.messages.index', { appeal: row.id }))
+                    }
+                },
+                second: {
+                    component: canClose ? this.RedButton : canReaccept ? this.BlueButton : null,
+                    text: canClose ? 'Закрыть' : canReaccept ? 'Возобновить' : null,
+                    onClick: () => {
+                        if (canClose)
+                            router.post(route('appeal.close', { appeal: row.id }))
+                        else if (canReaccept)
+                            router.post(route('appeal.reaccept', { appeal: row.id }))
+                    }
+                }
+            };
+        }
+    },
+
+    watch: {
+        appeals(newData) {
+            this.appealList = this.appeals.data
+        }
+    },
+
+    mounted() {
+        this.appealList = this.appeals.data
+
+        if (hasPermission('appeal_work')) {
+            Echo.private('appeals')
+                .listen('.appeal.created', (data) => {
+                    this.appealList.unshift(data)
+                });
+        }
+
+        Echo.channel('statuses')
+            .listen('.status.changed', (data) => {
+               const index = this.appealList.findIndex(appeal => appeal.id === data.id)
+
+                if (index !== -1) {
+                    this.appealList[index].status = data.status
+                }
+            });
     }
 };
 </script>
@@ -23,25 +93,50 @@ export default {
 <template>
     <ResourceTable
         :hasCreateButton="true"
-
-        :data="appeals.data"
+        :data="appealList"
         :meta="appeals.meta"
+        :filters="[
+            {
+                type: 'dateFilter',
+                isRange: true,
+                label: 'Дата создания',
+                name: 'created_at',
+            },
+            {
+                type: 'multiSelect',
+                label: 'Отправитель',
+                name: 'sender_ids',
+                labelKey: 'full_name',
+                options: senders,
+            },
+            {
+                type: 'multiSelect',
+                label: 'Тема',
+                name: 'them_ids',
+                options: themes,
+            },
+            {
+                type: 'multiSelect',
+                label: 'Статус',
+                name: 'status_ids',
+                options: statuses,
+            },
+        ]"
         :collumns="[
             {
                 title: 'ID',
                 dataIndex: 'id',
-                width: '100px',
+                width: '75px',
             },
             {
                 title: 'Создана',
                 dataIndex: 'created',
-                type: 'date',
                 width: '100px',
             },
             {
                 title: 'Отправитель',
                 width: '250px',
-                value: (row) => `${row.sender.full_name} (каб. ${row.office})`,
+                value: (row) => row.sender.full_name,
             },
             {
                 title: 'Тема',
@@ -58,26 +153,41 @@ export default {
                 width: '125px',
                 cellClasses: (value, row) => (
                     {
-                        new:            'text-blue-700',
-                        closed:         'text-green-700',
-                        in_work:        'text-yellow-700',
-                        in_revision:    'text-red-700',
-                        pending:        'text-indigo-700',
+                        new:            'text-(--appeal-status-new)!',
+                        closed:         'text-(--appeal-status-closed)!',
+                        in_work:        'text-(--appeal-status-work)!',
+                        reaccepted:     'text-(--appeal-status-reaccepted)!',
                     }[row.status.code] ?? ''
                 )
             },
             {
+                // Перейти или принять
                 type: 'render',
-                render: (row) => row.actions.accept
-                ? {
-                    component:  BlueButton,
-                    props: {
-                        text: 'Перейти',
-                        onClick: (row) => {  router.visit(route('appeal.messages.index', {appeal: row.id})) },
-                    }
+                width: '125px',
+                render: (row) => {
+                    const action = this.getAppealActions(row).first;
+                    return {
+                        component: action.component,
+                        props: {
+                            text: action.text,
+                            onClick: action.onClick,
+                        }
+                    };
                 }
-                : {
-                    component: 'span'
+            },
+            {
+                // Закрыть или возобновить
+                type: 'render',
+                width: '125px',
+                render: (row) => {
+                    const action = this.getAppealActions(row).second;
+                    return {
+                        component: action.component,
+                        props: {
+                            text: action.text,
+                            onClick: action.onClick,
+                        }
+                    };
                 }
             },
         ]"

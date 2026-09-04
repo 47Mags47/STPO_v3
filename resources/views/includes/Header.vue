@@ -5,17 +5,23 @@ import Ico from './../components/Ico.vue';
 import Menu from './Menu.vue';
 import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
+import Theme from './Theme.vue';
+import BlueButton from '../components/buttons/BlueButton.vue';
 
 export default {
     components: {
         Ico,
         Menu,
         Notifications,
-        AlertsPopup
+        AlertsPopup,
+        Theme,
+        BlueButton,
     },
 
     data() {
-        return {}
+        return {
+            showLinks: false,
+        }
     },
 
     methods: {
@@ -28,36 +34,24 @@ export default {
         current_user: () => usePage().props.current_user?.data,
         pr: () => usePage().props
     },
-
-    mounted() {
-        window.Echo.channel('fsd.files')
-            .subscribed(() => {
-                // console.log('subscribed');
-            })
-            .listen('.file.generated', (e) => {
-                console.log('received:', e);
-            })
-            .error((error) => {
-                console.error('Channel error:', error);
-            });
-    }
 };
 </script>
 
 <template>
     <div class="header-container">
-        <div class="logo-container">
-            <h3>СТПО</h3>
+        <div class="logo-container flex items-center gap-[10px]">
+            <h3 class="text-white!">СТПО</h3>
+            <Theme/>
         </div>
 
-        <div class="user-info-container" v-if="current_user" @click="toDashboard">
+        <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
             <div class="user-logo">
-                <Ico type="faUser" />
+                <Ico type="user" />
             </div>
             <div class="user-name">
                 <span>{{ current_user?.full_name }}</span>
             </div>
-        </div>
+        </BlueButton>
 
         <Notifications v-if="current_user"/>
         <Menu />
@@ -68,16 +62,18 @@ export default {
 <style lang="sass" scoped>
 .header-container
     position: relative
-    height: $meny-height
-    padding: 0 20px
+    height: 60px
+    padding: 10px 20px
 
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 15px
+    gap: 10px
 
-    color: $meny-color
-    background: $meny-background
+    color: white
+    background: var(--menu-background-color)
+
+    z-index: 1000
 
     .ico-container
         width: 25px
@@ -91,6 +87,7 @@ export default {
         display: flex
         align-items: center
         gap: 10px
+        width: fit-content
 
         padding: 7px 10px
         border: 2px solid white

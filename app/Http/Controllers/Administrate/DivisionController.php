@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\DivisionStoreRequest;
 use App\Http\Requests\Administrate\DivisionUpdateRequest;
 use App\Models\Administrate\Division;
+use App\Models\Administrate\City;
 use Inertia\Inertia;
 
 class DivisionController extends Controller
@@ -19,20 +20,23 @@ class DivisionController extends Controller
 
     public function create()
     {
-        return Inertia::render('administrate/divisions/create');
+        return Inertia::render('administrate/divisions/create', [
+            'cities' => fn() => City::getResource()
+        ]);
     }
 
     public function store(DivisionStoreRequest $request)
     {
         Division::create($request->validated());
 
-        return redirect()->route('administrate.divisions.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('administrate.divisions.index')->with('success', 'Запись успешно создана');
     }
 
     public function edit(Division $division)
     {
         return Inertia::render('administrate/divisions/edit', [
             'division' => fn() => $division->toResource(),
+            'cities'   => fn() => City::getResource()
         ]);
     }
 
@@ -40,12 +44,12 @@ class DivisionController extends Controller
     {
         $division->update($request->validated());
 
-        return redirect()->route('administrate.divisions.index')->with('succes', 'Запись успешно обновлена');
+        return redirect()->route('administrate.divisions.index')->with('success', 'Запись успешно обновлена');
     }
 
     public function destroy(Division $division) {
         $division->delete();
 
-        return back()->with('succes', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

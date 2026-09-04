@@ -42,7 +42,7 @@ export default {
                 this.errorText = error
 
             return error
-        }
+        },
     },
     methods: {
         deleteFileButtonClickHandler() {
@@ -97,6 +97,13 @@ export default {
                 .catch(() => {
                     this.uploadChunk(chunkId, content, attempt + 1)
                 })
+        },
+
+        getFileName(file) {
+            if (file.name.length > 60)
+                return file.name?.slice(0, 60) + '.. ' + '.' + file.name?.split('.').pop()
+
+            return file.name
         }
     },
     mounted() {
@@ -108,19 +115,19 @@ export default {
 <template>
     <div class="upload-file-container">
         <div class="file-info-line" :title="errorText">
-            <Ico v-if="status == 'upload'" class="file-style-ico file-style-upload" type="faFileCirclePlus" />
-            <Ico v-if="status == 'success'" class="file-style-ico file-style-success" type="faFileCircleCheck" />
-            <Ico v-if="status == 'error' || error" class="file-style-ico file-style-error" type="faFileCircleExclamation" />
+            <Ico v-if="status == 'upload'" class="file-style-ico file-style-upload" type="file-circle-plus" />
+            <Ico v-if="status == 'success'" class="file-style-ico file-style-success" type="file-circle-check" />
+            <Ico v-if="status == 'error' || error" class="file-style-ico file-style-error" type="file-circle-exclamation" />
 
-            <div class="file-name">{{ file.name }}</div>
+            <div v-if="status == 'error' || error" class="file-name">{{ file.name }}</div>
 
-            <Ico v-if="status == 'success'" type="faX" class="file-action-button delete-file-button"
+            <Ico v-if="status == 'success'" type="x" class="file-action-button delete-file-button"
                 @click="deleteFileButtonClickHandler" />
-            <Ico v-if="status == 'error'" type="faArrowRotateRight" class="file-action-button refresh-file-button"
+            <Ico v-if="status == 'error'" type="arrow-rotate-right" class="file-action-button refresh-file-button"
                 @click="refreshFileButtonClickHandler" />
 
         </div>
-        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" />
+        <ProgressBar v-if="status !== 'error' && error == null" :procentage="uploadedChunks / totalChunks" :label="getFileName(file)"/>
     </div>
 </template>
 
@@ -140,7 +147,7 @@ export default {
         .file-style-ico
             grid-area: A
             &.file-style-upload
-                color: $blue-button-background
+                color: lightblue
             &.file-style-success
                 color: green
             &.file-style-error
@@ -150,6 +157,7 @@ export default {
             overflow: hidden
             text-overflow: ellipsis
             white-space: nowrap
+            color: var(--text-color)
         .file-action-button
             grid-area: C
             width: 20px
@@ -158,6 +166,5 @@ export default {
             &.delete-file-button
                 color: red
             &.refresh-file-button
-                color: $blue-button-background
-
+                color: var(--button-background-color)
 </style>

@@ -1,35 +1,70 @@
 <script>
-import { ResourceTable } from '@components'
-import { usePage } from '@inertiajs/vue3';
+import { ResourceTable } from "@components";
+import { router, usePage } from "@inertiajs/vue3";
 
 export default {
     components: {
-        ResourceTable
+        ResourceTable,
     },
+
     computed: {
-        banks: () => usePage().props.banks
+        banks: () => usePage().props.banks,
+        event: () => usePage().props.event.data,
+    },
+
+    methods: {
+        goToFilesButtonClickhandler(bank){
+            router.get(route('payment.raports.index', {
+                'event': this.event.id,
+                'bank': bank.id
+            }))
+        },
+        goToArchivesButtonClickhandler(){
+            router.get(route('payment.archives.index', {
+                'event': this.event.id,
+            }))
+        },
     }
 }
 </script>
-
 <template>
     <ResourceTable
-        caption="Выплаты (список банков)"
-        :hasCreateButton="true"
-        :hasDeleteButton="true"
-        :hasEditButton="true"
+        caption="Выплаты (Свод по банкам)"
         :data="banks.data"
         :meta="banks.meta"
+        :actions="[
+            {
+                color: 'blue',
+                ico: 'file-zipper',
+                onClick: goToArchivesButtonClickhandler
+            }
+        ]"
+        :rowLinks="[
+            {
+                'ico': 'file',
+                'onClick': (bank) => goToFilesButtonClickhandler(bank)
+            }
+        ]"
         :collumns="[
             {
                 title: 'Код',
-                dataIndex: 'code',
-                width: '100px'
+                dataIndex: 'number',
+                 width: '75px',
             },
             {
                 title: 'Наименование',
                 dataIndex: 'name',
             },
+            {
+                title: 'Файлов',
+                dataIndex: 'payment-files.count',
+                width: '100px',
+            },
+            {
+                title: 'Организаций',
+                dataIndex: 'payment-files.division_count',
+                width: '100px',
+            }
         ]"
     />
 </template>

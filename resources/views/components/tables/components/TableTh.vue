@@ -42,7 +42,7 @@ table
             border-top: none
         th
             position: relative
-            background: $table-thead-background
+            background: var(--table-header-background-color)
             &:first-child
                 border-right: none
             &:last-child

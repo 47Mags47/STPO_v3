@@ -29,7 +29,7 @@ class ThemController extends Controller
     {
         Them::create($request->validated());
 
-        return redirect()->route('appeal.thems.index')->with('succes', 'Запись успешно создана');
+        return redirect()->route('appeal.thems.index')->with('success', 'Запись успешно создана');
     }
 
     public function edit(Them $them)
@@ -44,13 +44,13 @@ class ThemController extends Controller
     {
         $them->update($request->validated());
 
-        return redirect()->route('appeal.thems.index')->with('succes', 'Запись успешно обновлена');
+        return redirect()->route('appeal.thems.index')->with('success', 'Запись успешно обновлена');
     }
 
     public function destroy(Them $them)
     {
         $them->delete();
 
-        return back()->with('succes', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

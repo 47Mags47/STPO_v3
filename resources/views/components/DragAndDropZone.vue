@@ -41,7 +41,7 @@ export default {
 
         @drop.prevent.stop="dropFilesHandler"
     >
-        <Ico type="faCloudArrowDown" />
+        <Ico type="cloud-download" />
     </div>
 </template>
 
@@ -55,9 +55,9 @@ export default {
     justify-content: center
     align-items: center
 
-    border: 1px dashed $blue-button-background
+    border: 1px dashed var(--border-color)
 
-    color: $blue-button-background
+    color: var(--button-background-color)
 
     opacity: .5
     &.isActive

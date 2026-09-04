@@ -1,1 +1,3 @@
-import "./Object";
+import './Object';
+import './HasPermission';
+import './fixOverflow'

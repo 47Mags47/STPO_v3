@@ -69,11 +69,11 @@ export default {
 
     padding: 5px
 
-    border-radius: $default-border-radius
+    border-radius: $button-border-radius
 
     font-size: 1rem
     font-weight: 600
-    color: $button-color
+    color: white
 
     cursor: pointer
 

@@ -26,11 +26,11 @@ export default {
         },
         placeholder: {
             type: String,
-            default: "Файл не выбран",
+            default: 'Файл не выбран',
         },
         buttonText: {
             type: String,
-            default: "Выбрать файл",
+            default: 'Выбрать файл',
         },
     },
 
@@ -45,7 +45,7 @@ export default {
             if (!this.internalFiles) return this.placeholder;
 
             if (Array.isArray(this.internalFiles)) {
-                return this.internalFiles.map((f) => f.name).join(", ");
+                return this.internalFiles.map((f) => f.name).join(', ');
             }
 
             return this.internalFiles.name;
@@ -66,7 +66,7 @@ export default {
         },
 
         clear() {
-            this.$refs.input.value = "";
+            this.$refs.input.value = '';
             this.internalFiles = null;
         },
     },
@@ -102,7 +102,7 @@ export default {
                     class="clear-btn"
                     @click.stop="clear"
                 >
-                    <Ico type="faX" />
+                    <Ico type="x" />
                 </BaseButton>
 
                 <BlueButton class="select-btn" @click.stop="trigger">
@@ -126,8 +126,8 @@ export default {
         justify-content: space-between
         gap: 4px
         padding: 0 6px
-        border: $input-border
-        border-radius: $input-border-radius
+        border: var(--input-border)
+        border-radius: var(--input-border-radius)
         background: white
         height: 30px
         line-height: 30px

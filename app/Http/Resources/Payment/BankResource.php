@@ -15,9 +15,13 @@ class BankResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'        => $this->id,
-            'code'      => $this->code,
-            'name'      => $this->name,
+            'id' => $this->id,
+            'name' => $this->name,
+            'number' => $this->number,
+            'payment-files' => [
+                'count' => $this->payment_paymentFiles()->count(),
+                'division_count' => $this->payment_paymentFiles->groupBy('division_id')->count()
+            ]
         ];
     }
 }

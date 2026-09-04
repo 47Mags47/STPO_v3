@@ -84,23 +84,23 @@ export default {
 
 <template>
     <div class="big-file-input-container">
-        <input type="hidden" :name :value="serverConfig.id">
-        <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler">
-        <StringInput class="file-name-input" :value="file.name ?? ''" readonly />
-        <BlueButton class="add-file-button" :onClick="addFileButtonClickHandler">
-            <Ico type="faFile" />
-        </BlueButton>
-        <ProgressBar v-if="isUploading" :procentage="uploadedChunks / totalChunks" />
+        <div class="flex gap-3">
+            <input type="hidden" :name :value="serverConfig.id">
+            <input type="file" class="upload-input" ref="uploadInput" @change="changeFileInputHandler">
+            <StringInput class="file-name-input" :value="file.name ?? ''" readonly />
+            <BlueButton class="add-file-button" :onClick="addFileButtonClickHandler">
+                <Ico type="file" />
+            </BlueButton>
+        </div>
+        <ProgressBar v-if="isUploading" :procentage="uploadedChunks / totalChunks" :label="file.name?.slice(0, 10) + '.. ' + '.' + file.name?.split('.').pop()"/>
     </div>
 </template>
 
 <style lang="sass" scoped>
 .big-file-input-container
-    display: grid
-    grid-template-areas: 'A B' 'C C'
-    grid-template-columns: auto 30px
-    grid-template-rows: 30px 10px
-    gap: 5px
+    display: flex
+    flex-direction: column
+    gap: 10px
     .upload-input
         display: none
     .file-name-input
@@ -108,5 +108,7 @@ export default {
     .add-file-button
         grid-area: B
         padding: 7px
+        width: 36px
+        height: 36px
 
 </style>

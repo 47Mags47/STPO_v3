@@ -4,6 +4,7 @@ namespace Database\Factories\Appeal;
 
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Them;
+use App\Models\Base\Chat;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,10 +21,11 @@ class AppealFactory extends Factory
     public function definition(): array
     {
         return [
-            'office' => $this->faker->numerify('###'),
             'comment' => $this->faker->text(250),
 
+            'chat_id'  => Chat::randomOrCreate()->id,
             'sender_id' => User::randomOrCreate()->id,
+            'worker_id' => User::randomOrCreate()->id,
             'them_id' => Them::randomOrCreate()->id,
             'status_id' => Status::randomOrCreate()->id,
         ];

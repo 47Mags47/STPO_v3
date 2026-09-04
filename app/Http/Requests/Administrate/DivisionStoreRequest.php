@@ -15,7 +15,8 @@ class DivisionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => ['required', 'string', 'min:3', 'max:255', 'unique:' . Division::class . ',name']
+            'name'  => ['required', 'string', 'min:3', 'max:255', 'unique:' . Division::class . ',name'],
+            'city_id'  => ['required', 'Integer', 'exists:administrate__cities,id']
         ];
     }
 }

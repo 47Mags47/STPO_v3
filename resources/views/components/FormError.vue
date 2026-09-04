@@ -25,12 +25,14 @@ export default {
 <style lang="sass" scoped>
 .form-item-error-container
     width: 100%
-    background: $form-error-background
-    border: $form-error-border
+    background: var(--error-background-color)
+    border: var(--error-border)
     padding: 5px 7px
-    border-radius: $default-border-radius
+    border-radius: 6px
+    opacity: .75
 
     span
         font-size: .9rem
-        color: $form-error-color
+        color: white
+
 </style>

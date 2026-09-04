@@ -1,12 +1,14 @@
 <script>
 import { router, usePage } from "@inertiajs/vue3";
 import Ico from "../components/Ico.vue";
+import BlueButton from "../components/buttons/BlueButton.vue";
 import { List } from "./../components/List";
 
 export default {
     components: {
         Ico,
-        List
+        List,
+        BlueButton
     },
 
     data() {
@@ -60,9 +62,9 @@ export default {
 
 <template>
     <div class="menu-container" v-outsideClick="outsideClickHandler">
-        <div class="button-container" @click="togleOpen">
-            <Ico type="faBars" />
-        </div>
+        <BlueButton class="button-container size-[40px]!" @click="togleOpen">
+            <Ico type="bars" />
+        </BlueButton>
         <div :class="{ 'menu-list-container': true, open: isOpen }">
             <List :items="menuList" :onItemClick="(item) => menuItemClickHandler(item)" />
         </div>
@@ -84,22 +86,22 @@ export default {
             width: 0
             height: calc(100vh - 60px)
 
-            background: $meny-background
-            padding: 5px 0
+            background: var(--menu-background-color)
 
             overflow: hidden
             z-index: 1000
             transition: .5s
             &.open
                 width: 350px
+
     .list-container
         :deep()
             .list-item-container
                 font-size: 1.2rem
                 &:hover
-                    background: $meny-background-hover
+                    background: var(--menu-background-color-hover)
             .list-group-container .list-group-label
                 font-size: 1.2rem
                 &:hover
-                    background: $meny-background-hover
+                    background: var(--menu-background-color-hover)
 </style>

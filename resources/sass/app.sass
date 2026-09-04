@@ -1,20 +1,15 @@
-@forward './core'
+@use "abstracts"
+@use "base"
+@use "themes"
 
-:root
-    --input-height: #{$input-height}
-    --meny-background: #3d9ad1
+:root[data-theme="light"]
+    @include abstracts.create-theme(themes.$theme-light)
 
-    --scroll-color: red()
-    --scroll-color-hover: #{$scroll-color-hover}
-    --scroll-background: #{$scroll-background}
-    --input-border-color: #{$input-border-color}
-    --blue-button-background: #{$blue-button-background}
-    --blue-button-background-hover: #{$blue-button-backgroun-hover}
+:root[data-theme="dark"]
+    @include abstracts.create-theme(themes.$theme-dark)
 
-.base-input
-    @include input()
+::view-transition-old(root)
+    animation: none
 
-.exit-right
-    @apply transition-all duration-500 ease-in-out opacity-0 translate-x-full pointer-events-none;
-
-
+::view-transition-new(root)
+    animation: none

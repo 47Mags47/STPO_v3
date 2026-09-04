@@ -11,15 +11,10 @@ export default {
         RedButton,
     },
     props: {
-        link: {
-            type: String,
-        },
-        fileName: {
-            type: String,
-        },
-        text: {
-            type: String,
-        },
+        file: {
+            type: Object,
+            default: {}
+        }
     },
     data() {
         return {
@@ -27,43 +22,22 @@ export default {
         }
     },
     methods: {
-        downoadClickButtonHandler(){
-            router.get(this.link)
+        downoadClickButtonHandler() {
+            window.open(route('files.download', { file: this.file.file_id }))
         }
     }
 };
 </script>
 
 <template>
-    <BaseNotification class="download-file-notification-container">
-        <template #header>
-            <Ico type="faFile" />
-            SYSTEM
-            <Ico
-                type="faX"
-                class="absolute! right-3 font-bold! cursor-pointer w-fit! hover:text-gray-300"
-                @click="deleteNot(notification.id)"
-            />
-        </template>
-
-        <template #content>
-            <div class="download-file-notification-content">
-                <span class="message">Файл {{ fileName }} готов к загрузке.</span>
-                <RedButton :onClick="downoadClickButtonHandler" >
-                    <Ico type="faDownload" />
-                </RedButton>
-            </div>
+    <BaseNotification type="download-file-notification" ico="file">
+        <template v-slot:actions>
+            <RedButton :onClick="downoadClickButtonHandler">
+                <Ico type="download" />
+            </RedButton>
         </template>
     </BaseNotification>
 </template>
 
 <style lang="sass" scoped>
-.download-file-notification-container
-    .download-file-notification-content
-        display: flex
-        justify-content: space-between
-        .button
-            width: 30px
-            height: 30px
-            padding: 5px
 </style>

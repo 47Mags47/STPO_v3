@@ -35,10 +35,10 @@ class Filter
     public function filter()
     {
         $this->builder->where(function () {
-            foreach ($this->request->input('filter') as $method => $value) {
-                if (method_exists($this, $method)) {
-                    $methodName = Str::camel($method);
+            foreach ($this->request->input('filters') as $method => $value) {
+                $methodName = Str::camel($method);
 
+                if (method_exists($this, $methodName)) {
                     $this->{$methodName}($value);
                 } else {
                     if (Schema::hasColumn($this->builder->getModel()->getTableName(), $method))
@@ -55,7 +55,7 @@ class Filter
 
     public function apply(): Builder
     {
-        if ($this->request->has('filter'))
+        if ($this->request->has('filters'))
             $this->filter();
 
         if ($this->request->has('search'))

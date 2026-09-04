@@ -17,6 +17,10 @@ class DivisionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'city' => [
+                'id' => $this->city->id,
+                'name' => $this->city->name,
+            ]
         ];
     }
 }

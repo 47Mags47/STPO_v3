@@ -26,7 +26,11 @@ export default {
 </script>
 
 <template>
-    <RedButton @click.prevent="clickHandler" class="ico-button">
-        <Ico type="faTrash" />
+    <RedButton
+        title="Удалить"
+        class="ico-button"
+        @click.prevent="clickHandler"
+    >
+        <Ico type="trash" />
     </RedButton>
 </template>

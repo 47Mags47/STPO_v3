@@ -2,9 +2,8 @@
 
 namespace Database\Factories\Base;
 
-use App\Models\Base\File;
+use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileFactory extends Factory
@@ -14,16 +13,9 @@ class FileFactory extends Factory
         return [
             'disk' => config('filesystems.default'),
             'path' => '',
-            'name' => Str::random(40) . '.txt',
+            'name' => Str::random(40),
             'origin_name' => Str::random(40),
-            'upload_at' => null,
+            'status_id' => FileStatus::byCode('creating')->id,
         ];
-    }
-
-    public function configure(): static
-    {
-        return $this->afterCreating(function (File $file) {
-            Storage::disk($file->disk)->put($file->path . '/' . $file->name, '');
-        });
     }
 }

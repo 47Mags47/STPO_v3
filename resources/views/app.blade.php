@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 
 <head>
     <meta charset="utf-8" />
@@ -13,7 +13,7 @@
     @routes
 </head>
 
-<body>
+<body class="bg-(--background-color)">
 
     @inertia
 

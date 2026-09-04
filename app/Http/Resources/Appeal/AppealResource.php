@@ -17,8 +17,8 @@ class AppealResource extends JsonResource
         return [
             'id' => $this->id,
             'created' => $this->created_at->format('d.m.Y'),
-            'office' => $this->office,
             'comment' => $this->comment,
+            'chat_id' => $this->chat_id,
             'them' => [
                 'id' => $this->them->id,
                 'name' => $this->them->name,
@@ -27,17 +27,19 @@ class AppealResource extends JsonResource
                 ]
             ],
             'sender' => [
+                'id'        => $this->sender->id,
                 'full_name' => $this->sender->full_name
             ],
+            'worker' => $this->worker !== null
+            ? [
+                'id'        => $this->worker->id,
+                'full_name' => $this->worker->full_name
+            ]
+            : [],
             'status' => [
                 'code' => $this->status->code,
                 'name' => $this->status->name
             ],
-            'actions' => [
-                'accept'    => user()->can('accept', $this->resource),
-                'goto'      => user()->can('goto', $this->resource),
-                'close'     => user()->can('close', $this->resource),
-            ]
         ];
     }
 }

@@ -12,222 +12,207 @@ export default {
         },
         id: {
             type: String,
-            default: null,
+            default: (props) => props.name,
         },
         value: {
             default: null,
         },
         placeholder: {
             type: String,
-            default: "Выберите...",
+            default: 'Выберите...',
         },
         options: {
-            type: Object,
-            default: () => ({
-                labelKey: "label",
-                valueKey: "value",
-                data: [],
-            }),
+            type: Array,
+            default: () => [],
         },
-        onSelect: { type: Function, default: () => {} },
+        labelKey: {
+            type: String,
+            default: 'name'
+        },
+        valueKey: {
+            type: String,
+            default: 'id'
+        },
+        hasSearch: {
+            type: Boolean,
+            default: true
+        },
+
+        onSelect: {
+            type: Function,
+            default: () => {}
+        },
     },
 
     data() {
         return {
             open: false,
-            search: "",
-            activeIndex: -1,
-            selected: null,
-            backspaced: false,
+            search: '',
+            selected: this.value ?? null,
+            activeElementIndex: 0,
+            isOverflow: false,
         };
-    },
-    watch: {
-        value: {
-            immediate: true,
-            handler(val) {
-                this.setSelectedByValue(val);
-            },
-        },
     },
 
     computed: {
-        list() {
-            const { labelKey = "label", valueKey = "value" } = this.options;
-            let data = this.options?.data || [];
-            if (typeof data === "function") data = data();
-
-            return data.map((item) => ({
-                label: item[labelKey],
-                value: item[valueKey],
-                raw: item,
-            }));
-        },
-
         filtered() {
-            if (!this.open) return this.list;
-            return this.list.filter((o) =>
-                o.label?.toLowerCase().includes(this.search.toLowerCase()),
+            return this.options.filter((option) =>
+                Object.get(option, this.labelKey).toLowerCase().includes(this.search.toLowerCase()),
             );
         },
 
-        selectedLabel() {
-            if (this.backspaced) return "";
-            if (this.open && this.filtered[this.activeIndex]) {
-                return this.filtered[this.activeIndex].label;
-            }
-            return this.selected?.label || "";
+        selectedLabel(){
+            return this.getLabel(this.selected)
+        },
+
+        selectedValue(){
+            return this.getValue(this.selected)
         },
     },
 
-    methods: {
-        setSelectedByValue(val) {
-            if (!val) {
-                this.selected = null;
-                return;
-            }
+    watch: {
+        open(isOpen) {
+            // HACK убрать рефы отсюда
+            let input = this.$refs.input.$el
+            let dropdown = this.$refs.dropdown
 
-            const found = this.list.find((o) => o.value === val);
-            this.selected = found || null;
+            if(isOpen) {
+                // если список выше инпута
+                if (dropdown.getBoundingClientRect().top < input.getBoundingClientRect().top) {
+                    dropdown.style.borderBottom  = '0'
+
+                    input.style.borderRadius     = '0 0 var(--input-border-radius) var(--input-border-radius)'
+                    dropdown.style.borderRadius  = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                } else {
+                    dropdown.style.borderTop = '0'
+                    input.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
+                }
+            } else
+                input.style.borderRadius = 'var(--input-border-radius)'
+        }
+    },
+
+    methods: {
+        getLabel(option){
+            return option === null
+                ? null
+                : Object.get(option, this.labelKey)
         },
+
+        getValue(option){
+            return option === null
+                ? null
+                : Object.get(option, this.valueKey)
+        },
+
         openList() {
+            fixOverflow(this.$refs.dropdown)
             this.open = true;
-            this.setInitialActive();
-            this.$nextTick(this.scrollToActive);
         },
 
         closeList() {
             this.open = false;
-            this.search = "";
-            this.activeIndex = -1;
-            this.backspaced = false;
-
-            this.$nextTick(() => {
-                const inputEl = this.$el.querySelector("input[type='text']");
-                if (inputEl) inputEl.blur();
-            });
         },
 
-        toggle() {
-            this.open ? this.closeList() : this.openList();
+        selectHandler(option){
+            this.selected = option
+            this.open = false
+            this.search = ''
+
+            this.onSelect(option)
         },
 
-        setInitialActive() {
-            const index = this.filtered.findIndex(
-                (o) => o.value === this.selected?.value,
-            );
-            this.activeIndex = index >= 0 ? index : 0;
+        checkSelected(option) {
+            return this.selected === null
+                ? false
+                : Object.get(option, this.valueKey) === Object.get(this.selected, this.valueKey)
         },
 
-        select(option) {
-            this.selected = option;
-            this.backspaced = false;
-            this.onSelect(option.raw);
-            this.closeList();
-        },
-
-        handleKeydown(e) {
-            const max = this.filtered.length - 1;
-
-            switch (e.key) {
-                case "ArrowDown":
-                    this.activeIndex =
-                        this.activeIndex >= max ? 0 : this.activeIndex + 1;
-                    this.backspaced = false;
-                    break;
-
-                case "ArrowUp":
-                    this.activeIndex =
-                        this.activeIndex <= 0 ? max : this.activeIndex - 1;
-                    this.backspaced = false;
-                    break;
-
-                case "Enter":
-                    e.preventDefault();
-                    if (this.backspaced) {
-                        this.closeList();
-                    } else if (this.filtered[this.activeIndex]) {
-                        this.select(this.filtered[this.activeIndex]);
-                    }
-                    break;
-
-                case "Escape":
-                case "Tab":
-                    this.closeList();
-                    break;
-
-                case "Backspace":
-                    this.selected = null;
-                    this.search = "";
-                    this.backspaced = true;
-                    this.onSelect(null);
-                    break;
+        onKey(e){
+            if (e.key === 'ArrowDown') {
+                if (this.activeElementIndex < this.filtered.length - 1) {
+                    this.activeElementIndex++;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
             }
 
-            this.$nextTick(this.scrollToActive);
+            if (e.key === 'ArrowUp') {
+                if (this.activeElementIndex > 0) {
+                    this.activeElementIndex--;
+                    this.$nextTick(() => {
+                        this.scrollToActive();
+                    });
+                }
+            }
+
+            if (e.key === 'Enter') {
+                this.selectHandler(this.filtered[this.activeElementIndex]);
+                e.target.blur()
+            }
         },
 
         scrollToActive() {
-            const list = this.$refs.list;
-            if (!list) return;
+            const el = this.$el.querySelector('.active');
 
-            const el = list.children[this.activeIndex];
-            if (el) el.scrollIntoView({ block: "nearest" });
-        },
+            el?.scrollIntoView({
+                block: 'nearest',
+            });
+        }
     },
+    watch:{
+        value(option){
+            this.selected = option
+        },
+    }
 };
 </script>
 
 <template>
     <div
         class="custom-select-box"
+        :class="{ 'open': open }"
         v-outsideClick="closeList"
-        :data-list-open="open"
-        @keydown="handleKeydown"
     >
         <div class="input-container">
             <input
                 type="hidden"
-                :id="id || name"
-                :name="name"
-                :value="selected?.value || ''"
+                :id
+                :name
+                :value="selectedValue"
             />
 
             <Baseinput
+                ref="input"
                 type="text"
                 readonly
-                @focus="openList"
-                :placeholder="placeholder"
+                :placeholder
                 :value="selectedLabel"
-                :name="null"
+                :onFocus="openList"
+                @keydown="onKey"
             />
 
-            <div class="select-ico-container" :class="{ rotated: open }">
-                <Ico type="faChevronDown" />
-            </div>
+            <Ico type="chevron-down" :class="{ 'rotated': open }" />
         </div>
 
-        <div v-if="open" class="list-container">
-            <div class="search-input-container">
+        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
+            <div class="search-input-container" v-if="hasSearch">
                 <Baseinput
                     type="text"
                     placeholder="Поиск..."
                     :value="search"
-                    @input="(e) => (search = e.target.value)"
                     :name="null"
+                    :onInput="(e) => (search = e.target.value)"
                 />
             </div>
 
-            <ul ref="list">
-                <li
-                    v-for="(o, i) in filtered"
-                    :key="o.value"
-                    @click="select(o)"
-                    :class="{
-                        selected: o.value === selected?.value,
-                        active: i === activeIndex,
-                    }"
+            <ul>
+                <li v-for="(option, i) in filtered"
+                    :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
+                    @click="() => selectHandler(option)"
                 >
-                    {{ o.label }}
+                    <span> {{ getLabel(option) }} </span>
                 </li>
             </ul>
         </div>
@@ -236,78 +221,84 @@ export default {
 
 <style lang="sass" scoped>
 .custom-select-box
-  position: relative
+    position: relative
+    .input-container
+        position: relative
 
-  &[data-list-open="true"]
-    :deep()
-      .input-container input[type="text"]
-        border-radius: $input-border-radius $input-border-radius 0 0
+        .ico-container
+            position: absolute
 
-  :deep()
-    .input-container input[type="text"]
-      cursor: pointer
-      position: relative
-      transition: none
+            top: 50%
+            right: 10px
+            transform: translateY(-50%)
 
+            width: 25px
+            height: 25px
+
+            pointer-events: none
+            transition: 0.3s
+
+            color: var(--text-color)
+
+            &.rotated
+                transform: translateY(-50%) rotate(540deg)
+
+        input[type="text"]
+            cursor: pointer
+
+            white-space: nowrap
+
+            overflow: hidden
+            text-overflow: ellipsis
+
+            transition: none
     .list-container
-      width: 100%
-      position: absolute
-      left: 0
-      top: 100%
-      z-index: 9
-      background: $input-background
-      border: $input-border
-      border-top: none
-      border-radius: 0 0 $input-border-radius $input-border-radius
-      overflow: hidden
+        width: 100%
+        max-height: 0
 
-      .search-input-container
-        padding: 10px
-        border-bottom: $input-border
-      ul
-        max-height: 250px
-        overflow: auto
-        @include scroll
+        position: absolute
+        left: 0
+        top: 100%
 
-        li
-          padding: 5px 15px
-          cursor: pointer
-          transition: .2s
+        z-index: 9
 
-          &:hover
-            background: $option-background-hover
+        background: var(--background-color)
 
-          &.active
-            background: $option-background-hover
 
-          &.selected
-            background: $option-background-selected
+        border-radius: 0 0 $input-border-radius $input-border-radius
+        border: var(--border)
 
-          &.selected.active
-            background: $option-background-hover
+        opacity: 0
 
-.input-container
-  position: relative
+        overflow: hidden
 
-  input[type="text"]
-    width: 100%
-    padding-right: 35px
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
-    cursor: pointer
+        transition: all 0.4s ease
 
-  .select-ico-container
-    position: absolute
-    top: 50%
-    right: 10px
-    transform: translateY(-50%)
-    width: 15px
-    height: 15px
+        &.open
+            max-height: 250px
+            opacity: 1
 
-    pointer-events: none
-    transition: transform 0.3s ease
+        &.closed
+            max-height: 0
+            opacity: 0
 
-    &.rotated
-      transform: translateY(-50%) rotate(540deg)
+        .search-input-container
+            padding: 10px
+            border-bottom: var(--border)
+        ul
+            max-height: 250px
+            overflow: auto
+            @include scroll
+
+            li
+                padding: 5px 15px
+                cursor: pointer
+                transition: .2s
+
+                &:hover
+                    background: var(--option-background-color-hover)
+                &.active
+                    background: var(--option-background-color-hover)
+                &.selected
+                    background: var(--option-background-color-selected)
 </style>

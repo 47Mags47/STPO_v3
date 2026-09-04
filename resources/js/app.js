@@ -1,13 +1,13 @@
 import './bootstrap'
-import "./helpers";
-
+import './helpers';
+import { initTheme } from './theme';
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-
 import * as derectives from "./derectives";
-
 import { ZiggyVue } from "ziggy-js";
 import AuthLayout from "../views/layouts/AuthLayout.vue";
+
+initTheme();
 
 createInertiaApp({
     resolve: async (name) => {
@@ -17,7 +17,10 @@ createInertiaApp({
 
         const page = await importPage();
 
-        if (!name.startsWith('httpErrors/')) {
+        const exceptions = ['httpErrors/', 'NoEmail', 'SelectDivision', 'auth/']
+        const isException = exceptions.some(n => name.startsWith(n))
+
+        if (!isException) {
             page.default.layout ??= AuthLayout;
         }
 

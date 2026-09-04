@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -22,12 +23,27 @@ class UserController extends Controller
         if (Auth::attempt($request->only(['login', 'password']), $request->has('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->route('dashboard');
+            if (user()->divisions->count() === 1) {
+                $request->session()->put('current_division_id', user()->divisions()->first()->id);
+
+                return redirect()->route('dashboard');
+            }
+
+            return redirect()->route('select-division.index');
         }
 
         return back()->withErrors([
             'login' => 'Неверный логин или пароль.',
         ]);
+    }
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
     public function create()
     {
@@ -38,7 +54,13 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $user = User::create($request->validated());
+        $data = $request->validated();
+
+        // HACK дописать Role::byCode('code')
+        $user = User::create(collect($data)->except('division')->toArray());
+        $user->divisions()->attach($data['division'], [
+            'role_id' => 3
+        ]);
 
         event(new Registered($user));
 
@@ -58,7 +80,7 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        return redirect()->route('dashboard')->with('succes', 'Запись успешно обновлена');
+        return redirect()->route('dashboard')->with('success', 'Запись успешно обновлена');
     }
 
     public function show(User $user)

@@ -53,6 +53,22 @@ export default {
         },
         isActiveLink(page){
             return this.current_page == page
+        },
+
+        pages() {
+            let start = Math.max(1, this.current_page - 1);
+            let end = Math.min(this.last_page, start + 2);
+
+            // Если дошли до конца, сдвигаем окно влево
+            start = Math.max(1, end - 2);
+
+            const pages = [];
+
+            for (let i = start; i <= end; i++) {
+                pages.push(i);
+            }
+
+            return pages;
         }
     },
     methods:{
@@ -62,7 +78,7 @@ export default {
             url.searchParams.set("page", page)
 
             return url.href
-        }
+        },
     }
 }
 </script>
@@ -70,15 +86,17 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="faAnglesLeft" :url="generateLink(1)" />
+            <Link icoType="chevron-left" :url="generateLink(1)" />
 
-            <Link v-if="current_page - 2 > 0" :page="current_page - 2" :url="generateLink(current_page - 2)"/>
-            <Link v-if="current_page - 1 > 0" :page="current_page - 1" :url="generateLink(current_page - 1)"/>
-            <Link :active="true" :page="current_page"/>
-            <Link v-if="last_page - current_page > 1" :page="current_page + 1" :url="generateLink(current_page + 1)"/>
-            <Link v-if="last_page - current_page > 2" :page="current_page + 2" :url="generateLink(current_page + 2)"/>
+            <Link
+                v-for="page in pages"
+                :key="page"
+                :page="page"
+                :active="page === current_page"
+                :url="generateLink(page)"
+            />
 
-            <Link icoType="faAnglesRight" :url="generateLink(last_page)"/>
+            <Link icoType="chevron-right" :url="generateLink(last_page)"/>
         </ul>
     </div>
 </template>

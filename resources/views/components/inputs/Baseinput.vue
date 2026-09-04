@@ -7,7 +7,7 @@ export default {
         },
         type: {
             type: [String, null],
-            default: "text",
+            default: 'text',
         },
         name: {
             type: [String, null],
@@ -20,9 +20,9 @@ export default {
             type: Boolean,
             default: false,
         },
-        modelValue: {
+        value: {
             type: [String, Boolean, Number],
-            default: "",
+            default: '',
         },
         autocomplete: {
             type: Boolean,
@@ -30,6 +30,10 @@ export default {
         },
 
         hidden: {
+            type: Boolean,
+            default: false,
+        },
+        readonly: {
             type: Boolean,
             default: false,
         },
@@ -71,14 +75,15 @@ export default {
 <template>
     <input
         ref="input"
-        :class="{ 'base-input': true, 'hidden': hidden }"
+        :class="{ 'base-input': true, 'hidden': hidden, 'readonly': readonly }"
         :type
         :id
         :name
         :placeholder
         :required
         :autocomplete
-        :value="modelValue"
+        :value
+        :readonly
         @input="inputHandler"
         @click="clickHandler"
         @change="changeHandler"
@@ -90,4 +95,9 @@ export default {
     @include input()
     &.hidden
         display: none
+
+    &.readonly
+        color: #aaa
+        border: 1px solid #aaa
+        cursor: not-allowed
 </style>

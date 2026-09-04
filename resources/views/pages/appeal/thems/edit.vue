@@ -33,11 +33,7 @@ export default {
                 type: 'select',
                 name: 'group_id',
                 label: 'Группа',
-                options: {
-                    labelKey: 'name',
-                    valueKey: 'id',
-                    data: groups,
-                },
+                options: groups,
                 value: them.group.id,
             },
         ]"

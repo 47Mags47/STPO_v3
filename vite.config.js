@@ -21,7 +21,6 @@ export default defineConfig({
                 'resources/sass/app.sass',
                 'resources/js/app.js'
             ],
-            refresh: false,
         }),
         vue(),
         tailwindcss()
@@ -30,8 +29,7 @@ export default defineConfig({
         preprocessorOptions: {
             sass: {
                 additionalData: `
-                    @use '/resources/sass/abstracts/variables' as *;\n
-                    @use '/resources/sass/abstracts/mixins' as *;\n
+                    @use '/resources/sass/abstracts' as *
                 `,
             },
         },

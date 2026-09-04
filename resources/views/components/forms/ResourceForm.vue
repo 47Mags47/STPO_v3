@@ -11,6 +11,7 @@ export default {
         FormItem:           defineAsyncComponent(() => import('../FormItem.vue')),
 
         StringInput:        defineAsyncComponent(() => import('../inputs/StringInput.vue')),
+        TextInput:          defineAsyncComponent(() => import('../inputs/TextInput.vue')),
         PhoneInput:         defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
         EmailInput:         defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
         PasswordInput:      defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
@@ -25,8 +26,8 @@ export default {
         BigFilesInput:      defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
         BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
-        DatePicker:         defineAsyncComponent(() => import('../datepicker/DatePicker.vue')),
-        DateBetween:        defineAsyncComponent(() => import('../inputs/DateBetweenInput.vue')),
+        DatePicker:         defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
+        MonthSelect:        defineAsyncComponent(() => import('../inputs/MonthSelect.vue')),
     },
     props: {
         inputs: {
@@ -51,7 +52,7 @@ export default {
                         'bigFiles',
                         'date',
                         'datePicker',
-                        'dateBetween',
+                        'monthSelect'
                     ].includes(input.type);
                 });
 
@@ -71,6 +72,10 @@ export default {
         sbm: {
             type: String,
             default: "Сохранить",
+        },
+        hasSubmit: {
+            type: Boolean,
+            default: true,
         },
     },
     slots: ["default"],
@@ -101,6 +106,7 @@ export default {
                 :orientation="getFormItemOrientation(input)"
             >
                 <StringInput        v-if="input.type === 'string'"          v-bind="prepareProps(input)" />
+                <TextInput          v-if="input.type === 'text'"            v-bind="prepareProps(input)" />
                 <NumberInput        v-if="input.type === 'number'"          v-bind="prepareProps(input)" />
                 <PhoneInput         v-if="input.type === 'phone'"           v-bind="prepareProps(input)" />
                 <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'"     v-bind="prepareProps(input)" />
@@ -112,10 +118,11 @@ export default {
                 <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
                 <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
                 <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
+
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
-                <DateBetween        v-if="input.type === 'dateBetween'"     v-bind="prepareProps(input)" />
+                <MonthSelect        v-if="input.type === 'monthSelect'"     v-bind="prepareProps(input)" />
             </FormItem>
-            <BlueButton type="submit">{{ sbm }}</BlueButton>
+            <BlueButton v-if="hasSubmit" type="submit">{{ sbm }}</BlueButton>
         </template>
     </VerticalForm>
 </template>

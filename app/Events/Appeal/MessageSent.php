@@ -2,7 +2,7 @@
 
 namespace App\Events\Appeal;
 
-use App\Models\Appeal\Message;
+use App\Models\Base\ChatMessages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -10,8 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 class MessageSent implements ShouldBroadcastNow
 {
     public function __construct(
-        public Message $message,
-        public int $appealId
+        public ChatMessages $message,
+        public int $appealId,
     ) {}
 
     public function broadcastOn(): Channel
@@ -27,11 +27,24 @@ class MessageSent implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'id' => $this->message->id,
-            'message' => $this->message->message,
-            'sender_id' => $this->message->sender_id,
+            'id'         => $this->message->id,
+            'message'    => $this->message->message,
+            'sender'  => [
+              'id' => $this->message->sender->id,
+              'name' => $this->message->sender->full_name,
+            ],
+            'readed' => $this->message->readed,
             'created_at' => $this->message->created_at,
-
+            'file' => $this->message->file !== null
+                ? [
+                    'id' => $this->message->file->id,
+                    'name' => $this->message->file->origin_name,
+                ]
+                : null,
+            'file_url'   => $this->message->file !== null
+                ? route('files.show', ['file' => $this->message->file->id])
+                : null,
+            'context'    => $this->message->context
         ];
     }
 }

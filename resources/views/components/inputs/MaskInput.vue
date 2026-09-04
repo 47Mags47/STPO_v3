@@ -8,11 +8,11 @@ export default {
     props: {
         mask: {
             type: String,
-            default: "",
+            default: '',
         },
         value: {
             type: [String, Boolean, Number],
-            default: "",
+            default: '',
         },
         onInput: {
             type: Function,

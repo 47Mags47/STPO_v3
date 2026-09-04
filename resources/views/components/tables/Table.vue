@@ -1,10 +1,20 @@
 <script>
+import { Form } from '@inertiajs/vue3';
+
 export default {
     props: {
         caption: {
             type: String,
             default: null,
         },
+    },
+
+    components: {
+        Form,
+    },
+
+    computed:{
+        currrentURL: () => location.href
     },
 };
 </script>
@@ -16,6 +26,12 @@ export default {
                 <h3>
                     {{ caption }}
                 </h3>
+            </div>
+
+            <div v-if="'filters' in $slots" class="filters">
+                <Form method="GET" :action="currrentURL" class="pt-0!">
+                    <slot name="filters"></slot>
+                </Form>
             </div>
 
             <div class="toolbar" v-if="'toolbar' in $slots">
@@ -43,7 +59,7 @@ export default {
             </table>
         </div>
 
-        <div class="table-footer">
+        <div v-if="['footer', 'pagination'].some(slot => slot in $slots)" class="table-footer">
             <slot v-if="'pagination' in $slots" name="pagination" />
         </div>
     </div>
@@ -64,6 +80,12 @@ export default {
             font-weight: 600
             color: #1f2937
             line-height: 1.3
+        .filters form
+            padding: 10px 0px
+            display: flex
+            flex-wrap: wrap
+            align-items: center
+            gap: 32px
         .toolbar
             display: flex
             justify-content: space-between
@@ -71,7 +93,6 @@ export default {
             gap: 1rem
 
     .table-content
-        // border: $table-border
         overflow: hidden
 
         table
@@ -81,13 +102,11 @@ export default {
             tbody
                 tr
                     transition: background 0.15s ease
+                    color: var(--text-color)
 
                     &:nth-child(even)
-                        background: #f9fafb
+                        background: var(--table-row-background-color)
 
                     &:hover
-                        background: #eef2ff
-
-            // tbody tr:last-child td
-            //     border-bottom: none
+                        background: var(--table-row-background-color-hover)
 </style>

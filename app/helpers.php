@@ -30,7 +30,7 @@ if (! function_exists('getRequestPaginate')) {
             return (int) request()->input('paginate');
         }
 
-        return 50;
+        return 25;
     }
 }
 
@@ -64,6 +64,9 @@ if (! function_exists('PATTERNS')) {
             'DOT_DATE'      => "[0-9]{2}\.[0-9]{2}\.[0-9]{4}",
             'FLOAT'         => "[0-9]{1,6}\.[0-9]{2}",
             'SNILS'         => "[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}",
+            'TIMESTAMP'     => "[0-9]*",
+            'ACCOUNT'       => "[0-9]{20}",
+            'RU_TEXT'       => "[а-яА-ЯёЁ -]{0,255}",
         ][$pattern] ?? '//';
     }
 }
@@ -97,7 +100,7 @@ if (! function_exists('waitDisabledFile')) {
     function waitDisabledFile(FileModel $file) {
         if($file->file->is_disabled){
             sleep(1);
-            waitDisabledFile($file);
+            waitDisabledFile($file->fresh());
         }
     }
 }

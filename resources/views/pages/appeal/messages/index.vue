@@ -1,9 +1,7 @@
 <script>
-import { Chat, Ico, BlueButton} from '@components'
-import { usePage } from '@inertiajs/vue3';
-import { DateTime } from 'luxon';
-import { router } from '@inertiajs/vue3';
-import { route } from 'ziggy-js';
+import { usePage, router } from '@inertiajs/vue3';
+
+import { Chat, Ico, BlueButton } from '@components'
 
 export default {
     components: {
@@ -11,51 +9,62 @@ export default {
         Ico,
         BlueButton,
     },
-    methods: {
-        backClickHandler () {
-            router.visit(route("appeal.appeals.index"))
+
+    data() {
+        return {
+            status: {},
         }
     },
+
+    methods: {
+        backClickHandler() {
+            router.visit(route("appeal.appeals.index"))
+        },
+        friendClickHandler() {
+            console.log(this.message)
+            router.get(route('users.show', { user: this.appeal.sender.id }))
+        }
+    },
+
     computed: {
         appeal: () => usePage().props.appeal.data,
         messages: () => usePage().props.messages.data,
         statusColor() {
-            const code = this.appeal.status.code
+            const code = this.status.code
 
-            if(code === 'new')              return 'text-blue-700'
-            if(code === 'closed')           return 'text-green-700'
-            if(code === 'in_work')          return 'text-yellow-700'
-            if(code === 'in_revision')      return 'text-red-700'
-            if(code === 'pending')          return 'text-indigo-700'
+            if (code === 'new') return 'text-(--appeal-status-new)!'
+            if (code === 'closed') return 'text-(--appeal-status-closed)!'
+            if (code === 'in_work') return 'text-(--appeal-status-work)!'
+            if (code === 'reaccepted') return 'text-(--appeal-status-reaccepted)!'
 
             return ''
         }
+    },
+
+    mounted() {
+        this.status = this.appeal.status
+
+        Echo.channel('statuses')
+            .listen('.status.changed', (data) => {
+                this.status = data.status
+            });
     }
 }
 </script>
 
 <template>
-    <Chat
-        :channel-name="`appeal.${appeal.id}`"
-        :messages="messages"
-    >
-        <template #header >
-            <BlueButton
-                @click="backClickHandler"
-                class="w-[64px]!"
-            >
-                <Ico
-                    type="faArrowLeft"
-                />
+    <div class="size-full flex flex-col">
+        <div class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-(--border-color)">
+            <BlueButton @click="backClickHandler" class="w-[48px]!">
+                <Ico type="arrow-left" />
             </BlueButton>
             <div>
-                 <span class="font-bold!"> №: </span>
-                 <span> {{ appeal.id }} </span>
+                <span class="font-bold!"> №: </span>
+                <span> {{ appeal.id }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Отправитель: </span>
                 <span> {{ appeal.sender.full_name }} </span>
-                <span> ({{ appeal.office }} каб.) </span>
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
@@ -67,8 +76,17 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Статус: </span>
-                <span :class="statusColor"> {{ appeal.status.name }} </span>
+                <span :class="statusColor"> {{ status?.name }} </span>
             </div>
-        </template>
-    </Chat>
+
+            <div class="flex flex-1 h-full justify-end items-center gap-2">
+                <BlueButton class="w-fit!" :on-click="friendClickHandler">
+                    <Ico type="user" />
+                </BlueButton>
+                <span> профиль отправителя </span>
+            </div>
+        </div>
+
+        <Chat :channel-name="`appeal.${appeal.id}`" :messages="messages" />
+    </div>
 </template>

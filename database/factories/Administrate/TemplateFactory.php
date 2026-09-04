@@ -2,13 +2,12 @@
 
 namespace Database\Factories\Administrate;
 
+use App\Models\Administrate\Template;
 use App\Models\Base\File;
-use App\Models\Base\TemplateStyle;
-use App\Models\Base\TemplateType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Template>
+ * @extends Factory<Template>
  */
 class TemplateFactory extends Factory
 {
@@ -20,13 +19,9 @@ class TemplateFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
-            'file_id' => File::factory()->create([
-                'disk' => 'templates',
-            ]),
-            'type_id' => TemplateType::all()->random()->id,
-            'style_id' => TemplateStyle::all()->random()->id,
-            'chunk' => $this->faker->boolean() ? rand(10, 1000) : null,
+            'description' => $this->faker->text(50),
+            'writer' => null,
+            'file_id' => File::createFromChildren(Template::class)->id
         ];
     }
 }
