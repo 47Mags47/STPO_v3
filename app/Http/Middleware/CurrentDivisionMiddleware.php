@@ -18,6 +18,9 @@ class CurrentDivisionMiddleware
     {
         $division_id = request()->session()->get('current_division_id');
 
+        if(user()->hasRole('root'))
+            return $next($request);
+
         if ($division_id === null) {
             // Если в сессии нет id организации, значит сессия была начата без указания организации
             // редиректим человека на страницу выбора организации
