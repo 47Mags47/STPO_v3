@@ -3,6 +3,7 @@
 namespace Database\Factories\FSD;
 
 use App\Models\Base\File;
+use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -23,10 +24,9 @@ class SFRFileFactory extends Factory
             'sign_code' => 3,
             'in_date' => Carbon::create(2026, 1),
             'npp_for_month' => 1,
-            'file_id' => File::factory()->create([
-                'disk' => 'fsd',
+            'file_id' => File::createFromChildren(SFRFile::class, [
                 'origin_name' => $this->faker->numerify('0523#' . rand(1, 12) . '#.000')
-            ]),
+            ])->id,
             'created_at' => now()->addDays(rand(-15, 15)),
         ];
     }

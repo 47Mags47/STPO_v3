@@ -3,7 +3,8 @@
 namespace Database\Factories\FSD;
 
 use App\Models\Base\File;
-use App\Models\FSD\SFRFile;
+use App\Models\SFR\FSD\PaymentFile;
+use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,10 +20,7 @@ class PaymentFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'file_id' => File::factory()->create([
-                'disk' => 'fsd',
-                'path' => 'payment'
-            ]),
+            'file_id' => File::createFromChildren(PaymentFile::class)->id,
             'sfr_file_id' => SFRFile::randomOrCreate()->id,
         ];
     }
