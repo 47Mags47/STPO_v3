@@ -24,7 +24,8 @@ return new class extends Migration
             $table->date('signed_at');
 
             $table->foreignId('bank_id')->constrained(Bank::getTableName());
-            $table->foreignId('template_id')->constrained(Template::getTableName());
+            $table->foreignId('template_id')->constrained(Template::getTableName())
+                ->cascadeOnDelete();;
 
             $table->timestamps();
         });
@@ -41,7 +42,8 @@ return new class extends Migration
         Schema::create('payment__payment_files', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
             $table->foreignId('bank_id')->constrained(Bank::getTableName());
             $table->foreignId('event_id')->constrained(Event::getTableName());
             $table->foreignId('division_id')->constrained(Division::getTableName());
@@ -73,7 +75,8 @@ return new class extends Migration
         Schema::create('payment__bank_raports', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
             $table->foreignId('bank_id')->constrained(Bank::getTableName());
             $table->foreignId('event_id')->constrained(Event::getTableName());
 
@@ -84,7 +87,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('file_id')
-                ->constrained(File::getTableName());
+                ->constrained(File::getTableName())
+                ->cascadeOnDelete();
 
             $table->foreignId('raport_id')
                 ->constrained(BankRaport::getTableName())
@@ -96,9 +100,10 @@ return new class extends Migration
         });
 
         Schema::create('payment__archives', function (Blueprint $table) {
-           $table->id();
+            $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
             $table->foreignId('event_id')->constrained(Event::getTableName());
 
             $table->timestamps();
@@ -108,7 +113,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('file_id')
-                ->constrained(File::getTableName());
+                ->constrained(File::getTableName())
+                ->cascadeOnDelete();
 
             $table->foreignId('archive_id')
                 ->constrained(Archive::getTableName())

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('writer')->nullable();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

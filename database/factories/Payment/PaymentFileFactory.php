@@ -22,7 +22,7 @@ class PaymentFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'file_id' => File::factory()->create()->id,
+            'file_id' => File::createFromChildren(PaymentFile::class),
             'bank_id' => Bank::randomOrCreate(),
             'event_id' => Event::randomOrCreate(),
             'division_id' => Division::randomOrCreate(),

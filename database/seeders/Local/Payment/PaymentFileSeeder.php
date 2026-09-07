@@ -4,6 +4,7 @@ namespace Database\Seeders\Local\Payment;
 
 use App\Models\Administrate\Bank;
 use App\Models\Administrate\Template;
+use App\Models\Base\File;
 use App\Models\Payment\BankContract;
 use App\Models\Payment\Event;
 use App\Models\Payment\PaymentFile;
@@ -20,12 +21,12 @@ class PaymentFileSeeder extends Seeder
         $bank_ids = BankContract::whereIn('template_id', $template_ids)->get('bank_id')->pluck('bank_id');
         $banks = Bank::whereIn('id', $bank_ids)->get();
 
-        $banks->each(function ($bank) {
-            Event::all()->each(function ($event) use ($bank) {
-                PaymentFile::factory(3)->create([
+        Event::all()->each(function ($event) use ($banks) {
+            $banks->each(function ($bank) use ($event) {
+                File::createChildren(PaymentFile::class, PaymentFile::factory()->make([
                     'event_id' => $event->id,
                     'bank_id' => $bank->id
-                ]);
+                ])->toArray());
             });
         });
     }

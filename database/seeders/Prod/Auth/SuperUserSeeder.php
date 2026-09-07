@@ -7,7 +7,7 @@ use App\Models\Base\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class SuperUserSeederSeeder extends Seeder
+class SuperUserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -27,6 +27,6 @@ class SuperUserSeederSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        $superuser->roles()->attach(Role::byCode('system_user')->id);
+        $superuser->roles()->attach(Role::byCode('root')->id);
     }
 }

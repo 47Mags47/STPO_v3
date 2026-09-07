@@ -34,7 +34,7 @@ class NotificationFactory extends Factory
         ];
 
         if ($type->code === 'file_generated') {
-            $file = File::factory()->create();
+            $file = File::all()->random();
 
             return array_merge($attributes, [
                 'message'       => 'Файл ' . $file->origin_name . ' доступен для загрузки',

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::create('base__chat_messages', function (Blueprint $table) {
+        Schema::create('base__chat_messages', function (Blueprint $table) {
             $table->id();
 
             $table->text('message')->nullable()->default(null);
@@ -24,7 +24,8 @@ return new class extends Migration
 
             $table->foreignId('sender_id')->constrained(User::getTableName());
             $table->foreignId('chat_id')->constrained(Chat::getTableName());
-            $table->foreignId('file_id')->nullable()->default(null)->constrained(File::getTableName());
+            $table->foreignId('file_id')->nullable()->default(null)->constrained(File::getTableName())
+                ->cascadeOnDelete();
 
             $table->timestamps();
             $table->softDeletes();

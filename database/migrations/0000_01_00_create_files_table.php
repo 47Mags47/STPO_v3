@@ -34,6 +34,7 @@ return new class extends Migration
             $table->foreignId('status_id')->constrained(FileStatus::getTableName());
 
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('base__file_errors', function (Blueprint $table) {
@@ -47,7 +48,8 @@ return new class extends Migration
         Schema::create('base__file_uploads', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
             $table->integer('totalChunks');
 
             $table->timestamps();
@@ -56,7 +58,8 @@ return new class extends Migration
         Schema::create('base__file_chunks', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('file_id')->constrained(File::getTableName());
+            $table->foreignId('file_id')->constrained(File::getTableName())
+                ->cascadeOnDelete();
 
             $table->foreignId('upload_file_id')->constrained(UploadFile::getTableName());
             $table->boolean('uploaded')->default(false);

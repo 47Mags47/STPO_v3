@@ -6,12 +6,13 @@ use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class File extends BaseModel
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     ### Настройки
     ##################################################
@@ -35,9 +36,8 @@ class File extends BaseModel
 
     public static function booted()
     {
-        self::deleted(function ($model) {
+        self::deleting(function ($model) {
             Storage::disk($model->disk)->delete($model->getLocalPath());
-            $model->delete();
         });
     }
 
@@ -56,10 +56,12 @@ class File extends BaseModel
     public static function createFromChildren(string $model, ?array $attributes = []): self {
         $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
 
-        return self::factory()->create(array_merge([
+        $fileModel = self::factory()->create(array_merge([
             'disk' => $model::$storage_file_disk,
             'path' => $model::$storage_file_path,
         ], $fileAttributes));
+
+        return $fileModel;
     }
 
     /**
