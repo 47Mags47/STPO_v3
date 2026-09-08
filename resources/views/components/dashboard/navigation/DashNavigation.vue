@@ -24,16 +24,6 @@ export default {
                     name: 'данные',
                     isHover: false,
                 },
-                {
-                    url: '/admin',
-                    name: 'администрирование',
-                    isHover: false,
-                },
-                {
-                    url: '/settings',
-                    name: 'настройки',
-                    isHover: false,
-                },
                 this.current_user.divisions.length > 1 ? {
                     url: route('select-division.index'),
                     name: 'сменить организацию',

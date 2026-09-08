@@ -12,7 +12,6 @@ export default {
     data() {
         return {
             isReadonly: true,
-            str: '1234',
         }
     },
     methods: {
@@ -116,7 +115,10 @@ export default {
 </script>
 
 <template>
-    <ResourceForm :inputs="inputsForm">
+    <ResourceForm
+        :inputs="inputsForm"
+        :sbm-disabled="this.isReadonly"
+    >
         <template #header>
 
             <div class="grid grid-cols-3 items-center">

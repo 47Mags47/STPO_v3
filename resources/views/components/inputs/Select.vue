@@ -37,6 +37,10 @@ export default {
             type: Boolean,
             default: true
         },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
 
         onSelect: {
             type: Function,
@@ -186,7 +190,7 @@ export default {
             <Baseinput
                 ref="input"
                 type="text"
-                readonly
+                :readonly
                 :placeholder
                 :value="selectedLabel"
                 :onFocus="openList"
@@ -244,8 +248,6 @@ export default {
                 transform: translateY(-50%) rotate(540deg)
 
         input[type="text"]
-            cursor: pointer
-
             white-space: nowrap
 
             overflow: hidden
