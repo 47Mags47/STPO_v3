@@ -52,6 +52,7 @@ export {
 
     Moon                        as moon,
     Sun                         as sun,
+    Leaf                        as leaf,
 
     Check                       as check,
     CheckCheck                  as 'check-double',
