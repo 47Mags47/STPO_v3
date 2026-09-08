@@ -88,6 +88,10 @@ export default {
                 title: 'код',
                 dataIndex: 'payment.code',
             },
+            {
+                title: 'Наименование',
+                dataIndex: 'payment.name',
+            },
         ]"
         :rowLinks="[
             {

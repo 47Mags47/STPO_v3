@@ -39,6 +39,7 @@ class DefaultWriter extends BankRaportWriter
         }
 
         // Пишем итоги
+        $sheet->setCellValue('A' . $excelIndex + 1, '0');
         $sheet->setCellValue('C' . $excelIndex + 1, 'ИТОГО:');
         $sheet->setCellValue('D' . $excelIndex + 1, $data['recipients']->sum('amount'));
 

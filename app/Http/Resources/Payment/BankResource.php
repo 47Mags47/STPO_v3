@@ -19,8 +19,12 @@ class BankResource extends JsonResource
             'name' => $this->name,
             'number' => $this->number,
             'payment-files' => [
-                'count' => $this->payment_paymentFiles()->count(),
-                'division_count' => $this->payment_paymentFiles->groupBy('division_id')->count()
+                'count' => $request->event !== null
+                    ? $this->paymentFilesFromEvent($request->event)->count()
+                    : $this->payment_paymentFiles()->count(),
+                'division_count' => $request->event !== null
+                    ? $this->paymentFilesFromEvent($request->event)->get('division_id')->pluck('division_id')->unique()->count()
+                    : $this->payment_paymentFiles->groupBy('division_id')->count()
             ]
         ];
     }

@@ -9,9 +9,9 @@
     ИНН="{{ $config['division']['INN'] }}"
     РасчетныйСчетОрганизации="{{ $config['division']['account'] }}"
     БИК="{{ $config['division']['BIK'] }}"
-    ИдПервичногоДокумента="{{ str_pad($npp, 5, '0', STR_PAD_LEFT) }}"
+    ИдПервичногоДокумента="{{ strtoupper(random_str(8)) }}-A8AA-F111-B543-C117BBC443CB"
     НомерРеестра="{{ str_pad($npp, 5, '0', STR_PAD_LEFT) }}"
-    ДатаРеестра="{{ now()->format('Y-m-d') }}"
+    ДатаРеестра="{{ $event->in_date->format('Y-m-d') }}"
 >
 <ЗачислениеЗарплаты>
 @foreach ($recipients as $i => $recipient)
@@ -19,7 +19,7 @@
         <Фамилия>{{ $recipient->last_name }}</Фамилия>
         <Имя>{{ $recipient->first_name }}</Имя>
         <Отчество>{{ $recipient->middle_name }}</Отчество>
-        <ОтделениеБанка></ОтделениеБанка>
+        <ОтделениеБанка>043207782</ОтделениеБанка>
         <ЛицевойСчет>{{ $recipient->account }}</ЛицевойСчет>
         <Сумма>{{ $recipient->amount }}</Сумма>
     </Сотрудник>

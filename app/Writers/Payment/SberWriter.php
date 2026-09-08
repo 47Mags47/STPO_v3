@@ -7,7 +7,7 @@ use App\Classes\BankRaportWriter;
 class SberWriter extends BankRaportWriter
 {
     protected string $encoding = 'WINDOWS-1251';
-    protected ?int $delimiter = 5000;
+    protected ?int $delimiter = 25000;
 
     public function getFileName(int $in_raport_npp): string
     {

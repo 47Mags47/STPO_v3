@@ -63,8 +63,6 @@ class BankRaportWriter extends FileWriter
         $this->law          = $this->raport->event->payment->law;
         $this->template     = $this->raport->bank->payment_template;
 
-        $this->npp = $this->getFileNPP();
-
         $this->recipientChunks = Recipient::query()
             ->whereHas(
                 'paymentFile',
@@ -85,7 +83,6 @@ class BankRaportWriter extends FileWriter
             'event'         => $this->event,
             'raport'        => $this->raport,
             'payment'       => $this->payment,
-            'npp'           => $this->npp,
             'law'           => $this->law,
             'config'        => $this->config,
         ];
@@ -105,9 +102,12 @@ class BankRaportWriter extends FileWriter
         $zip->open($this->raport->getFullPath(), ZipArchive::CREATE);
 
         foreach ($this->recipientChunks as $in_raport_npp => $recipients) {
+            $npp = $this->getFileNPP();
+            $this->npp = $npp;
+
             $file = File::createChildren(BankRaportFile::class, [
                 'raport_id'     => $this->raport->id,
-                'npp'           => $this->npp,
+                'npp'           => $npp,
                 'origin_name'   => $this->getFileName($in_raport_npp + 1)
             ]);
             $this->files[] = $file;

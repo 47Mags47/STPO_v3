@@ -9,6 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
 
 class ReadPaymentFileChunkJob implements ShouldQueue
 {
@@ -98,9 +100,9 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             Recipient::create([
                 'file_id'                   => $this->paymentFile->id,
 
-                'last_name'                 => $row[$this->ROW_KEYS['LAST_NAME']['row_number']],
-                'first_name'                => $row[$this->ROW_KEYS['FIRST_NAME']['row_number']],
-                'middle_name'               => $row[$this->ROW_KEYS['MIDDLE_NAME']['row_number']],
+                'last_name'                 => Str::upper($row[$this->ROW_KEYS['LAST_NAME']['row_number']]),
+                'first_name'                => Str::upper($row[$this->ROW_KEYS['FIRST_NAME']['row_number']]),
+                'middle_name'               => Str::upper($row[$this->ROW_KEYS['MIDDLE_NAME']['row_number']]),
                 'd_rojd'                    => Carbon::make($row[$this->ROW_KEYS['DATE_ROJD']['row_number']]),
                 'SNILS'                     => $row[$this->ROW_KEYS['SNILS']['row_number']],
                 'account'                   => $row[$this->ROW_KEYS['ACCOUNT']['row_number']],

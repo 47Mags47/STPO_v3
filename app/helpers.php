@@ -104,3 +104,9 @@ if (! function_exists('waitDisabledFile')) {
         }
     }
 }
+
+if (! function_exists('random_str')) {
+    function random_str(int $length = 40) {
+        return \Illuminate\Support\Str::random($length);
+    }
+}
