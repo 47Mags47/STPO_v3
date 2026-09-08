@@ -148,15 +148,21 @@ export default {
 <template>
     <ResourceForm
         :inputs="inputsForm"
-        :sbm-disabled="this.isReadonly"
+        :sbm-disabled="isReadonly"
         :action="route('auth.users.update', { user: current_user.id })"
         method="put"
     >
         <template #header>
 
             <div class="grid grid-cols-3 items-center">
-                <div></div>
-                <span class="text-3xl!"> данные </span>
+
+                <input type="file" ref="avatar" hidden />
+
+                <Ico type="circle-user" class="text-gray-400! hover:text-gray-500!"
+                    :class="isReadonly ? 'cursor-not-allowed' : 'cursor-pointer'"
+                />
+
+                <span class="text-2xl!"> данные </span>
                 <SwitcherInput
                     class="justify-self-end"
                     :on-click="editClickHandler"
