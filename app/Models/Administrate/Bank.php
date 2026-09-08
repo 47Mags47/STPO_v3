@@ -6,12 +6,15 @@ namespace App\Models\Administrate;
 use App\Classes\BaseModel;
 use App\Models\Administrate\Template;
 use App\Models\Payment\BankContract;
+use App\Models\Payment\Event;
 use App\Models\Payment\PaymentFile;
 use App\Traits\HasCode;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+
 
 class Bank extends BaseModel
 {
@@ -29,7 +32,9 @@ class Bank extends BaseModel
 
     ### Методы
     ##################################################
-    //
+    public function scopePaymentFilesFromEvent(Builder $builder, Event $event){
+        return $this->payment_paymentFiles()->where('event_id', $event->id);
+    }
 
     ### Связи
     ##################################################

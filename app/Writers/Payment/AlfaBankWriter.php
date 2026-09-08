@@ -16,7 +16,9 @@ class AlfaBankWriter extends BankRaportWriter
             '_' .
             preg_replace("/[^а-яА-ЯёЁ]+/i", '', $this->data['config']['division']['short_name']) .
             '_' .
-            $this->payment->number .
+            $this->payment->code .
+            '_' .
+            $this->law->number .
             '.xls';
     }
 

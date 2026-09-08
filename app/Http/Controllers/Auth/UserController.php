@@ -29,7 +29,7 @@ class UserController extends Controller
                 return redirect()->route('dashboard');
             }
 
-            return redirect()->route('select-division.index');
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([
