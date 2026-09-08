@@ -248,6 +248,7 @@ export default {
                 transform: translateY(-50%) rotate(540deg)
 
         input[type="text"]
+            cursor: pointer
             white-space: nowrap
 
             overflow: hidden
