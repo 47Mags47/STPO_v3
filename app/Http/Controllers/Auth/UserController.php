@@ -78,7 +78,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        unset($data['division']);
+        unset($data['division'], $data['email']);
 
         $user->update($data);
 
