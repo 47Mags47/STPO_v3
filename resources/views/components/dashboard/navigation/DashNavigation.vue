@@ -2,6 +2,7 @@
 import { router, usePage } from "@inertiajs/vue3";
 import Ico from '../../Ico.vue';
 import BaseDashNavigation from './components/BaseDashNavigation.vue';
+import { route } from "ziggy-js";
 
 export default {
     components: {
@@ -22,6 +23,11 @@ export default {
                 {
                     url: route('dashboard'),
                     name: 'данные',
+                    isHover: false,
+                },
+                {
+                    url: route('auth.users.edit', { user: this.current_user.id }),
+                    name: 'настройки',
                     isHover: false,
                 },
                 this.current_user.divisions.length > 1 ? {

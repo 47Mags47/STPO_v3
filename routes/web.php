@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
         });
 
-        Route::get('/dashboard', fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
+        Route::get('/dashboard',                                          fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
         Route::get('/users/show/{user}',                                  [App\Http\Controllers\Auth\UserController::class,  'show'])->name('users.show');
 
         // EMAIL

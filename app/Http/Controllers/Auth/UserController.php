@@ -71,14 +71,16 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return Inertia::render('base/users/edit', [
-            'division' => fn() => $user->toResource(),
-        ]);
+        return Inertia::render('base/users/edit');
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $data = $request->validated();
+
+        unset($data['division']);
+
+        $user->update($data);
 
         return redirect()->route('dashboard')->with('success', 'Запись успешно обновлена');
     }
