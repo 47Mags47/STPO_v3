@@ -1,6 +1,7 @@
 import './bootstrap'
 import './helpers';
 import { initTheme } from './theme';
+import { initSeason } from './season.js';
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import * as derectives from "./derectives";
@@ -8,6 +9,7 @@ import { ZiggyVue } from "ziggy-js";
 import AuthLayout from "../views/layouts/AuthLayout.vue";
 
 initTheme();
+initSeason();
 
 createInertiaApp({
     resolve: async (name) => {

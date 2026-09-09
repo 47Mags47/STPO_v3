@@ -15,7 +15,7 @@ export default {
     <BaseAlertPopUp type="success">
         <template #header>
             <div class="size-full flex flex-col justify-center items-center">
-                 <div class="bg-emerald-50 rounded-full p-1.5! size-fit">
+                 <div class="bg-emerald-600 rounded-full p-1.5! size-fit">
                     <Ico type="circle-check" class="size-[25px]! text-emerald-600"/>
                  </div>
             </div>

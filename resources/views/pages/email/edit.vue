@@ -152,29 +152,5 @@ export default {
         :action="route('auth.users.update', { user: current_user.id })"
         method="put"
     >
-        <template #header>
-
-            <div class="grid grid-cols-3 items-center">
-
-                <input type="file" ref="avatar" hidden />
-
-                <Ico type="circle-user" class="text-gray-400! hover:text-gray-500!"
-                    :class="isReadonly ? 'cursor-not-allowed' : 'cursor-pointer'"
-                />
-
-                <span class="text-2xl!"> данные </span>
-                <SwitcherInput
-                    class="justify-self-end"
-                    :on-click="editClickHandler"
-                    :value="isReadonly"
-                    label="редактировать"
-                />
-            </div>
-
-            <div v-if="warnings.length !== 0" class="bg-(--warning-background-color) border-l-5 border-(--warning-border-color) rounded mt-2! p-2! flex items-start flex-col gap-1">
-                <span v-for="warning in warnings" class="font-normal! "> {{ warning }} </span>
-            </div>
-
-        </template>
     </ResourceForm>
 </template>

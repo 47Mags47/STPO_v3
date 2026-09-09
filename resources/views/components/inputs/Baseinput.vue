@@ -99,5 +99,5 @@ export default {
     &.readonly
         color: #aaa
         border: 1px solid #aaa
-        cursor: not-allowed
+        cursor: not-allowed !important
 </style>
