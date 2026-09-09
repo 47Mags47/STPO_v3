@@ -2,12 +2,14 @@
 import { usePage } from "@inertiajs/vue3";
 import { DashboardLayout } from "@layouts";
 import { VerticalForm, BlueButton } from '@components';
+import { toggleTheme } from '@/theme';
 
 export default {
     components: {
         VerticalForm,
         BlueButton
     },
+
     data() {
         return {
         }
@@ -32,6 +34,10 @@ export default {
         }
     },
 
+    methods: {
+        toggleTheme
+    },
+
     layout: DashboardLayout,
 }
 </script>
@@ -54,7 +60,7 @@ export default {
             <BlueButton v-if="this.current_user.divisions.length > 1">
                 Сменить организацию
             </BlueButton>
-            <BlueButton>
+            <BlueButton :on-click="toggleTheme">
                 Сменить тему
             </BlueButton>
         </template>
