@@ -41,7 +41,7 @@ export default {
     computed: {
         subHeaderHeight() {
             const maxScroll = 100;
-            const maxHeight = 30;
+            const maxHeight = 35;
 
             return Math.max(
                 maxHeight - (this.scrollTop / maxScroll) * maxHeight,
@@ -68,7 +68,7 @@ export default {
     position: relative
 
     width: 100%
-    height: 30px
+    height: 35px
     padding: 0 20px
 
     display: flex
