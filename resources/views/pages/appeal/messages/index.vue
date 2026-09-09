@@ -20,10 +20,6 @@ export default {
         backClickHandler() {
             router.visit(route("appeal.appeals.index"))
         },
-        friendClickHandler() {
-            console.log(this.message)
-            router.get(route('users.show', { user: this.appeal.sender.id }))
-        }
     },
 
     computed: {
@@ -77,13 +73,6 @@ export default {
             <div>
                 <span class="font-bold!"> Статус: </span>
                 <span :class="statusColor"> {{ status?.name }} </span>
-            </div>
-
-            <div class="flex flex-1 h-full justify-end items-center gap-2">
-                <BlueButton class="w-fit!" :on-click="friendClickHandler">
-                    <Ico type="user" />
-                </BlueButton>
-                <span> профиль отправителя </span>
             </div>
         </div>
 
