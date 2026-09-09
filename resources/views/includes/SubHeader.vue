@@ -1,46 +1,41 @@
 <script>
-import Appeal from './Appeal.vue';
+import Appeal from "./Appeal.vue";
 
 export default {
     components: {
-        Appeal
+        Appeal,
     },
 
     data() {
         return {
             scrollTop: 0,
             scrollContainer: null,
-        }
+        };
     },
 
     mounted() {
-        this.scrollContainer = document.querySelector('.content');
+        this.scrollContainer = document.querySelector(".content");
 
         if (!this.scrollContainer) {
-            console.warn('Scroll container .content not found');
+            console.warn("Scroll container .content not found");
             return;
         }
 
         this.scrollTop = this.scrollContainer.scrollTop;
 
-        this.scrollContainer.addEventListener(
-            'scroll',
-            this.handleScroll,
-            { passive: true }
-        );
+        this.scrollContainer.addEventListener("scroll", this.handleScroll, {
+            passive: true,
+        });
     },
 
     beforeUnmount() {
-        this.scrollContainer?.removeEventListener(
-            'scroll',
-            this.handleScroll
-        );
+        this.scrollContainer?.removeEventListener("scroll", this.handleScroll);
     },
 
     methods: {
         handleScroll() {
             this.scrollTop = this.scrollContainer.scrollTop;
-        }
+        },
     },
 
     computed: {
@@ -50,17 +45,20 @@ export default {
 
             return Math.max(
                 maxHeight - (this.scrollTop / maxScroll) * maxHeight,
-                0
+                0,
             );
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <template>
-    <div class="sub-header" :style="{
-        height: `${subHeaderHeight}px`
-    }">
+    <div
+        class="sub-header"
+        :style="{
+            height: `${subHeaderHeight}px`,
+        }"
+    >
         <Appeal />
     </div>
 </template>
@@ -70,15 +68,13 @@ export default {
     position: relative
 
     width: 100%
-    height: 0
+    height: 30px
     padding: 0 20px
-
-    overflow: hidden
 
     display: flex
     justify-content: flex-end
 
     background: var(--sub-header-background-color)
 
-    transition: height .05s linear
+    overflow: hidden
 </style>
