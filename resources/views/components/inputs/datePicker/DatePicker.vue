@@ -88,7 +88,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="w-full">
         <DateInputBetween v-if="isRange"
             :name
             :isRange
