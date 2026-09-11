@@ -62,7 +62,10 @@ export default {
             <BlueButton :on-click="() => routeTo('password.edit')">
                 Сменить пароль
             </BlueButton>
-            <BlueButton v-if="this.current_user.divisions.length > 1">
+            <BlueButton
+                v-if="this.current_user.divisions.length > 1"
+                :on-click="() => routeTo('select-division.index')"
+            >
                 Сменить организацию
             </BlueButton>
             <BlueButton :on-click="toggleTheme">
