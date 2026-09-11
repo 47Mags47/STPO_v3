@@ -1,8 +1,9 @@
 <script>
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import { DashboardLayout } from "@layouts";
 import { VerticalForm, BlueButton } from '@components';
 import { toggleTheme } from '@/theme';
+import { route } from "ziggy-js";
 
 export default {
     components: {
@@ -35,7 +36,11 @@ export default {
     },
 
     methods: {
-        toggleTheme
+        toggleTheme,
+
+        routeTo(routeName) {
+            router.get(route(routeName))
+        }
     },
 
     layout: DashboardLayout,
@@ -51,7 +56,7 @@ export default {
         </template>
 
         <template #content>
-            <BlueButton>
+            <BlueButton :on-click="() => routeTo('email.edit')">
                 Сменить почту
             </BlueButton>
             <BlueButton>
