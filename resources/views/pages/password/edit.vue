@@ -16,19 +16,16 @@ export default {
                     type: 'password',
                     name: 'current_password',
                     label: 'Текущий пароль',
-                    placeholder: '******',
                 },
                 {
                     type: 'password',
                     name: 'new_password',
                     label: 'Новый пароль',
-                    placeholder: '******'
                 },
                 {
                     type: 'password',
                     name: 'new_password_confirmation',
                     label: 'Повторите новый пароль',
-                    placeholder: '******'
                 },
             ]
         }
