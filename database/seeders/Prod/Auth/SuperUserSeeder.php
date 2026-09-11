@@ -27,6 +27,19 @@ class SuperUserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        $system = User::firstOrCreate([
+            'first_name'        => 'система',
+            'last_name'         => null,
+            'middle_name'       => null,
+            'full_name'         => 'система',
+            'login'             => 'system',
+            'email'             => null,
+            'password_expired'  => false,
+        ], [
+            'password'          => Hash::make('system'),
+            'email_verified_at' => now(),
+        ]);
+
         $superuser->roles()->attach(Role::byCode('root')->id);
     }
 }

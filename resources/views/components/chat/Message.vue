@@ -40,8 +40,16 @@ export default {
 
 <template>
     <div class="h-fit w-full flex flex-col my-1.5!" :class="isMine ? 'items-end' : 'items-start'">
+
+        <!-- Уведомление от системы (например, заявка закрыта или к диалогу присоединился кто-то ещё) -->
+        <div v-if="message.sender.id === 2" class="w-full h-[45px] bg-(--chat-message-by-system-background-color) rounded-xl flex justify-center items-center">
+            <span class="text-2xl! text-white!">
+                {{ message.message }}
+            </span>
+        </div>
+
         <!-- контейнер сообщения -->
-        <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
+        <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2" v-else
             :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
 
             <span
