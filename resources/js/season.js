@@ -1,3 +1,5 @@
+import axios from "axios";
+
 let enabled = false;
 let gameEnabled = false;
 
@@ -255,4 +257,8 @@ function endGame() {
 
     removeBucket();
     removeEndGameButton();
+
+    axios.post(route('update-score'), {
+        score: score
+    })
 }

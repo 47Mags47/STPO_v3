@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
         Route::post('/messages-readed',                                  [App\Http\Controllers\Base\MessageController::class, 'readAll'])->name('message-readAll');
-
+        Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
         // AUTH
         Route::name('auth.')->group(function () {
             Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
