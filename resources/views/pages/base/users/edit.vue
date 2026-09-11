@@ -59,7 +59,7 @@ export default {
             <BlueButton :on-click="() => routeTo('email.edit')">
                 Сменить почту
             </BlueButton>
-            <BlueButton>
+            <BlueButton :on-click="() => routeTo('password.edit')">
                 Сменить пароль
             </BlueButton>
             <BlueButton v-if="this.current_user.divisions.length > 1">

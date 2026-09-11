@@ -71,11 +71,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/verify/{id}/{hash}',                           [App\Http\Controllers\Auth\EmailController::class, 'verify'])->name('verify')->middleware(['signed']);
             Route::get('/verification-notification',                    [App\Http\Controllers\Auth\EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
         });
-        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function () {
+
+        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function() {
             Route::get('/edit', 'edit')->name('email.edit');
             Route::put('/{user}/update', 'update')->name('email.update');
         });
 
+        // PASSWORD
+        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function() {
+            Route::get('/edit', 'edit')->name('password.edit');
+            Route::put('/{user}/update', 'update')->name('password.update');
+        });
+
+        // ADMINISTRATE
         Route::name('administrate.')->prefix('/administrate')->group(function () {
             Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
             Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
