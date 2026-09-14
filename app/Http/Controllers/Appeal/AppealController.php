@@ -28,7 +28,7 @@ class AppealController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('appeal/appeals/index', [
-            'appeals' => fn() => AppealResource::collection(Appeal::filter()->hasPermission()->get()),
+            'appeals' => fn() => AppealResource::collection(Appeal::filter()->hasPermission()->paginate(25)),
             'senders' => fn() => User::whereIn('id', Appeal::select('sender_id')->distinct()->pluck('sender_id'))->get()->toResourceCollection(),
             'themes' => fn() => Them::all()->toResourceCollection(),
             'statuses' => fn() => Status::all()->toResourceCollection(),
