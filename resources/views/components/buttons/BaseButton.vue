@@ -23,6 +23,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
 
         // Actions
         onClick: {
@@ -41,6 +45,7 @@ export default {
             if (this.active) classes['active'] = true;
 
             if (this.class !== null) classes[this.class] = true;
+            if (this.disabled) classes['disabled'] = true;
 
             return classes;
         },
@@ -49,7 +54,7 @@ export default {
 </script>
 
 <template>
-    <button :class="getClasses" :type="type" @click="onClick">
+    <button :class="getClasses" :type="type" :disabled="disabled" @click="onClick">
         <slot />
     </button>
 </template>
@@ -78,6 +83,12 @@ export default {
     cursor: pointer
 
     transition: .5s
+    &.disabled
+        cursor: not-allowed
+        background: #ccc !important
+        &:hover, &.active
+            background: #ccc !important
+            box-shadow: none !important
     &.ico-button
         width: 35px
         height: 35px

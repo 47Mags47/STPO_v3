@@ -197,6 +197,8 @@ export default {
                             index < localMessages.length - 1
                             && localMessages[index + 1].sender.id !== message.sender.id
                             && !isShowDateSeparator(index)
+                            && localMessages[index].sender.id !== 2
+                            && localMessages[index+1].sender.id !== 2
                     }" />
                     <!-- разделитель даты -->
                     <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">

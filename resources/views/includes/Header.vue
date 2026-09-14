@@ -1,12 +1,13 @@
 <script>
 import { usePage, router } from '@inertiajs/vue3';
-
 import Ico from './../components/Ico.vue';
 import Menu from './Menu.vue';
 import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
+import Leaf from './Leaf.vue';
+import { toggleSeason, getCurrentSeason } from '@/season';
 
 export default {
     components: {
@@ -16,17 +17,27 @@ export default {
         AlertsPopup,
         Theme,
         BlueButton,
+        Leaf
     },
 
     data() {
         return {
             showLinks: false,
+            counter: 0,
         }
     },
 
     methods: {
         toDashboard() {
             router.visit(route('dashboard'));
+        },
+
+        gameOn() {
+            this.counter++;
+            if (this.counter === 10) {
+                toggleSeason()
+                this.counter = 0
+            }
         }
     },
 
@@ -40,7 +51,7 @@ export default {
 <template>
     <div class="header-container">
         <div class="logo-container flex items-center gap-[10px]">
-            <h3 class="text-white!">СТПО</h3>
+            <h3 class="text-white!" @click="gameOn">СТПО</h3>
             <Theme/>
         </div>
 

@@ -22,12 +22,13 @@ return new class extends Migration
             $table->string('phone_dob')->nullable();
             $table->string('login')->unique();
 
-
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
 
             $table->string('password');
             $table->boolean('password_expired')->default(false);
+
+            $table->unsignedInteger('gameScore')->default(0);
 
             $table->rememberToken();
             $table->softDeletes();

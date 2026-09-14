@@ -54,14 +54,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
         Route::post('/messages-readed',                                  [App\Http\Controllers\Base\MessageController::class, 'readAll'])->name('message-readAll');
-
+        Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
         // AUTH
         Route::name('auth.')->group(function () {
             Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
             Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
         });
 
-        Route::get('/dashboard', fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
+        Route::get('/dashboard',                                          fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
         Route::get('/users/show/{user}',                                  [App\Http\Controllers\Auth\UserController::class,  'show'])->name('users.show');
 
         // EMAIL
@@ -72,6 +72,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/verification-notification',                    [App\Http\Controllers\Auth\EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
         });
 
+        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function() {
+            Route::get('/edit', 'edit')->name('email.edit');
+            Route::put('/{user}/update', 'update')->name('email.update');
+        });
+
+        // PASSWORD
+        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function() {
+            Route::get('/edit', 'edit')->name('password.edit');
+            Route::put('/{user}/update', 'update')->name('password.update');
+        });
+
+        // ADMINISTRATE
         Route::name('administrate.')->prefix('/administrate')->group(function () {
             Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
             Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');

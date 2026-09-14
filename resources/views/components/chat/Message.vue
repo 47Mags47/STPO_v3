@@ -28,24 +28,34 @@ export default {
         isMine() {
             return this.current_user.id === this.message.sender.id
         },
+    },
+
+    methods: {
+        friendClickHandler() {
+            router.get(route('users.show', { user: this.message?.sender?.id }))
+        }
     }
 }
 </script>
 
 <template>
     <div class="h-fit w-full flex flex-col my-1.5!" :class="isMine ? 'items-end' : 'items-start'">
+
+        <!-- Уведомление от системы (например, заявка закрыта или к диалогу присоединился кто-то ещё) -->
+        <div v-if="message.sender.id === 2" class="w-full h-[45px] bg-(--chat-message-by-system-background-color) rounded-xl flex justify-center items-center">
+            <span class="text-2xl! text-white!">
+                {{ message.message }}
+            </span>
+        </div>
+
         <!-- контейнер сообщения -->
-        <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
+        <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2" v-else
             :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
 
-            <!-- <div class="w-full flex items-center gap-2">
-                <BlueButton v-if="!isMine" class="size-[30px]! min-h-0!" :on-click="friendClickHandler">
-                    <Ico type="user"/>
-                </BlueButton>
-                <span class="font-bold!"> {{ message.sender.name }} </span>
-            </div> -->
-
-            <span class="font-bold!"> {{ message.sender.name }} </span>
+            <span
+                class="font-bold! hover:text-(--text-hover-color)! cursor-pointer"
+                @click="friendClickHandler"
+            > {{ message.sender.name }} </span>
 
             <MessageFile :is-mine="isMine" v-if="message.file" :message="message" />
             <MessageText v-else :message="message.message" />

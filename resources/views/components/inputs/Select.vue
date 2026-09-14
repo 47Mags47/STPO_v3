@@ -37,6 +37,10 @@ export default {
             type: Boolean,
             default: true
         },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
 
         onSelect: {
             type: Function,
@@ -107,6 +111,16 @@ export default {
 
         openList() {
             fixOverflow(this.$refs.dropdown)
+
+            const selectedIndex = this.filtered.findIndex(
+                option => this.checkSelected(option)
+            );
+
+            this.activeElementIndex = selectedIndex >= 0
+                ? selectedIndex
+                : 0;
+
+
             this.open = true;
         },
 
@@ -132,6 +146,7 @@ export default {
             if (e.key === 'ArrowDown') {
                 if (this.activeElementIndex < this.filtered.length - 1) {
                     this.activeElementIndex++;
+
                     this.$nextTick(() => {
                         this.scrollToActive();
                     });
@@ -141,6 +156,7 @@ export default {
             if (e.key === 'ArrowUp') {
                 if (this.activeElementIndex > 0) {
                     this.activeElementIndex--;
+
                     this.$nextTick(() => {
                         this.scrollToActive();
                     });
@@ -186,7 +202,7 @@ export default {
             <Baseinput
                 ref="input"
                 type="text"
-                readonly
+                :readonly
                 :placeholder
                 :value="selectedLabel"
                 :onFocus="openList"
@@ -245,7 +261,6 @@ export default {
 
         input[type="text"]
             cursor: pointer
-
             white-space: nowrap
 
             overflow: hidden
@@ -296,9 +311,9 @@ export default {
                 transition: .2s
 
                 &:hover
-                    background: var(--option-background-color-hover)
+                    background: var(--option-background-color-active)
                 &.active
-                    background: var(--option-background-color-hover)
+                    background: var(--option-background-color-active)
                 &.selected
                     background: var(--option-background-color-selected)
 </style>

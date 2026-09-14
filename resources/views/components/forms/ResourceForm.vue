@@ -73,6 +73,10 @@ export default {
             type: String,
             default: "Сохранить",
         },
+        sbmDisabled: {
+            type: Boolean,
+            default: false,
+        },
         hasSubmit: {
             type: Boolean,
             default: true,
@@ -122,7 +126,7 @@ export default {
                 <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
                 <MonthSelect        v-if="input.type === 'monthSelect'"     v-bind="prepareProps(input)" />
             </FormItem>
-            <BlueButton v-if="hasSubmit" type="submit">{{ sbm }}</BlueButton>
+            <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>
     </VerticalForm>
 </template>

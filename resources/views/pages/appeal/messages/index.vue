@@ -1,13 +1,13 @@
 <script>
 import { usePage, router } from '@inertiajs/vue3';
 
-import { Chat, Ico, BlueButton } from '@components'
+import { Chat, Ico, BlueButton, RedButton } from '@components'
 
 export default {
     components: {
         Chat,
         Ico,
-        BlueButton,
+        BlueButton, RedButton
     },
 
     data() {
@@ -16,19 +16,10 @@ export default {
         }
     },
 
-    methods: {
-        backClickHandler() {
-            router.visit(route("appeal.appeals.index"))
-        },
-        friendClickHandler() {
-            console.log(this.message)
-            router.get(route('users.show', { user: this.appeal.sender.id }))
-        }
-    },
-
     computed: {
         appeal: () => usePage().props.appeal.data,
         messages: () => usePage().props.messages.data,
+        current_user: () => usePage().props.current_user.data,
         statusColor() {
             const code = this.status.code
 
@@ -38,7 +29,34 @@ export default {
             if (code === 'reaccepted') return 'text-(--appeal-status-reaccepted)!'
 
             return ''
+        },
+
+        appealAction() {
+            const status   = this.appeal.status.code;
+
+            const isSender = this.current_user.id === this.appeal.sender.id;
+            const isWorker = this.current_user.id === this.appeal.worker?.id;
+
+            const canClose    = (status === 'new' || status === 'in_work' || status === 'reaccepted') && (isSender || isWorker)
+            const canReaccept = status === 'closed' && (isSender || isWorker)
+
+            return {
+                component: canClose ? RedButton : canReaccept ? BlueButton : null,
+                text: canClose ? 'Закрыть' : canReaccept ? 'Возобновить' : null,
+                onClick: () => {
+                    if (canClose)
+                        router.post(route('appeal.close', { appeal: this.appeal.id }))
+                    else if (canReaccept)
+                        router.post(route('appeal.reaccept', { appeal: this.appeal.id }))
+                }
+            };
         }
+    },
+
+    methods: {
+        backClickHandler() {
+            router.visit(route("appeal.appeals.index"))
+        },
     },
 
     mounted() {
@@ -54,7 +72,9 @@ export default {
 
 <template>
     <div class="size-full flex flex-col">
-        <div class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-(--border-color)">
+        <div
+            class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-(--border-color)"
+        >
             <BlueButton @click="backClickHandler" class="w-[48px]!">
                 <Ico type="arrow-left" />
             </BlueButton>
@@ -78,12 +98,14 @@ export default {
                 <span class="font-bold!"> Статус: </span>
                 <span :class="statusColor"> {{ status?.name }} </span>
             </div>
-
-            <div class="flex flex-1 h-full justify-end items-center gap-2">
-                <BlueButton class="w-fit!" :on-click="friendClickHandler">
-                    <Ico type="user" />
-                </BlueButton>
-                <span> профиль отправителя </span>
+            <div class="flex-1 flex justify-end">
+                <component
+                    :is="appealAction.component"
+                    class="w-[120px]!"
+                    :on-click="() => appealAction.onClick()"
+                >
+                    {{ appealAction.text }}
+                </component>
             </div>
         </div>
 

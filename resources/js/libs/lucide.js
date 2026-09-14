@@ -18,6 +18,7 @@ export {
     CircleCheck                 as 'circle-check',
     CircleX                     as 'circle-xmark',
     CircleHelp                  as 'circle-info',
+    CircleUser                  as 'circle-user',
 
     File                        as file,
     FilePlus                    as 'file-circle-plus',
@@ -51,13 +52,18 @@ export {
 
     Moon                        as moon,
     Sun                         as sun,
+    Leaf                        as leaf,
 
     Check                       as check,
     CheckCheck                  as 'check-double',
 
     Building2                   as 'building-user',
 
-    CircleQuestionMark,
     MessageSquare               as 'message-square',
-    ClipboardList
+    ClipboardList,
+
+    EyeClosed                   as 'eye-closed',
+    Eye                         as 'eye',
+
+    CircleQuestionMark
 } from '@lucide/vue';

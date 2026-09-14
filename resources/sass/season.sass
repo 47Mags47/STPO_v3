@@ -1,0 +1,154 @@
+.season-effect
+    position: fixed
+    inset: 0
+    z-index: 9999
+    pointer-events: none
+    overflow: hidden
+    display: none
+
+    &.active
+        display: block
+
+.season-item
+    position: absolute
+    top: -40px
+    animation: season-fall linear infinite
+    will-change: transform
+    color: white
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black
+
+.season-bucket
+    position: fixed
+    z-index: 10001
+    pointer-events: none
+    transform: translate(-50%, -20%)
+
+    .bucket
+        font-size: 42px
+
+    .score
+        position: absolute
+        top: -10px
+        right: -15px
+
+        min-width: 24px
+        height: 24px
+
+        display: flex
+        align-items: center
+        justify-content: center
+
+        border-radius: 50%
+
+        background: white
+        color: black
+        font-size: 13px
+        font-weight: bold
+
+.season-end-game
+    position: fixed
+    left: 20px
+    bottom: 20px
+    z-index: 10001
+
+    padding: 10px 16px
+
+    border: 1px solid rgba(255, 255, 255, .2)
+    border-radius: 8px
+
+    background: rgba(0, 0, 0, .7)
+    color: white
+
+    font-size: 14px
+    cursor: pointer
+
+    transition: background .2s, transform .2s
+
+    &:hover
+        background: rgba(0, 0, 0, .85)
+        transform: translateY(-2px)
+
+.season-game-preview
+    position: fixed
+    top: 50%
+    left: 50%
+    z-index: 10002
+
+    display: flex
+    flex-direction: column
+    align-items: center
+
+    width: 280px
+    padding: 24px
+
+    border: 1px solid rgba(255, 255, 255, .15)
+    border-radius: 16px
+
+    background: rgba(20, 20, 20, .85)
+    backdrop-filter: blur(12px)
+
+    color: white
+    text-align: center
+
+    transform: translate(-50%, -50%)
+    animation: game-preview-in .4s ease-out
+
+    pointer-events: none
+
+    .preview-icon
+        margin-bottom: 8px
+        font-size: 42px
+
+    .preview-title
+        margin-bottom: 8px
+        font-size: 20px
+        font-weight: 600
+
+    .preview-text
+        font-size: 14px
+        line-height: 1.4
+        opacity: .8
+
+    .preview-score
+        margin-top: 12px
+        font-size: 13px
+        opacity: .6
+
+    &.hide
+        animation: game-preview-out .4s ease forwards
+
+
+@keyframes game-preview-in
+    from
+        opacity: 0
+        transform: translate(-50%, -45%) scale(.9)
+
+    to
+        opacity: 1
+        transform: translate(-50%, -50%) scale(1)
+
+
+@keyframes game-preview-out
+    from
+        opacity: 1
+        transform: translate(-50%, -50%) scale(1)
+
+    to
+        opacity: 0
+        transform: translate(-50%, -55%) scale(.95)
+
+@keyframes season-fall
+    0%
+        transform: translate3d(0, -40px, 0) rotate(0deg)
+
+    25%
+        transform: translate3d(40px, 25vh, 0) rotate(90deg)
+
+    50%
+        transform: translate3d(-30px, 50vh, 0) rotate(180deg)
+
+    75%
+        transform: translate3d(50px, 75vh, 0) rotate(270deg)
+
+    100%
+        transform: translate3d(-20px, 110vh, 0) rotate(360deg)

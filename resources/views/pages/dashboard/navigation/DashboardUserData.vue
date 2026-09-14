@@ -12,7 +12,9 @@ export default {
     data() {
         return {
             isReadonly: true,
-            str: '1234',
+            first_name: '',
+            last_name: '',
+            middle_name: '',
         }
     },
     methods: {
@@ -41,40 +43,62 @@ export default {
 
             return warnings
         },
+        full_name() {
+            let full_name = ''
+
+            if (this.last_name)
+                full_name += this.last_name + ' '
+            if (this.first_name)
+                full_name += this.first_name.charAt(0).toUpperCase() + '.'
+            if (this.middle_name)
+                full_name += this.middle_name.charAt(0).toUpperCase() + '.'
+
+            return full_name
+        },
 
         inputsForm() {
             return [
                 {
                     type: 'string',
                     name: 'first_name',
-                    label: 'Имя',
-                    value: this.current_user.first_name,
-                    readonly: this.isReadonly
+                    label: '* Имя',
+                    value: this.first_name,
+                    readonly: this.isReadonly,
+                    onInput: (val) => {
+                        this.first_name = val.target.value
+                    }
                 },
                 {
                     type: 'string',
                     name: 'last_name',
                     label: 'Фамилия',
-                    value: this.current_user.last_name,
-                    readonly: this.isReadonly
+                    value: this.last_name,
+                    readonly: this.isReadonly,
+                    onInput: (val) => {
+                        this.last_name = val.target.value
+                    }
                 },
                 {
                     type: 'string',
                     name: 'middle_name',
                     label: 'Отчество',
-                    value: this.current_user.middle_name,
-                    readonly: this.isReadonly
+                    value: this.middle_name,
+                    readonly: this.isReadonly,
+                    onInput: (val) => {
+                        this.middle_name = val.target.value
+                    }
                 },
                 {
-                    type: 'password',
-                    name: 'password',
-                    label: 'Пароль',
-                    readonly: this.isReadonly
+                    type: 'string',
+                    name: 'full_name',
+                    label: '* ФИО',
+                    value: this.full_name,
+                    readonly: true
                 },
                 {
                     type: 'string',
                     name: 'login',
-                    label: ' Логин',
+                    label: '* Логин',
                     value: this.current_user.login,
                     readonly: this.isReadonly
                 },
@@ -84,17 +108,17 @@ export default {
                     name: 'email',
                     label: 'почта',
                     value: this.current_user.email,
-                    readonly: this.isReadonly
+                    readonly: true
                 },
                 {
                     type: 'string',
-                    name: 'division_id',
+                    name: 'division',
                     label: 'организация',
                     value: this.current_user.current_division?.name,
                     readonly: true
                 },
                 {
-                    type: 'string',
+                    type: 'phone',
                     name: 'phone',
                     label: 'Телефон',
                     value: this.current_user.phone,
@@ -111,17 +135,34 @@ export default {
         }
     },
 
+    created() {
+        this.first_name = this.current_user.first_name ?? ''
+        this.last_name = this.current_user.last_name ?? ''
+        this.middle_name = this.current_user.middle_name ?? ''
+    },
+
     layout: DashboardLayout,
 }
 </script>
 
 <template>
-    <ResourceForm :inputs="inputsForm">
+    <ResourceForm
+        :inputs="inputsForm"
+        :sbm-disabled="isReadonly"
+        :action="route('auth.users.update', { user: current_user.id })"
+        method="put"
+    >
         <template #header>
 
             <div class="grid grid-cols-3 items-center">
-                <div></div>
-                <span class="text-3xl!"> данные </span>
+
+                <input type="file" ref="avatar" hidden />
+
+                <Ico type="circle-user" class="text-gray-400! hover:text-gray-500!"
+                    :class="isReadonly ? 'cursor-not-allowed' : 'cursor-pointer'"
+                />
+
+                <span class="text-2xl!"> данные </span>
                 <SwitcherInput
                     class="justify-self-end"
                     :on-click="editClickHandler"

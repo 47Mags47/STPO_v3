@@ -11,7 +11,7 @@ export default {
         BaseLayout,
         Header,
         Ico,
-        SubHeader
+        SubHeader,
     },
 
     data() {
@@ -40,7 +40,7 @@ export default {
     unmounted() {
         this.unsubscribeStart()
         this.unsubscribeFinish()
-    }
+    },
 };
 </script>
 
