@@ -48,7 +48,7 @@ return new class extends Migration
         Schema::create('appeal__appeals', function (Blueprint $table) {
             $table->id();
 
-            $table->string('comment');
+            $table->text('comment');
 
             $table->foreignId('chat_id')->constrained(Chat::getTableName());
             $table->foreignId('sender_id')->constrained(User::getTableName());
