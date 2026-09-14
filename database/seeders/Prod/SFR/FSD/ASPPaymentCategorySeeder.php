@@ -112,6 +112,11 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату Эл.Эн. на ОДН (жил.услуг']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '100% компенсация по оплате кап.ремонта (108-ОЗ)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация по оплате кап.ремонта (108-ОЗ)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенс.по оплате ГВС на ОДН (жил. услуги)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенс.по оплате ЭлЭн на ОДН (жил. услуги)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенс.по оплате отвед. сточных вод на ОДН (ж']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенс.по оплате ХВС на ОДН (жил. услуги)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату сточных вод на ОДН (жил.']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'Пенсия Кемеровской области']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Пенсия Кемеровской области')->get()->first()->id,       'name' => 'ПКО ветеранам боевых действий(ст11 № 8-ОЗ 14.01.19']);
