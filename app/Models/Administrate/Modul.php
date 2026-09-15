@@ -3,8 +3,10 @@
 namespace App\Models\Administrate;
 
 use App\Classes\BaseModel;
+use App\Models\Auth\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Modul extends BaseModel
 {
@@ -26,5 +28,10 @@ class Modul extends BaseModel
     public function group(): BelongsTo
     {
         return $this->belongsTo(ModulGroup::class, 'group_id');
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'administrate__module_pivot_permission', 'modul_id', 'permission_id');
     }
 }

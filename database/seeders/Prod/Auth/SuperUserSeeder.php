@@ -27,6 +27,8 @@ class SuperUserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        $superuser->permissions()->attach(Permission::byCode('permission_assigning'));
+        // Add all permissions
+        $permission_ids = Permission::get('id')->pluck('id');
+        $superuser->permissions()->attach($permission_ids);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
+use App\Models\Auth\PermissionGroup;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('auth__permissions', function (Blueprint $table) {
+        Schema::create('auth__permission_groups', function (Blueprint $table) {
             $table->id();
 
             $table->string('code');
@@ -23,7 +24,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('auth__permissions', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('code');
+            $table->string('name');
+            $table->foreignId('group_id')->nullable()->constrained(PermissionGroup::getTableName());
+
+            $table->timestamps();
+        });
+
         Schema::create('auth__user_pivot_permission', function (Blueprint $table) {
+            $table->id();
+
             $table->foreignId('user_id')->constrained(User::getTableName());
             $table->foreignId('permission_id')->constrained(Permission::getTableName());
             $table->foreignId('division_id')->nullable()->constrained(Division::getTableName());

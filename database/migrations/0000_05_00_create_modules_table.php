@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Administrate\Modul;
 use App\Models\Administrate\ModulGroup;
+use App\Models\Auth\Permission;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +34,13 @@ return new class extends Migration
             $table->boolean('in_production')->default(false);
 
             $table->timestamps();
+        });
+
+        Schema::create('administrate__module_pivot_permission', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('modul_id')->nullable()->constrained(Modul::getTableName());
+            $table->foreignId('permission_id')->nullable()->constrained(Permission::getTableName());
         });
     }
 
