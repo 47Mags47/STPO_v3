@@ -41,3 +41,9 @@ export default {
         </template>
     </VerticalForm>
 </template>
+
+<style lang="sass" scoped>
+.form-container
+    overflow-y: auto
+    @include scroll()
+</style>
