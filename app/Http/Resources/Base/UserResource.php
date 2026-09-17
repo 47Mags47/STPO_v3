@@ -4,7 +4,6 @@ namespace App\Http\Resources\Base;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Auth\Role;
 
 class UserResource extends JsonResource
 {
@@ -28,10 +27,6 @@ class UserResource extends JsonResource
             'divisions'         => $this->divisions->map(fn($division) => [
                 'id'    => $division->id,
                 'name'  => $division->name,
-                'role'  => [
-                    'id'    => $division->pivot?->role_id,
-                    'name' => Role::roleById($division->pivot?->role_id)?->name
-                ]
             ]),
         ];
     }

@@ -63,20 +63,22 @@ class HandleInertiaRequests extends Middleware
             $shared['flash']['loading'] = [$request->session()->get('loading')];
 
         // User
-        $shared['current_user'] = Auth::user() !== null
+        $current_user = Auth::user() !== null
             ? CurrentUserResource::make(Auth::user())
             : null;
+
+        $shared['current_user'] = $current_user;
 
         // Menu
         $shared['menu'] = collect(
             Modul::whereNull('group_id')->where('in_production', true)
                 ->get()
+                ->filter(fn($modul) => $modul->hasAccess())
                 ->map(fn($modul) => MenuItemResource::make($modul)->toArray(request()))
         )->merge(
             ModulGroup::all()
                 ->map(fn($group) => MenuGroupResource::make($group)->toArray(request()))
         );
-
 
         return $shared;
     }

@@ -61,7 +61,7 @@ export default {
 </script>
 
 <template>
-    <div class="menu-container" v-outsideClick="outsideClickHandler">
+    <div class="menu-container" v-if="menuList.length > 0" v-outsideClick="outsideClickHandler">
         <BlueButton class="button-container size-[40px]!" @click="togleOpen">
             <Ico type="bars" />
         </BlueButton>

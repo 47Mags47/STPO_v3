@@ -12,12 +12,8 @@ trait Permissions
     ##################################################
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'auth__user_pivot_permission', 'user_id', 'permission_id');
-    }
-
-    public function divisions(): BelongsToMany
-    {
-        return $this->belongsToMany(Division::class, 'auth__user_pivot_permission', 'user_id', 'division_id');
+        return $this->belongsToMany(Permission::class, 'auth__user_pivot_permission', 'user_id', 'permission_id')
+        ->withPivot('division_id');
     }
 
     ### Методы
@@ -29,11 +25,17 @@ trait Permissions
             : $this->permissions->contains(Permission::byCode($permission));
     }
 
-    public function addPermission(Permission|string $permission): self
+    public function addPermission(Permission|string $permission, Division|null $division): self
     {
-        $permission instanceof Permission
-            ? $this->permissions()->attach($permission)
-            : $this->permissions()->attach(Permission::byCode($permission));
+        $division = $division instanceof Division
+            ? $division
+            : Division::find($division);
+
+        $permission = $permission instanceof Permission
+            ? $permission
+            : Permission::byCode($permission);
+
+        $this->permissions()->attach($permission->id, ['division_id' => $division->id]);
 
         return $this;
     }

@@ -68,13 +68,6 @@ class ModulSeeder extends Seeder
         ]);
         $modul->permissions()->attach(Permission::byCode('laws_administrate'));
 
-        ### Appeals
-        ##################################################
-        $modul = Modul::firstOrCreate([
-            'name' => 'Обращения',
-            'route_name' => 'appeal.appeals.index',
-        ]);
-
         ### FSD
         ##################################################
         $modul = Modul::firstOrCreate([

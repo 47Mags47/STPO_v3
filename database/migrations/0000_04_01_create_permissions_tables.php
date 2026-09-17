@@ -50,5 +50,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('auth__user_pivot_permission');
         Schema::dropIfExists('auth__permissions');
+        Schema::dropIfExists('auth__permission_groups');
     }
 };

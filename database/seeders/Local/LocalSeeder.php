@@ -20,6 +20,7 @@ class LocalSeeder extends Seeder
         $this->call(Administrate\TemplateSeeder::class);
         $this->call(Administrate\LawSeeder::class);
 
+        $this->call(Auth\SuperUserSeeder::class);
         $this->call(Auth\TestUserSeeder::class);
 
         $this->call(Base\ConfigSeeder::class);

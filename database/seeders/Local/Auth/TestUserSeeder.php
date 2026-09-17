@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Local\Auth;
 
+use App\Models\Auth\Permission;
 use App\Models\Base\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,7 @@ class TestUserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate([
+        $testuser = User::firstOrCreate([
             'first_name'        => 'user',
             'last_name'         => null,
             'middle_name'       => null,
@@ -25,5 +26,11 @@ class TestUserSeeder extends Seeder
             'password'          => Hash::make('user'),
             'email_verified_at' => now(),
         ]);
+
+        // Add division
+        $testuser->divisions()->attach(1);
+
+        // Add permissions
+        $testuser->permissions()->attach(Permission::byCode('nullable_division'));
     }
 }

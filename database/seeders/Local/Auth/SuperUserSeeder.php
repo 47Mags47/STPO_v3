@@ -1,7 +1,8 @@
 <?php
 
-namespace Database\Seeders\Prod\Auth;
+namespace Database\Seeders\Local\Auth;
 
+use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
 use App\Models\Base\User;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,9 @@ class SuperUserSeeder extends Seeder
             'password'          => Hash::make('root'),
             'email_verified_at' => now(),
         ]);
+
+        // Add division
+        $superuser->divisions()->attach(Division::get('id')->pluck('id'));
 
         // Add all permissions
         $permission_ids = Permission::get('id')->pluck('id');

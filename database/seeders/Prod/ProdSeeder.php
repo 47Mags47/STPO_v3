@@ -13,7 +13,6 @@ class ProdSeeder extends Seeder
     {
         $this->call(Auth\PermissionGroupSeeder::class);
         $this->call(Auth\PermissionsSeeder::class);
-        $this->call(Auth\SuperUserSeeder::class);
 
         $this->call(Base\FileStatusSeeder::class);
         $this->call(Base\NotificationTypeSeeder::class);

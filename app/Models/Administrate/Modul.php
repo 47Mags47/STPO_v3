@@ -23,6 +23,15 @@ class Modul extends BaseModel
         'in_production',
     ];
 
+    ### Методы
+    ##################################################
+    public function hasAccess(): bool
+    {
+        return $this->permissions()->count() > 0
+            ? $this->permissions->intersect(user()->permissions)->count() > 0
+            : true;
+    }
+
     ### Связи
     ##################################################
     public function group(): BelongsTo
