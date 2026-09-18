@@ -1,29 +1,15 @@
 <?php
 
-namespace Tests\Feature\Traits\Controller;
+namespace Tests\Feature\Controller\Traits;
 
-use Illuminate\Container\Attributes\Log;
 use Inertia\Testing\AssertableInertia as Assert;
 
-trait CheckRecordAction
+trait ControllerRESTMethodsRecordActions
 {
-    public function test_controller_method_index_return_records()
-    {
-        $this->checkIndexMethodExist();
-
-        $response = $this
-            ->get(route($this->route . '.index'));
-
-        $response->assertInertia(
-            fn(Assert $page) => $page
-                ->has($this->props['index'])
-                ->has($this->props['index'] . '.data')
-        );
-    }
-
     public function test_controller_method_store_create_record()
     {
         $this->checkStoreMethodExist();
+        $this->disableAuthMiddleware();
 
         $data = $this->createTestData();
         $this->post(route($this->route . '.store'), $data);
@@ -34,16 +20,17 @@ trait CheckRecordAction
     public function test_controller_method_show_return_record()
     {
         $this->checkShowMethodExist();
+        $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
         $response = $this
-            ->get(route($this->route . '.show', [$this->getParameterName() => $record]));
+            ->get(route($this->route . '.show', [$this->getRouteParameterName() => $record]));
 
         $response->assertInertia(
             fn(Assert $page) => $page->has(
-                $this->props['show'],
+                $this->props['show'] . '.data',
                 function (Assert $page) use ($record) {
-                    foreach ($record->toArray() as $key => $value) {
+                    foreach ($record->toResource()->toArray(request()) as $key => $value) {
                         $page->where($key, $value);
                     }
 
@@ -56,21 +43,23 @@ trait CheckRecordAction
     public function test_controller_method_update_edit_record()
     {
         $this->checkUpdateMethodExist();
+        $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
         $data = $this->createTestData();
-        $route = route($this->route . '.update', ['bank' => $record->id]);
 
-        dump([
-            'record' => $record->toArray(),
-            'data' => $data,
-            'route' => $route
-        ]);
-
-        $response = $this->put($route, $data);
-        $response
-            ->assertValid();
+        $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $record]), $data);
 
         $this->assertDatabaseHas($this->modelClass::getTableName(), $data);
+    }
+
+    public function test_controller_method_destroy_delete_record() {
+        $this->checkDestroyMethodExist();
+        $this->disableAuthMiddleware();
+
+        $record = $this->createTestRecord();
+        $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $record]));
+
+        $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->toArray());
     }
 }

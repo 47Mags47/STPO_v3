@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature\Abstracts\Controller;
+namespace Tests\Feature\Controller\Cases;
 
 use App\Models\Base\User;
-use Tests\Feature\Interfaces\Controller\BaseControllerInterfacce;
+use Tests\Feature\Controller\Interfaces\ControllerTestCaseInterface;
 use Tests\TestCase;
 
-abstract class BaseAbstractController
+abstract class ControllerTestCase
 extends TestCase
-implements BaseControllerInterfacce
+implements ControllerTestCaseInterface
 {
     ### Methods
     ##################################################

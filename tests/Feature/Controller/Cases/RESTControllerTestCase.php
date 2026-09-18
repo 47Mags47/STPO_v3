@@ -1,42 +1,34 @@
 <?php
 
-namespace Tests\Feature\Abstracts\Controller;
+namespace Tests\Feature\Controller\Cases;
 
 use App\Classes\BaseModel;
 use App\Http\Middleware\CurrentDivisionMiddleware;
-use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Feature\Interfaces\Controller\RESTFullControllerInterfacce;
-use Tests\Feature\Traits\Controller\CheckPolicyMiddleware;
-use Tests\Feature\Traits\Controller\ControllerHasMethod;
-use Tests\Feature\Traits\Controller\ControllerMethodReturnPage;
-use Tests\Feature\Traits\Controller\CheckRecordAction;
-use Tests\Feature\Traits\Controller\WithOutAuthMiddleware;
+use Tests\Feature\Controller\Cases\ControllerTestCase;
+use Tests\Feature\Controller\Interfaces\RESTControllerTestCaseInterface;
+use Tests\Feature\Controller\Traits\ControllerHasRESTMethod;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnPage;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnRedirect;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodsRecordActions;
+use Tests\Feature\Controller\Traits\RESTControllerUseAuthorizesRequests;
 
-abstract class RESTFullAbstractController
-extends BaseAbstractController
-implements RESTFullControllerInterfacce
+abstract class RESTControllerTestCase
+extends ControllerTestCase
+implements RESTControllerTestCaseInterface
 {
     use RefreshDatabase;
 
-    // use WithOutAuthMiddleware;
-
-    use ControllerHasMethod;
-    use ControllerMethodReturnPage;
-    // use CheckRecordAction;
-    // use CheckPolicyMiddleware;
+    use ControllerHasRESTMethod;
+    use ControllerRESTMethodReturnPage;
+    use ControllerRESTMethodReturnRedirect;
+    use ControllerRESTMethodsRecordActions;
+    use RESTControllerUseAuthorizesRequests;
 
     ### Settings
     ##################################################
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMiddleware(CurrentDivisionMiddleware::class);
-        $this->withoutMiddleware(HandleInertiaRequests::class);
-    }
-
     public bool $hasIndex = true;
     public bool $hasCreate = true;
     public bool $hasStore = true;
@@ -47,6 +39,20 @@ implements RESTFullControllerInterfacce
 
     ### Methods
     ##################################################
+    protected function disableMiddleware(array $middlewares){
+        foreach ($middlewares as $middleware) {
+            $this->withoutMiddleware($middleware);
+        }
+    }
+
+    protected function disableAuthMiddleware(){
+        $this->disableMiddleware([
+            CurrentDivisionMiddleware::class,
+            Authenticate::class,
+            Authorize::class,
+        ]);
+    }
+
     protected function createTestRecord(): BaseModel
     {
         return $this->modelClass::factory()->create();
@@ -57,9 +63,15 @@ implements RESTFullControllerInterfacce
         return $this->modelClass::factory()->make()->toArray();
     }
 
-    protected function getParameterName(): string
+    protected function getRouteParameterName(): string
     {
         return strtolower(class_basename($this->modelClass));
+    }
+
+    protected function getControllerMidlewares(): array
+    {
+        $middlewares = new ($this->controllerClass)()->getMiddleware();
+        return collect($middlewares)->map(fn($middleware) => $middleware['middleware'])->toArray();
     }
 
     protected function checkIndexMethodExist()

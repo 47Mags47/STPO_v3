@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Traits\Controller;
+namespace Tests\Feature\Controller\Traits;
 
-trait ControllerHasMethod
+trait ControllerHasRESTMethod
 {
     ### Tests
     ##################################################

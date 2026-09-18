@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Interfaces\Controller;
+namespace Tests\Feature\Controller\Interfaces;
 
 // use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-interface BaseControllerInterfacce
+interface ControllerTestCaseInterface
 {
     public string $controllerClass {
         get;
