@@ -46,6 +46,10 @@ class BankController extends Controller
 
     public function update(BankUpdateRequest $request, Bank $bank)
     {
+        dump([
+            'bank-data' => $bank->toArray(),
+            'bank' => $bank
+        ]);
         $bank->update($request->validated());
 
         return redirect()->route('administrate.banks.index')->with('success', 'Запись успешно обновлена');
