@@ -12,7 +12,7 @@ class BankPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasPermission('banks_administrate');
     }
 
     /**
@@ -20,7 +20,15 @@ class BankPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasPermission('banks_administrate');
+    }
+
+    /**
+     * Determine whether the user can view model.
+     */
+    public function view(User $user, Bank $bank): bool
+    {
+        return $user->hasPermission('banks_administrate');
     }
 
     /**
@@ -28,7 +36,7 @@ class BankPolicy
      */
     public function update(User $user, Bank $bank): bool
     {
-        return true;
+        return $user->hasPermission('banks_administrate');
     }
 
     /**
@@ -36,7 +44,7 @@ class BankPolicy
      */
     public function delete(User $user, Bank $bank): bool
     {
-        return true;
+        return $user->hasPermission('banks_administrate');
     }
 
     /**
@@ -44,14 +52,6 @@ class BankPolicy
      */
     public function restore(User $user, Bank $bank): bool
     {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Bank $bank): bool
-    {
-        return true;
+        return $user->hasPermission('banks_administrate');
     }
 }

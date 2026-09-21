@@ -48,7 +48,6 @@ abstract class BaseModel extends Model
 
     public function scopeFilter(Builder $builder): Builder
     {
-        // dd(self::getGuessNames('filter'));
         return self::getGuessNames('filter')
             ? new (self::getGuessNames('filter'))($builder)->apply()
             : new \App\Classes\Filter($builder)->apply();
@@ -103,5 +102,19 @@ abstract class BaseModel extends Model
             return $namespace . '\\' . $class;
 
         return false;
+    }
+
+    public function getFillableAttributes(): array
+    {
+        $fillable = new $this()->getFillable();
+        if (array_search('*', $fillable) !== false)
+            unset($fillable[array_search('*', $fillable)]);
+
+        $attributes = [];
+        foreach ($fillable as $attribute) {
+            $attributes[$attribute] = $this->$attribute;
+        }
+
+        return $attributes;
     }
 }

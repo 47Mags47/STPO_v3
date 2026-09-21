@@ -3,9 +3,6 @@
 namespace Tests\Feature\Controller\Cases;
 
 use App\Classes\BaseModel;
-use App\Http\Middleware\CurrentDivisionMiddleware;
-use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Controller\Cases\ControllerTestCase;
 use Tests\Feature\Controller\Interfaces\RESTControllerTestCaseInterface;
@@ -39,30 +36,6 @@ implements RESTControllerTestCaseInterface
 
     ### Methods
     ##################################################
-    protected function disableMiddleware(array $middlewares){
-        foreach ($middlewares as $middleware) {
-            $this->withoutMiddleware($middleware);
-        }
-    }
-
-    protected function disableAuthMiddleware(){
-        $this->disableMiddleware([
-            CurrentDivisionMiddleware::class,
-            Authenticate::class,
-            Authorize::class,
-        ]);
-    }
-
-    protected function createTestRecord(): BaseModel
-    {
-        return $this->modelClass::factory()->create();
-    }
-
-    protected function createTestData(): array
-    {
-        return $this->modelClass::factory()->make()->toArray();
-    }
-
     protected function getRouteParameterName(): string
     {
         return strtolower(class_basename($this->modelClass));

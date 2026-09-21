@@ -13,7 +13,7 @@ trait Permissions
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'auth__user_pivot_permission', 'user_id', 'permission_id')
-        ->withPivot('division_id');
+            ->withPivot('division_id');
     }
 
     ### Методы

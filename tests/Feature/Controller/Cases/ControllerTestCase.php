@@ -4,7 +4,7 @@ namespace Tests\Feature\Controller\Cases;
 
 use App\Models\Base\User;
 use Tests\Feature\Controller\Interfaces\ControllerTestCaseInterface;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 abstract class ControllerTestCase
 extends TestCase

@@ -18,5 +18,5 @@ class BankControllerTest extends RESTControllerTestCase
         'edit'  => 'bank',
     ];
 
-    // public bool $hasShow = false;
+    public bool $hasShow = false;
 }
