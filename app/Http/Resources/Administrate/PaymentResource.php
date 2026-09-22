@@ -19,6 +19,7 @@ class PaymentResource extends JsonResource
             'code'      => $this->code,
             'name'      => $this->name,
             'kbk'       => $this->kbk,
+            'law'       => $this->law->toResource(),
         ];
     }
 }

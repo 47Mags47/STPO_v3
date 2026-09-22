@@ -55,6 +55,6 @@ class BankController extends Controller
     {
         $bank->delete();
 
-        return redirect()->route('administrate.banks.index')->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

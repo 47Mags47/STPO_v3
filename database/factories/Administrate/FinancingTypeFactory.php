@@ -2,14 +2,13 @@
 
 namespace Database\Factories\Administrate;
 
+use App\Models\Administrate\FinancingType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use App\Models\Administrate\City;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends Factory<FinancingType>
  */
-class DivisionFactory extends Factory
+class FinancingTypeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,8 +18,9 @@ class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->company(),
-            'city_id' => City::randomOrCreate()->id,
+            'name'          => 'Тестовый',
+            'sfr_fsd_code'  => 'ТЕСТ',
+            'asp_name'      => 'Тестовый'
         ];
     }
 }

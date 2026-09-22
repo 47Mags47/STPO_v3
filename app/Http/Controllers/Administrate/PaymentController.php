@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Administrate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\PaymentStoreRequest;
 use App\Http\Requests\Administrate\PaymentUpdateRequest;
+use App\Models\Administrate\Law;
 use App\Models\Administrate\Payment;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Payment::class);
+    }
+
     public function index()
     {
         return Inertia::render('administrate/payments/index', [
@@ -19,7 +28,9 @@ class PaymentController extends Controller
 
     public function create()
     {
-        return Inertia::render('administrate/payments/create');
+        return Inertia::render('administrate/payments/create', [
+            'laws' => Law::getResource(),
+        ]);
     }
 
     public function store(PaymentStoreRequest $request)
@@ -33,6 +44,7 @@ class PaymentController extends Controller
     {
         return Inertia::render('administrate/payments/edit', [
             'payment' => fn() => $payment->toResource(),
+            'laws' => Law::getResource(),
         ]);
     }
 

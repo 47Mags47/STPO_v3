@@ -160,7 +160,7 @@ implements PolicyTestCaseInterface
      */
     protected function getRouteParameterName(): string
     {
-        return strtolower(class_basename($this->modelClass));
+        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', class_basename($this->modelClass))), '_');
     }
 
     ### Tests

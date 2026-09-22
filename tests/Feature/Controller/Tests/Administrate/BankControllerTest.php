@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controller\Tests\Administrate\BankController;
+namespace Tests\Feature\Controller\Tests\Administrate;
 
 use App\Http\Controllers\Administrate\BankController;
 use App\Models\Administrate\Bank;
@@ -14,7 +14,6 @@ class BankControllerTest extends RESTControllerTestCase
 
     public array $props = [
         'index' => 'banks',
-        'show'  => 'bank',
         'edit'  => 'bank',
     ];
 

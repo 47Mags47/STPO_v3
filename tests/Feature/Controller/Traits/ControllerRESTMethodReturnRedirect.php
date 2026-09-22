@@ -39,9 +39,8 @@ trait ControllerRESTMethodReturnRedirect
 
         $record = $this->createTestRecord();
         $response = $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $record]));
-
         $response->assertStatus(302);
-        $response->assertredirect(route($this->route . '.index'));
+        $response->assertRedirectBack();
         $response->assertSessionHas('success');
         $response->assertSessionHas('success', 'Запись удалена');
     }

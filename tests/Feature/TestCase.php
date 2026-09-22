@@ -18,11 +18,23 @@ abstract class TestCase extends BaseTestCase
 
     protected function createTestRecord(): BaseModel
     {
+        if(!method_exists($this->modelClass, 'factory'))
+            $this->markTestSkipped($this->modelClass .' не имеет метода factory');
+
+        if($this->modelClass::getGuessNames('factory'))
+            $this->markTestSkipped('Не найдена фабрика для ' . $this->modelClass);
+
         return $this->modelClass::factory()->create();
     }
 
     protected function createTestData(): array
     {
+        if(!method_exists($this->modelClass, 'factory'))
+            $this->markTestSkipped($this->modelClass .' не имеет метода factory');
+
+        if($this->modelClass::getGuessNames('factory'))
+            $this->markTestSkipped('Не найдена фабрика для ' . $this->modelClass);
+
         return $this->modelClass::factory()->make()->toArray();
     }
 

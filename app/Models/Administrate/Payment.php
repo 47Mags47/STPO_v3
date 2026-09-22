@@ -17,7 +17,8 @@ class Payment extends BaseModel
     protected $fillable = [
         'code',
         'name',
-        'kbk'
+        'kbk',
+        'law_id'
     ];
 
     ### Методы

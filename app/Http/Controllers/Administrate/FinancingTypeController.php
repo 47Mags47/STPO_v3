@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\FinancingTypeStoreRequest;
 use App\Http\Requests\Administrate\FinancingTypeUpdateRequest;
 use App\Models\Administrate\FinancingType;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class FinancingTypeController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(FinancingType::class);
+    }
+
     public function index()
     {
         return Inertia::render('administrate/financing-types/index', [
