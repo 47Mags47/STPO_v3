@@ -11,8 +11,8 @@ class ProdSeeder extends Seeder
 
     public function run(): void
     {
-        $this->call(Auth\RolesAndPermissionsSeeder::class);
-        $this->call(Auth\SuperUserSeeder::class);
+        $this->call(Auth\PermissionGroupSeeder::class);
+        $this->call(Auth\PermissionsSeeder::class);
 
         $this->call(Base\FileStatusSeeder::class);
         $this->call(Base\NotificationTypeSeeder::class);

@@ -5,6 +5,7 @@ namespace Database\Factories\Base;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<User>
@@ -33,8 +34,8 @@ class UserFactory extends Factory
             'last_name'         => $last_name,
             'middle_name'       => $middle_name,
             'full_name'         => $full_name,
-            'login'             => $this->faker->unique()->word(),
-            'email'             => $this->faker->unique()->email(),
+            'login'             => Str::random(40),
+            'email'             => Str::random(40) . '@test.test',
             'password'          => Hash::make($this->faker->word),
             'password_expired'  => true,
             'email_verified_at' => now()->subDay(rand(1, 364)),

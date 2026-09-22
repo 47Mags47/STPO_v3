@@ -20,7 +20,7 @@ class DivisionFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company(),
-            'city_id' => City::query()->inRandomOrder()->value('id'),
+            'city_id' => City::randomOrCreate()->id,
         ];
     }
 }

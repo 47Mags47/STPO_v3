@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\BankStoreRequest;
 use App\Http\Requests\Administrate\BankUpdateRequest;
 use App\Models\Administrate\Bank;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class BankController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Bank::class);
+    }
+
     public function index()
     {
         return Inertia::render('administrate/banks/index', [

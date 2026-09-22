@@ -7,7 +7,8 @@ export default {
         ResourceForm,
     },
     computed: {
-        payment: () => usePage().props.payment.data
+        payment: () => usePage().props.payment.data,
+        laws: () => usePage().props.laws.data
     }
 }
 </script>
@@ -36,6 +37,13 @@ export default {
             label: 'Наименование',
             value: payment.name,
         },
+        {
+            type: 'select',
+            name: 'law_id',
+            label: 'Закон',
+            options: laws,
+            value: payment.law
+        }
     ]"
 />
 </template>

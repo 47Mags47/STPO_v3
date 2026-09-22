@@ -7,10 +7,18 @@ use App\Http\Requests\Administrate\DivisionStoreRequest;
 use App\Http\Requests\Administrate\DivisionUpdateRequest;
 use App\Models\Administrate\Division;
 use App\Models\Administrate\City;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class DivisionController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Division::class);
+    }
+
     public function index()
     {
         return Inertia::render('administrate/divisions/index', [

@@ -9,10 +9,18 @@ use App\Http\Requests\Administrate\CityStoreRequest;
 use App\Http\Requests\Administrate\CityUpdateRequest;
 
 use App\Models\Administrate\City;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CityController extends Controller
 {
-     public function index()
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(City::class);
+    }
+
+    public function index()
     {
         return Inertia::render('administrate/cities/index', [
             'cities' => fn() => City::getResource(),
@@ -45,7 +53,8 @@ class CityController extends Controller
         return redirect()->route('administrate.cities.index')->with('success', 'Запись успешно обновлена');
     }
 
-    public function destroy(City $city) {
+    public function destroy(City $city)
+    {
         $city->delete();
 
         return redirect()->back()->with('success', 'Запись удалена');

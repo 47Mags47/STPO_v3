@@ -1,8 +1,9 @@
 <?php
 
-namespace Database\Seeders\Prod\Auth;
+namespace Database\Seeders\Local\Auth;
 
-use App\Models\Auth\Role;
+use App\Models\Administrate\Division;
+use App\Models\Auth\Permission;
 use App\Models\Base\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,19 +28,11 @@ class SuperUserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        $system = User::firstOrCreate([
-            'first_name'        => 'система',
-            'last_name'         => null,
-            'middle_name'       => null,
-            'full_name'         => 'система',
-            'login'             => 'system',
-            'email'             => null,
-            'password_expired'  => false,
-        ], [
-            'password'          => Hash::make('system'),
-            'email_verified_at' => now(),
-        ]);
+        // Add division
+        $superuser->divisions()->attach(Division::get('id')->pluck('id'));
 
-        $superuser->roles()->attach(Role::byCode('root')->id);
+        // Add all permissions
+        $permission_ids = Permission::get('id')->pluck('id');
+        $superuser->permissions()->attach($permission_ids);
     }
 }

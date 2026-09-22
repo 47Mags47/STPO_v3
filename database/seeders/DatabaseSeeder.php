@@ -14,22 +14,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        switch (config('app.env')) {
-            case 'production':
-                $this->call(Prod\ProdSeeder::class);
-                break;
-            case 'local':
+        // switch (config('app.env')) {
+        //     case 'production':
+                // $this->call(Prod\ProdSeeder::class);
+        //         break;
+        //     case 'local':
                 $this->call(Prod\ProdSeeder::class);
                 $this->call(Local\LocalSeeder::class);
 
-                if(is_dir(database_path('seeders/Hidden')) and file_exists(database_path('seeders/Hidden/HiddenSeeder.php')))
-                    $this->call(Hidden\HiddenSeeder::class);
-                break;
+        //         if(is_dir(database_path('seeders/Hidden')) and file_exists(database_path('seeders/Hidden/HiddenSeeder.php')))
+        //             $this->call(Hidden\HiddenSeeder::class);
+        //         break;
 
-            case 'testing':
-                $this->call(Prod\ProdSeeder::class);
-                $this->call(TestSeeder::class);
-                break;
-        }
+        //     case 'testing':
+        //         $this->call(Prod\ProdSeeder::class);
+        //         $this->call(TestSeeder::class);
+        //         break;
+        // }
     }
 }

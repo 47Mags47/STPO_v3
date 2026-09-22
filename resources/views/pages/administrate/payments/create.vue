@@ -6,6 +6,9 @@ export default {
     components:{
         ResourceForm,
     },
+    computed: {
+        laws: () => usePage().props.laws.data
+    }
 }
 </script>
 
@@ -30,6 +33,12 @@ export default {
             name: 'name',
             label: 'Наименование',
         },
+        {
+            type: 'select',
+            name: 'law_id',
+            label: 'Закон',
+            options: laws,
+        }
     ]"
 />
 </template>

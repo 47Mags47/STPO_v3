@@ -5,9 +5,17 @@ namespace {{ namespace }};
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
 use {{ namespacedRequests }}
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class {{ class }} extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(FinancingType::class);
+    }
+
     public function index()
     {
         //
