@@ -136,5 +136,24 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('payments')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('payment_event_view'));
+
+        ### Veteran_work
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Отчёты',
+            'route_name'    => 'veteran-work.raports.index',
+            'group_id'      => ModulGroup::byCode('veteran_work')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_work_admin'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Доступ',
+            'route_name'    => 'veteran-work.access.index',
+            'group_id'      => ModulGroup::byCode('veteran_work')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_work_admin'));
+        $modul->permissions()->attach(Permission::byCode('veteran_work_worker'));
     }
 }

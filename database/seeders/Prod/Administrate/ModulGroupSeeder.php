@@ -15,5 +15,6 @@ class ModulGroupSeeder extends Seeder
         ModulGroup::firstOrCreate(['code' => 'administrate',   'name' => 'Администрирование']);
         ModulGroup::firstOrCreate(['code' => 'FSD_reestrs',    'name' => 'Реестры ФСД']);
         ModulGroup::firstOrCreate(['code' => 'payments',       'name' => 'Выплаты']);
+        ModulGroup::firstOrCreate(['code' => 'veteran_work',   'name' => 'Ветеран труда']);
     }
 }
