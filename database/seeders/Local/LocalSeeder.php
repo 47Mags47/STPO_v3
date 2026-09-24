@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Local;
 
+use Database\Seeders\Local\Veteran\ReportSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -38,5 +39,8 @@ class LocalSeeder extends Seeder
         $this->call(Payment\EventSeeder::class);
         $this->call(Payment\PaymentFileSeeder::class);
         $this->call(Payment\RecipientSeeder::class);
+
+        $this->call(Veteran\ReportSeeder::class);
+        $this->call(Veteran\RecordSeeder::class);
     }
 }
