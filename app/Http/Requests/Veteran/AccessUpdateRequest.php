@@ -4,7 +4,7 @@ namespace App\Http\Requests\Veteran;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RecordUpdateRequest extends FormRequest
+class AccessUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
