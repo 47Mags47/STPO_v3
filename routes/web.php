@@ -130,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::name('veteran-work.')->prefix('/veteran-work')->group(function () {
-            Route::resource('raports',                                      App\Http\Controllers\Veteran\RaportController::class)->only(['index', 'create', 'store', 'edit', 'destroy']);
+            Route::resource('reports',                                      App\Http\Controllers\Veteran\ReportController::class)->only(['index', 'create', 'store', 'edit', 'destroy']);
             Route::resource('access',                                       App\Http\Controllers\Veteran\AccessController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         });
     });
