@@ -15,7 +15,7 @@ export default {
     <BaseAlertPopUp type="error">
         <template #header>
             <div class="size-full flex flex-col justify-center items-center">
-                 <div class="bg-red-100 rounded-full p-1.5! size-fit">
+                 <div class="bg-red-500 rounded-full p-1.5! size-fit">
                     <Ico type="circle-xmark" class="size-[25px]! text-red-500"/>
                  </div>
             </div>

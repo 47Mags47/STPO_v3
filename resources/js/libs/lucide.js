@@ -12,6 +12,7 @@ export {
     ArrowLeft                   as 'arrow-left',
     ArrowRight                  as 'arrow-right',
     RotateCcw                   as 'arrow-rotate-left',
+    ArrowBigUp                  as 'arrow-big-up',
 
     Circle                      as circle,
     CircleAlert                 as 'circle-exclamation',

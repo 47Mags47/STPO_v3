@@ -4,7 +4,7 @@ namespace App\Http\Requests\Veteran;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReportUpdateRequest extends FormRequest
+class RecordUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,9 @@ class ReportUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_active' =>  ['nullable', 'boolean']
+            'amount'        => ['required', 'integer', 'min:0'],
+            'online_form'   => ['required', 'integer', 'min:0'],
+            'MFC'           => ['required', 'integer', 'min:0'],
         ];
     }
 }

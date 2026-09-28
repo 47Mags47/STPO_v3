@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Veteran;
 
+use App\Models\Administrate\Division;
+use App\Models\Base\User;
 use App\Models\Veteran\Record;
 use App\Models\Veteran\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,11 +20,18 @@ class RecordFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::randomOrCreate();
+        $division = Division::randomOrCreate();
+
+        $user->divisions()->attach($division->id);
+
         return [
             'amount' => random_int(1, 10000),
             'online_form' => random_int(1, 10000),
             'MFC' => random_int(1, 10000),
-            'report_id' => Report::randomOrCreate()->id
+            'report_id' => Report::randomOrCreate()->id,
+            'user_id'   => $user->id,
+            'division_id' => $division->id
         ];
     }
 }

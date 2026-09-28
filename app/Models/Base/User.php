@@ -78,6 +78,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     ### Методы
     ##################################################
+    // HACK Переписать на аттрибут division/currentDivision
     public function getCurrentDivision(): Division|null
     {
         return session()->get('current_division_id') !== null

@@ -146,6 +146,7 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('veteran_work')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('veteran_work_admin'));
+        $modul->permissions()->attach(Permission::byCode('veteran_work_worker'));
 
         $modul = Modul::firstOrCreate([
             'in_production' => true,
@@ -154,6 +155,5 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('veteran_work')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('veteran_work_admin'));
-        $modul->permissions()->attach(Permission::byCode('veteran_work_worker'));
     }
 }

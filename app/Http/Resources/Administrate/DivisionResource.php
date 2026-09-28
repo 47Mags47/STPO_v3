@@ -20,7 +20,7 @@ class DivisionResource extends JsonResource
             'city' => [
                 'id' => $this->city->id,
                 'name' => $this->city->name,
-            ]
+            ],
         ];
     }
 }

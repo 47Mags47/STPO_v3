@@ -53,9 +53,12 @@ abstract class BaseModel extends Model
             : new \App\Classes\Filter($builder)->apply();
     }
 
-    public static function getResource(string|array|null $order = 'id', ?string $orderDesc = 'asc')
+    public static function getResource(?bool $withTrashed = false, string|array|null $order = 'id', ?string $orderDesc = 'asc')
     {
         $query = self::Filter();
+
+        if($withTrashed)
+            $query->withTrashed();
 
         if (is_array($order))
             foreach ($order as $key => $value) {

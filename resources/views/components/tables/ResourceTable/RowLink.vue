@@ -16,8 +16,12 @@ export default {
             default: 'center-center'
         },
         ico: {
-            type: String,
+            type: [String, Function],
             default: 'circle'
+        },
+        text: {
+            type: String,
+            default: ''
         },
         onClick: {
             type: Function,
@@ -32,10 +36,11 @@ export default {
             default: true
         },
         color: {
-            type: String,
+            type: [String, Function],
             default: 'blue',
             validator(value){
-                return ['blue', 'red'].includes(value)
+                return typeof value === 'function'
+                    || ['blue', 'red'].includes(value)
             }
         }
     },
@@ -49,6 +54,30 @@ export default {
 
             if(typeof this.visible === 'function')
                 return this.visible(this.row)
+        },
+        icoValue() {
+            if(typeof this.ico === 'string')
+                return this.ico
+
+            if(typeof this.ico === 'function') {
+                if (typeof this.ico(this.row) === 'string')
+                    return this.ico(this.row)
+
+                console.error('значение функции ico должно быть типа string')
+                return 'circle'
+            }
+        },
+        colorValue() {
+            if(typeof this.color === 'string')
+                return this.color
+
+            if(typeof this.color === 'function') {
+                if (typeof this.color(this.row) === 'string')
+                    return this.color(this.row)
+
+                console.error('значение функции color должно быть типа string')
+                return 'circle'
+            }
         }
     },
 
@@ -70,12 +99,19 @@ export default {
                 <slot name="default" />
             </template>
             <template v-else>
-                <BlueButton v-if="color === 'blue'" class="ico-button" :onclick="buttonClickHandler" >
-                    <Ico :type="ico" />
+                <!-- HACK убрать дублирование кода (придётся повозиться с классами) -->
+                <BlueButton v-if="colorValue === 'blue' && icoValue !== 'circle'" class="ico-button" :onclick="buttonClickHandler" >
+                    <Ico :type="icoValue" />
+                </BlueButton>
+                <BlueButton v-else-if="colorValue === 'blue' && text" class="w-fit!" :onclick="buttonClickHandler" >
+                    <span class="p-2!"> {{ text }} </span>
                 </BlueButton>
 
-                <RedButton v-if="color === 'red'" class="ico-button" :onclick="buttonClickHandler" >
-                    <Ico :type="ico" />
+                <RedButton v-if="colorValue === 'red' && icoValue !== 'circle'" class="ico-button" :onclick="buttonClickHandler" >
+                    <Ico v-if="icoValue" :type="icoValue" />
+                </RedButton>
+                <RedButton v-else-if="colorValue === 'red' && text" class="w-fit!" :onclick="buttonClickHandler" >
+                     <span class="p-2!"> {{ text }} </span>
                 </RedButton>
             </template>
         </template>
