@@ -86,7 +86,7 @@ export default {
             @change="changeHandler"
             maxlength="255"
         />
-        <span class="absolute right-[8px] bottom-[3px]"> {{ localValue.length }}/255 </span>
+        <span class="absolute right-[8px] bottom-[3px] text-gray-500! text-sm!"> {{ localValue.length }}/255 </span>
     </div>
 </template>
 
