@@ -10,7 +10,6 @@ class SelectDivisionController extends Controller
 {
     public function index()
     {
-        session()->put('current_division_id', null);
         return Inertia::render('SelectDivision', [
             'divisions' => fn() => user()->divisions->toResourceCollection()
         ]);
