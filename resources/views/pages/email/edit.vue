@@ -5,6 +5,7 @@ import { ResourceForm } from '@components';
 
 export default {
     components: {
+        DashboardLayout,
         ResourceForm
     },
 
@@ -27,17 +28,17 @@ export default {
             ]
         }
     },
-
-    layout: DashboardLayout,
 }
 </script>
 
 <template>
-    <ResourceForm
-        header="Смена почты"
-        :inputs="inputsForm"
-        :action="route('email.update', { user: current_user.id })"
-        method="put"
-    >
-    </ResourceForm>
+    <DashboardLayout>
+        <ResourceForm
+            header="Смена почты"
+            :inputs="inputsForm"
+            :action="route('email.update', { user: current_user.id })"
+            method="put"
+        >
+        </ResourceForm>
+    </DashboardLayout>
 </template>

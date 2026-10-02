@@ -19,11 +19,11 @@ export default {
         },
         value: {
             type: String,
-            default: '',
+            default: "",
         },
         autocomplete: {
             type: String,
-            default: 'on',
+            default: "on",
         },
 
         hidden: {
@@ -33,12 +33,12 @@ export default {
 
         resize: {
             type: String,
-            default: 'none',
+            default: "none",
         },
 
         onInput: {
             type: Function,
-            default: () => { },
+            default: () => {},
         },
         onChange: {
             type: Function,
@@ -47,11 +47,18 @@ export default {
         onEnterKeyDown: {
             type: Function,
             default: () => { },
+        },
+    },
+
+    data() {
+        return {
+            localValue: this.value,
         }
     },
 
     methods: {
         inputHandler(e) {
+            this.localValue = e.target.value
             this.onInput(e);
         },
         changeHandler(e) {
@@ -61,29 +68,40 @@ export default {
             this.onEnterKeyDown(e);
         }
     },
-}
+
+    watch: {
+        value(newValue) {
+            this.localValue = newValue;
+        },
+    },
+};
 </script>
 
 <template>
-    <textarea
-        v-show="!hidden"
-        :class="{ 'text-input': true }"
-        :id
-        :name
-        :placeholder
-        :required
-        :autocomplete
-        :value="value"
-        :style="{ 'resize': resize }"
-        @input="inputHandler"
-        @change="changeHandler"
-        @keydown.enter.exact.prevent="onEnterKeyDownhandler"
-    />
+    <div class="relative">
+        <textarea
+            v-show="!hidden"
+            maxlength="255"
+            :class="{ 'text-input': true }"
+            :id
+            :name
+            :placeholder
+            :required
+            :autocomplete
+            :value="localValue"
+            :style="{ 'resize': resize }"
+            @input="inputHandler"
+            @change="changeHandler"
+            @keydown.enter.exact.prevent="onEnterKeyDownhandler"
+        />
+        <span class="absolute right-[8px] bottom-[3px] text-gray-500! text-sm!"> {{ localValue?.length ?? 0 }}/255 </span>
+    </div>
 </template>
 
 <style lang="sass" scoped>
 .text-input
     @include input()
 
+    @include hidden-scroll()
     height: calc( 7.7rem + 10px )
 </style>

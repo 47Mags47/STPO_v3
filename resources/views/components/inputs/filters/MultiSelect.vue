@@ -50,7 +50,8 @@ export default {
 
     data() {
         return {
-            isOpen: false
+            isOpen: false,
+            selectedRows: []
         }
     },
 }
@@ -68,13 +69,14 @@ export default {
         :class="{ 'active': isOpen }">
             <label v-for="(option, index) in options"
                 class="multi-select-content"
+                :class="{ selected: selectedRows.includes(index) }"
                 :for="`${name}_${index}`"
-                @click="radioClickHandler"
             >
                 <Checkbox
                     :name="`${name}[]`"
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
+                    :on-click="(e) => e.target.checked ? selectedRows.push(index) : selectedRows.splice(selectedRows.indexOf(index), 1)"
                 />
                 <span> {{ Object.get(option, labelKey) }} </span>
             </label>
@@ -151,5 +153,7 @@ export default {
                 width: 100%
                 height: 100%
             &:hover
-                background-color: var(--option-background-color-hover)
+                background-color: var(--option-background-color-active)
+            &.selected
+                background-color: var(--option-background-color-selected)
 </style>
