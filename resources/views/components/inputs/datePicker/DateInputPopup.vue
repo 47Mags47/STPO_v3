@@ -243,21 +243,17 @@ export default {
 
 <style lang="sass" scoped>
 .date-input-popup-container
-    position: absolute
-
     display: flex
     flex-direction: column
 
     background: var(--background-color)
 
-    border: 1px solid var(--border-color)
-    border-radius: 12px
 
-    width: 340px
+    width: 100%
+    height: 100%
 
     top: 100%
     left: 0
-    z-index: 1000
 
     transition: opacity .3s ease, scale .3s ease
 
