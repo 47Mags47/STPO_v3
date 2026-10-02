@@ -1,11 +1,11 @@
 <script>
-import FileTypeIco from '../../FileTypeIco.vue';
+import { defineAsyncComponent } from 'vue';
 import Ico from '../../Ico.vue';
 
 export default {
     components: {
         Ico,
-        FileTypeIco,
+        FileTypeIco: defineAsyncComponent(() => import('../../FileTypeIco.vue')),
     },
 
     props: {
