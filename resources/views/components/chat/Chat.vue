@@ -1,236 +1,196 @@
 <script>
-import { usePage, router } from "@inertiajs/vue3";
-import { DateTime } from "luxon";
-import Ico from "../Ico.vue";
-import baseChat from "./baseChat.vue";
-import Message from "./Message.vue";
-import Footer from "./Footer.vue";
+import { DateTime } from 'luxon';
+import Ico from '../Ico.vue';
+import Message from './components/Message.vue';
+import Footer from './components/Footer.vue';
 
 export default {
     components: {
         Ico,
-        baseChat,
-        Message,
         Footer,
+        Message,
+    },
+
+    props: {
+        chatId: {
+            type: Number,
+            required: true
+        }
     },
 
     data() {
         return {
-            localMessages: [],
+            DateTime,
+
+            isLoading: false,
+            messages: [],
+            paginate: {},
+            hasMore: true,
+            currentPage: 0,
+
+            subscription: null,
         }
     },
-    props: {
-        messages: {
-            type: Array,
-            default: () => []
-        },
-        channelName: {
-            type: String,
-            default: null
-        },
-        postURL: {
-            type: String,
-            default: null
-        }
-    },
+
     methods: {
-        loadMore() {
-            if (!this.links.next) return
+        async loadMessages() {
+            if (this.isLoading || !this.hasMore)
+                return;
 
-            router.visit(this.links.next, {
-                preserveState: true, // не пересоздаёт компонент
-                preserveScroll: true, // сохраняет текущий скролл
-                only: ['messages'],  // говорим бэку отправить нам ещё раз messages чтобы не обновлялись другие пропсы
+            this.isLoading = true;
 
-                onSuccess: (page) => {
-                    const allMessages = page.props.messages?.data
-                    this.localMessages = [
-                        ...page.props.messages.data,
-                    ]
+
+            try {
+                let response = await axios.get(
+                    route('chat.messages.index', { chat: this.chatId }),
+                    {
+                        params: {
+                            page: this.currentPage + 1
+                        }
+                    }
+                )
+
+                this.paginate = {
+                    links: response.data.links,
+                    meta: response.data.meta,
                 }
-            })
-        },
-        formatMessageDateSeporator(date) {
-            return DateTime
-                .fromISO(date)
-                .setLocale('ru')
-                .toFormat('dd MMMM yyyy')
-        },
-        isShowDateSeparator(index) {
-            if (index === this.localMessages.length - 1) return true
 
-            const currentDate = DateTime
-                .fromISO(this.localMessages[index].created_at)
-                .setLocale('ru')
-                .toFormat('yyyy-MM-dd')
+                this.messages = [...this.messages, ...response.data.data]
 
-            const prevDate = DateTime
-                .fromISO(this.localMessages[index + 1].created_at)
-                .setLocale('ru')
-                .toFormat('yyyy-MM-dd')
-
-            return currentDate !== prevDate
-        },
-
-        async sendMessage(message) {
-            this.ignoreLoading = true
-
-            const file = message.file
-
-            const DateNow = DateTime.now().toISO()
-
-            this.localMessages.unshift({
-                created_at: DateNow,
-                ...file,
-                id: Date.now() + Math.random(),
-                message: message.text,
-                sender: {
-                    id: this.current_user.id,
-                    name: this.current_user.full_name
-                }
-            })
-
-            // HACK заменить на axios
-            router.post(this.postURL ?? location.href,
-                {
-                    message: message.text === '' ? null : message.text,
-                    file: message.file?.file,
-                    created_at: DateNow,
-                }, {
-                    preserveScroll: true,
-                    forceFormData: true,
-                }
-            )
-
-            this.scrollToBottom()
-        },
-
-        onScroll(e) {
-            const el = e.target
-
-            const isTop = -1 * el.scrollTop >= (el.scrollHeight - el.clientHeight - 200)
-
-            if (isTop) {
-                this.loadMore()
+                this.currentPage = response.data.meta.current_page
+                this.hasMore = response.data.links.next !== null
+                this.isLoading = false
+            } catch (error) {
+                this.isLoading = false
+                this.hasMore = false
+                alert('При загрузке сообщений произошла ошибка')
+                return
             }
         },
-        scrollToBottom() {
-            this.$nextTick(() => {
-                const container = document.getElementById('messagesContainer')
-                container.scrollTop = container.scrollHeight
-            })
+
+        handleScroll(e) {
+            const container = e.target;
+
+            if (container.scrollHeight - container.clientHeight + container.scrollTop < 300) {
+                this.loadMessages();
+            }
         },
-        updateWidth() {
-            this.innerwidth = window.innerWidth
+
+        showDateSeparator(index) {
+            if (index + 1 === this.messages.length)
+                return true
+
+            let current_message_created_at = DateTime.fromISO(this.messages[index]).setLocale('ru').toFormat('yyyy-mm-dd')
+            let next_message_created_at = DateTime.fromISO(this.messages[index + 1]).setLocale('ru').toFormat('yyyy-mm-dd')
+
+            if (current_message_created_at !== next_message_created_at)
+                return true
+
+            return false
+        },
+
+        messageSendedHandler(message) {
+            this.messages = [message, ...this.messages]
         }
     },
-    computed: {
-        current_user: () => usePage().props.current_user?.data,
-        chat_id: () => usePage().props.appeal?.data.chat_id,
-        links: () => usePage().props.messages?.links,
-        actualMessages() {
-            return this.messages
-        }
-    },
+
     mounted() {
-        // копия из Inertia props
-        this.localMessages = [...this.messages]
+        this.loadMessages()
 
-        axios.post(route('message-readAll'), { chat_id: this.chat_id, user_id: this.current_user.id })
-
-        // DEV дописать пушинг файлов
-        if (this.channelName !== null)
-            Echo
-                .private(this.channelName)
-                .listen('.message.sent', (msg) => {
-                    if (this.current_user.id !== msg.sender.id) {
-                        this.localMessages.unshift({
-                            created_at: msg.created_at,
-                            id: msg.id,
-                            readed: msg.readed,
-                            message: msg.message,
-                            context: msg.context,
-                            file: msg.file,
-                            file_url: msg.file_url,
-                            sender: {
-                                id: msg.sender.id,
-                                name: msg.sender.name
-                            }
-                        })
-
-                        axios.post(route('message-readAll'), { chat_id: this.chat_id, user_id: this.current_user.id })
-                    }
-
-                    this.localMessages[0].id = msg.id
-                })
-                .listen('.message.readed', (data) => {
-                    data.messages.forEach((newMessage) => {
-
-                        const message = this.localMessages.find(
-                            message => message.id === newMessage.id
-                        );
-
-                        if (message) {
-                            message.readed = newMessage.readed;
-                        }
-                    });
-                })
-    },
-    beforeUnmount() {
-        this.localMessages.forEach(msg => {
-            msg.files?.forEach(file => {
-                if (file.isImage) URL.revokeObjectURL(file.url)
+        this.channel = `chats.${this.chatId}.messages`
+        this.subscription = Echo.private(this.channel)
+            .listen('.new-message', (data) => {
+                this.messages.unshift(data.message)
             })
-        })
-        Echo.leave(this.channelName);
+
+        let container = this.$refs.chatMessagesWrapperRef
+        container.scrollTop = container.scrollHeight;
+    },
+
+    beforeUnmount() {
+        if (this.subscription) {
+            Echo.leave(this.channel)
+        }
     }
 }
 </script>
 
 <template>
-    <baseChat>
-        <template #content>
-            <div class="flex flex-col-reverse custom-scrollbar h-full w-full px-4! pb-4!" @scroll="onScroll">
-                <template v-for="(message, index) in localMessages" :key="message.id">
-                    <Message :message="message" :class="{
-                        'mt-16!':
-                            index < localMessages.length - 1
-                            && localMessages[index + 1].sender.id !== message.sender.id
-                            && !isShowDateSeparator(index)
-                            && localMessages[index].sender.id !== 2
-                            && localMessages[index+1].sender.id !== 2
-                    }" />
-                    <!-- разделитель даты -->
-                    <div v-if="isShowDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
-                        <div class="flex items-center gap-3 w-full max-w-[320px]">
-                            <div class="h-px flex-1 bg-gray-200"></div>
-                            <span class="shrink-0
-                            px-2! py-1!
-                            rounded-full
-                            bg-gray-100
-                            border border-gray-200
-                            text-gray-600!
-                            text-[12px]!
-                            font-medium
-                            shadow-sm">
-                                {{ formatMessageDateSeporator(message.created_at) }}
-                            </span>
-                            <div class="h-px flex-1 bg-gray-200"></div>
-                        </div>
-                    </div>
-                </template>
-            </div>
-        </template>
+    <div class="chat-wrapper">
+        <div class="chat-messages-wrapper" ref="chatMessagesWrapperRef" @scroll="handleScroll">
+            <template v-for="message, index in messages" :key="message.id">
+                <Message :message />
+                <div v-if="showDateSeparator(index)" class="date-separator-wrapper">
+                    <div class="line" />
+                    <div class="date-separator">{{ DateTime.fromISO(message.created_at).setLocale('ru').toFormat('dd MMMM yyyy') }}</div>
+                    <div class="line" />
+                </div>
+            </template>
 
-        <template #footer>
-            <Footer :send-message="sendMessage" />
-        </template>
-    </baseChat>
+            <div v-if="isLoading" class="loading-wrapper">
+                <Ico type="spinner" class="animate-spin" />
+            </div>
+        </div>
+        <Footer :chat-id :onSended="messageSendedHandler" />
+    </div>
 </template>
 
 <style lang="sass" scoped>
-.custom-scrollbar
-    scrollbar-gutter: stable
-    overflow-y: auto
-    @include scroll()
+.chat-wrapper
+    height: 100%
+
+    display: flex
+    flex-direction: column
+
+    overflow: hidden
+    .chat-messages-wrapper
+        flex: 1
+        padding: 25px 10px
+
+        overflow-y: auto
+
+        display: flex
+        flex-direction: column-reverse
+        gap: 5px
+        @include scroll()
+
+        .date-separator-wrapper
+            width: 100%
+
+            display: flex
+            justify-content: center
+            align-items: center
+            gap: 15px
+
+            padding: 15px 0
+            .line
+                height: 1px
+                width: 150px
+                border-radius: 50%
+                background: #e5e7eb
+            .date-separator
+                padding: .5rem 1rem
+
+                border-radius: 1rem
+                border: 1px solid #e5e7eb
+
+                background: #f3f4f6
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+
+                color: #4b5563
+                font-size: .9rem
+                font-weight: 500
+
+
+        .loading-wrapper
+            padding: 10px 0
+
+            display: flex
+            justify-content: center
+            align-items: center
+
+            .ico-container
+                width: 35px
+                height: 35px
+                color: var(--text-color)
 </style>

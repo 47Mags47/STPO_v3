@@ -71,7 +71,7 @@ export default {
 </script>
 
 <template>
-    <div class="size-full flex flex-col">
+    <div class="h-full flex flex-col">
         <div
             class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-(--border-color)"
         >
@@ -109,6 +109,6 @@ export default {
             </div>
         </div>
 
-        <Chat :channel-name="`appeal.${appeal.id}`" :messages="messages" />
+        <Chat :chat-id="appeal.chat_id"/>
     </div>
 </template>

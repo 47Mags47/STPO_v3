@@ -53,7 +53,6 @@ Route::middleware(['auth'])->group(function () {
         // SYSTEM
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
-        Route::post('/messages-readed',                                  [App\Http\Controllers\Base\MessageController::class, 'readAll'])->name('message-readAll');
         Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
         // AUTH
         Route::name('auth.')->group(function () {
@@ -83,6 +82,11 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{user}/update', 'update')->name('password.update');
         });
 
+        // CHAT
+        Route::name('chat.')->prefix('/chat')->group(function () {
+            Route::apiResource('/{chat}/messages',                 App\Http\Controllers\Base\ChatMessageController::class)->only(['index', 'store']);
+        });
+
         // ADMINISTRATE
         Route::name('administrate.')->prefix('/administrate')->group(function () {
             Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
@@ -96,9 +100,8 @@ Route::middleware(['auth'])->group(function () {
         Route::name('appeal.')->prefix('/appeal')->group(function () {
             Route::resource('/them-groups',                             App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
             Route::resource('/thems',                                   App\Http\Controllers\Appeal\ThemController::class)->except('show');
-            Route::resource('/appeals',                                 App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
+            Route::resource('/appeals',                                 App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store', 'show']);
             Route::prefix('/appeals/{appeal}')->group(function () {
-                Route::resource('/messages',               App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
                 Route::post('/accept',                     [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
                 Route::post('/close',                      [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
                 Route::post('/reaccept',                   [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');

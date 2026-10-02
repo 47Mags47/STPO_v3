@@ -3,6 +3,7 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,6 +40,15 @@ class File extends BaseModel
         self::deleting(function ($model) {
             Storage::disk($model->disk)->delete($model->getLocalPath());
         });
+    }
+
+    ### Аттрибуты
+    ##################################################
+    protected function mime(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Storage::disk($this->disk)->mimeType($this->getLocalPath())
+        );
     }
 
     ### Методы модели

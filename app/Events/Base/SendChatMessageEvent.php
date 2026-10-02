@@ -2,33 +2,33 @@
 
 namespace App\Events\Base;
 
-use App\Models\Base\Notification;
+use App\Models\Base\ChatMessage;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendNotificationEvent implements ShouldBroadcast
+class SendChatMessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public Notification $notification) {}
+    public function __construct(public ChatMessage $message) {}
 
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('user.' . $this->notification->recipient->id . '.notifications'),
+            new PrivateChannel('chats.' . $this->message->chat_id . '.messages'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'new-notification';
+        return 'new-message';
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
-        return $this->notification->toResource()->toArray(request());
+        return $this->message->toResource()->toArray(request());
     }
 }
