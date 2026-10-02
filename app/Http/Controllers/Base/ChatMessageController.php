@@ -38,16 +38,23 @@ class ChatMessageController extends Controller
             }
         }
 
+        $target_url = '';
+        switch ($message->entity::class) {
+            case \App\Models\Appeal\Appeal::class:
+                $target_url = route('appeal.appeals.show', ['appeal' => $message->entity]);
+                break;
+        }
+
         broadcast(new SendChatMessageEvent($message))->toOthers();
 
-        $chat->subscribers()->where('user_id', '<>', user()->id)->get()->each(function ($subscriber) use ($message) {
+        $chat->subscribers()->where('user_id', '<>', user()->id)->get()->each(function ($subscriber) use ($message, $target_url) {
             $notification = Notification::factory()->create([
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
                 'type_id' => NotificationType::byCode('new_message'),
                 'context' => [
-                    'chat_id' => $message->chat_id,
+                    'target_url' => $target_url,
                 ]
             ]);
 

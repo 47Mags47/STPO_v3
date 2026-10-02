@@ -6,6 +6,7 @@ use App\Classes\BaseModel;
 use App\Models\Appeal\Appeal;
 use App\Models\Base\Chat;
 use App\Models\Base\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,6 +43,24 @@ class ChatMessage extends BaseModel
 
     public static bool $createInStorage = false;
 
+    private $morphs = [
+        'appeal',
+    ];
+
+    ### Методы
+    ##################################################
+    public function entity(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                foreach ($this->morphs as $relation) {
+                    if ($this->$relation !== null)
+                        return $this->$relation;
+                }
+            }
+        );
+    }
+
     ### Связи
     ##################################################
     public function chat(): BelongsTo
@@ -57,5 +76,10 @@ class ChatMessage extends BaseModel
     public function attachments(): HasMany
     {
         return $this->hasMany(ChatMessageAttachment::class, 'message_id');
+    }
+
+    // Полиморфные
+    public function appeal() {
+        return $this->hasOneThrough(Appeal::class, Chat::class, 'id', 'chat_id', 'chat_id', 'id');
     }
 }
