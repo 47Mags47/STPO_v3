@@ -78,7 +78,7 @@ export default {
 </script>
 
 <template>
-    <div class="relative">
+    <div class="size-full relative">
         <textarea
             v-show="!hidden"
             maxlength="255"
@@ -94,7 +94,7 @@ export default {
             @change="changeHandler"
             @keydown.enter.exact.prevent="onEnterKeyDownhandler"
         />
-        <span class="absolute right-[8px] bottom-[3px] text-gray-500! text-sm!"> {{ localValue?.length ?? 0 }}/255 </span>
+        <span class="absolute left-[12px] bottom-[4px] text-gray-500! text-sm! pointer-events-none"> {{ localValue?.length ?? 0 }}/255 </span>
     </div>
 </template>
 

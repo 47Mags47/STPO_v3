@@ -1,9 +1,8 @@
 <script>
 import BlueButton from '../../buttons/BlueButton.vue';
-import TextInput from '../../inputs/TextInput.vue'
 import Investment from './Investment.vue'
 import Ico from '../../Ico.vue';
-
+import MessageTextInput from './MessageTextInput.vue';
 import { uploadFile } from '../../../../js/helpers/uploadFile.js';
 
 export default {
@@ -11,7 +10,7 @@ export default {
         Investment,
         BlueButton,
         Ico,
-        TextInput
+        MessageTextInput
     },
 
     props: {
@@ -36,8 +35,11 @@ export default {
             try {
                 let data = {}
 
-                if(this.message.trim() !== '')
-                    data.message = this.message
+
+                if(this.message.trim() === '')
+                    return
+
+                data.message = this.message
 
                 if(this.files.length > 0)
                     data.files = this.files.filter((file) => 'file_id' in file && file.is_uploaded).map((file) => file.file_id)
@@ -118,14 +120,17 @@ export default {
         </div>
         <div class="actions-wrapper">
             <div class="input-wrapper">
-                <TextInput
+                <MessageTextInput
                     ref="textInput"
                     placeholder="Введите сообщение.."
                     name="message-text"
                     :value="message"
-                    :onEnterKeyDown="sendMessageHandler"
-                    :onInput="textInputHandler"
+                    :on-enter-key-down="sendMessageHandler"
+                    :on-input="textInputHandler"
+                    :on-add-file="addFileButtonClickHandler"
+                    :on-send-message="sendMessageHandler"
                 />
+
                 <input
                     ref="filesInput"
                     type="file"
@@ -134,12 +139,6 @@ export default {
                     @change="fileInputChangeHandler"
                 />
             </div>
-            <BlueButton class="action-button" @click="addFileButtonClickHandler">
-                <Ico type="paperclip" />
-            </BlueButton>
-            <BlueButton class="action-button" @click="sendMessageHandler">
-                <Ico type="paper-plane" />
-            </BlueButton>
         </div>
     </div>
 </template>
@@ -151,6 +150,7 @@ export default {
     display: flex
     flex-direction: column
     box-shadow: 0 -4px 10px #99999930
+
     .files-wrapper
         width: 100%
 
@@ -169,20 +169,22 @@ export default {
             padding: 10px 10px 0 5px
 
     .actions-wrapper
-        height: 50px
-
-        padding: 5px
+        padding: 15px
 
         display: flex
-        justify-items: center
+        align-items: center
         gap: 5px
+
+        height: fit-content
+        min-height: 90px
+        max-height: 200px
+
         .input-wrapper
+            position: relative
+
             width: 100%
-            textarea
-                height: 100%
+            height: 100%
+
             input
                 display: none
-        .action-button
-            width: 50px
-            padding: 10px
 </style>
