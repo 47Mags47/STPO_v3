@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Base\Chat;
+use App\Models\Base\ChatMessage;
 use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
@@ -18,17 +19,24 @@ return new class extends Migration
             $table->id();
 
             $table->text('message')->nullable()->default(null);
-            $table->json('context')->nullable()->default(null);
 
-            $table->boolean('readed')->default(false);
+            $table->boolean('is_readed')->default(false);
+            $table->boolean('is_system')->default(false);
 
-            $table->foreignId('sender_id')->constrained(User::getTableName());
             $table->foreignId('chat_id')->constrained(Chat::getTableName());
-            $table->foreignId('file_id')->nullable()->default(null)->constrained(File::getTableName())
-                ->cascadeOnDelete();
+            $table->foreignId('sender_id')->nullable()->constrained(User::getTableName());
 
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('base__chat_attachments', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('message_id')->constrained(ChatMessage::getTableName())->cascadeOnDelete();
+            $table->foreignId('file_id')->constrained(File::getTableName());
+
+            $table->timestamps();
         });
     }
 

@@ -19,7 +19,8 @@ class FileResource extends JsonResource
             'name'      => $this->origin_name,
             'disabled'  => $this->is_disabled,
             'status'    => $this->status->toResource(),
-            'errors'    => $this->errors()->count()
+            'errors'    => $this->errors()->count(),
+            'mime'      => $this->mime
         ];
     }
 }

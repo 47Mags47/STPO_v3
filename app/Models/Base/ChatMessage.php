@@ -2,15 +2,16 @@
 
 namespace App\Models\Base;
 
-use App\Classes\FileModel;
+use App\Classes\BaseModel;
+use App\Models\Appeal\Appeal;
 use App\Models\Base\Chat;
-use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ChatMessages extends FileModel
+class ChatMessage extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
@@ -20,12 +21,12 @@ class ChatMessages extends FileModel
 
     protected $fillable = [
         'message',
-        'readed',
-        'sender_id',
-        'context',
-        'chat_id',
-        'file_id',
 
+        'is_readed',
+        'is_system',
+
+        'chat_id',
+        'sender_id',
     ];
 
     protected function casts(): array
@@ -48,13 +49,13 @@ class ChatMessages extends FileModel
         return $this->belongsTo(Chat::class, 'chat_id');
     }
 
-    public function file(): BelongsTo
-    {
-        return $this->belongsTo(File::class, 'file_id');
-    }
-
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(ChatMessageAttachment::class, 'message_id');
     }
 }

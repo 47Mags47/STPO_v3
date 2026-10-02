@@ -26,7 +26,7 @@ export default {
             return DateTime.fromISO(this.message.created_at).setLocale('ru').toFormat('HH:mm')
         },
         isMine() {
-            return this.current_user.id === this.message.sender.id
+            return this.current_user.id === this.message?.sender?.id
         },
     },
 
@@ -41,23 +41,23 @@ export default {
 <template>
     <div class="h-fit w-full flex flex-col my-1.5!" :class="isMine ? 'items-end' : 'items-start'">
 
-        <!-- Уведомление от системы (например, заявка закрыта или к диалогу присоединился кто-то ещё) -->
-        <div v-if="message.sender.id === 2" class="w-full h-[45px] bg-(--chat-message-by-system-background-color) rounded-xl flex justify-center items-center">
+        <!-- Системные сообщения -->
+        <div v-if="message.is_system" class="w-full h-[45px] bg-(--chat-message-by-system-background-color) rounded-xl flex justify-center items-center">
             <span class="text-2xl! text-white!">
                 {{ message.message }}
             </span>
         </div>
 
         <!-- контейнер сообщения -->
-        <div class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2" v-else
+         <div v-else class="flex max-w-[40%] flex flex-col px-4! py-4! rounded-xl gap-2"
             :class="isMine ? 'items-end bg-(--chat-my-message-background-color)' : 'items-start bg-(--chat-other-message-background-color)'">
 
             <span
                 class="font-bold! hover:text-(--text-hover-color)! cursor-pointer"
                 @click="friendClickHandler"
-            > {{ message.sender.name }} </span>
+            > {{ message.sender?.name }} </span>
 
-            <MessageFile :is-mine="isMine" v-if="message.file" :message="message" />
+            <MessageFile :is-mine="isMine" v-if="message.is_file" :message="message" />
             <MessageText v-else :message="message.message" />
 
             <!-- время -->
@@ -65,12 +65,12 @@ export default {
                 :class="isMine ? 'justify-start' : 'justify-end'">
 
                 <Ico
-                    v-if="current_user.id === message.sender.id && message.readed"
+                    v-if="current_user.id === message.sender?.id && message.is_readed"
                     type="check-double"
                     class="h-[1lh]! w-[14px]! text-(--chat-message-readed-color)!"
                 />
                 <Ico
-                    v-else-if="current_user.id === message.sender.id && !message.readed"
+                    v-else-if="current_user.id === message.sender?.id && !message.is_readed"
                     type="check"
                     class="h-[1lh]! w-[14px]! text-(--chat-message-not-readed-color)!"/>
                 <span class="italic">

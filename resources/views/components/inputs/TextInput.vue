@@ -43,6 +43,10 @@ export default {
         onChange: {
             type: Function,
             default: () => { },
+        },
+        onEnterKeyDown: {
+            type: Function,
+            default: () => { },
         }
     },
 
@@ -53,6 +57,9 @@ export default {
         changeHandler(e) {
             this.onChange(e);
         },
+        onEnterKeyDownhandler(e){
+            this.onEnterKeyDown(e);
+        }
     },
 }
 </script>
@@ -70,6 +77,7 @@ export default {
         :style="{ 'resize': resize }"
         @input="inputHandler"
         @change="changeHandler"
+        @keydown.enter.exact.prevent="onEnterKeyDownhandler"
     />
 </template>
 

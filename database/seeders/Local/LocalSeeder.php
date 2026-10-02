@@ -27,8 +27,7 @@ class LocalSeeder extends Seeder
         $this->call(Base\UserSeeder::class);
 
         $this->call(Base\ChatSeeder::class);
-        $this->call(Base\ChatSubscribersSeeder::class);
-        $this->call(Base\ChatMessagesSeeder::class);
+        $this->call(Base\ChatMessageSeeder::class);
 
         $this->call(Appeal\AppealSeeder::class);
 

@@ -4,9 +4,9 @@ namespace App\Models\Base;
 
 use App\Classes\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Base\ChatMessages;
-use App\Models\Base\ChatSubscribers;
+use App\Models\Base\ChatMessage;
 use App\Models\Appeal\Appeal;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -29,12 +29,12 @@ class Chat extends BaseModel
     ##################################################
     public function messages(): HasMany
     {
-        return $this->hasMany(ChatMessages::class, 'chat_id');
+        return $this->hasMany(ChatMessage::class, 'chat_id');
     }
 
-    public function subscribers(): HasMany
+    public function subscribers(): BelongsToMany
     {
-        return $this->hasMany(ChatSubscribers::class, 'chat_id');
+        return $this->belongsToMany(User::class, 'base__chat_subscribers', 'chat_id', 'user_id');
     }
 
     public function appeal(): HasOne

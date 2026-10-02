@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Base\Notification;
 use App\Models\Base\NotificationType;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;

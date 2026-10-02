@@ -4,9 +4,9 @@ namespace Database\Seeders\Local\Base;
 
 use App\Models\Base\Chat;
 use Illuminate\Database\Seeder;
-use App\Models\Base\ChatMessages;
+use App\Models\Base\ChatMessage;
 
-class ChatMessagesSeeder extends Seeder
+class ChatMessageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,9 +17,9 @@ class ChatMessagesSeeder extends Seeder
             $subscribers = $chat->subscribers;
 
             $subscribers->each(function ($subscriber) use ($chat) {
-                ChatMessages::factory(5)->create([
+                ChatMessage::factory(5)->create([
                     'chat_id' => $chat->id,
-                    'sender_id' => $subscriber->user_id,
+                    'sender_id' => $subscriber->id,
                 ]);
             });
         });
