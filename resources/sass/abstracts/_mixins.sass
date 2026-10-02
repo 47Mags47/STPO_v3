@@ -62,6 +62,23 @@
     &:focus
         outline: none
 
+// приватный миксин, импортируется и вставляется в app.sass
+@mixin popup()
+    .popup-enter-active,
+    .popup-leave-active
+        transition: opacity .2s ease, transform .2s ease
+
+    .popup-enter-from,
+    .popup-leave-to
+        opacity: 0
+        transform: scale(.95)
+
+    .popup-enter-to,
+    .popup-leave-from
+        opacity: 1
+        transform: scale(1)
+
 @mixin create-theme($theme)
     @each $key, $value in $theme
         --#{$key}: #{$value}
+
