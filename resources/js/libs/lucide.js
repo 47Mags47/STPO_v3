@@ -28,6 +28,8 @@ export {
     Download                    as download,
     Paperclip                   as paperclip,
 
+    BookText                    as 'book-text',
+
     Bell                        as bell,
     Mail                        as envelope,
     Calendar                    as calendar,
@@ -64,6 +66,9 @@ export {
 
     EyeClosed                   as 'eye-closed',
     Eye                         as 'eye',
+
+    Maximize2                   as 'maximize',
+    Minimize2                   as 'minimize',
 
     CircleQuestionMark
 } from '@lucide/vue';

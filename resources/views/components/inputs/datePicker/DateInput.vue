@@ -2,12 +2,12 @@
 import { DateTime } from "luxon";
 import Ico from "../../Ico.vue";
 import DateInputPopup from './DateInputPopup.vue'
-import { Teleport } from "vue";
+import Popup from "../../Popup/Popup.vue";
 
 export default {
     components: {
         Ico,
-        DateInputPopup
+        DateInputPopup, Popup
     },
     props: {
         isRange: {
@@ -60,7 +60,6 @@ export default {
     methods: {
         popupButtonClickHandler() {
             this.isPopupOpen = !this.isPopupOpen
-            this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
         },
 
         dayClickHandler(date) {
@@ -91,24 +90,15 @@ export default {
             }
         },
 
-        outsideClickHandler(e) {
-            if (!this.$refs.wrapper.contains(e.target)){
-                this.isPopupOpen = false
-            };
+        closeClickHandler(e) {
+            this.isPopupOpen = false
         },
-    },
-
-    mounted(){
-        document.addEventListener("mousedown", this.outsideClickHandler)
-    },
-    unmounted(){
-        document.removeEventListener("mousedown", this.outsideClickHandler)
     },
 }
 </script>
 
 <template>
-    <div class="date-input-wrapper" ref="wrapper">
+    <div class="date-input-wrapper" ref="dateInputWrapperRef">
 
         <div class="date-input-container flex items-center">
             <input
@@ -124,18 +114,35 @@ export default {
         </div>
 
         <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click="popupButtonClickHandler" />
+            <Ico type="calendar" class="text-(--text-color)!" @click.stop="popupButtonClickHandler" />
         </div>
-        <DateInputPopup
-            :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
-            ref="dateInputPopup"
-            :isRange
-            :checkValid
-            :startInterval
-            :endInterval
-            :onClick="dayClickHandler"
-            :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-        />
+        <Transition name="popup">
+            <Popup
+                v-if="isPopupOpen"
+                width="340px"
+                height="400px"
+                :onClose="closeClickHandler"
+                :hasResize="false"
+                :position="(el) => {
+                    const dateInputWrapperRef = this.$refs.dateInputWrapperRef
+                    const inputPopupRect = dateInputWrapperRef.getBoundingClientRect()
+
+                    return {
+                        left: inputPopupRect.left + 'px',
+                        top: inputPopupRect.bottom + 'px'
+                    }
+                }"
+            >
+                <DateInputPopup
+                    :isRange
+                    :checkValid
+                    :startInterval
+                    :endInterval
+                    :onClick="dayClickHandler"
+                    :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
+                />
+            </Popup>
+        </Transition>
     </div>
 </template>
 

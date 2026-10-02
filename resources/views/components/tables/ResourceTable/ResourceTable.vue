@@ -152,6 +152,11 @@ export default {
         actions: {
             type: Array,
             default: [],
+        },
+
+        preserveStatePagination: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -265,7 +270,7 @@ export default {
 
                 let props = {
                     ...renderData.props,
-                    onClick: () => renderData.props.onClick(row)
+                    onClick: (e) => renderData.props.onClick(e)
                 }
 
                 return () => h(renderData.component ?? 'div', {...props});
@@ -352,7 +357,7 @@ export default {
 
             </div>
             <div class="table-paginate-container">
-                <Paginator v-if="meta.last_page > 1" v-bind="meta" />
+                <Paginator v-if="meta.last_page > 1" v-bind="meta" :saveState="preserveStatePagination"/>
             </div>
             <div class="table-actions-container">
                 <slot name="actions" />
@@ -458,7 +463,7 @@ export default {
         </template>
 
         <template v-if="meta.last_page > 1" #pagination>
-            <Paginator v-bind="meta" />
+            <Paginator v-bind="meta" :saveState="preserveStatePagination"/>
         </template>
     </Table>
 </template>
