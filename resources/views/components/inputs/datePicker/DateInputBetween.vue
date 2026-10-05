@@ -61,7 +61,6 @@ export default {
     methods: {
         popupButtonClickHandler() {
             this.isPopupOpen = !this.isPopupOpen
-            this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
         },
 
         //  Пикер
@@ -100,18 +99,9 @@ export default {
             this.onToUpdate(this.selectedDateTo)
         },
 
-        outsideClickHandler(e) {
-            if (!this.$refs.wrapper.contains(e.target)){
-                this.isPopupOpen = false
-            };
+        closeClickHandler(e) {
+            this.isPopupOpen = false
         },
-    },
-
-    mounted(){
-        document.addEventListener("mousedown", this.outsideClickHandler)
-    },
-    unmounted(){
-        document.removeEventListener("mousedown", this.outsideClickHandler)
     },
 }
 </script>
@@ -145,14 +135,24 @@ export default {
         </div>
 
         <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click="popupButtonClickHandler" />
+            <Ico type="calendar" class="text-(--text-color)!" @click.stop="popupButtonClickHandler" />
         </div>
         <Transition name="popup">
             <Popup
-                width="350px"
+                v-if="isPopupOpen"
+                width="340px"
                 height="400px"
-                :onClose="outsideClickHandler"
+                :onClose="closeClickHandler"
                 :has-resize="false"
+                :position="(el) => {
+                    const wrapper = this.$refs.wrapper
+                    const inputPopupRect = wrapper.getBoundingClientRect()
+
+                    return {
+                        left: inputPopupRect.left + 'px',
+                        top: inputPopupRect.bottom + 'px'
+                    }
+                }"
             >
                 <DateInputPopup
                     :isRange

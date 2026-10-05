@@ -122,7 +122,7 @@ export default {
                 width="340px"
                 height="400px"
                 :onClose="closeClickHandler"
-                :hasResize="false"
+                :has-resize="false"
                 :position="(el) => {
                     const dateInputWrapperRef = this.$refs.dateInputWrapperRef
                     const inputPopupRect = dateInputWrapperRef.getBoundingClientRect()

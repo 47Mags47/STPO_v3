@@ -311,7 +311,7 @@ export default {
 </script>
 
 <template>
-    <div class="popup-wrapper fixed z-10000 inset-0 pointer-events-none">
+    <div class="popup-wrapper fixed z-10000 inset-0 flex flex-col" :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'">
         <div
             ref="popup"
             class="popup fixed rounded-xl drop-shadow-xl bg-(--popup-background-color) flex flex-col overflow-hidden border border-(--border-color) pointer-events-auto"
@@ -328,7 +328,10 @@ export default {
                 :has-resize
                 @mousedown="startDrag"
             />
-            <slot />
+
+            <div class="w-full flex-1" :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'">
+                <slot />
+            </div>
 
             <!-- RESIZE -->
             <template v-if="hasResize">
