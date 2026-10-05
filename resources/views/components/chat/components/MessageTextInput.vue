@@ -25,8 +25,12 @@ export default {
         },
         onEnterKeyDown: {
             type: Function,
-            default: () => { },
+            default: () => {},
         },
+        onPasteFile: {
+            type: Function,
+            default: () => {}
+        }
     },
 
     methods: {
@@ -40,7 +44,19 @@ export default {
         },
         onEnterKeyDownhandler(e){
             this.onEnterKeyDown(e);
-        }
+        },
+        pasteHandler(e) {
+            const files = [...e.clipboardData.files]
+
+            if (files.length === 0)
+                return
+
+            e.preventDefault()
+
+            files.forEach(file => {
+                this.onPasteFile(file)
+            })
+        },
     }
 }
 </script>
@@ -53,6 +69,7 @@ export default {
                 ref="textarea"
                 @keydown.enter.exact.prevent="onEnterKeyDownhandler"
                 @input="inputHandler"
+                @paste="pasteHandler"
                 maxlength="1000"
             />
 

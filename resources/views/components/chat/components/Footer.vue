@@ -73,7 +73,9 @@ export default {
         },
 
         fileInputChangeHandler(e) {
-            let files = e.target.files
+            const files = e instanceof File
+                ? [e]
+                : [...e.target.files]
 
             if (files.length === 0)
                 return
@@ -107,6 +109,7 @@ export default {
                 })
             }
         },
+
     }
 }
 </script>
@@ -129,6 +132,7 @@ export default {
                     :on-input="textInputHandler"
                     :on-add-file="addFileButtonClickHandler"
                     :on-send-message="sendMessageHandler"
+                    :on-paste-file="fileInputChangeHandler"
                 />
 
                 <input
