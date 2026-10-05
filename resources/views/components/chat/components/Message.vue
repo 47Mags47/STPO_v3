@@ -1,10 +1,11 @@
 <script>
 import { defineAsyncComponent } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import { DateTime } from 'luxon';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Ico from '../../Ico.vue';
 import PreviewImage from './PreviewImage.vue';
+import { route } from 'ziggy-js';
 
 export default {
     components: {
@@ -48,6 +49,9 @@ export default {
         },
         onCloseImage() {
             this.previewImage = null
+        },
+        fileShowClickHandler(file) {
+            window.open(route('files.show', { file: file.id }), '_blank')
         }
     }
 }
@@ -76,7 +80,7 @@ export default {
                 </div>
 
                 <div v-if="fileAttachments.length > 0" class="message-attachment-files-wrapper">
-                    <div v-for="file in fileAttachments" class="file-wrapper">
+                    <div v-for="file in fileAttachments" class="file-wrapper" @click="fileShowClickHandler(file)">
                         <FileTypeIco :file />
                         <div class="file-name">{{ file.name }}</div>
                     </div>
