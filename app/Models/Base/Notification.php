@@ -17,12 +17,12 @@ class Notification extends BaseModel
     protected $table = 'base__notifications';
 
     protected $fillable = [
-        'recipient_id',
-        'type_id',
         'message',
-        'sender_id',
-        'is_readed',
         'context',
+        'is_readed',
+        'recipient_id',
+        'sender_id',
+        'type_id',
     ];
 
     protected function casts(): array

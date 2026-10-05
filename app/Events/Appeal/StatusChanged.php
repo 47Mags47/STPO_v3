@@ -4,9 +4,9 @@ namespace App\Events\Appeal;
 
 use App\Models\Appeal\Appeal;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class StatusChanged implements ShouldBroadcastNow
+class StatusChanged implements ShouldBroadcast
 {
     public function __construct(
         public Appeal $appeal,

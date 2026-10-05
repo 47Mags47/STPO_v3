@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Appeal;
+namespace App\Http\Requests\Base;
 
+use App\Models\Base\UploadFile;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MessageStoreRequest extends FormRequest
+class ChatMessageStoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,21 +14,22 @@ class MessageStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        //DEV Переделать на required_unless
         return [
             'message' => [
                 'nullable',
-                'required_without:file',
+                'required_without:files',
                 'string',
                 'max:25000',
             ],
 
-            'file' => [
+            'files' => [
                 'nullable',
                 'required_without:message',
-                'file',
-                'max:2048',
             ],
+
+            'files.*' => [
+                'exists:' . UploadFile::class . ',id'
+            ]
         ];
     }
 }

@@ -68,8 +68,6 @@ export default {
         }
     },
 };
-
-
 </script>
 
 <template>

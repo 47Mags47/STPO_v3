@@ -45,7 +45,7 @@ export default {
                         if (canAccept)
                             router.post(route('appeal.accept', { appeal: row.id }))
                         else if (canGo)
-                            router.get(route('appeal.messages.index', { appeal: row.id }))
+                            router.get(route('appeal.appeals.show', { appeal: row.id }))
                     }
                 },
                 second: {

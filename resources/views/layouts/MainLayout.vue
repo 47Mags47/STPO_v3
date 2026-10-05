@@ -11,7 +11,7 @@ export default {
     computed: {
         bind() {
             return {
-                auth:usePage().props.current_user !== null ? true : false,
+                auth: usePage().props.current_user !== null ? true : false,
             };
         },
     },

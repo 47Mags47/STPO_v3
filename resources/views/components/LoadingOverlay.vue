@@ -43,7 +43,7 @@ export default {
 <template>
     <div
         v-if="isLoading"
-        class="fixed inset-0 z-[1000] flex items-center justify-center backdrop-blur-[2px]"
+        class="fixed inset-0 z-[10001] flex items-center justify-center backdrop-blur-[2px]"
     >
         <Ico
             type="spinner"

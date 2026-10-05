@@ -33,7 +33,7 @@ export default {
     </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .ico-container
     width: 100%
     height: 100%

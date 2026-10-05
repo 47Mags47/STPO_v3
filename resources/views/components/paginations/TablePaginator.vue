@@ -44,6 +44,10 @@ export default {
                     "bottom-right",
                 ].includes(val);
             },
+        },
+        saveState: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -86,7 +90,7 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="chevron-left" :url="generateLink(1)" />
+            <Link icoType="chevron-left" :url="generateLink(1)" :saveState/>
 
             <Link
                 v-for="page in pages"
@@ -94,9 +98,10 @@ export default {
                 :page="page"
                 :active="page === current_page"
                 :url="generateLink(page)"
+                :saveState
             />
 
-            <Link icoType="chevron-right" :url="generateLink(last_page)"/>
+            <Link icoType="chevron-right" :url="generateLink(last_page)" :saveState/>
         </ul>
     </div>
 </template>

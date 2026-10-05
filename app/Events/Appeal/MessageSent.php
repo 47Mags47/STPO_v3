@@ -2,15 +2,15 @@
 
 namespace App\Events\Appeal;
 
-use App\Models\Base\ChatMessages;
+use App\Models\Base\ChatMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class MessageSent implements ShouldBroadcastNow
+class MessageSent implements ShouldBroadcast
 {
     public function __construct(
-        public ChatMessages $message,
+        public ChatMessage $message,
         public int $appealId,
     ) {}
 
@@ -26,25 +26,6 @@ class MessageSent implements ShouldBroadcastNow
 
     public function broadcastWith(): array
     {
-        return [
-            'id'         => $this->message->id,
-            'message'    => $this->message->message,
-            'sender'  => [
-              'id' => $this->message->sender->id,
-              'name' => $this->message->sender->full_name,
-            ],
-            'readed' => $this->message->readed,
-            'created_at' => $this->message->created_at,
-            'file' => $this->message->file !== null
-                ? [
-                    'id' => $this->message->file->id,
-                    'name' => $this->message->file->origin_name,
-                ]
-                : null,
-            'file_url'   => $this->message->file !== null
-                ? route('files.show', ['file' => $this->message->file->id])
-                : null,
-            'context'    => $this->message->context
-        ];
+        return $this->message->toResource()->toArray(request());
     }
 }

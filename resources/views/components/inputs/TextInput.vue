@@ -42,7 +42,11 @@ export default {
         },
         onChange: {
             type: Function,
-            default: () => {},
+            default: () => { },
+        },
+        onEnterKeyDown: {
+            type: Function,
+            default: () => { },
         },
     },
 
@@ -60,6 +64,9 @@ export default {
         changeHandler(e) {
             this.onChange(e);
         },
+        onEnterKeyDownhandler(e){
+            this.onEnterKeyDown(e);
+        }
     },
 
     watch: {
@@ -71,9 +78,10 @@ export default {
 </script>
 
 <template>
-    <div class="relative">
+    <div class="size-full relative">
         <textarea
             v-show="!hidden"
+            maxlength="255"
             :class="{ 'text-input': true }"
             :id
             :name
@@ -81,12 +89,12 @@ export default {
             :required
             :autocomplete
             :value="localValue"
-            :style="{ resize: resize }"
+            :style="{ 'resize': resize }"
             @input="inputHandler"
             @change="changeHandler"
-            maxlength="255"
+            @keydown.enter.exact.prevent="onEnterKeyDownhandler"
         />
-        <span class="absolute right-[8px] bottom-[3px] text-gray-500! text-sm!"> {{ localValue?.length ?? 0 }}/255 </span>
+        <span class="absolute left-[12px] bottom-[4px] text-gray-500! text-sm! pointer-events-none"> {{ localValue?.length ?? 0 }}/255 </span>
     </div>
 </template>
 

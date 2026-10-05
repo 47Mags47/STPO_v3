@@ -16,7 +16,7 @@ class ThemSeeder extends Seeder
         ThemGroup::firstOrCreate(['code' => 'stpo',           'name' => 'СТПО']);
         ThemGroup::firstOrCreate(['code' => 'technic',        'name' => 'Оборудование']);
         ThemGroup::firstOrCreate(['code' => 'asp',            'name' => 'АСП']);
-        ThemGroup::firstOrCreate(['code' => 'security',       'name' => 'Безопасность']);
+        ThemGroup::firstOrCreate(['code' => 'security',       'name' => 'ИБ']);
         ThemGroup::firstOrCreate(['code' => 'transport',      'name' => 'Транспортный проект']);
         ThemGroup::firstOrCreate(['code' => 'other',          'name' => 'Прочее']);
 
@@ -25,6 +25,7 @@ class ThemSeeder extends Seeder
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('technic')->id,   'name' => 'Неполадки с компьютером']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('technic')->id,   'name' => 'Неполадки с МФУ | принтером']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('technic')->id,   'name' => 'Неполадки с IP-телефоном']);
+        Them::firstOrCreate(['group_id' => ThemGroup::byCode('technic')->id,   'name' => 'Неполадки с сетью']);
 
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Объединение ПКУ']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Адреса']);

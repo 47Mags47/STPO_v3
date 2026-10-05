@@ -62,8 +62,7 @@ export default {
 
         Echo.private(this.channel)
             .listen('.new-notification', (data) => {
-                this.notifications.push(data.notification)
-
+                this.notifications.push(data)
                 if (
                     route().current('appeal.messages.index') &&
                     data.notification.type.code === 'new_message' &&

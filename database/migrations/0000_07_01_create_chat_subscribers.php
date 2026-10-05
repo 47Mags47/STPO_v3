@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chat_id')->constrained(Chat::getTableName());
             $table->foreignId('user_id')->constrained(User::getTableName());
-            $table->timestamps();
         });
     }
 

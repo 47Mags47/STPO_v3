@@ -30,15 +30,14 @@ class UploadFile extends FileModel
         string $uploadFileId,
         string $modelClass,
         ?array $attributes = []
-
-    ) {
-        $uploadFile = UploadFile::whereKey($uploadFileId)->first();
+    ): FileModel {
+        $uploadFile = UploadFile::find((int) $uploadFileId);
 
         if ($uploadFile === null)
-            abort(503);
+            abort(404);
 
         if (!(new $modelClass() instanceof FileModel))
-            abort(503);
+            abort(404);
 
         $model = $modelClass::create(array_merge($attributes, [
             'file_id'       => $uploadFile->file->id,
