@@ -100,7 +100,7 @@ export default {
         this.channel = `chats.${this.chatId}.messages`
         this.subscription = Echo.private(this.channel)
             .listen('.new-message', (data) => {
-                this.messages.unshift(data.message)
+                this.messages.unshift(data)
             })
 
         let container = this.$refs.chatMessagesWrapperRef
