@@ -50,8 +50,8 @@ export default {
             if (this.imageScale < 0.5)
                 this.imageScale = 0.5
 
-            if (this.imageScale > 5)
-                this.imageScale = 5
+            if (this.imageScale > 1.5)
+                this.imageScale = 1.5
         },
 
         closePreview() {
@@ -123,7 +123,7 @@ export default {
                 <input
                     type="range"
                     min="0.5"
-                    max="5"
+                    max="1.5"
                     step="0.1"
                     v-model.number="imageScale"
                 >
