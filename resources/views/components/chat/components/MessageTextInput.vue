@@ -53,7 +53,7 @@ export default {
                 ref="textarea"
                 @keydown.enter.exact.prevent="onEnterKeyDownhandler"
                 @input="inputHandler"
-                maxlength="1000px"
+                maxlength="1000"
             />
 
             <div class="h-full flex  gap-3">

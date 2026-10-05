@@ -70,5 +70,8 @@ export {
     Maximize2                   as 'maximize',
     Minimize2                   as 'minimize',
 
+    Search                      as 'search',
+    SearchCheck                 as 'search-check',
+
     CircleQuestionMark
 } from '@lucide/vue';
