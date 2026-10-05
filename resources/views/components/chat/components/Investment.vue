@@ -35,7 +35,7 @@ export default {
 
 <template>
     <div
-        class="file-wrapper"
+        class="file-wrapper border border-(--border-color)"
         :class="{
             'is-image': file.is_image,
             'is-uploading': file.is_uploading,
@@ -61,15 +61,13 @@ export default {
                     </template>
                     <template v-else>
                         <FileTypeIco :file />
-                        <!-- <Ico type="file" />
-                        <div class="file-type" :class="[fileTypeClass]">{{ fileTypeText }}</div> -->
                     </template>
                 </div>
                 <div class="file-name">{{ file.name }}</div>
             </template>
         </template>
 
-        <Ico type="x" class="remove-button" :onClick="removeButtonClickHandler"/>
+        <Ico type="x" class="remove-button bg-(--chat-message-uploaded-file-delete-color) border border-red-500" :onClick="removeButtonClickHandler"/>
     </div>
 </template>
 
@@ -85,7 +83,6 @@ export default {
     width: 150px
     flex-shrink: 0
 
-    border-radius: 5px
     background: #00000005
 
     color: var(--text-color)
@@ -121,7 +118,6 @@ export default {
         width: 20px
         height: 20px
 
-        background: inherit
         box-shadow: inherit
         border-radius: 50%
 
