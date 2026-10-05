@@ -173,6 +173,8 @@ export default {
             padding: 10px 10px 0 5px
 
     .actions-wrapper
+        position: relative
+
         padding: 15px
 
         display: flex
@@ -184,7 +186,6 @@ export default {
         max-height: 200px
 
         .input-wrapper
-            position: relative
 
             width: 100%
             height: 100%

@@ -2,12 +2,14 @@
 import TextInput from '../../inputs/TextInput.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Ico from '../../Ico.vue';
+import DragAndDropFull from '../../DragAndDropFull.vue';
 
 export default {
     components: {
         TextInput,
         BlueButton,
-        Ico
+        Ico,
+        DragAndDropFull
     },
 
     props: {
@@ -57,6 +59,12 @@ export default {
                 this.onPasteFile(file)
             })
         },
+
+        dropFilesHandler(files) {
+            files.forEach(file => {
+                this.onPasteFile(file)
+            })
+        }
     }
 }
 </script>
@@ -81,7 +89,10 @@ export default {
                     <Ico type="paper-plane" />
                 </BlueButton>
             </div>
+
         </div>
+
+        <DragAndDropFull :on-drop="dropFilesHandler"/>
     </div>
 </template>
 
