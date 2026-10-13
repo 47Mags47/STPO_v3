@@ -51,7 +51,7 @@ export default {
             this.previewImage = null
         },
         fileShowClickHandler(file) {
-            window.open(route('files.show', { file: file.id }), '_blank')
+            window.open(route('files.download', { file: file.id }), '_blank')
         }
     }
 }

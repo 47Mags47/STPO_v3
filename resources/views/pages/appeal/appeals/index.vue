@@ -130,6 +130,7 @@ export default {
             },
             {
                 title: 'Создана',
+                type: 'datetime',
                 dataIndex: 'created',
                 width: '100px',
             },
