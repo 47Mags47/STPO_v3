@@ -30,6 +30,9 @@ class ThemSeeder extends Seeder
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Объединение ПКУ']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Адреса']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Тарифы ЖКУ']);
+        Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Права пользователя']);
+        Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Заявка на погребение']);
+        Them::firstOrCreate(['group_id' => ThemGroup::byCode('asp')->id,       'name' => 'Перенаправить (потерялось) заявление']);
 
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('security')->id,  'name' => 'ЭЦП']);
         Them::firstOrCreate(['group_id' => ThemGroup::byCode('security')->id,  'name' => 'Антивирус']);

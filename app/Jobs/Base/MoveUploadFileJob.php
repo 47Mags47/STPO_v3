@@ -43,6 +43,6 @@ class MoveUploadFileJob implements ShouldQueue
         $this->fileModel->setStatus('ok');
         $this->fileModel->setDisabled(false);
 
-        $this->uploadFile->delete();
+        $this->uploadFile->forceDelete();
     }
 }

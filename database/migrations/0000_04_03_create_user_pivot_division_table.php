@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')->constrained(User::getTableName());
-            $table->foreignId('division_id')->nullable()->constrained(Division::getTableName());
+            $table->foreignId('division_id')->constrained(Division::getTableName());
         });
     }
 
