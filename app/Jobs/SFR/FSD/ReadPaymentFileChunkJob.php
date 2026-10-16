@@ -78,7 +78,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
             $row = str_getcsv($line, self::CSV_SEPARATOR);
 
-            Payment::create([
+            Payment::firstOrCreate([
                 'last_name'                 => $row[$this->ROW_KEYS['LAST_NAME']['row_number']],
                 'first_name'                => $row[$this->ROW_KEYS['FIRST_NAME']['row_number']],
                 'middle_name'               => $row[$this->ROW_KEYS['MIDDLE_NAME']['row_number']],
@@ -87,8 +87,11 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
                 'asp_payment_category_id'   => $this->ASPPaymentCategories[$row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']]]->id,
                 'financing_type_id'         => $this->financingTypes[$row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']]]->id,
+            ],
+            [
                 'file_id'                   => $this->paymentFile->id,
-            ]);
+            ]
+            );
         }
     }
 
