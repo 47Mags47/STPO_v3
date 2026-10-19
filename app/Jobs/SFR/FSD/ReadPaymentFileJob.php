@@ -19,7 +19,8 @@ class ReadPaymentFileJob implements ShouldQueue
 
     const CHUNK_SIZE = 250;
 
-    public function __construct(public PaymentFile $paymentFile) {
+    public function __construct(public PaymentFile $paymentFile)
+    {
         $this->onQueue('SFR-FSD');
     }
 
@@ -48,11 +49,11 @@ class ReadPaymentFileJob implements ShouldQueue
                 continue;
 
             // Проверка кодировки документа
-            if($isFirstLine){
-                if(preg_match("/^[а-яА-Я ].*$/", clearString(mb_convert_encoding($line, 'UTF-8', 'CP-866'))) === 0){
+            if ($isFirstLine) {
+                if (preg_match("/^[а-яА-Я ].*$/", clearString(mb_convert_encoding($line, 'UTF-8', 'CP-866'))) === 0) {
                     $this->paymentFile->addError('Неверная кодировка файла (ошибка первой строки)');
                     break;
-                }else{
+                } else {
                     $isFirstLine = false;
                 }
             }
@@ -71,10 +72,13 @@ class ReadPaymentFileJob implements ShouldQueue
         $jobs[] = new ReadPaymentFileChunkJob($this->paymentFile, $lines, $ASPPaymentCategories, $financingTypes);
 
         $file = $this->paymentFile->fresh();
-        Bus::batch($jobs)->then(function (Batch $batch) use ($file) {
-            $file->setStatus('ok');
-            $file->setDisabled(false);
-        })
+        Bus::batch($jobs)
+            ->then(function (Batch $batch) use ($file) {
+                $file->setStatus('ok');
+            })
+            ->finally(function (Batch $batch) use ($file) {
+                $file->setDisabled(false);
+            })
             ->onQueue('SFR-FSD')
             ->dispatch();
     }
