@@ -31,6 +31,18 @@ class FileChunk extends FileModel
     public static string|null $storage_file_disk = 'uploads';
     public static string|null $storage_file_path = 'chunks';
 
+    /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        self::deleted(function (self $model) {
+            $model->file->forceDelete();
+        });
+    }
+
     ### Методы
     ##################################################
     //

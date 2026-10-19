@@ -43,7 +43,7 @@ class UploadController extends Controller
                 stream_copy_to_stream($chunkFileResource, $uploadFileResource);
                 fclose($chunkFileResource);
 
-                $chunk->forceDelete();
+                $chunk->delete();
             });
 
             fclose($uploadFileResource);
