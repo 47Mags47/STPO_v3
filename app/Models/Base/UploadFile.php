@@ -45,7 +45,7 @@ class UploadFile extends FileModel
 
         MoveUploadFileJob::dispatch($uploadFile, $model);
 
-        return $model;
+        return $model->fresh();
     }
 
     ### Связи

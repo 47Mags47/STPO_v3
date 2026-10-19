@@ -14,7 +14,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
-    public $timeout = 300;
+    public $timeout = 999;
     public $ROW_KEYS = [];
     const CSV_SEPARATOR = ';';
 
