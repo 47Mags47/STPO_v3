@@ -12,6 +12,8 @@ class MoveUploadFileJob implements ShouldQueue
 {
     use Queueable;
 
+    public $timeout = 999;
+
     public function __construct(
         public UploadFile $uploadFile,
         public FileModel $fileModel,
@@ -22,6 +24,7 @@ class MoveUploadFileJob implements ShouldQueue
     public function handle(): void
     {
         waitDisabledFile($this->fileModel);
+
         $this->fileModel->setStatus('moving');
         $this->fileModel->setDisabled();
         $this->fileModel = $this->fileModel->fresh();
