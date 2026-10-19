@@ -8,12 +8,14 @@ use App\Models\SFR\FSD\PaymentFile;
 use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 
 class ReadPaymentFileJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, InteractsWithQueue;
 
     public $timeout = 999;
 
@@ -22,6 +24,13 @@ class ReadPaymentFileJob implements ShouldQueue
     public function __construct(public PaymentFile $paymentFile)
     {
         $this->onQueue('SFR-FSD');
+    }
+
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("file:" . $this->paymentFile->file_id))->shared()
+        ];
     }
 
     public function handle(): void
