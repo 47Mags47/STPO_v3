@@ -43,13 +43,7 @@ class UploadFile extends FileModel
             'file_id'       => $uploadFile->file->id,
         ]));
 
-        // HACK Переделать этот кусок
-        // Когда вызываешь этот метод, выполняеться job, который должен блокировать файл
-        // Но если есть еще один job, блокирующий файл, падает очередность выполнения
-        // MoveUploadFileJob::dispatch($uploadFile, $model);
-
-        $job = new MoveUploadFileJob($uploadFile, $model);
-        $job->handle();
+        MoveUploadFileJob::dispatch($uploadFile, $model);
 
         return $model;
     }
