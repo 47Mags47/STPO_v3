@@ -17,6 +17,10 @@ export default {
             type: String,
             default: null
         },
+        checked: {
+            type: Boolean,
+            default: false
+        },
     },
 
     methods: {
@@ -47,9 +51,9 @@ export default {
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
         <div class="number-between-content-container" :class="{ 'active': isOpen }">
-            <NumberInput :name="`${name}[from]`" />
+            <NumberInput :name="`${name}[from]`" :checked />
             <Ico type="minus" class="ico-minus" />
-            <NumberInput :name="`${name}[to]`" />
+            <NumberInput :name="`${name}[to]`"   :checked />
         </div>
     </div>
 </template>
@@ -113,7 +117,7 @@ export default {
         cursor: auto
 
         &.active
-            max-height: 40px
+            max-height: 60px
             padding: 5px 8px
             border: 1px solid lightgray
 

@@ -32,11 +32,15 @@ export default {
             type: String,
             default: null
         },
+        checked: {
+            type: Boolean,
+            default: false
+        },
 
         id: {
             type: String,
             default: null
-        }
+        },
     },
 
     methods: {
@@ -54,6 +58,13 @@ export default {
             selectedRows: []
         }
     },
+
+    watch: {
+        checked(val) {
+            if (!val)
+                this.selectedRows = []
+        }
+    }
 }
 </script>
 
@@ -82,6 +93,7 @@ export default {
                     :name="`${name}[]`"
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
+                    :checked
                     :on-click="(e) => e.target.checked ? selectedRows.push(index) : selectedRows.splice(selectedRows.indexOf(index), 1)"
                 />
                 <span> {{ Object.get(option, labelKey) }} </span>

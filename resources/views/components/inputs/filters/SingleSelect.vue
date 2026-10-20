@@ -30,6 +30,10 @@ export default {
             type: String,
             default: null
         },
+        checked: {
+            type: Boolean,
+            default: false
+        },
 
         id: {
             type: String,
@@ -76,6 +80,7 @@ export default {
                 <input
                     type="radio"
                     :name
+                    :checked
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
                 />

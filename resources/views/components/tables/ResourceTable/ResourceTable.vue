@@ -38,6 +38,7 @@ export default {
     data() {
         return {
             isFilterOpen: false,
+            isFiltersReset: false
         }
     },
 
@@ -160,15 +161,22 @@ export default {
 
     methods: {
         resetFilters() {
+            this.isFiltersReset = true
+
             router.get(
                 window.location.pathname,
                 {},
                 {
                     preserveState: true,
-                    replace: true
+                    replace: true,
+
+                    onFinish: () => {
+                        this.isFiltersReset = false
+                    }
                 }
             );
         },
+
         // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
         fixDropdownPosition(event) {
             const el =
@@ -324,11 +332,11 @@ export default {
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                     <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters">
-                        <MultiSelect    v-if="filter.type === 'multiSelect'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <SingleSelect   v-if="filter.type === 'singleSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <Checkbox       v-if="filter.type === 'checkbox'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <NumberBetween  v-if="filter.type === 'numberBetween'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <DateFilter     v-if="filter.type === 'dateFilter'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <MultiSelect    v-if="filter.type === 'multiSelect'"    :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <SingleSelect   v-if="filter.type === 'singleSelect'"   :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <Checkbox       v-if="filter.type === 'checkbox'"       :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'"  :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <DateFilter     v-if="filter.type === 'dateFilter'"     :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                     </div>
                 </div>
                 <div class="filter-btns">
