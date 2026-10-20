@@ -8,6 +8,7 @@ import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
 import Leaf from './Leaf.vue';
 import { toggleSeason, getCurrentSeason } from '@/season';
+import Game from '../components/game/Game.vue';
 
 export default {
     components: {
@@ -17,7 +18,9 @@ export default {
         AlertsPopup,
         Theme,
         BlueButton,
-        Leaf
+        Leaf,
+
+        Game
     },
 
     data() {
@@ -34,10 +37,10 @@ export default {
 
         gameOn() {
             this.counter++;
-            if (this.counter === 10) {
-                toggleSeason()
-                this.counter = 0
-            }
+        },
+
+        onCloseGame() {
+            this.counter = 0
         }
     },
 
@@ -67,6 +70,13 @@ export default {
         <Notifications v-if="current_user"/>
         <Menu />
         <AlertsPopup />
+
+
+
+        <Game
+            v-if="counter === 3"
+            :on-close-game
+        />
     </div>
 </template>
 
