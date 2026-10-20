@@ -35,7 +35,6 @@ class ReadPaymentFileJob implements ShouldQueue
 
     public function handle(): void
     {
-        waitDisabledFile($this->paymentFile);
         $this->paymentFile->setStatus('reading');
         $this->paymentFile->setDisabled();
         $this->paymentFile = $this->paymentFile->fresh();

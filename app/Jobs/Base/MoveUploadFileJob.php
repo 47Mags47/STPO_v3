@@ -32,8 +32,6 @@ class MoveUploadFileJob implements ShouldQueue
 
     public function handle(): void
     {
-        waitDisabledFile($this->fileModel);
-
         $this->fileModel->setStatus('moving');
         $this->fileModel->setDisabled();
         $this->fileModel = $this->fileModel->fresh();
