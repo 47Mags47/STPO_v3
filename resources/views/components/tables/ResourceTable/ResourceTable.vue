@@ -161,8 +161,8 @@ export default {
 
     methods: {
         resetFilters() {
-            // Увеличиваем ключ - этот ключ у каждого компонента и он конкатенируется с filter.name
-            // Это нужно для сброса, чтобы создавался новый компонент,
+            // Увеличиваем ключ - этот ключ у каждого компонента фильтров и он конкатенируется с filter.name
+            // Это нужно для сброса, чтобы создавался новый компонент (при изменении ключа компонент пересоздаётся),
             // Оставался фильтр открытым, а значения компонентов сбрасывались
             this.filterResetKey++
 
@@ -331,11 +331,11 @@ export default {
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                     <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                        <MultiSelect    v-if="filter.type === 'multiSelect'"    :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <SingleSelect   v-if="filter.type === 'singleSelect'"   :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <Checkbox       v-if="filter.type === 'checkbox'"       :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <NumberBetween  v-if="filter.type === 'numberBetween'"  :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <DateFilter     v-if="filter.type === 'dateFilter'"     :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <MultiSelect    v-if="filter.type === 'multiSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <SingleSelect   v-if="filter.type === 'singleSelect'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <Checkbox       v-if="filter.type === 'checkbox'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <NumberBetween  v-if="filter.type === 'numberBetween'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        <DateFilter     v-if="filter.type === 'dateFilter'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                     </div>
                 </div>
                 <div class="filter-btns">

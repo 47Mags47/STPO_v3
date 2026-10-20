@@ -121,6 +121,12 @@ export default {
                 name: 'status_ids',
                 options: statuses,
             },
+            {
+                type: 'singleSelect',
+                label: 'Статус',
+                name: 'status_idss',
+                options: statuses,
+            },
         ]"
         :collumns="[
             {

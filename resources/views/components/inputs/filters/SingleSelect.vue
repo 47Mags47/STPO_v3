@@ -41,6 +41,13 @@ export default {
         }
     },
 
+    data() {
+        return {
+            isOpen: false,
+            selectedRow: null,
+        }
+    },
+
     methods: {
         selectClickHandler() {
             this.isOpen = !this.isOpen
@@ -48,13 +55,10 @@ export default {
         clickOutsideHandler(event) {
             this.isOpen = false;
         },
-    },
-
-    data() {
-        return {
-            isOpen: false
+        radioClickHandler(e) {
+            this.selectedRow = e.target.value
         }
-    }
+    },
 }
 </script>
 
@@ -65,7 +69,7 @@ export default {
             :class="{ 'active': isOpen }"
             @click="selectClickHandler"
         >
-            <span> {{ label }}</span>
+            <span> {{ label }}: {{ selectedRow ?? 'не назначено' }} </span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -81,10 +85,10 @@ export default {
                     type="radio"
                     :name
                     :checked
-                    :value="Object.get(option, valueKey)"
+                    :value="Object.get(option, labelKey)"
                     :id="`${name}_${index}`"
                 />
-                 <span> {{ option.label }} </span>
+                <span> {{ Object.get(option, labelKey) }} </span>
             </label>
         </div>
     </div>
@@ -136,6 +140,7 @@ export default {
         z-index: 10
         width: 100%
         border: 0 solid var(--border-color)
+        background: var(--background-color)
 
         @include scroll
 

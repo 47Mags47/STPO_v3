@@ -52,7 +52,7 @@ export default {
             :class="{ 'active': isOpen }"
             @click="selectClickHandler"
         >
-            <span> {{ label }}</span>
+            <span> {{ label }} </span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
