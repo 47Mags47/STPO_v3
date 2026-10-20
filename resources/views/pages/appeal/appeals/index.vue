@@ -121,23 +121,6 @@ export default {
                 name: 'status_ids',
                 options: statuses,
             },
-            {
-                type: 'singleSelect',
-                label: 'singleselect',
-                name: 'status_ids',
-                options: statuses,
-            },
-            {
-                type: 'checkbox',
-                label: 'checkbox',
-                name: 'status_ids',
-                options: statuses,
-            },
-            {
-                type: 'numberBetween',
-                label: 'numberBetween',
-                name: 'status_ids',
-            },
         ]"
         :collumns="[
             {
