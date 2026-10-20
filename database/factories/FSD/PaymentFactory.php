@@ -2,8 +2,8 @@
 
 namespace Database\Factories\FSD;
 
-use App\Models\FSD\Payment;
-use App\Models\FSD\PaymentFile;
+use App\Models\SFR\FSD\Payment;
+use App\Models\SFR\FSD\PaymentFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -78,16 +78,23 @@ return new class extends Migration
             $table->string('first_name')->nullable()->default(null);
             $table->string('last_name')->nullable()->default(null);
             $table->string('middle_name')->nullable()->default(null);
-
             $table->decimal('amount', 8, 2)->nullable()->default(null);
             $table->string('SNILS')->nullable()->default(null);
+            $table->date('file_in_date');
 
-            $table->foreignId('asp_payment_category_id')->nullable()->constrained(ASPPaymentCategory::getTableName());
-            $table->foreignId('financing_type_id')->nullable()->constrained(FinancingType::getTableName());
-            $table->foreignId('file_id')->constrained(PaymentFile::getTableName())
+            $table->foreignId('asp_payment_category_id')
+                ->nullable()
+                ->constrained(ASPPaymentCategory::getTableName());
+            $table->foreignId('financing_type_id')
+                ->nullable()
+                ->constrained(FinancingType::getTableName());
+            $table->foreignId('file_id')
+                ->constrained(PaymentFile::getTableName())
                 ->cascadeOnDelete();
 
-            $table->index(['SNILS']);
+            // Проверка уникальности перед вставкой
+            $table->string('duplicate_hash', 64)->nullable();
+            $table->unique('duplicate_hash', 'uq_payments_duplicate_hash');
         });
 
         Schema::create('sfr__fsd__transit_categories', function (Blueprint $table) {
