@@ -29,7 +29,11 @@ export default {
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <Form method="GET" :action="currrentURL" class="pt-0!">
+                <Form
+                    method="GET"
+                    :action="currrentURL" class="pt-0!"
+                    :options="{ preserveState: true }"
+                >
                     <slot name="filters"></slot>
                 </Form>
             </div>

@@ -8,8 +8,6 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
-import FormItem from '../../FormItem.vue';
-
 export default {
     components: {
         Table,
@@ -337,10 +335,10 @@ export default {
                     <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button class="filter-btn"  :class="{ filterShow: isFilterOpen }">
+                    <button class="filter-btn" :class="{ filterShow: isFilterOpen }">
                         Применить
                     </button>
-                    <button type="button"   class="filter-showbtn"
+                    <button type="button" class="filter-showbtn"
                     :class="{ active: isFilterOpen }"
                     @click="toggleFilterVisible">
                         <span> фильтры </span>
