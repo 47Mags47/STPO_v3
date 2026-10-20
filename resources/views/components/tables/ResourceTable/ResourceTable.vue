@@ -164,7 +164,7 @@ export default {
                 window.location.pathname,
                 {},
                 {
-                    preserveState: false,
+                    preserveState: true,
                     replace: true
                 }
             );
