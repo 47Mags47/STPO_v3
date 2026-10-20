@@ -119,29 +119,12 @@ export default {
         background: var(--background-color)
         z-index: 10
         border: 0 solid var(--border-color)
+        max-height: 0px
+        overflow: hidden
 
         cursor: auto
 
         &.active
-            animation: open .5s ease forwards
-            border: var(--border)
-        &:not(.active)
-            animation: close .5s ease forwards
-
-@keyframes open
-    from
-        overflow: hidden
-        max-height: 0
-    to
-        overflow: visible
-        max-height: 40px
-
-@keyframes close
-    from
-        overflow: visible
-        max-height: 40px
-    to
-        overflow: hidden
-        max-height: 0
-
+            max-height: 40px
+            border: 1px solid var(--border-color)
 </style>

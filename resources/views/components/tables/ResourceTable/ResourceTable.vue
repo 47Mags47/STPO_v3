@@ -38,7 +38,7 @@ export default {
     data() {
         return {
             isFilterOpen: false,
-            isFiltersReset: false
+            filterResetKey: 0,
         }
     },
 
@@ -161,7 +161,10 @@ export default {
 
     methods: {
         resetFilters() {
-            this.isFiltersReset = true
+            // Увеличиваем ключ - этот ключ у каждого компонента и он конкатенируется с filter.name
+            // Это нужно для сброса, чтобы создавался новый компонент,
+            // Оставался фильтр открытым, а значения компонентов сбрасывались
+            this.filterResetKey++
 
             router.get(
                 window.location.pathname,
@@ -169,10 +172,6 @@ export default {
                 {
                     preserveState: true,
                     replace: true,
-
-                    onFinish: () => {
-                        this.isFiltersReset = false
-                    }
                 }
             );
         },
@@ -331,7 +330,7 @@ export default {
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                    <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters">
+                    <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
                         <MultiSelect    v-if="filter.type === 'multiSelect'"    :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <SingleSelect   v-if="filter.type === 'singleSelect'"   :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         <Checkbox       v-if="filter.type === 'checkbox'"       :checked="isFiltersReset ? false : null"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />

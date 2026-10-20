@@ -151,7 +151,6 @@ export default {
         position: absolute
         width: 100%
         max-height: 0px
-        overflow: hidden
         overflow: auto
         transition: .5s ease
         z-index: 10
