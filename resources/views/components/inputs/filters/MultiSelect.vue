@@ -59,14 +59,20 @@ export default {
 
 <template>
     <div class="multi-select-container" v-outsideClick="clickOutsideHandler">
-        <div class="multi-select" @click="selectClickHandler">
+        <div
+            class="multi-select"
+            :class="{ 'active': isOpen }"
+            @click="selectClickHandler"
+        >
             <span> {{ label }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
 
-        <div class="multi-select-content-container"
-        :class="{ 'active': isOpen }">
+        <div
+            class="multi-select-content-container"
+            :class="{ 'active': isOpen }"
+        >
             <label v-for="(option, index) in options"
                 class="multi-select-content"
                 :class="{ selected: selectedRows.includes(index) }"
@@ -102,6 +108,10 @@ export default {
         cursor: pointer
         transition: .5s ease
         @include input()
+
+        &.active
+            border-bottom-right-radius: 0
+            border-bottom-left-radius: 0
 
         &:hover
             background-color: var(--button-background-color)

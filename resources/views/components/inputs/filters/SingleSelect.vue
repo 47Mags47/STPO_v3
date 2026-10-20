@@ -56,7 +56,11 @@ export default {
 
 <template>
     <div class="single-select-container" v-outsideClick="clickOutsideHandler">
-        <div class="single-select" @click="selectClickHandler">
+        <div
+            class="single-select"
+            :class="{ 'active': isOpen }"
+            @click="selectClickHandler"
+        >
             <span> {{ label }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
@@ -92,6 +96,10 @@ export default {
         cursor: pointer
         transition: .5s ease
         @include input()
+
+        &.active
+            border-bottom-right-radius: 0
+            border-bottom-left-radius: 0
 
         &:hover
             background-color: var(--button-background-color)

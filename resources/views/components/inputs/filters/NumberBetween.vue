@@ -38,7 +38,11 @@ export default {
 
 <template>
     <div class="number-between-container" v-outsideClick="clickOutsideHandler">
-        <div class="number-between-label-container" @click="labelClickHandler">
+        <div
+            class="number-between-label-container"
+            :class="{ 'active': isOpen }"
+            @click="labelClickHandler"
+        >
             <span> {{ label }}</span>
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -65,6 +69,10 @@ export default {
         cursor: pointer
 
         @include input()
+
+        &.active
+            border-bottom-right-radius: 0
+            border-bottom-left-radius: 0
 
         &:hover
             background: var(--button-background-color)
