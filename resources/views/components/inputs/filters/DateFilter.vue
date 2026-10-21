@@ -21,6 +21,10 @@ export default {
             type: String,
             default: null
         },
+        value: {
+            type: Object,
+            default: {}
+        },
 
         isRange: {
             type: Boolean,
@@ -61,6 +65,7 @@ export default {
         :class="{ 'active': isOpen }">
             <DatePicker
             :name
+            :value
             :is-range
         />
         </div>

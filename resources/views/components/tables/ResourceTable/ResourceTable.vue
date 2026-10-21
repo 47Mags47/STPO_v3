@@ -39,6 +39,8 @@ export default {
         return {
             isFilterOpen: false,
             filterResetKey: 0,
+            cachedFilters: {},
+            filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
         }
     },
 
@@ -160,7 +162,11 @@ export default {
     },
 
     methods: {
+        // FILTERS
         resetFilters() {
+            localStorage.removeItem(this.filtersStorageKey)
+            this.cachedFilters = {}
+
             // Увеличиваем ключ - этот ключ у каждого компонента фильтров и он конкатенируется с filter.name
             // Это нужно для сброса, чтобы создавался новый компонент (при изменении ключа компонент пересоздаётся),
             // Оставался фильтр открытым, а значения компонентов сбрасывались
@@ -175,7 +181,6 @@ export default {
                 }
             );
         },
-
         // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
         fixDropdownPosition(event) {
             const el =
@@ -197,10 +202,10 @@ export default {
                 }
             });
         },
-
         preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
 
+            rest.value = this.cachedFilters[type]?.value?.[rest.name] ?? rest.value
             rest.name = `filters[${rest.name}]`
 
             return rest;
@@ -208,8 +213,68 @@ export default {
         toggleFilterVisible() {
             this.isFilterOpen = !this.isFilterOpen;
         },
+        restoreFilters() {
+            try {
+                const savedFilters = localStorage.getItem(this.filtersStorageKey);
 
-        // Handlers
+                if (savedFilters) {
+                    this.cachedFilters = JSON.parse(savedFilters);
+                }
+            } catch (error) {
+                console.error('Не удалось восстановить фильтры:', error);
+                this.cachedFilters = {};
+            }
+        },
+        applyFilters() {
+            const form = this.$refs.table.$refs.filtersForm.$el;
+            const formData = new FormData(form);
+
+            const result = {};
+
+            this.filters.forEach(({ name, type }) => {
+                let value;
+
+                switch (type) {
+                    case 'multiSelect':
+                        value = formData
+                            .getAll(`filters[${name}][]`)
+                            .map(Number);
+                        break;
+
+                    case 'numberBetween':
+                    case 'dateFilter':
+                        value = {
+                            _from: formData.get(`filters[${name}]_from`) ?? '',
+                            _to: formData.get(`filters[${name}]_to`) ?? '',
+                        };
+                        break;
+
+                    case 'singleSelect':
+                        value = formData.get(`filters[${name}]`);
+                        break;
+
+                    case 'checkbox':
+                        value = formData.has(`filters[${name}]`);
+                        break;
+
+                    default:
+                        return;
+                }
+
+                result[type] ??= { value: {} };
+
+                result[type].value[name] = value;
+            });
+
+            this.cachedFilters = result;
+
+            localStorage.setItem(
+                this.filtersStorageKey,
+                JSON.stringify(result)
+            );
+        },
+
+        // HANDLERS
         createButtonClickHandler(e) {
             this.onCreateButtonClick(e);
         },
@@ -223,7 +288,7 @@ export default {
             this.onDeleteButtonClick(row);
         },
 
-        // Classes
+        // ClASSES
         getRowClasses(row) {
             if (this.rowClasses === null) return
 
@@ -243,7 +308,7 @@ export default {
             }
         },
 
-        // Check
+        // CHECK
         checkRowHasShowButton(row) {
             return typeof this.hasShowButton === 'function'
                 ? this.hasShowButton(row)
@@ -268,7 +333,7 @@ export default {
                 : visible ?? true
         },
 
-        // Math
+        // MATH
         getCellValue(row, collumn){
             if('render' in collumn) {
                 let renderData = collumn.render(row)
@@ -295,7 +360,14 @@ export default {
         },
     },
 
-    mounted() {
+    async mounted() {
+        // Берём из localStorage значения фильтров пихуем в компоненты и кликаем (отправляем на сервер)
+        this.restoreFilters()
+
+        await this.$nextTick();
+
+        this.$refs.table.$refs.filtersForm.submit()
+
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
                 console.error('Неверный формат канала');
@@ -326,7 +398,7 @@ export default {
 </script>
 
 <template>
-    <Table class="resource-table">
+    <Table ref="table" class="resource-table">
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
@@ -342,7 +414,7 @@ export default {
                     <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button class="filter-btn" :class="{ filterShow: isFilterOpen }">
+                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }" @click="applyFilters">
                         Применить
                     </button>
                     <button type="button" class="filter-showbtn"

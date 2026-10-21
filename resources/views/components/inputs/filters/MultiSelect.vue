@@ -32,9 +32,9 @@ export default {
             type: String,
             default: null
         },
-        checked: {
-            type: Boolean,
-            default: false
+        value: {
+            type: Array,
+            default: () => []
         },
 
         id: {
@@ -60,9 +60,12 @@ export default {
     },
 
     watch: {
-        checked(val) {
-            if (!val)
-                this.selectedRows = []
+        value: {
+            handler(values) {
+                this.selectedRows = [...values]
+            },
+            deep: true,
+            immediate: true,
         }
     }
 }
@@ -86,15 +89,27 @@ export default {
         >
             <label v-for="(option, index) in options"
                 class="multi-select-content"
-                :class="{ selected: selectedRows.includes(index) }"
+                :class="{ selected: selectedRows.includes(Object.get(option, valueKey)) }"
                 :for="`${name}_${index}`"
             >
                 <Checkbox
                     :name="`${name}[]`"
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
-                    :checked
-                    :on-click="(e) => e.target.checked ? selectedRows.push(index) : selectedRows.splice(selectedRows.indexOf(index), 1)"
+                    :checked="selectedRows.some(
+                        id => String(id) === String(Object.get(option, valueKey))
+                    )"
+                    :on-click="(e) => {
+                        const id = Object.get(option, valueKey);
+
+                        if (e.target.checked) {
+                            if (!selectedRows.includes(id)) {
+                                selectedRows.push(id);
+                            }
+                        } else {
+                            selectedRows = selectedRows.filter(item => item !== id);
+                        }
+                    }"
                 />
                 <span> {{ Object.get(option, labelKey) }} </span>
             </label>
