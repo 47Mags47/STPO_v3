@@ -25,9 +25,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function __construct(
         public PaymentFile $paymentFile,
-        public array $lines,
-        // public Collection $ASPPaymentCategories,
-        // public Collection $financingTypes
+        public array $lines
     ) {
         $this->onQueue('SFR-FSD');
 
@@ -116,6 +114,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             } catch (\Illuminate\Database\QueryException $e) {
                 if (preg_match("/SQLSTATE\[[0-9]*\]: Integrity constraint violation: [0-9]* Duplicate entry .* for key 'sfr__fsd__payments.uq.*/", $e->getMessage()) == 1)
                     $this->paymentFile->addError('Попытка вставить дубликат записи: ' . $batch['line']);
+                    Log::driver('check')->debug('Попытка вставить дубликат записи: ' . $batch['line']);
             } catch (\Throwable $th) {
                 Log::error($th);
             }
@@ -128,7 +127,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
             return false;
 
         if (!preg_match('/[0-9а-яА-ЯёЁ\s%;\.\(\)\-]*$/u', str_replace(["\r", "\r\n", "\n"], '', $line))) {
-            Log::driver('check')->info('Строка "' . $line . '" содержит недопустимые символы');
+            Log::driver('check')->debug('Строка "' . $line . '" содержит недопустимые символы');
             $this->paymentFile->addError('Строка "' . $line . '" содержит недопустимые символы');
             return false;
         }
@@ -138,7 +137,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
         foreach ($this->ROW_KEYS as $key) {
             if (!preg_match('/' . $key['pattern'] . '/u', $line)) {
-                Log::driver('check')->info('Строка "' . clearString($row[$key['row_number']]) . '" не соответсвует паттерну ' . $key['pattern']);
+                Log::driver('check')->debug('Строка "' . clearString($row[$key['row_number']]) . '" не соответсвует паттерну ' . $key['pattern']);
                 $this->paymentFile->addError('Поле "' . $key['name'] . '" не соответсвует формату в cтроке ' . clearString($row[$key['row_number']]));
 
                 $flag = false;
@@ -148,7 +147,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверка категории в АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
         if (!$this->ASPPaymentCategories->has($ASPCategoryRow)) {
-            Log::driver('check')->info('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
+            Log::driver('check')->debug('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
             $this->paymentFile->addError('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
 
             $flag = false;
@@ -157,7 +156,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
         if (!$this->financingTypes->has($financingTypeRow)) {
-            Log::driver('check')->info('Не найден источник финансирования "' . $financingTypeRow . '"');
+            Log::driver('check')->debug('Не найден источник финансирования "' . $financingTypeRow . '"');
             $this->paymentFile->addError('Не найден источник финансирования "' . $financingTypeRow . '"');
 
             $flag = false;

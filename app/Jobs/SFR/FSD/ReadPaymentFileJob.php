@@ -37,7 +37,7 @@ class ReadPaymentFileJob implements ShouldQueue
         $this->paymentFile->setDisabled();
         $this->paymentFile = $this->paymentFile->fresh();
 
-        Log::driver('check')->info('Чтение файла: ' . $this->paymentFile->getLocalPath());
+        Log::driver('check')->debug('Чтение файла: ' . $this->paymentFile->getLocalPath());
 
 
         $path = $this->paymentFile->getFullPath();
@@ -64,10 +64,6 @@ class ReadPaymentFileJob implements ShouldQueue
         $lines = [];
         $jobs = [];
         while (($line = fgets($file)) !== false) {
-            if (trim($line) === '') {
-                continue;
-            }
-
             // Проверка кодировки документа
             $converted = @mb_convert_encoding($line, 'UTF-8', 'CP-866');
             if ($converted === false) {
@@ -75,9 +71,13 @@ class ReadPaymentFileJob implements ShouldQueue
                 Log::driver('check')->error('Ошибка конвертации: ' . $line);
                 continue;
             }
-            $line = $converted;
+            $line = trim($converted);
 
-            $lines[] = mb_convert_encoding($line, 'UTF-8', 'CP-866');
+            if ($line === '')
+                continue;
+
+            $lines[] = $line;
+
             $count++;
 
             if ($count >= $this::CHUNK_SIZE) {
