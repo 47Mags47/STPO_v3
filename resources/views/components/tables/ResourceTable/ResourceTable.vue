@@ -244,8 +244,8 @@ export default {
                     case 'numberBetween':
                     case 'dateFilter':
                         value = {
-                            _from: formData.get(`filters[${name}]_from`) ?? '',
-                            _to: formData.get(`filters[${name}]_to`) ?? '',
+                            from: formData.get(`filters[${name}]_from`) ?? '',
+                            to: formData.get(`filters[${name}]_to`) ?? '',
                         };
                         break;
 
@@ -262,9 +262,12 @@ export default {
                 }
 
                 result[type] ??= { value: {} };
-
                 result[type].value[name] = value;
             });
+
+            result.urlParams = Object.fromEntries(
+                new URLSearchParams(window.location.search)
+            );
 
             this.cachedFilters = result;
 
@@ -364,10 +367,6 @@ export default {
         // Берём из localStorage значения фильтров пихуем в компоненты и кликаем (отправляем на сервер)
         this.restoreFilters()
 
-        await this.$nextTick();
-
-        this.$refs.table.$refs.filtersForm.submit()
-
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
                 console.error('Неверный формат канала');
@@ -398,7 +397,7 @@ export default {
 </script>
 
 <template>
-    <Table ref="table" class="resource-table">
+    <Table ref="table" class="resource-table" :on-apply-filters="applyFilters">
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div
@@ -419,7 +418,7 @@ export default {
                     <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }" @click="applyFilters">
+                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }">
                         Применить
                     </button>
                     <button type="button" class="filter-showbtn"

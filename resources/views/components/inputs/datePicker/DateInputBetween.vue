@@ -53,8 +53,14 @@ export default {
 
             isFirstClick:       true,
             // HACK добавить валидацию формата даты
-            selectedDateFrom:   this.value?.from ? this.value.from : null,
-            selectedDateTo:     this.value?.to   ? this.value.to   : null,
+            selectedDateFrom: this.value?.from
+                ? DateTime.fromISO(this.value.from)
+                : null,
+
+            selectedDateTo: this.value?.to
+                ? DateTime.fromISO(this.value.to)
+                : null,
+
             selectedDate:       null,
         };
     },
@@ -101,6 +107,20 @@ export default {
 
         closeClickHandler(e) {
             this.isPopupOpen = false
+        },
+    },
+
+    watch: {
+        value(val) {
+            if (val && typeof val === 'object') {
+                this.selectedDateFrom = val.from
+                    ? DateTime.fromISO(val.from)
+                    : null;
+
+                this.selectedDateTo = val.to
+                    ? DateTime.fromISO(val.to)
+                    : null;
+            }
         },
     },
 }

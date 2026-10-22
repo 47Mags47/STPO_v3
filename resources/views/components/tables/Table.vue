@@ -7,6 +7,10 @@ export default {
             type: String,
             default: null,
         },
+        onApplyFilters: {
+            type: Function,
+            default: () => {}
+        }
     },
 
     components: {
@@ -33,7 +37,10 @@ export default {
                     ref="filtersForm"
                     method="GET"
                     :action="currrentURL" class="pt-0!"
-                    :options="{ preserveState: true }"
+                    :options="{
+                        preserveState: true,
+                        onSuccess: onApplyFilters
+                    }"
                 >
                     <slot name="filters"></slot>
                 </Form>
