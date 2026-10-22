@@ -75,11 +75,11 @@ return new class extends Migration
         Schema::create('sfr__fsd__payments', function (Blueprint $table) {
             $table->id();
 
-            $table->string('first_name')->nullable()->default(null);
-            $table->string('last_name')->nullable()->default(null);
-            $table->string('middle_name')->nullable()->default(null);
+            $table->string('first_name', 100)->nullable()->default(null);
+            $table->string('last_name', 100)->nullable()->default(null);
+            $table->string('middle_name', 100)->nullable()->default(null);
             $table->decimal('amount', 8, 2)->nullable()->default(null);
-            $table->string('SNILS')->nullable()->default(null);
+            $table->string('SNILS', 14)->nullable()->default(null);
             $table->date('file_in_date');
 
             $table->foreignId('asp_payment_category_id')
