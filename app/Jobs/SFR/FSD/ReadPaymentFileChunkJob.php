@@ -2,6 +2,8 @@
 
 namespace App\Jobs\SFR\FSD;
 
+use App\Models\Administrate\FinancingType;
+use App\Models\SFR\FSD\ASPPaymentCategory;
 use App\Models\SFR\FSD\Payment;
 use App\Models\SFR\FSD\PaymentFile;
 use Illuminate\Bus\Batchable;
@@ -16,13 +18,16 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public $timeout = 999;
     public $ROW_KEYS = [];
+    public Collection $ASPPaymentCategories;
+    public Collection $financingTypes;
+
     const CSV_SEPARATOR = ';';
 
     public function __construct(
         public PaymentFile $paymentFile,
         public array $lines,
-        public Collection $ASPPaymentCategories,
-        public Collection $financingTypes
+        // public Collection $ASPPaymentCategories,
+        // public Collection $financingTypes
     ) {
         $this->onQueue('SFR-FSD');
 
@@ -68,6 +73,9 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 'name'          => 'Тип финансирования',
             ],
         ];
+
+        $this->ASPPaymentCategories = ASPPaymentCategory::get(['id', 'name'])->groupBy('name')->map(fn($value) => $value[0]);
+        $this->financingTypes = FinancingType::get(['id', 'asp_name'])->groupBy('asp_name')->map(fn($value) => $value[0]);
     }
 
     public function handle(): void
