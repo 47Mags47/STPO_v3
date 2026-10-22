@@ -92,6 +92,9 @@ return new class extends Migration
                 ->constrained(PaymentFile::getTableName())
                 ->cascadeOnDelete();
 
+            // Индекс для поиска
+            $table->index(['SNILS']);
+
             // Проверка уникальности перед вставкой
             $table->string('duplicate_hash', 64)->nullable();
             $table->unique('duplicate_hash', 'uq_payments_duplicate_hash');
