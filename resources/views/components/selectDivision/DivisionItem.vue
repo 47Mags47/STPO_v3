@@ -11,10 +11,6 @@ export default {
             type: Object,
             default: {}
         },
-        roleName: {
-            type: String,
-            default: ''
-        },
 
         clickHandler: {
             type: Function,
@@ -26,7 +22,7 @@ export default {
 
 <template>
     <div
-        class="h-[100px] w-full bg-(--item-background-color) flex gap-3 p-4! hover:bg-(--item-background-hover-color) cursor-pointer rounded-xl"
+        class="h-[100px] w-full bg-(--item-background-color) flex items-center gap-5 p-4! hover:bg-(--item-background-hover-color) cursor-pointer rounded-xl"
         @click="clickHandler(division.id)"
     >
         <div class="size-[74px] rounded-full bg-(--item-ico-background-color) p-4! overflow-hidden">
@@ -35,7 +31,6 @@ export default {
 
         <div class="flex flex-col gap-1">
             <span class="text-[18px]! text-(--item-division-text-color)!"> {{ division.name }} </span>
-            <span class="text-[16px]! text-(--item-role-text-color)!"> {{ roleName }} </span>
         </div>
     </div>
 </template>

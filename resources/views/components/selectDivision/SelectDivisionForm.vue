@@ -35,7 +35,6 @@ export default {
             <DivisionItem
                 v-for="division in divisions"
                 :division="division"
-                :role-name="division.role?.name"
                 :clickHandler
             />
         </template>
