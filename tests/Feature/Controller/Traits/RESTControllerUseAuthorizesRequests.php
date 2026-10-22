@@ -44,20 +44,20 @@ trait RESTControllerUseAuthorizesRequests
     {
         $this->checkControllerUsesAuthorizesRequestsTrait();
 
-        $this->assertTrue(in_array('can:view,' . $this->getMiddlewareParameterName(), $this->getControllerMidlewares()));
+        $this->assertTrue(in_array('can:view,' . $this->getRouteParameterName(), $this->getControllerMidlewares()));
     }
 
     public function test_controller_implement_middleware_update()
     {
         $this->checkControllerUsesAuthorizesRequestsTrait();
 
-        $this->assertTrue(in_array('can:update,' . $this->getMiddlewareParameterName(), $this->getControllerMidlewares()));
+        $this->assertTrue(in_array('can:update,' . $this->getRouteParameterName(), $this->getControllerMidlewares()));
     }
 
     public function test_controller_implement_middleware_delete()
     {
         $this->checkControllerUsesAuthorizesRequestsTrait();
 
-        $this->assertTrue(in_array('can:delete,' . $this->getMiddlewareParameterName(), $this->getControllerMidlewares()));
+        $this->assertTrue(in_array('can:delete,' . $this->getRouteParameterName(), $this->getControllerMidlewares()));
     }
 }

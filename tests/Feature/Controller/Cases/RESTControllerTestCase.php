@@ -42,14 +42,6 @@ implements RESTControllerTestCaseInterface
         return snakeCase(class_basename($this->modelClass));
     }
 
-    protected function getMiddlewareParameterName(): string
-    {
-        $model = class_basename($this->modelClass);
-        $parameter = ltrim(\Illuminate\Support\Str::snake($model), '_');
-
-        return $parameter;
-    }
-
     protected function getControllerMidlewares(): array
     {
         $middlewares = new ($this->controllerClass)()->getMiddleware();
