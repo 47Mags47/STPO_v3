@@ -401,13 +401,18 @@ export default {
     <Table ref="table" class="resource-table">
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
-                <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                    <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                        <MultiSelect    v-if="filter.type === 'multiSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <SingleSelect   v-if="filter.type === 'singleSelect'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <Checkbox       v-if="filter.type === 'checkbox'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <NumberBetween  v-if="filter.type === 'numberBetween'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        <DateFilter     v-if="filter.type === 'dateFilter'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                <div
+                    class="table-filters-collapse"
+                    :class="{ 'opened': isFilterOpen }"
+                >
+                    <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
+                        <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
+                            <MultiSelect    v-if="filter.type === 'multiSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <SingleSelect   v-if="filter.type === 'singleSelect'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <Checkbox       v-if="filter.type === 'checkbox'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <NumberBetween  v-if="filter.type === 'numberBetween'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <DateFilter     v-if="filter.type === 'dateFilter'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                        </div>
                     </div>
                 </div>
                 <div class="filter-btns">
@@ -551,25 +556,32 @@ export default {
         width: 100%
         display: flex
         flex-direction: column
-        z-index: 100
+
+        .table-filters-collapse
+            display: grid
+            grid-template-rows: 0fr
+            transition: grid-template-rows .3s ease
+            overflow: hidden
+
+            &.opened
+                grid-template-rows: 1fr
+                overflow: visible
 
         :deep(.table-filters)
             display: flex
-            max-height: 0
             flex-wrap: wrap
             align-items: center
             gap: 12px
 
-            padding-bottom: 0
-            overflow: hidden
+            min-height: 0
             opacity: 0
+            padding-bottom: 0
 
-            transition: max-height .5s ease, padding-bottom .5s ease, opacity .5s ease
+            transition: opacity .3s ease, padding-bottom .3s ease
 
-            &.opened
-                overflow: visible
+        .table-filters-collapse.opened
+            :deep(.table-filters)
                 opacity: 1
-                max-height: 170px
                 padding-bottom: 8px
 
         :deep(.filter-item)
