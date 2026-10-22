@@ -136,7 +136,7 @@ return new class extends Migration
         Schema::create('sfr__fsd__transit_recipients', function (Blueprint $table) {
             $table->id();
 
-            $table->string('SNILS');
+            $table->string('SNILS', 14);
             $table->date('date_start')->index();
             $table->date('date_end')->index();
 

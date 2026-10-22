@@ -9,8 +9,8 @@ use App\Models\SFR\FSD\TransitCategory;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class WriteResultFile implements ShouldQueue
 {
@@ -30,20 +30,16 @@ class WriteResultFile implements ShouldQueue
             ->equivalent->equivalent;
     }
 
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("file:" . $this->resultFile->file_id))->shared(),
+            (new WithoutOverlapping("file:" . $this->resultFile->SFRFile->file_id))->shared()
+        ];
+    }
+
     public function handle(): void
     {
-        Log::info('start');
-
-        waitDisabledFile($this->resultFile->SFRFile);
-        $this->resultFile->SFRFile->setDisabled();
-        $this->resultFile->SFRFile->setStatus('reading');
-        Log::info('SFRFile created in DB');
-
-        $this->resultFile->setDisabled();
-        $this->resultFile->setStatus('creating');
-        $this->resultFile = $this->resultFile->fresh();
-        Log::info('resultFile created in DB');
-
         $this->fromFileCursor = fopen($this->resultFile->SFRFile->getFullPath(), 'r');
         $this->toFileCursor = fopen($this->resultFile->getFullPath(), 'w');
 
