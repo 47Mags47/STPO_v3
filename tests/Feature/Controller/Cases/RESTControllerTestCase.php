@@ -39,6 +39,11 @@ implements RESTControllerTestCaseInterface
     ##################################################
     protected function getRouteParameterName(): string
     {
+        return snakeCase(class_basename($this->modelClass));
+    }
+
+    protected function getMiddlewareParameterName(): string
+    {
         $model = class_basename($this->modelClass);
         $parameter = ltrim(\Illuminate\Support\Str::snake($model), '_');
 
