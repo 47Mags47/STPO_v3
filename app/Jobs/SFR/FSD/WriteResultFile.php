@@ -40,6 +40,9 @@ class WriteResultFile implements ShouldQueue
 
     public function handle(): void
     {
+        $this->resultFile->SFRFile->setStatus('reading');
+        $this->resultFile->setStatus('creating');
+
         $this->fromFileCursor = fopen($this->resultFile->SFRFile->getFullPath(), 'r');
         $this->toFileCursor = fopen($this->resultFile->getFullPath(), 'w');
 
@@ -104,10 +107,7 @@ class WriteResultFile implements ShouldQueue
         fclose($this->toFileCursor);
 
         $this->resultFile->setStatus('ok');
-        $this->resultFile->setDisabled(false);
-
         $this->resultFile->SFRFile->setStatus('ok');
-        $this->resultFile->SFRFile->setDisabled(false);
     }
 
     public function writeDefault($month, $birth)
