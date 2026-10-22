@@ -39,7 +39,10 @@ implements RESTControllerTestCaseInterface
     ##################################################
     protected function getRouteParameterName(): string
     {
-        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', class_basename($this->modelClass))), '_');
+        $model = class_basename($this->modelClass);
+        $parameter = ltrim(\Illuminate\Support\Str::snake($model), '_');
+
+        return $parameter;
     }
 
     protected function getControllerMidlewares(): array
