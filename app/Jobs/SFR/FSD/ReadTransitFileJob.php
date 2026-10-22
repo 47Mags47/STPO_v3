@@ -6,6 +6,7 @@ use App\Models\SFR\FSD\TransitFile;
 use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Bus;
 
 class ReadTransitFileJob implements ShouldQueue
@@ -19,12 +20,16 @@ class ReadTransitFileJob implements ShouldQueue
         $this->onQueue('SFR-FSD');
     }
 
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("file:" . $this->transitFile->file_id))->shared()
+        ];
+    }
+
     public function handle(): void
     {
-        waitDisabledFile($this->transitFile);
         $this->transitFile->setStatus('reading');
-        $this->transitFile->setDisabled();
-        $this->transitFile = $this->transitFile->fresh();
 
         $file = fopen($this->transitFile->getFullPath(), 'r');
 
@@ -46,10 +51,10 @@ class ReadTransitFileJob implements ShouldQueue
         $jobs[] = new ReadTransitFileChunkJob($this->transitFile, $lines);
 
         $file = $this->transitFile->fresh();
-        Bus::batch($jobs)->then(function (Batch $batch) use ($file) {
-            $file->setStatus('ok');
-            $file->setDisabled(false);
-        })
+        Bus::batch($jobs)
+            ->then(function (Batch $batch) use ($file) {
+                $file->setStatus('ok');
+            })
             ->onQueue('SFR-FSD')
             ->dispatch();
     }
