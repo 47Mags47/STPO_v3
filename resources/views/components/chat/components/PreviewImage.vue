@@ -109,7 +109,8 @@ export default {
                 <img
                     :src="route('files.show', { file: previewImage.id })"
                     :alt="previewImage.name"
-                    class="block max-w-[90vw] max-h-[80vh]! object-contain"
+                    class="block max-w-[90vw] max-h-[80vh]! object-contain select-none"
+                    draggable="false"
                     :style="{
                         transform: `scale(${imageScale})`
                     }"
