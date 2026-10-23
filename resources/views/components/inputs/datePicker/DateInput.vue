@@ -126,7 +126,6 @@ export default {
             top: 0
             right: 0
 
-            border: 1px solid black
             width: 25px
             height: 100%
 

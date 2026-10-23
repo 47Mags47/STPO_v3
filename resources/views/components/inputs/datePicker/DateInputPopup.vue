@@ -70,7 +70,8 @@ export default {
     },
     data() {
         return {
-            currentDate: DateTime.now()
+            currentDate: DateTime.now(),
+            hoveredDate: null
         }
     },
     methods: {
@@ -87,6 +88,9 @@ export default {
         },
 
         dayClickHandler(date){
+            if(this.isDisabled(date))
+                return
+
             this.onClick(date)
         },
 
@@ -121,19 +125,42 @@ export default {
             return true
         },
 
-        inRange(date) {
-            if (!this.isRange) return false
+        isDisabled(date) {
+            return !this.checkDateInMonth(date) || !this.checkSelectable(date)
+        },
+
+        // MATH
+        isCurrentDay(date) {
+           return date.hasSame(this.now, 'day')
+        },
+        isSelectedDay(date) {
+            const isCurrentDate          = !date.hasSame(this.now, 'day')
+            const isDateSelected         = date.toFormat('yyyy-MM-dd') === this.selectedDate?.from ||
+                date.toFormat('yyyy-MM-dd') === this.selectedDate?.to                              ||
+                date.toFormat('yyyy-MM-dd') === this.selectedDate
+            const isSelectedDateToNull   = this.selectedDate?.to === null || this.selectedDate?.to === undefined
+            const isHoveredDateNotNull   = this.hoveredDate !== null
+            const isDateHovered          = isHoveredDateNotNull && date.hasSame(this.hoveredDate, 'day')
+
+            return isCurrentDate && isDateSelected || isSelectedDateToNull && isDateHovered
+        },
+        isInRange(date) {
+            if (!this.isRange)
+                return false
 
             const { from, to } = this.selectedDate ?? {}
 
-            if (!from || !to) return false
+            if (!from)
+                return false
 
-            return date > DateTime.fromISO(from) &&
-                date < DateTime.fromISO(to)
-        },
+            const fromDate = DateTime.fromISO(from)
+            const toDate = to
+                ? DateTime.fromISO(to)
+                : this.hoveredDate
 
-        isDisabled(date) {
-            return !this.checkDateInMonth(date) || !this.checkSelectable(date)
+            return toDate != null
+                ? date > Math.min(fromDate, toDate) && date < Math.max(fromDate, toDate)
+                : false
         }
     },
     watch: {
@@ -200,17 +227,14 @@ export default {
                     <tr v-for="weekInterval in interval.splitBy({ week: 1 })" >
                         <td v-for="dayInterval in weekInterval.splitBy({ day: 1 })">
                             <div
+                                @mouseenter="hoveredDate = dayInterval.start"
+                                @mouseleave="hoveredDate = null"
                                 class="day-cell-container available"
                                 :class="{
-                                    'current-day'   : dayInterval.start.hasSame(now, 'day'),
-                                    'selected-day'  : !dayInterval.start.hasSame(now, 'day') &&
-                                        (dayInterval.start.toFormat('yyyy-MM-dd')    === selectedDate?.from    ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate?.to      ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate),
-                                    'disabled': isDisabled(dayInterval.start),
-                                    'in-range': !dayInterval.start.hasSame(now, 'day') &&
-                                        dayInterval.start.toFormat('yyyy-MM-dd') > selectedDate?.from &&
-                                        dayInterval.start.toFormat('yyyy-MM-dd') < selectedDate?.to
+                                    'current-day'   : isCurrentDay(dayInterval.start),
+                                    'selected-day'  : isSelectedDay(dayInterval.start),
+                                    'disabled'      : isDisabled(dayInterval.start),
+                                    'in-range'      : isInRange(dayInterval.start)
                                 }"
                                 @click="() => dayClickHandler(dayInterval.start)"
                             >
@@ -288,7 +312,7 @@ export default {
 
                 color: var(--text-color)
                 &.current-day
-                    color: orange
+                    color: orange !important
                 &.selected-day
                     color: #a770ff
                 &.in-range
