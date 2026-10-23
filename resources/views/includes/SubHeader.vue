@@ -34,19 +34,16 @@ export default {
 
     methods: {
         handleScroll() {
-            this.scrollTop = this.scrollContainer.scrollTop;
+            this.scrollTop = Math.min(
+                Math.max(this.scrollContainer.scrollTop, 0),
+                100
+            );
         },
     },
 
     computed: {
         subHeaderHeight() {
-            const maxScroll = 100;
-            const maxHeight = 35;
-
-            return Math.max(
-                maxHeight - (this.scrollTop / maxScroll) * maxHeight,
-                0,
-            );
+            return 35 * (1 - this.scrollTop / 100);
         },
     },
 };
@@ -56,16 +53,26 @@ export default {
     <div
         class="sub-header"
         :style="{
-            height: `${subHeaderHeight}px`,
+            transform: `translateY(-${35 - subHeaderHeight}px)`,
+            opacity: subHeaderHeight / 35,
         }"
     >
-        <Appeal />
+        <div
+            class="sub-header-content"
+            :style="{
+                transform: `translateY(-${35 - subHeaderHeight}px)`,
+                opacity: subHeaderHeight / 35,
+            }"
+        >
+            <Appeal />
+        </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
 .sub-header
-    position: relative
+    position: absolute
+    flex-shrink: 0
 
     width: 100%
     height: 35px
@@ -74,7 +81,15 @@ export default {
     display: flex
     justify-content: flex-end
 
+    top: 60px
+
     background: var(--sub-header-background-color)
 
     overflow: hidden
+
+.sub-header-content
+    position: relative
+    width: 100%
+    height: 35px
+    min-height: 35px
 </style>
