@@ -296,7 +296,7 @@ export default {
                 &.available
                     cursor: pointer
                     &:hover
-                        background: #a3a3a3
+                        background: #70707020
                 &.disabled, &.other-month
                     cursor: not-allowed
                     color: #aaa
