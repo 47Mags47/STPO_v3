@@ -80,18 +80,24 @@ export default {
             if (index + 1 === this.messages.length)
                 return true
 
-            let current_message_created_at = DateTime.fromISO(this.messages[index]).setLocale('ru').toFormat('yyyy-mm-dd')
-            let next_message_created_at = DateTime.fromISO(this.messages[index + 1]).setLocale('ru').toFormat('yyyy-mm-dd')
+            let current_message_created_at = DateTime.fromISO(this.messages[index].created_at).setLocale('ru').toFormat('yyyy-MM-dd')
+            let next_message_created_at = DateTime.fromISO(this.messages[index + 1].created_at).setLocale('ru').toFormat('yyyy-MM-dd')
 
             if (current_message_created_at !== next_message_created_at)
                 return true
 
             return false
         },
+        formatMessageDateSeporator(date) {
+            return DateTime
+                .fromISO(date)
+                .setLocale('ru')
+                .toFormat('dd MMMM yyyy')
+        },
 
         messageSendedHandler(message) {
             this.messages = [message, ...this.messages]
-        }
+        },
     },
 
     mounted() {
@@ -120,10 +126,23 @@ export default {
         <div class="chat-messages-wrapper" ref="chatMessagesWrapperRef" @scroll="handleScroll">
             <template v-for="message, index in messages" :key="message.id">
                 <Message :message />
-                <div v-if="showDateSeparator(index)" class="date-separator-wrapper">
-                    <div class="line" />
-                    <div class="date-separator">{{ DateTime.fromISO(message.created_at).setLocale('ru').toFormat('dd MMMM yyyy') }}</div>
-                    <div class="line" />
+                <div v-if="showDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
+                    <div class="flex items-center gap-3 w-full max-w-[320px]">
+                        <div class="h-px flex-1 bg-gray-200"></div>
+                        <span class="shrink-0
+                        px-5! py-1.5!
+                        rounded-full
+                        bg-gray-100
+                        border border-gray-200
+                        text-gray-600!
+                        text-[12px]!
+                        text-center
+                        font-medium
+                        shadow-sm">
+                            {{ formatMessageDateSeporator(message.created_at) }}
+                        </span>
+                        <div class="h-px flex-1 bg-gray-200"></div>
+                    </div>
                 </div>
             </template>
 
