@@ -89,6 +89,7 @@ trait PolicyRESTCan
     {
         $this->checkViewAnyExist();
         $this->checkViewAnyPermissionNotEmpty();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -96,8 +97,6 @@ trait PolicyRESTCan
         foreach ($this->permissions['viewAny'] as $permission) {
             $this->assertFalse($policy->viewAny($user), 'Пользователь без прав имеет доступ к viewAny');
         }
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['viewAny'] as $permission) {
             $user = $this->createTestUser();
@@ -111,6 +110,7 @@ trait PolicyRESTCan
     public function test_policy_user_can_create(){
         $this->checkCreateExist();
         $this->checkCreatePermissionNotEmpty();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -118,8 +118,6 @@ trait PolicyRESTCan
         foreach ($this->permissions['create'] as $permission) {
             $this->assertFalse($policy->create($user), 'Пользователь без прав имеет доступ к create');
         }
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['create'] as $permission) {
             $user = $this->createTestUser();
@@ -133,6 +131,7 @@ trait PolicyRESTCan
     public function test_policy_user_can_view(){
         $this->checkViewExist();
         $this->checkViewPermissionNotEmpty();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -141,8 +140,6 @@ trait PolicyRESTCan
         foreach ($this->permissions['view'] as $permission) {
             $this->assertFalse($policy->view($user, $record), 'Пользователь без прав имеет доступ к view');
         }
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['view'] as $permission) {
             $user = $this->createTestUser();
@@ -156,6 +153,7 @@ trait PolicyRESTCan
     public function test_policy_user_can_update(){
         $this->checkUpdateExist();
         $this->checkUpdatePermissionNotEmpty();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -164,8 +162,6 @@ trait PolicyRESTCan
         foreach ($this->permissions['update'] as $permission) {
             $this->assertFalse($policy->update($user, $record), 'Пользователь без прав имеет доступ к update');
         }
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['update'] as $permission) {
             $user = $this->createTestUser();
@@ -179,6 +175,7 @@ trait PolicyRESTCan
     public function test_policy_user_can_delete(){
         $this->checkDeleteExist();
         $this->checkDeletePermissionNotEmpty();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -187,8 +184,6 @@ trait PolicyRESTCan
         foreach ($this->permissions['delete'] as $permission) {
             $this->assertFalse($policy->delete($user, $record), 'Пользователь без прав имеет доступ к delete');
         }
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['delete'] as $permission) {
             $user = $this->createTestUser();

@@ -27,6 +27,7 @@ trait PolicyRESTAccepts
     public function test_policy_accept_user__and_model_view()
     {
         $this->checkViewExist();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -38,6 +39,7 @@ trait PolicyRESTAccepts
     public function test_policy_accept_user__and_model_update()
     {
         $this->checkUpdateExist();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -49,6 +51,7 @@ trait PolicyRESTAccepts
     public function test_policy_accept_user__and_model_delete()
     {
         $this->checkDeleteExist();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -60,6 +63,7 @@ trait PolicyRESTAccepts
     public function test_policy_accept_user__and_model_restore()
     {
         $this->checkRestoreExist();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -71,6 +75,7 @@ trait PolicyRESTAccepts
     public function test_policy_accept_user__and_model_forceDelete()
     {
         $this->checkForceDeleteExist();
+        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();

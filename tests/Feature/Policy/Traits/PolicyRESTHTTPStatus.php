@@ -19,6 +19,8 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
+        $this->runProdSeeder();
+
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -36,6 +38,8 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
+
+        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $this->actingAs($user);
@@ -55,6 +59,8 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
+        $this->runProdSeeder();
+
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -72,6 +78,8 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
+
+        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $this->actingAs($user);
@@ -91,6 +99,8 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
+        $this->runProdSeeder();
+
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -109,6 +119,8 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
+        $this->runProdSeeder();
+
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -126,6 +138,8 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
+
+        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $this->actingAs($user);
@@ -286,7 +300,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->delete(route($this->route . '.update', [$this->getRouteParameterName() => $this->createTestRecord()]));
+            $response = $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $this->createTestRecord()]));
             $response->assertStatus(302);
         }
     }
