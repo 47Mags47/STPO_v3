@@ -15,24 +15,17 @@ export default {
         YearSelect
     },
     props: {
-        checkValid: {
-            type: Function,
-            default: (day) => true
+        isRange: {
+            type: Boolean,
+            default: false,
         },
         onClick: {
             type: Function,
             default: () => {}
         },
         selectedDate: {
-            type: String,
+            type: [String, Object],
             default: null,
-            validator(val){
-                return /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(val)
-            }
-        },
-        selectedDateBetween: {
-            type: Object,
-            defeault: {}
         },
         startInterval: {
             type: [Object, String],
@@ -42,10 +35,6 @@ export default {
             type: [Object, String],
             default: null
         },
-        test: {
-            type: Object,
-            default: {}
-        }
     },
     computed: {
         now: () => DateTime.now(),
@@ -78,28 +67,10 @@ export default {
             let endInterval = this.endInterval ?? this.now.endOf('year').plus({'year': 5})
             return Interval.fromDateTimes(startInterval, endInterval)
         },
-
-        initialDate(){
-            if(this.selectedDate !== null)
-                return DateTime.fromFormat(this.selectedDate, 'yyyy-MM-dd')
-
-            if(this.startInterval !== null)
-                if(typeof this.startInterval === 'string')
-                    return DateTime.fromFormat(this.startInterval, 'yyyy-MM-dd')
-                else if(typeof this.startInterval === 'object')
-                    return this.startInterval
-
-            return DateTime.now()
-        }
     },
     data() {
-        let inintialDate = DateTime.now()
-
-        if(this.selectedDate !== null)
-            inintialDate = DateTime.fromFormat(this.selectedDate, 'yyyy-MM-dd')
-
         return {
-            currentDate: inintialDate
+            currentDate: DateTime.now()
         }
     },
     methods: {
@@ -151,19 +122,39 @@ export default {
         },
 
         inRange(date) {
-            if (!this.selectedDateBetween?.from || !this.selectedDateBetween?.to)
-                return false
+            if (!this.isRange) return false
 
-            return date > DateTime.fromISO(this.selectedDateBetween?.from) &&
-                date < DateTime.fromISO(this.selectedDateBetween?.to)
+            const { from, to } = this.selectedDate ?? {}
+
+            if (!from || !to) return false
+
+            return date > DateTime.fromISO(from) &&
+                date < DateTime.fromISO(to)
         },
+
+        isDisabled(date) {
+            return !this.checkDateInMonth(date) || !this.checkSelectable(date)
+        }
     },
     watch: {
         selectedDate: {
-            handler(newv){
-                this.currentDate = DateTime.fromFormat(newv, 'yyyy-MM-dd')
-            }
-        }
+            handler(newValue) {
+                const date = this.isRange
+                    ? newValue?.from
+                    : newValue
+
+                if (!date) return
+
+                const parsedDate = DateTime.isDateTime(date)
+                    ? date
+                    : DateTime.fromISO(date)
+
+                if (parsedDate.isValid) {
+                    this.currentDate = parsedDate
+                }
+            },
+            immediate: true,
+        },
     },
 }
 </script>
@@ -209,27 +200,19 @@ export default {
                     <tr v-for="weekInterval in interval.splitBy({ week: 1 })" >
                         <td v-for="dayInterval in weekInterval.splitBy({ day: 1 })">
                             <div
-                                v-if="checkValid(dayInterval.start) && checkDateInMonth(dayInterval.start) && checkSelectable(dayInterval.start)"
                                 class="day-cell-container available"
                                 :class="{
-                                    'current-day'   : dayInterval.start.toMillis()   === now.startOf('day').toMillis(),
-                                    'selected-day'  : dayInterval.start.toMillis()   !== now.startOf('day').toMillis() &&
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.from ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.to   ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate,
-                                    'in-range'      : !(dayInterval.start.toMillis() == now.startOf('day').toMillis()) &&inRange(dayInterval.start),
+                                    'current-day'   : dayInterval.start.hasSame(now, 'day'),
+                                    'selected-day'  : !dayInterval.start.hasSame(now, 'day') &&
+                                        (dayInterval.start.toFormat('yyyy-MM-dd')    === selectedDate?.from    ||
+                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate?.to      ||
+                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate),
+                                    'disabled': isDisabled(dayInterval.start),
+                                    'in-range': !dayInterval.start.hasSame(now, 'day') &&
+                                        dayInterval.start.toFormat('yyyy-MM-dd') > selectedDate?.from &&
+                                        dayInterval.start.toFormat('yyyy-MM-dd') < selectedDate?.to
                                 }"
                                 @click="() => dayClickHandler(dayInterval.start)"
-                            >
-                                {{ dayInterval.start.day }}
-                            </div>
-                            <div
-                                v-else
-                                class="day-cell-container"
-                                :class="{
-                                    'disabled': !checkValid(dayInterval.start) || !checkSelectable(dayInterval.start),
-                                    'other-month': !checkDateInMonth(dayInterval.start)
-                                }"
                             >
                                 {{ dayInterval.start.day }}
                             </div>
@@ -283,6 +266,10 @@ export default {
         table
             width: 100%
             height: 100%
+            thead
+                tr
+                    th
+                        color: var(--text-color)
             td
                 width: 45px
                 height: 45px
