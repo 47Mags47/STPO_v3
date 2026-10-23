@@ -68,7 +68,6 @@ export default {
             let value = e.target.value
 
             this.selectedDateFrom = DateTime.fromFormat(value, 'yyyy-MM-dd')
-
             this.onFromUpdate(this.selectedDateFrom)
         },
         inputToBlurHandler(e) {

@@ -124,8 +124,9 @@ export default {
             position: absolute
             background: var(--background-color)
             top: 0
-            right: 1px
+            right: 0
 
+            border: 1px solid black
             width: 25px
             height: 100%
 
