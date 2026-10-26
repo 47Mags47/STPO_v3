@@ -20,13 +20,14 @@ class Filter
 
     public function search()
     {
+        if ($this->request->input('search') === null or blank($this->request))
+            return $this->builder;
+
         return $this->builder->where(function ($query) {
             if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'id'))
                 $query->orWhere('id', $this->request->input('search'));
-
             if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'code'))
                 $query->orWhereLike('code', $this->request->input('search'));
-
             if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'name'))
                 $query->orWhereLike('name', $this->request->input('search'));
         });

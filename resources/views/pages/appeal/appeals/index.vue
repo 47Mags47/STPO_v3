@@ -92,7 +92,9 @@ export default {
 
 <template>
     <ResourceTable
+        caption="Обращения"
         :hasCreateButton="true"
+        :hasSearchInput="true"
         :data="appealList"
         :meta="appeals.meta"
         :filters="[

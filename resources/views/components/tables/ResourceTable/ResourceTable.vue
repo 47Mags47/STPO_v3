@@ -8,12 +8,15 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
+import NumberInput from '../../inputs/NumberInput.vue';
+
 export default {
     components: {
         Table,
         TableRow,
         TableTh,
         TableTd,
+        NumberInput,
 
         RowLink:        defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
         FormItem:       defineAsyncComponent(() => import("../../FormItem.vue")),
@@ -41,6 +44,7 @@ export default {
             filterResetKey: 0,
             cachedFilters: {},
             filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
+            searchInputTimer: null,
         }
     },
 
@@ -61,6 +65,10 @@ export default {
         hasDeleteButton: {
             type: [Boolean, Function],
             default: false,
+        },
+        hasSearchInput: {
+            type: [Boolean, Function],
+            default: false
         },
 
         // Actions
@@ -290,6 +298,21 @@ export default {
         deleteButtonClickHandler(row) {
             this.onDeleteButtonClick(row);
         },
+        inputHandler(e) {
+            clearTimeout(this.searchInputTimer);
+
+             this.searchInputTimer = setTimeout(() => {
+                router.get(
+                    window.location.pathname,
+                    {
+                        search: e.target.value
+                    },
+                    {
+                        preserveState: true,
+                    }
+                );
+            }, 1000);
+        },
 
         // ClASSES
         getRowClasses(row) {
@@ -392,12 +415,53 @@ export default {
                 .listen(channel.event, channel.onEvent)
 
         })
+    },
+
+    beforeUnmount() {
+        clearTimeout(this.searchInputTimer);
     }
 }
 </script>
 
 <template>
     <Table ref="table" class="resource-table" :on-apply-filters="applyFilters">
+        <template #toolbar-left>
+            <slot name="toolbar-left"></slot>
+            <NumberInput
+                v-if="hasSearchInput"
+                class="string-input"
+                placeholder="Поиск (номер).."
+                name="search[appealId]"
+                :on-input="inputHandler"
+            />
+        </template>
+
+        <template #paginator>
+            <div class="table-paginate-container">
+                <Paginator v-if="meta.last_page > 1" v-bind="meta" :saveState="preserveStatePagination"/>
+            </div>
+        </template>
+
+        <template #toolbar-right>
+            <div class="table-search-container">
+
+            </div>
+            <div class="table-actions-container">
+                <slot name="actions" />
+                <div class="resource-table-actions-container">
+                    <template v-for="action in actions">
+                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </BlueButton>
+                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </RedButton>
+                    </template>
+                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
+                </div>
+            </div>
+        </template>
+
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div
@@ -429,29 +493,6 @@ export default {
                             <Ico type="chevron-down" class="text-white" />
                         </div>
                     </button>
-                </div>
-            </div>
-        </template>
-
-        <template #toolbar>
-            <div class="table-search-container">
-
-            </div>
-            <div class="table-paginate-container">
-                <Paginator v-if="meta.last_page > 1" v-bind="meta" :saveState="preserveStatePagination"/>
-            </div>
-            <div class="table-actions-container">
-                <slot name="actions" />
-                <div class="resource-table-actions-container">
-                    <template v-for="action in actions">
-                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </BlueButton>
-                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </RedButton>
-                    </template>
-                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
                 </div>
             </div>
         </template>
@@ -551,6 +592,8 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
+    :deep(.string-input)
+        width: 250px
     .container-table-filters
         width: 100%
         display: flex
@@ -576,7 +619,7 @@ export default {
             opacity: 0
             padding-bottom: 0
 
-            transition: opacity .3s ease, padding-bottom .3s ease
+            transition: opacity .3s ease, padding-bottom .3s ease, padding-top .3s ease
 
         .table-filters-collapse.opened
             :deep(.table-filters)
