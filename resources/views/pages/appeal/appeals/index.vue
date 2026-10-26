@@ -134,7 +134,7 @@ export default {
                 title: 'Создана',
                 type: 'datetime',
                 dataIndex: 'created',
-                width: '100px',
+                width: '135px',
             },
             {
                 title: 'Отправитель',
