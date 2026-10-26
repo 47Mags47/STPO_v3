@@ -118,7 +118,7 @@ export default {
             align-items: center
             gap: 32px
         .paginator
-            width: 320px
+            width: 385px
         .toolbar-left
             display: flex
             justify-content: flex-start

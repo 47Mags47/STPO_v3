@@ -1,10 +1,13 @@
 <script>
 import { default as Link } from './components/TablePaginatorLink.vue'
+import NumberInput from '../inputs/NumberInput.vue';
+import { router } from '@inertiajs/vue3';
 
 export default {
     inheritAttrs: false,
     components: {
-        Link
+        Link,
+        NumberInput
     },
 
     props: {
@@ -45,63 +48,95 @@ export default {
                 ].includes(val);
             },
         },
-        saveState: {
-            type: Boolean,
-            default: false
+    },
+
+    data() {
+        return {
+            searchInputTimer: null,
+            searchPageInput: ''
         }
+    },
+
+    methods:{
+        generateLink(page) {
+            const url = new URL(location.href);
+            url.searchParams.set('page', page);
+
+            return url.href;
+        },
+
+        inputHandler(e) {
+            clearTimeout(this.searchInputTimer)
+            this.searchPageInput = e.target.value
+
+            console.log(this.searchPageInput)
+            this.searchInputTimer = setTimeout(() => {
+                router.visit(this.generateLink(this.searchPageInput), { preserveState: false })
+            }, 1000);
+        },
     },
 
     computed:{
         getURL(){
             return new URL(location.href);
         },
-        isActiveLink(page){
-            return this.current_page == page
+
+        pageOptions() {
+            return Array.from(
+                { length: this.last_page },
+                (_, i) => ({
+                    label: String(i + 1),
+                    page: i + 1,
+                })
+            );
         },
 
         pages() {
-            let start = Math.max(1, this.current_page - 1);
-            let end = Math.min(this.last_page, start + 2);
+            const count = Math.min(5, this.last_page);
 
-            // Если дошли до конца, сдвигаем окно влево
-            start = Math.max(1, end - 2);
+            let start = this.current_page - Math.floor(count / 2);
 
-            const pages = [];
+            start = Math.max(1, start);
+            start = Math.min(start, this.last_page - count + 1);
 
-            for (let i = start; i <= end; i++) {
-                pages.push(i);
-            }
-
-            return pages;
-        }
-    },
-    methods:{
-        generateLink(page){
-            let url = this.getURL;
-
-            url.searchParams.set("page", page)
-
-            return url.href
+            return Array.from(
+                { length: count },
+                (_, i) => start + i
+            );
         },
-    }
+    },
 }
 </script>
 
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="chevron-left" :url="generateLink(1)" :saveState/>
-
+            <Link
+                icoType="chevron-left"
+                :url="generateLink(1)"
+            />
             <Link
                 v-for="page in pages"
                 :key="page"
                 :page="page"
                 :active="page === current_page"
                 :url="generateLink(page)"
-                :saveState
             />
 
-            <Link icoType="chevron-right" :url="generateLink(last_page)" :saveState/>
+            <!-- HACK проверка на макс. значения, чтоб нельзя было ввести 100500+ цифр -->
+            <NumberInput
+                class="string-input"
+                :style="{ width: `${String(searchPageInput).length + 3}ch` }"
+                placeholder="..."
+                name="search[page]"
+                :on-input="inputHandler"
+                :value="searchPageInput"
+            />
+
+            <Link
+                icoType="chevron-right"
+                :url="generateLink(last_page)"
+            />
         </ul>
     </div>
 </template>
@@ -110,6 +145,9 @@ export default {
 .paginate-container .paginate-list-container
     display: flex
     gap: 5px
+
+    :deep(.string-input)
+        min-width: 40px
 
     &.top-left
         justify-content: flex-start

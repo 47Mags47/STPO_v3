@@ -438,7 +438,7 @@ export default {
 
         <template #paginator>
             <div class="table-paginate-container">
-                <Paginator v-if="meta.last_page > 1" v-bind="meta" :saveState="preserveStatePagination"/>
+                <Paginator v-if="meta.last_page > 1" v-bind="meta" />
             </div>
         </template>
 
@@ -585,7 +585,7 @@ export default {
         </template>
 
         <template v-if="meta.last_page > 1" #pagination>
-            <Paginator v-bind="meta" :saveState="preserveStatePagination"/>
+            <Paginator v-bind="meta" />
         </template>
     </Table>
 </template>

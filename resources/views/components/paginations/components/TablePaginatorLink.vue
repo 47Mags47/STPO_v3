@@ -26,15 +26,11 @@ export default {
             type: Boolean,
             default: false,
         },
-        saveState: {
-            type: Boolean,
-            default: false
-        }
     },
 
     methods: {
         linkClickHandler(){
-            router.visit(this.url, { preserveState: this.saveState })
+            router.visit(this.url, { preserveState: true })
         }
     }
 }
