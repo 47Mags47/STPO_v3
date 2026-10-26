@@ -17,7 +17,7 @@ export default {
         AlertsPopup,
         Theme,
         BlueButton,
-        Leaf
+        Leaf,
     },
 
     data() {

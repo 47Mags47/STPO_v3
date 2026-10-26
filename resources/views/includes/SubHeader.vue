@@ -1,3 +1,4 @@
+```vue
 <script>
 import Appeal from "./Appeal.vue";
 
@@ -6,64 +7,50 @@ export default {
         Appeal,
     },
 
+    props: {
+        classWrapper: {
+            type: [String, Function, Object],
+            default: ''
+        }
+    },
+
     data() {
         return {
             scrollTop: 0,
-            scrollContainer: null,
         };
     },
 
-    mounted() {
-        this.scrollContainer = document.querySelector(".content");
-
-        if (!this.scrollContainer) {
-            console.warn("Scroll container .content not found");
-            return;
-        }
-
-        this.scrollTop = this.scrollContainer.scrollTop;
-
-        this.scrollContainer.addEventListener("scroll", this.handleScroll, {
-            passive: true,
-        });
-    },
-
-    beforeUnmount() {
-        this.scrollContainer?.removeEventListener("scroll", this.handleScroll);
-    },
 
     methods: {
-        handleScroll() {
-            this.scrollTop = Math.min(
-                Math.max(this.scrollContainer.scrollTop, 0),
-                100
-            );
-        },
+
     },
 
     computed: {
-        subHeaderHeight() {
-            return 35 * (1 - this.scrollTop / 100);
-        },
+        classValue() {
+            if(typeof this.classWrapper === 'string')
+                return this.classWrapper
+
+            if(typeof this.classWrapper === 'object')
+                return this.classWrapper
+
+            if(typeof this.classWrapper === 'function') {
+                const funcClassResult = this.classWrapper()
+                if (typeof funcClassResult === 'string')
+                    return funcClassResult
+
+                console.warn('Значение функции должно быть типа string')
+            }
+        }
     },
 };
 </script>
 
 <template>
     <div
-        class="sub-header"
-        :style="{
-            transform: `translateY(-${35 - subHeaderHeight}px)`,
-            opacity: subHeaderHeight / 35,
-        }"
+        class="sub-header transition-all"
+        :class="classValue"
     >
-        <div
-            class="sub-header-content"
-            :style="{
-                transform: `translateY(-${35 - subHeaderHeight}px)`,
-                opacity: subHeaderHeight / 35,
-            }"
-        >
+        <div class="sub-header-content">
             <Appeal />
         </div>
     </div>
@@ -71,25 +58,22 @@ export default {
 
 <style lang="sass" scoped>
 .sub-header
-    position: absolute
-    flex-shrink: 0
+    top: 60px
+    left: 0
 
     width: 100%
-    height: 35px
-    padding: 0 20px
+    height: 40px
+    overflow: hidden
+    z-index: 10
 
+.sub-header-content
+    width: 100%
+    height: 100%
+
+    padding: 0 15px
     display: flex
     justify-content: flex-end
 
-    top: 60px
-
     background: var(--sub-header-background-color)
-
-    overflow: hidden
-
-.sub-header-content
-    position: relative
-    width: 100%
-    height: 35px
-    min-height: 35px
 </style>
+
