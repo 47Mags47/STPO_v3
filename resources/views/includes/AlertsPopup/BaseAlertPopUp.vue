@@ -9,24 +9,10 @@ export default {
         type: {
             type:    String,
             default: 'info'
-        }
-    },
-
-    data() {
-        return {
-            isClose:  false,
-            isHidden: false,
-        }
-    },
-
-    methods: {
-        closeClickhandler() {
-            this.isClose = true
         },
-        onAnimationEnd() {
-            if (this.isClose) {
-                this.isHidden = true
-            }
+        onClose: {
+            type: Function,
+            default: () => {},
         },
     },
 
@@ -64,25 +50,16 @@ export default {
             }[this.type]
         }
     },
-
-    mounted() {
-        setTimeout(() => {
-            this.isClose = true
-        }, 3000)
-    }
 }
 </script>
 
 <template>
     <div
-        v-show="!isHidden"
         class="flex rounded-lg w-fit max-w-[800px] min-w-[200px] h-[64px] max-h-[100px] overflow-hidden border-l-6 py-2!"
         :class="[
-            isClose ? 'close' : 'open',
             colors.background,
             colors.border
         ]"
-        @animationend="onAnimationEnd"
     >
         <div class="h-full w-[50px] z-10">
             <slot name="header" />
@@ -100,7 +77,7 @@ export default {
             <button
                 class="border-1 rounded-md w-full h-[32px] cursor-pointer hover:bg-gray-100"
                 :class="colors.border"
-                @click="closeClickhandler"
+                @click="onClose"
             >
                 <span :class="colors.text">закрыть</span>
             </button>
