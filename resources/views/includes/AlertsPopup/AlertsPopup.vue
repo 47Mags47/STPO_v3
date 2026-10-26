@@ -14,12 +14,15 @@ export default {
         return {
             alertsList: [],
             nextId: 0,
-            alertTimers: [],
+            alertTimers: {},
         };
     },
 
     methods: {
         closeAlert(id) {
+            clearTimeout(this.alertTimers[id]);
+            delete this.alertTimers[id];
+
             this.alertsList = this.alertsList.filter(
                 alert => alert.id !== id
             );
@@ -51,13 +54,9 @@ export default {
 
                         this.alertsList.push({ id, type, message });
 
-                        const timer = setTimeout(() => {
-                            this.alertsList = this.alertsList.filter(
-                                alert => alert.id !== id
-                            );
+                        this.alertTimers[id] = setTimeout(() => {
+                            this.closeAlert(id);
                         }, 3000);
-
-                        this.alertTimers.push(timer);
                     }
                 }
             },
@@ -65,7 +64,7 @@ export default {
     },
 
     beforeUnmount() {
-        this.alertTimers.forEach(clearTimeout);
+        Object.values(this.alertTimers).forEach(clearTimeout);
     },
 };
 </script>
