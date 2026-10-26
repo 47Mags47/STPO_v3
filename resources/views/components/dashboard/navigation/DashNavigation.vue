@@ -73,7 +73,8 @@ export default {
                 </span>
 
                 <div class="h-full w-full flex justify-end items-center select-none">
-                    <button class="group cursor-pointer" @click="logout">
+                    <button class="flex group cursor-pointer" @click="logout">
+                        <Ico type="logout" class="text-red-400!" />
                         <span class="text-red-400! text-lg! rounded px-2! group-hover:text-red-300! group-active:text-red-600!"> выход </span>
                     </button>
                 </div>

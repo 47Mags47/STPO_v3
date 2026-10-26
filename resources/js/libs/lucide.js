@@ -73,5 +73,7 @@ export {
     Search                      as 'search',
     SearchCheck                 as 'search-check',
 
+    LogOut                      as 'logout',
+
     CircleQuestionMark
 } from '@lucide/vue';
