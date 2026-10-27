@@ -34,10 +34,10 @@ export default {
 
         alertComponents() {
             return {
-                info: this.$options.components.AlertInfoPopUp,
-                success: this.$options.components.AlertSuccessPopUp,
-                error: this.$options.components.AlertErrorPopUp,
-                warning: this.$options.components.AlertWarningPopUp,
+                info:       this.$options.components.AlertInfoPopUp,
+                success:    this.$options.components.AlertSuccessPopUp,
+                error:      this.$options.components.AlertErrorPopUp,
+                warning:    this.$options.components.AlertWarningPopUp,
             };
         },
     },
@@ -48,7 +48,7 @@ export default {
             immediate: true,
 
             handler(flash) {
-                for (const type of ['info', 'success', 'error', 'warning']) {
+                for (const type of Object.keys(this.alertComponents)) {
                     for (const message of flash?.[type] ?? []) {
                         const id = ++this.nextId;
 

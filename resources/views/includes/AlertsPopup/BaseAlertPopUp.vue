@@ -1,6 +1,11 @@
 <script>
+import { Ico } from '@components'
 
 export default {
+    components: {
+        Ico
+    },
+
     props: {
         message: {
             type:    String,
@@ -28,24 +33,24 @@ export default {
         colors() {
             return {
                 success: {
-                    border: 'border-emerald-600',
-                    text: 'text-emerald-600!',
-                    background: 'bg-emerald-200'
+                    border: 'border-(--flash-alert-success-text-color)',
+                    text: 'text-(--flash-alert-success-text-color)!',
+                    background: 'bg-(--flash-alert-success-background-content-color)/90'
                 },
                 error: {
-                    border: 'border-red-600',
-                    text: 'text-red-600!',
-                    background: 'bg-red-200'
+                    border: 'border-(--flash-alert-error-text-color)',
+                    text: 'text-(--flash-alert-error-text-color)!',
+                    background: 'bg-(--flash-alert-error-background-content-color)/90'
                 },
                 info: {
-                    border: 'border-sky-500',
-                    text: 'text-sky-500!',
-                    background: 'bg-sky-200'
+                    border: 'border-(--flash-alert-info-text-color)',
+                    text: 'text-(--flash-alert-info-text-color)!',
+                    background: 'bg-(--flash-alert-info-background-content-color)/90'
                 },
                 warning: {
-                    border: 'border-yellow-600',
-                    text: 'text-yellow-600!',
-                    background: 'bg-yellow-200'
+                    border: 'border-(--flash-alert-warning-text-color)',
+                    text: 'text-(--flash-alert-warning-text-color)!',
+                    background: 'bg-(--flash-alert-warning-background-content-color)/90'
                 },
             }[this.type]
         }
@@ -69,41 +74,21 @@ export default {
             <div class="size-full flex flex-col justify-between">
                 <span class="font-bold! text-xl!" :class="colors.text"> {{ title }} </span>
 
-                <span class="text-black!"> {{ message }} </span>
+                <span class=""> {{ message }} </span>
             </div>
         </div>
 
-        <div class="flex items-end h-full w-[80px] px-2!">
+        <div class="flex items-center justify-end h-full w-[80px] px-4!">
             <button
-                class="border-1 rounded-md w-full h-[32px] cursor-pointer hover:bg-gray-100"
+                class="border-1 rounded-md size-[22px] cursor-pointer hover:bg-gray-100"
                 :class="colors.border"
                 @click="onClose"
             >
-                <span :class="colors.text">закрыть</span>
+                 <Ico type="x" :class="colors.text"/>
             </button>
         </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
-.open
-    animation: fadeIn .5s ease forwards
-.close
-    animation: fadeOut .5s ease forwards
-
-@keyframes fadeIn
-    from
-        opacity: 0
-        transform: translateX(10px)
-    to
-        opacity: 1
-        transform: translateX(0)
-
-@keyframes fadeOut
-    from
-        opacity: 1
-        transform: translateX(0)
-    to
-        opacity: 0
-        transform: translateX(10px)
 </style>
