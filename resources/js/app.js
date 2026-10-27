@@ -1,5 +1,6 @@
 import './bootstrap'
 import './helpers';
+import './reset';
 import { initTheme } from './theme';
 import { initSeason } from './season.js';
 import { createApp, h } from "vue";

@@ -9,24 +9,12 @@ export default {
 
     methods: {
         clickHandler() {
-            const filtersStorageKey = `resource-table-filters:${new URL(route('appeal.appeals.index')).pathname}`;
-
-            let urlParams = {};
-
-            try {
-                const savedFilters = localStorage.getItem(filtersStorageKey);
-
-                if (savedFilters) {
-                    urlParams = JSON.parse(savedFilters).urlParams ?? {};
+            router.get(route('appeal.appeals.index'),
+                {},
+                {
+                    hasFilters: true
                 }
-            } catch (error) {
-                console.error('Не удалось восстановить параметры URL:', error);
-            }
-
-            router.get(
-                route('appeal.appeals.index'),
-                urlParams
-            );
+            )
         }
     }
 }
