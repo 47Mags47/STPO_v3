@@ -29,7 +29,7 @@ export default {
             :divisions="current_user.divisions"
             :clickHandler="clickHandler"
         />
-        <button class="absolute top-[10px] right-10 flex group cursor-pointer" @click="logoutHandler">
+        <button class="absolute top-[10px] right-10 flex group cursor-pointer h-[32px] p-1.5! items-center" @click="logoutHandler">
             <Ico type="logout" class="text-red-400!" />
             <span class="text-red-400! text-lg! rounded px-2! group-hover:text-red-300! group-active:text-red-600!"> выход </span>
         </button>
