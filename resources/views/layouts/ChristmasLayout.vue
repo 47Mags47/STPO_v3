@@ -1,29 +1,44 @@
 <script>
 export default {
-    components: {
-    },
-
     data() {
         return {
             lights: Array.from({ length: 24 }, (_, i) => i + 1),
+            snowflakes: Array.from({ length: 35 }, (_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}%`,
+                delay: `${Math.random() * 10}s`,
+                duration: `${5 + Math.random() * 8}s`,
+                size: `${4 + Math.random() * 7}px`,
+                drift: `${-30 + Math.random() * 60}px`,
+                opacity: 0.4 + Math.random() * 0.6,
+            })),
         };
     },
 
     computed: {
-        isChristmasSeason() {
+        isChristmas() {
             const now = new Date();
             const month = now.getMonth();
             const day = now.getDate();
 
             return month >= 11 || (month === 0 && day <= 10);
         },
-    }
+
+        getYear() {
+            const now = new Date();
+            const month = now.getMonth();
+
+            return this.isChristmas
+                ? now.getFullYear() + (month >= 11 ? 1 : 0)
+                : now.getFullYear();
+        },
+    },
 };
 </script>
 
 <template>
     <div class="christmas-layout w-full">
-         <div class="christmas-lights" v-if="isChristmasSeason">
+         <div v-if="isChristmas" class="christmas-lights">
             <span
                 v-for="i in lights"
                 :key="i"
@@ -32,7 +47,23 @@ export default {
             />
         </div>
 
-        <slot />
+        <div v-if="isChristmas" class="snowflakes">
+            <span
+                v-for="snow in snowflakes"
+                :key="snow.id"
+                class="snowflake"
+                :style="{
+                    '--left': snow.left,
+                    '--delay': snow.delay,
+                    '--duration': snow.duration,
+                    '--size': snow.size,
+                    '--drift': snow.drift,
+                    '--opacity': snow.opacity,
+                }"
+            >❄</span>
+        </div>
+
+        <slot :isChristmas :year="getYear" />
     </div>
 </template>
 
@@ -51,7 +82,7 @@ export default {
         justify-content: space-around
         align-items: flex-start
         pointer-events: none
-        z-index: 1001
+        z-index: 1002
 
         &::before
             content: ''
@@ -87,6 +118,24 @@ export default {
         &:nth-child(4n)
             --light-color: #82b1ff
 
+    .snowflakes
+        position: absolute
+        inset: 0
+        overflow: hidden
+        pointer-events: none
+        z-index: 1001
+
+    .snowflake
+        position: absolute
+        top: -15px
+        left: var(--left)
+        color: white
+        font-size: var(--size)
+        opacity: var(--opacity)
+        line-height: 1
+        user-select: none
+        animation: snowfall var(--duration) var(--delay) linear infinite
+
 @keyframes light-glow
     from
         opacity: .45
@@ -96,4 +145,14 @@ export default {
         opacity: 1
         filter: brightness(1.3)
         transform: scale(1.1)
+
+@keyframes snowfall
+    0%
+        transform: translate3d(0, -15px, 0) rotate(0deg)
+
+    50%
+        transform: translate3d(var(--drift), 30px, 0) rotate(180deg)
+
+    100%
+        transform: translate3d(0, 80px, 0) rotate(360deg)
 </style>
