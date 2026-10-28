@@ -230,7 +230,7 @@ export default {
         .search-page-wrapper
             @include input()
             padding: 4px 8px
-            padding-right: 2px
+            padding-right: 6px
             width: fit-content
             max-width: 120px
             :deep(.string-input)
