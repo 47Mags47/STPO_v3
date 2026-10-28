@@ -24,7 +24,7 @@ export default {
 
     computed: {
         subHeaderClass() {
-            return this.scrollTop > 150 ? 'max-h-0' : 'max-h-[40px]'
+            return this.scrollTop > 300 ? 'max-h-0' : 'max-h-[40px]'
         }
     }
 };
