@@ -7,10 +7,18 @@ use App\Http\Requests\SFR\FSD\ASPPaymentCategoryStoreRequest;
 use App\Http\Requests\SFR\FSD\ASPPaymentCategoryUpdateRequest;
 use App\Models\SFR\FSD\ASPPaymentCategory;
 use App\Models\SFR\FSD\SFRPaymentCategory;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class ASPCategoryController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(ASPPaymentCategory::class, 'asp_payment_category');
+    }
+
     public function index(){
         return Inertia::render('sfr/fsd/asp-payment-categories/index', [
             'categories' => fn() => ASPPaymentCategory::getResource()
