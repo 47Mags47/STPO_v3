@@ -39,7 +39,7 @@ trait ControllerRESTMethodReturnPage
         $this->checkShowMethodExist();
         $this->disableAuthMiddleware();
 
-        $response = $this->get(route($this->route . '.show', [$this->getRouteParameterName() => $this->createTestRecord()]));
+        $response = $this->get(route($this->route . '.show', $this->getRouteParams()));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page
@@ -52,7 +52,7 @@ trait ControllerRESTMethodReturnPage
         $this->checkEditMethodExist();
         $this->disableAuthMiddleware();
 
-        $response = $this->get(route($this->route . '.edit', [$this->getRouteParameterName() => $this->createTestRecord()]));
+        $response = $this->get(route($this->route . '.edit', $this->getRouteParams()));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page

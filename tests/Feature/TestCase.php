@@ -7,10 +7,28 @@ use App\Http\Middleware\CurrentDivisionMiddleware;
 use App\Models\Base\User;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
+    /**
+     * Возвращает имя route параметра по модели
+     *
+     * @return string
+     */
+    protected function getRouteParameterName(): string
+    {
+        return snakeCase(class_basename($this->modelClass));
+    }
+
+    public function getRouteParams(?Model $record = null): array
+    {
+        return [
+            $this->getRouteParameterName() => $record ?? $this->createTestRecord(),
+        ];
+    }
+
     protected function createTestUser(): User
     {
         return User::factory()->create();
@@ -27,6 +45,11 @@ abstract class TestCase extends BaseTestCase
         return $this->modelClass::factory()->create();
     }
 
+    public function modifyTestData(array $data): array
+    {
+        return $data;
+    }
+
     protected function createTestData(): array
     {
         if(!method_exists($this->modelClass, 'factory'))
@@ -35,7 +58,7 @@ abstract class TestCase extends BaseTestCase
         if($this->modelClass::getGuessNames('factory'))
             $this->markTestSkipped('Не найдена фабрика для ' . $this->modelClass);
 
-        return $this->modelClass::factory()->make()->toArray();
+        return $this->modifyTestData($this->modelClass::factory()->make()->toArray());
     }
 
     protected function disableMiddleware(array $middlewares){

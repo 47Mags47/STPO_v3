@@ -24,7 +24,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->get(route($this->route . '.index'));
+        $response = $this->get(route($this->route . '.index', $this->getRouteParams()));
         $response->assertStatus(403);
     }
 
@@ -33,6 +33,7 @@ trait PolicyRESTHTTPStatus
         $this->checkCreateExist();
         $this->checkCreatePermissionNotEmpty();
         $this->checkRouteNotNull();
+        $this->checkCreateRouteExist();
 
         $this->disableMiddleware([
             Authenticate::class,
@@ -44,7 +45,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->get(route($this->route . '.create'));
+        $response = $this->get(route($this->route . '.create', $this->getRouteParams()));
         $response->assertStatus(403);
     }
 
@@ -64,7 +65,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->post(route($this->route . '.store'), $this->createTestData());
+        $response = $this->post(route($this->route . '.store', $this->getRouteParams()), $this->createTestData());
         $response->assertStatus(403);
     }
 
@@ -84,7 +85,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->get(route($this->route . '.show', [$this->getRouteParameterName() => $this->createTestRecord()]));
+        $response = $this->get(route($this->route . '.show', $this->getRouteParams()));
         $response->assertStatus(403);
     }
 
@@ -93,6 +94,7 @@ trait PolicyRESTHTTPStatus
         $this->checkUpdateExist();
         $this->checkUpdatePermissionNotEmpty();
         $this->checkRouteNotNull();
+        $this->checkEditRouteExist();
 
         $this->disableMiddleware([
             Authenticate::class,
@@ -104,7 +106,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->get(route($this->route . '.edit', [$this->getRouteParameterName() => $this->createTestRecord()]));
+        $response = $this->get(route($this->route . '.edit', $this->getRouteParams()));
         $response->assertStatus(403);
     }
 
@@ -124,7 +126,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $this->createTestRecord()]), $this->createTestData());
+        $response = $this->put(route($this->route . '.update', $this->getRouteParams()), $this->createTestData());
         $response->assertStatus(403);
     }
 
@@ -144,7 +146,7 @@ trait PolicyRESTHTTPStatus
         $user = $this->createTestUser();
         $this->actingAs($user);
 
-        $response = $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $this->createTestRecord()]));
+        $response = $this->delete(route($this->route . '.destroy', $this->getRouteParams()));
         $response->assertStatus(403);
     }
 
@@ -169,7 +171,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->get(route($this->route . '.index'));
+            $response = $this->get(route($this->route . '.index', $this->getRouteParams()));
             $response->assertStatus(200);
         }
     }
@@ -179,6 +181,7 @@ trait PolicyRESTHTTPStatus
         $this->checkCreateExist();
         $this->checkCreatePermissionNotEmpty();
         $this->checkRouteNotNull();
+        $this->checkCreateRouteExist();
 
         $this->disableMiddleware([
             Authenticate::class,
@@ -195,7 +198,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->get(route($this->route . '.create'));
+            $response = $this->get(route($this->route . '.create', $this->getRouteParams()));
             $response->assertStatus(200);
         }
     }
@@ -220,8 +223,9 @@ trait PolicyRESTHTTPStatus
             $user->load('permissions');
 
             $this->actingAs($user);
+            $data = $this->createTestData();
 
-            $response = $this->post(route($this->route . '.store'), $this->createTestData());
+            $response = $this->post(route($this->route . '.store', $this->getRouteParams()), $data);
 
             $response->assertStatus(302);
         }
@@ -232,6 +236,7 @@ trait PolicyRESTHTTPStatus
         $this->checkUpdateExist();
         $this->checkUpdatePermissionNotEmpty();
         $this->checkRouteNotNull();
+        $this->checkEditRouteExist();
 
         $this->disableMiddleware([
             Authenticate::class,
@@ -248,7 +253,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->get(route($this->route . '.edit', [$this->getRouteParameterName() => $this->createTestRecord()]));
+            $response = $this->get(route($this->route . '.edit', $this->getRouteParams()));
             $response->assertStatus(200);
         }
     }
@@ -274,7 +279,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $this->createTestRecord()]), $this->createTestData());
+            $response = $this->put(route($this->route . '.update', $this->getRouteParams()), $this->createTestData());
             $response->assertStatus(302);
         }
     }
@@ -300,7 +305,7 @@ trait PolicyRESTHTTPStatus
 
             $this->actingAs($user);
 
-            $response = $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $this->createTestRecord()]));
+            $response = $this->delete(route($this->route . '.destroy', $this->getRouteParams()));
             $response->assertStatus(302);
         }
     }

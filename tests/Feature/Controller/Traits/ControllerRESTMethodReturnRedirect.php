@@ -23,9 +23,8 @@ trait ControllerRESTMethodReturnRedirect
         $this->checkStoreMethodExist();
         $this->disableAuthMiddleware();
 
-        $record = $this->createTestRecord();
         $data = $this->createTestData();
-        $response = $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $record]), $data);
+        $response = $this->put(route($this->route . '.update', $this->getRouteParams()), $data);
 
         $response->assertStatus(302);
         $response->assertredirect(route($this->route . '.index'));
@@ -37,8 +36,7 @@ trait ControllerRESTMethodReturnRedirect
         $this->checkStoreMethodExist();
         $this->disableAuthMiddleware();
 
-        $record = $this->createTestRecord();
-        $response = $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $record]));
+        $response = $this->delete(route($this->route . '.destroy', $this->getRouteParams()));
         $response->assertStatus(302);
         $response->assertRedirectBack();
         $response->assertSessionHas('success');

@@ -24,7 +24,7 @@ trait ControllerRESTMethodsRecordActions
 
         $record = $this->createTestRecord();
         $response = $this
-            ->get(route($this->route . '.show', [$this->getRouteParameterName() => $record]));
+            ->get(route($this->route . '.show', $this->getRouteParams($record)));
 
         $response->assertInertia(
             fn(Assert $page) => $page->has(
@@ -45,10 +45,9 @@ trait ControllerRESTMethodsRecordActions
         $this->checkUpdateMethodExist();
         $this->disableAuthMiddleware();
 
-        $record = $this->createTestRecord();
         $data = $this->createTestData();
 
-        $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $record]), $data);
+        $this->put(route($this->route . '.update', $this->getRouteParams()), $data);
 
         $this->assertDatabaseHas($this->modelClass::getTableName(), $data);
     }
@@ -58,7 +57,7 @@ trait ControllerRESTMethodsRecordActions
         $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
-        $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $record]));
+        $this->delete(route($this->route . '.destroy', $this->getRouteParams($record)));
 
         $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->toArray());
     }
