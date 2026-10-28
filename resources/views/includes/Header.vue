@@ -8,6 +8,7 @@ import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
 import Leaf from './Leaf.vue';
 import { toggleSeason, getCurrentSeason } from '@/season';
+import ChristmasLayout from '../layouts/ChristmasLayout.vue';
 
 export default {
     components: {
@@ -18,6 +19,7 @@ export default {
         Theme,
         BlueButton,
         Leaf,
+        ChristmasLayout,
     },
 
     data() {
@@ -43,31 +45,33 @@ export default {
 
     computed: {
         current_user: () => usePage().props.current_user?.data,
-        pr: () => usePage().props
+        pr: () => usePage().props,
     },
 };
 </script>
 
 <template>
-    <div class="header-container">
-        <div class="logo-container flex items-center gap-[10px]">
-            <h3 class="text-white!" @click="gameOn">СТПО</h3>
-            <Theme/>
+    <ChristmasLayout>
+        <div class="header-container">
+            <div class="logo-container flex items-center gap-[10px]">
+                <h3 class="text-white!" @click="gameOn">СТПО</h3>
+                <Theme/>
+            </div>
+
+            <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
+                <div class="user-logo">
+                    <Ico type="user" />
+                </div>
+                <div class="user-name">
+                    <span>{{ current_user?.full_name }}</span>
+                </div>
+            </BlueButton>
+
+            <Notifications v-if="current_user"/>
+            <Menu />
+            <AlertsPopup />
         </div>
-
-        <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
-            <div class="user-logo">
-                <Ico type="user" />
-            </div>
-            <div class="user-name">
-                <span>{{ current_user?.full_name }}</span>
-            </div>
-        </BlueButton>
-
-        <Notifications v-if="current_user"/>
-        <Menu />
-        <AlertsPopup />
-    </div>
+    </ChristmasLayout>
 </template>
 
 <style lang="sass" scoped>
