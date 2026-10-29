@@ -20,7 +20,7 @@ export default {
         :hasEditButton="true"
         :data="banks.data"
         :meta="banks.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Код',
                 dataIndex: 'code',

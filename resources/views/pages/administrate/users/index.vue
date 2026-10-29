@@ -20,7 +20,7 @@ export default {
 
         :data="users.data"
         :meta="divisions.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Имя',
                 dataIndex: 'first_name',

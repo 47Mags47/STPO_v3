@@ -18,7 +18,7 @@ export default {
         caption="Ошибки файла"
         :data="errors.data"
         :meta="errors.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Описание',
                 dataIndex: 'error',

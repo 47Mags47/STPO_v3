@@ -70,7 +70,7 @@ export default {
         :hasCreateButton="true"
         :data="paymentEvents.data"
         :meta="paymentEvents.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Дата',
                 dataIndex: 'in_date',

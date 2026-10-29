@@ -22,7 +22,7 @@ export default {
 
         :data="them_groups.data"
         :meta="divisions.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Код',
                 dataIndex: 'code',

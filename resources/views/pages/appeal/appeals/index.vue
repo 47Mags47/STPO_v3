@@ -124,7 +124,7 @@ export default {
                 options: statuses,
             },
         ]"
-        :collumns="[
+        :columns="[
             {
                 title: 'ID',
                 dataIndex: 'id',

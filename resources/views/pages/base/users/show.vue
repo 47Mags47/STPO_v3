@@ -68,7 +68,7 @@ export default {
             <ResourceTable
             caption="Подразделения"
             :data="user.divisions"
-            :collumns="[
+            :columns="[
                 {
                     title: 'Наименование',
                     dataIndex: 'name',

@@ -26,7 +26,7 @@ export default {
                 'onClick': (file) => router.visit(route('sfr.fsd.result-files.index', { 'SFRFile': file.id }))
             }
         ]"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'file.name',

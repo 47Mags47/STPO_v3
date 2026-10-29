@@ -21,7 +21,7 @@ export default {
         caption="Выплаты (Получатели)"
         :data="recipients.data"
         :meta="recipients.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Фамилия',
                 dataIndex: 'last_name',

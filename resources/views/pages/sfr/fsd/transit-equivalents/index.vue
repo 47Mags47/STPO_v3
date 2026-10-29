@@ -18,7 +18,7 @@ export default {
         :hasCreateButton="true"
         :data="equivalents.data"
         :meta="equivalents.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Категория',
                 dataIndex: 'category.name',

@@ -22,7 +22,7 @@ export default {
 
         :data="templates.data"
         :meta="divisions.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'name',

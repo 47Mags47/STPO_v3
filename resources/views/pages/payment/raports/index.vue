@@ -42,7 +42,7 @@ export default {
                 'onClick': (file) => downloadButtonClickHandler(file)
             }
         ]"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'file.name',

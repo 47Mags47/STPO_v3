@@ -17,7 +17,7 @@ export default {
         caption="Федеральная социальная доплата (получатели выплат)"
         :data="recipients.data"
         :meta="recipients.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'СНИЛС',
                 dataIndex: 'SNILS',
