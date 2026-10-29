@@ -10,7 +10,11 @@ export default {
         onApplyFilters: {
             type: Function,
             default: () => {}
-        }
+        },
+        id: {
+            type: String,
+            default: null
+        },
     },
 
     components: {
@@ -46,11 +50,12 @@ export default {
                 </Form>
             </div>
 
-            <div v-if="['toolbar-left', 'paginator', 'toolbar-right'].some(slot => $slots[slot])" class="flex w-full">
+            <div v-if="['toolbar-left', 'paginator', 'toolbar-right'].some(slot => $slots[slot])" class="flex justify-center w-full">
                 <div class="toolbar-left flex-1" v-if="'toolbar-left' in $slots">
                     <Form
                         ref="toolbarLeftRef"
                         method="GET"
+                        :id
                         :action="currentURL"
                         :options="{
                             preserveState: true,
@@ -64,7 +69,7 @@ export default {
                     <slot name="paginator"></slot>
                 </div>
 
-                <div class="toolbar-right flex-1" v-if="'toolbar-right' in $slots">
+                <div class="toolbar-right flex-1 " v-if="'toolbar-right' in $slots">
                     <slot name="toolbar-right"></slot>
                 </div>
             </div>
@@ -119,11 +124,15 @@ export default {
             gap: 32px
         .paginator
             width: 385px
-        .toolbar-left
+        .toolbar-left form
             display: flex
             justify-content: flex-start
             align-items: center
             gap: 1rem
+            border: 0
+            padding: 0
+            margin: 0
+            width: fit-content
         .toolbar-right
             display: flex
             justify-content: flex-end

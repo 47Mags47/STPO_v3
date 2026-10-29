@@ -8,7 +8,7 @@ export default {
         ResourceTable
     },
     props: {
-        collumns: {
+        columns: {
             type: Array,
             default: () => []
         },
@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         files: () => usePage().props.files,
-        newCollumns() {
+        newColumns() {
             return [
                 {
                     title: '',
@@ -47,7 +47,7 @@ export default {
                         }
                     },
                 }
-            ].concat(this.collumns)
+            ].concat(this.columns)
         },
         newRowLinks(){
             let links = this.rowLinks
@@ -109,7 +109,7 @@ export default {
     <ResourceTable
         :data="files.data"
         :meta="files.meta"
-        :collumns="newCollumns"
+        :columns="newColumns"
         :rowLinks="newRowLinks"
     />
 </template>

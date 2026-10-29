@@ -5,6 +5,14 @@ import { router } from '@inertiajs/vue3';
 
 export default {
     inheritAttrs: false,
+
+    inject: {
+        onPaginate: {
+            type: Function,
+            default: null
+        }
+    },
+
     components: {
         Link,
         NumberInput
@@ -65,6 +73,7 @@ export default {
 
     methods:{
         generateLink(page){
+
             let url = this.getURL;
 
             url.searchParams.set("page", page)
@@ -78,18 +87,22 @@ export default {
 
             clearTimeout(this.searchInputTimer);
 
-            this.searchInputTimer = setTimeout(() => {
-                if (page.trim() === '') return;
+            this.searchInputTimer = setTimeout(
+                this.onPaginate !== null
+                ? () => this.onPaginate(page)
+                : () => {
+                    if (page.trim() === '') return;
 
-                router.get(
-                    this.generateLink(Number(page)),
-                    {},
-                    {
-                        preserveState: true,
-                        preserveScroll: true,
-                    }
-                );
-            }, 1000);
+                    router.get(
+                        this.generateLink(Number(page)),
+                        {},
+                        {
+                            preserveState: true,
+                            preserveScroll: true,
+                        }
+                    );
+                }, 1000
+            );
         },
     },
 
@@ -107,11 +120,11 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link v-if="current_page > 3" icoType="chevron-left" :url="generateLink(1)"                                 />
-            <Link v-if="current_page > 2" :page="current_page - 2" :url="generateLink(current_page - 2)"                />
-            <Link v-if="current_page > 1" :page="current_page - 1" :url="generateLink(current_page - 1)"                />
+            <Link v-if="current_page > 3" :page="1" icoType="chevron-left"   :url="generateLink(1)"                />
+            <Link v-if="current_page > 2" :page="current_page - 2"           :url="generateLink(current_page - 2)" />
+            <Link v-if="current_page > 1" :page="current_page - 1"           :url="generateLink(current_page - 1)" />
 
-             <NumberInput
+            <NumberInput
                 class="string-input"
                 :style="{
                     width: `${String(inputText).length + 3}ch`
@@ -122,9 +135,9 @@ export default {
                 :on-input="inputHandler"
             />
 
-            <Link v-if="current_page < last_page" :page="current_page + 1" :url="generateLink(current_page + 1)"        />
-            <Link v-if="current_page < last_page - 1" :page="current_page + 2" :url="generateLink(current_page + 2)"    />
-            <Link v-if="current_page < last_page - 2" icoType="chevron-right" :url="generateLink(last_page)"            />
+            <Link v-if="current_page < last_page"     :page="current_page + 1" :url="generateLink(current_page + 1)" />
+            <Link v-if="current_page < last_page - 1" :page="current_page + 2" :url="generateLink(current_page + 2)" />
+            <Link v-if="current_page < last_page - 2" :page="last_page" icoType="chevron-right"  :url="generateLink(last_page)"        />
         </ul>
     </div>
 </template>

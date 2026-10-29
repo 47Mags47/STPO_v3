@@ -13,7 +13,7 @@ class AppealSeeder extends Seeder
      */
     public function run(): void
     {
-        $appeals = Appeal::factory(10)->create();
+        $appeals = Appeal::factory(125)->create();
         $appeals->each(fn($appeal) => ChatMessage::factory(10)->create([
             'chat_id' => $appeal->chat_id,
             'created_at' => now()->subDay(rand(1,15)),

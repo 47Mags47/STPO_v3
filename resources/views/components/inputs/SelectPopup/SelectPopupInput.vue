@@ -4,6 +4,7 @@ import Ico from '../../Ico.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import SelectPopup from './SelectPopup.vue';
 import Popup from '../../Popup/Popup.vue';
+import { Teleport } from 'vue';
 
 
 export default {
@@ -16,7 +17,7 @@ export default {
 
     props: {
         ico: {
-            type: [String, Function],
+            type: String,
             default: 'book-text'
         },
 
@@ -24,29 +25,34 @@ export default {
             type: Boolean,
             default: false
         },
+
+        name: {
+            type: String,
+            default: null
+        },
+
+        value: {
+            type: Object,
+            default: {},
+        },
+
+        labelKey: {
+            type: String,
+            default: 'name'
+        },
+
+        valueKey: {
+            type: String,
+            default: 'id'
+        },
     },
 
     data() {
         return {
             isSelectPopupShow: false,
-            selectedItems: []
+            selectedItemValue: Object.get(this.value, this.valueKey),
+            selectedItemLabel: Object.get(this.value, this.labelKey)
         }
-    },
-
-    computed: {
-        icoValue() {
-            if (typeof this.ico === 'string')
-                return this.ico
-
-            if (typeof this.ico === 'function') {
-                if (typeof this.ico() !== 'string') {
-                    console.error('значение функции ico должно быть типа string')
-                    return
-                }
-
-                return this.ico()
-            }
-        },
     },
 
     methods: {
@@ -54,19 +60,24 @@ export default {
             this.isSelectPopupShow = !this.isSelectPopupShow
         },
 
-        selectItemHandler(event) {
-            const itemId = event.target.value
-
-            if (this.selectedItems.includes(itemId)) {
-                this.selectedItems = this.selectedItems.filter(id => id !== itemId)
-                return
-            }
-
-            this.selectedItems.push(itemId)
+        selectItemHandler(e, item) {
+            this.selectedItemValue = Object.get(item, this.valueKey)
+            this.selectedItemLabel = Object.get(item, this.labelKey)
         },
 
         closeClickHandler() {
             this.isSelectPopupShow = false
+        }
+    },
+
+    watch: {
+        value: {
+            immediate: true,
+            deep: true,
+            handler(val) {
+                this.selectedItemValue = Object.get(val, this.valueKey),
+                this.selectedItemLabel = Object.get(val, this.labelKey)
+            }
         }
     }
 }
@@ -75,26 +86,31 @@ export default {
 <template>
     <div class="select-popup-input-wrapper">
         <div ref="selectPopupInput" v-if="!hidden" class="select-popup-input" >
-            <span> выбрано: {{ selectedItems.length }} </span>
+            <span>{{ selectedItemLabel ?? 'Не выбрано' }} </span>
         </div>
 
+        <input v-if="selectedItemValue" type="hidden" :name :value="selectedItemValue">
+
         <BlueButton @click.stop="showPopupButtonHandler">
-            <Ico :type="icoValue" />
+            <Ico :type="ico" />
         </BlueButton>
 
-        <Transition name="popup">
-            <Popup
-                v-if="isSelectPopupShow"
-                size="70%"
-                :onClose="closeClickHandler"
-            >
-                <SelectPopup
-                    v-bind="$attrs"
-                    :select-item-handler
-                    :selected-items
-                />
-            </Popup>
-        </Transition>
+        <Teleport to="body">
+            <Transition name="popup">
+                <Popup
+                    v-if="isSelectPopupShow"
+                    size="70%"
+                    :on-close="closeClickHandler"
+                >
+                    <SelectPopup
+                        v-bind="$attrs"
+                        :on-select="selectItemHandler"
+                        :value="selectedItemValue"
+                        :valueKey
+                    />
+                </Popup>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 

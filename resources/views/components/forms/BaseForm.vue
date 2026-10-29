@@ -7,6 +7,10 @@ export default {
     },
     slots: ["header", "content", "footer"],
     props: {
+        id: {
+            type: String,
+            default: null
+        },
         classes: {
             type: [String, Array, Object],
             default: null,
@@ -39,7 +43,7 @@ export default {
 
 <template>
     <div :class="containerClasses" class="form-container">
-        <Form :class="classes" :method="method.toUpperCase()" :action="action">
+        <Form :class="classes" :method="method.toUpperCase()" :action :id>
             <div v-if="'header' in $slots || header !== null" class="form-header-container">
                 <template v-if="'header' in $slots">
                     <slot name="header" />

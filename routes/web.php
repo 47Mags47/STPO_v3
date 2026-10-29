@@ -1,20 +1,17 @@
 <?php
 
+use App\Models\Administrate\Division;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 // DEV
 if (config('app.env') === 'local') {
-    Route::get('/test', fn() => Inertia::render('test'));
+    Route::get('/test', fn() => Inertia::render('test', [
+        'divisions' => Division::paginate(25)->toResourceCollection(),
+    ]));
+    Route::post('/test', fn() => dd(request()->all()));
     Route::get('/view', fn() => Inertia::render('view'));
-    Route::get('/test/flash', function (Request $request) {
-
-        $request->session()->flash('success', "Новое сообщение №" . uniqid());
-
-
-        return back();
-    })->name('test.flash');
 }
 
 ### DEFAULT ROUTES

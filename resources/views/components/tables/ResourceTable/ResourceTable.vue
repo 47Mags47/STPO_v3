@@ -8,7 +8,7 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
-import NumberInput from '../../inputs/NumberInput.vue';
+import StringInput from '../../inputs/StringInput.vue';
 
 export default {
     components: {
@@ -16,7 +16,7 @@ export default {
         TableRow,
         TableTh,
         TableTd,
-        NumberInput,
+        StringInput,
 
         RowLink:        defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
         FormItem:       defineAsyncComponent(() => import("../../FormItem.vue")),
@@ -49,6 +49,11 @@ export default {
     },
 
     props: {
+        id: {
+            type: String,
+            default: null
+        },
+
         // Toggles
         hasCreateButton: {
             type: Boolean,
@@ -100,9 +105,13 @@ export default {
                 router.delete(url.origin + url.pathname + '/' + row.id)
             }
         },
+        onSearchInput: {
+            type: Function,
+            default: null
+        },
 
         // Data
-        collumns: {
+        columns: {
             type: Array,
             default: () => []
         },
@@ -152,21 +161,14 @@ export default {
             type: Array,
             default: [],
         },
-
         rowClasses: {
             type: [Array, String, Function],
             default: null
         },
-
         actions: {
             type: Array,
             default: [],
         },
-
-        preserveStatePagination: {
-            type: Boolean,
-            default: false
-        }
     },
 
     methods: {
@@ -188,27 +190,6 @@ export default {
                     replace: true,
                 }
             );
-        },
-        // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
-        fixDropdownPosition(event) {
-            const el =
-                event.currentTarget.querySelector(
-                    '.filter-item-content'
-                );
-
-            if (!el) return;
-
-            requestAnimationFrame(() => {
-                el.style.left = '0';
-                el.style.right = 'auto';
-
-                const rect = el.getBoundingClientRect();
-
-                if (rect.right > window.innerWidth - 12) {
-                    el.style.left = 'auto';
-                    el.style.right = '0';
-                }
-            });
         },
         preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
@@ -301,17 +282,18 @@ export default {
         inputHandler(e) {
             clearTimeout(this.searchInputTimer);
 
-             this.searchInputTimer = setTimeout(() => {
-                router.get(
-                    window.location.pathname,
-                    {
-                        search: e.target.value
-                    },
-                    {
-                        preserveState: true,
-                    }
-                );
-            }, 1000);
+            this.searchInputTimer = setTimeout(
+                this.onSearchInput !== null
+                    ? () => this.onSearchInput(e)
+                    : () => { router.get(window.location.pathname,
+                        {
+                            search: e.target.value
+                        },
+                        {
+                            preserveState: true,
+                        }
+                    );
+            }, 1000)
         },
 
         // ClASSES
@@ -424,12 +406,17 @@ export default {
 </script>
 
 <template>
-    <Table ref="table" class="resource-table" :on-apply-filters="applyFilters">
-        <template #toolbar-left>
+    <Table
+        ref="table" class="resource-table"
+        :on-apply-filters="applyFilters"
+        :id
+    >
+        <template  #toolbar-left>
             <slot name="toolbar-left"></slot>
-            <NumberInput
+            <StringInput
                 v-if="hasSearchInput"
-                class="string-input"
+                :form="id"
+                class="string-input "
                 placeholder="Поиск (номер).."
                 name="search[appealId]"
                 :on-input="inputHandler"
@@ -438,7 +425,10 @@ export default {
 
         <template #paginator>
             <div class="table-paginate-container">
-                <Paginator v-if="meta.last_page > 1" v-bind="meta" />
+                <Paginator
+                    v-if="meta.last_page > 1"
+                    v-bind="meta"
+                />
             </div>
         </template>
 
@@ -499,7 +489,7 @@ export default {
 
         <template #colgroup>
             <slot name="colgroup" />
-            <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+            <col v-for="column in columns" :width="column.width ?? 'auto'"/>
 
             <col v-if="hasDeleteButton && data.length > 0" width="60px" />
             <col v-if="hasShowButton && data.length > 0" width="60px" />
@@ -509,13 +499,13 @@ export default {
         <template #thead>
             <slot name="thead" />
             <TableRow>
-                <template v-for="column in collumns">
+                <template v-for="column in columns">
                     <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
                         <span> {{ column.title }} </span>
                     </TableTh>
                 </template>
 
-                <template v-if="collumns.length > 0 && data.length > 0">
+                <template v-if="columns.length > 0 && data.length > 0">
                     <TableTh v-if="hasDeleteButton !== false" button />
                     <TableTh v-if="hasShowButton !== false" button />
                     <TableTh v-if="hasEditButton !== false" button />
@@ -532,7 +522,7 @@ export default {
                     :key="row.id ?? index"
                     :class="getRowClasses(row)"
                 >
-                    <template v-for="collumn in collumns" :key="collumn.dataIndex">
+                    <template v-for="collumn in columns" :key="collumn.dataIndex">
                         <TableTd
                             v-if="
                                 checkCellVisible(row, collumn)
@@ -569,7 +559,7 @@ export default {
 
             <tr v-else>
                 <TableTd
-                    :colspan="collumns.length + rowLinks.length"
+                    :colspan="columns.length + rowLinks.length"
                     vertical="center"
                     horizontal="center"
                     class="not-data-cell"

@@ -329,7 +329,10 @@ export default {
                 @mousedown="startDrag"
             />
 
-            <div class="w-full flex-1" :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'">
+            <div
+                class="w-full flex-1 overflow-y-auto"
+                :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'"
+            >
                 <slot />
             </div>
 
