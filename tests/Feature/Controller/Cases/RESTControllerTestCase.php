@@ -32,6 +32,8 @@ implements RESTControllerTestCaseInterface
     public bool $hasEdit = true;
     public bool $hasUpdate = true;
     public bool $hasDestroy = true;
+    public bool $hasRestore = false;
+    public bool $hasForceDelete = false;
 
     public bool $useAuthorizesRequests = true;
 
@@ -97,5 +99,21 @@ implements RESTControllerTestCaseInterface
             $this->markTestSkipped('Пропуск проверки destroy метода');
 
         return $this->hasDestroy;
+    }
+
+    protected function checkRestoreMethodExist()
+    {
+        if(!$this->hasRestore)
+            $this->markTestSkipped('Пропуск проверки restore метода');
+
+        return $this->hasRestore;
+    }
+
+    protected function checkForceDeleteMethodExist()
+    {
+        if(!$this->hasForceDelete)
+            $this->markTestSkipped('Пропуск проверки forceDelete метода');
+
+        return $this->hasForceDelete;
     }
 }

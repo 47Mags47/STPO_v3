@@ -10,8 +10,9 @@ trait ControllerRESTMethodReturnPage
     {
         $this->checkIndexMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
-        $response = $this->get(route($this->route . '.index'));
+        $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page
@@ -25,8 +26,9 @@ trait ControllerRESTMethodReturnPage
     {
         $this->checkCreateMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
-        $response = $this->get(route($this->route . '.create'));
+        $response = $this->get(route($this->route . '.create', $this->getCreateRouteParams()));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page
@@ -38,8 +40,10 @@ trait ControllerRESTMethodReturnPage
     {
         $this->checkShowMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
-        $response = $this->get(route($this->route . '.show', $this->getRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->get(route($this->route . '.show', $this->getShowRouteParams(record: $record)));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page
@@ -51,8 +55,10 @@ trait ControllerRESTMethodReturnPage
     {
         $this->checkEditMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
-        $response = $this->get(route($this->route . '.edit', $this->getRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->get(route($this->route . '.edit', $this->getEditRouteParams(record: $record)));
 
         $response->assertStatus(200);
         $response->assertInertia(fn(Assert $page) => $page
