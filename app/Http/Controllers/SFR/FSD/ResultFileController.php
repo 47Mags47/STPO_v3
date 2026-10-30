@@ -8,16 +8,13 @@ use App\Models\Base\File;
 use App\Models\Base\FileStatus;
 use App\Models\SFR\FSD\ResultFile;
 use App\Models\SFR\FSD\SFRFile;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class ResultFileController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
-        $this->authorizeResource(ResultFile::class, 'payment_file');
+        $this->authorizeResource(ResultFile::class);
     }
 
     public function index(SFRFile $SFRFile)

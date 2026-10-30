@@ -7,13 +7,10 @@ use App\Http\Requests\SFR\FSD\PaymentFileStoreRequest;
 use App\Jobs\SFR\FSD\ReadPaymentFileJob;
 use App\Models\Base\UploadFile;
 use App\Models\SFR\FSD\PaymentFile;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class PaymentFileController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(PaymentFile::class, 'payment_file');

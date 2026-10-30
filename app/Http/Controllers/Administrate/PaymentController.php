@@ -7,13 +7,10 @@ use App\Http\Requests\Administrate\PaymentStoreRequest;
 use App\Http\Requests\Administrate\PaymentUpdateRequest;
 use App\Models\Administrate\Law;
 use App\Models\Administrate\Payment;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(Payment::class);
