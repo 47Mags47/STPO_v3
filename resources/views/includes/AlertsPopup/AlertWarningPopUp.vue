@@ -15,8 +15,8 @@ export default {
     <BaseAlertPopUp type="warning">
         <template #header>
             <div class="size-full flex flex-col justify-center items-center">
-                 <div class="bg-yellow-50 rounded-full p-1.5! size-fit">
-                    <Ico type="circle-exclamation" class="size-[25px]! text-yellow-600"/>
+                 <div class="bg-(--flash-alert-warning-text-color) rounded-full p-[4px]! size-fit">
+                    <Ico type="circle-exclamation" class="size-[25px]! text-(--flash-alert-warning-background-content-color)!"/>
                  </div>
             </div>
         </template>

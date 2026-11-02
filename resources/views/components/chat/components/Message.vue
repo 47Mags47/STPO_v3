@@ -118,12 +118,13 @@ export default {
     flex-direction: column
     align-items: flex-start
 
+    margin-top: 10px
+
     color: var(--text-color)
     .message-wrapper
         width: fit-content
         max-width: 40%
 
-        margin-top: 10px
         padding: 10px 10px
 
         border-radius: 0.75rem

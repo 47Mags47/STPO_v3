@@ -14,7 +14,7 @@ export default {
         fileChannel="sfr.fsd.payment-files"
         :hasCreateButton="true"
         :hasDeleteButton="true"
-        :collumns="[
+        :columns="[
             {
                 title: 'Месяц',
                 dataIndex: 'in_date',

@@ -38,7 +38,7 @@ export default {
 <template>
     <div
         ref="popupHeader"
-        class="popup-header w-full h-[40px] cursor-grab bg-(--header-background-color) flex gap-3 items-center justify-end px-3!"
+        class="popup-header w-full min-h-[40px] h-[40px] cursor-grab bg-(--header-background-color) flex gap-3 items-center justify-end px-3!"
         :class="{ 'cursor-grabbing': isDragging }"
     >
         <BlueButton

@@ -20,7 +20,7 @@ export default {
         :hasEditButton="true"
         :data="laws.data"
         :meta="laws.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Номер',
                 dataIndex: 'number',

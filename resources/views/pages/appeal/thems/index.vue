@@ -35,7 +35,7 @@ export default {
 
         :data="thems.data"
         :meta="thems.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'name',

@@ -8,12 +8,15 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
+import StringInput from '../../inputs/StringInput.vue';
+
 export default {
     components: {
         Table,
         TableRow,
         TableTh,
         TableTd,
+        StringInput,
 
         RowLink:        defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
         FormItem:       defineAsyncComponent(() => import("../../FormItem.vue")),
@@ -41,10 +44,16 @@ export default {
             filterResetKey: 0,
             cachedFilters: {},
             filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
+            searchInputTimer: null,
         }
     },
 
     props: {
+        id: {
+            type: String,
+            default: null
+        },
+
         // Toggles
         hasCreateButton: {
             type: Boolean,
@@ -61,6 +70,10 @@ export default {
         hasDeleteButton: {
             type: [Boolean, Function],
             default: false,
+        },
+        hasSearchInput: {
+            type: [Boolean, Function],
+            default: false
         },
 
         // Actions
@@ -92,9 +105,13 @@ export default {
                 router.delete(url.origin + url.pathname + '/' + row.id)
             }
         },
+        onSearchInput: {
+            type: Function,
+            default: null
+        },
 
         // Data
-        collumns: {
+        columns: {
             type: Array,
             default: () => []
         },
@@ -144,21 +161,14 @@ export default {
             type: Array,
             default: [],
         },
-
         rowClasses: {
             type: [Array, String, Function],
             default: null
         },
-
         actions: {
             type: Array,
             default: [],
         },
-
-        preserveStatePagination: {
-            type: Boolean,
-            default: false
-        }
     },
 
     methods: {
@@ -180,27 +190,6 @@ export default {
                     replace: true,
                 }
             );
-        },
-        // Если контент фильтра выходит за пределы экрана справа -> смещаем влево
-        fixDropdownPosition(event) {
-            const el =
-                event.currentTarget.querySelector(
-                    '.filter-item-content'
-                );
-
-            if (!el) return;
-
-            requestAnimationFrame(() => {
-                el.style.left = '0';
-                el.style.right = 'auto';
-
-                const rect = el.getBoundingClientRect();
-
-                if (rect.right > window.innerWidth - 12) {
-                    el.style.left = 'auto';
-                    el.style.right = '0';
-                }
-            });
         },
         preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
@@ -244,8 +233,8 @@ export default {
                     case 'numberBetween':
                     case 'dateFilter':
                         value = {
-                            _from: formData.get(`filters[${name}]_from`) ?? '',
-                            _to: formData.get(`filters[${name}]_to`) ?? '',
+                            from: formData.get(`filters[${name}]_from`) ?? '',
+                            to: formData.get(`filters[${name}]_to`) ?? '',
                         };
                         break;
 
@@ -262,9 +251,12 @@ export default {
                 }
 
                 result[type] ??= { value: {} };
-
                 result[type].value[name] = value;
             });
+
+            result.urlParams = Object.fromEntries(
+                new URLSearchParams(window.location.search)
+            );
 
             this.cachedFilters = result;
 
@@ -286,6 +278,22 @@ export default {
         },
         deleteButtonClickHandler(row) {
             this.onDeleteButtonClick(row);
+        },
+        inputHandler(e) {
+            clearTimeout(this.searchInputTimer);
+
+            this.searchInputTimer = setTimeout(
+                this.onSearchInput !== null
+                    ? () => this.onSearchInput(e)
+                    : () => { router.get(window.location.pathname,
+                        {
+                            search: e.target.value
+                        },
+                        {
+                            preserveState: true,
+                        }
+                    );
+            }, 1000)
         },
 
         // ClASSES
@@ -364,10 +372,6 @@ export default {
         // Берём из localStorage значения фильтров пихуем в компоненты и кликаем (отправляем на сервер)
         this.restoreFilters()
 
-        await this.$nextTick();
-
-        this.$refs.table.$refs.filtersForm.submit()
-
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
                 console.error('Неверный формат канала');
@@ -393,12 +397,61 @@ export default {
                 .listen(channel.event, channel.onEvent)
 
         })
+    },
+
+    beforeUnmount() {
+        clearTimeout(this.searchInputTimer);
     }
 }
 </script>
 
 <template>
-    <Table ref="table" class="resource-table">
+    <Table
+        ref="table" class="resource-table"
+        :on-apply-filters="applyFilters"
+        :id
+    >
+        <template  #toolbar-left>
+            <slot name="toolbar-left"></slot>
+            <StringInput
+                v-if="hasSearchInput"
+                :form="id"
+                class="string-input "
+                placeholder="Поиск (номер).."
+                name="search[appealId]"
+                :on-input="inputHandler"
+            />
+        </template>
+
+        <template #paginator>
+            <div class="table-paginate-container">
+                <Paginator
+                    v-if="meta.last_page > 1"
+                    v-bind="meta"
+                />
+            </div>
+        </template>
+
+        <template #toolbar-right>
+            <div class="table-search-container">
+
+            </div>
+            <div class="table-actions-container">
+                <slot name="actions" />
+                <div class="resource-table-actions-container">
+                    <template v-for="action in actions">
+                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </BlueButton>
+                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
+                            <Ico :type="action.ico" />
+                        </RedButton>
+                    </template>
+                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
+                </div>
+            </div>
+        </template>
+
         <template v-if="filters.length !== 0" #filters>
             <div class="container-table-filters">
                 <div
@@ -419,7 +472,7 @@ export default {
                     <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
                         Сбросить
                     </button>
-                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }" @click="applyFilters">
+                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }">
                         Применить
                     </button>
                     <button type="button" class="filter-showbtn"
@@ -434,32 +487,9 @@ export default {
             </div>
         </template>
 
-        <template #toolbar>
-            <div class="table-search-container">
-
-            </div>
-            <div class="table-paginate-container">
-                <Paginator v-if="meta.last_page > 1" v-bind="meta" :saveState="preserveStatePagination"/>
-            </div>
-            <div class="table-actions-container">
-                <slot name="actions" />
-                <div class="resource-table-actions-container">
-                    <template v-for="action in actions">
-                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </BlueButton>
-                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </RedButton>
-                    </template>
-                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
-                </div>
-            </div>
-        </template>
-
         <template #colgroup>
             <slot name="colgroup" />
-            <col v-for="column in collumns" :width="column.width ?? 'auto'"/>
+            <col v-for="column in columns" :width="column.width ?? 'auto'"/>
 
             <col v-if="hasDeleteButton && data.length > 0" width="60px" />
             <col v-if="hasShowButton && data.length > 0" width="60px" />
@@ -469,13 +499,13 @@ export default {
         <template #thead>
             <slot name="thead" />
             <TableRow>
-                <template v-for="column in collumns">
+                <template v-for="column in columns">
                     <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
                         <span> {{ column.title }} </span>
                     </TableTh>
                 </template>
 
-                <template v-if="collumns.length > 0 && data.length > 0">
+                <template v-if="columns.length > 0 && data.length > 0">
                     <TableTh v-if="hasDeleteButton !== false" button />
                     <TableTh v-if="hasShowButton !== false" button />
                     <TableTh v-if="hasEditButton !== false" button />
@@ -492,7 +522,7 @@ export default {
                     :key="row.id ?? index"
                     :class="getRowClasses(row)"
                 >
-                    <template v-for="collumn in collumns" :key="collumn.dataIndex">
+                    <template v-for="collumn in columns" :key="collumn.dataIndex">
                         <TableTd
                             v-if="
                                 checkCellVisible(row, collumn)
@@ -529,7 +559,7 @@ export default {
 
             <tr v-else>
                 <TableTd
-                    :colspan="collumns.length + rowLinks.length"
+                    :colspan="columns.length + rowLinks.length"
                     vertical="center"
                     horizontal="center"
                     class="not-data-cell"
@@ -545,13 +575,15 @@ export default {
         </template>
 
         <template v-if="meta.last_page > 1" #pagination>
-            <Paginator v-bind="meta" :saveState="preserveStatePagination"/>
+            <Paginator v-bind="meta" />
         </template>
     </Table>
 </template>
 
 <style lang="sass" scoped>
 .resource-table
+    :deep(.string-input)
+        width: 250px
     .container-table-filters
         width: 100%
         display: flex
@@ -577,7 +609,7 @@ export default {
             opacity: 0
             padding-bottom: 0
 
-            transition: opacity .3s ease, padding-bottom .3s ease
+            transition: opacity .3s ease, padding-bottom .3s ease, padding-top .3s ease
 
         .table-filters-collapse.opened
             :deep(.table-filters)

@@ -4,32 +4,36 @@ import BlueButton from "../buttons/BlueButton.vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
+    slots: ["default"],
+
     components: {
         VerticalForm,
         BlueButton,
 
-        FormItem:           defineAsyncComponent(() => import('../FormItem.vue')),
+        FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
 
-        StringInput:        defineAsyncComponent(() => import('../inputs/StringInput.vue')),
-        TextInput:          defineAsyncComponent(() => import('../inputs/TextInput.vue')),
-        PhoneInput:         defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
-        EmailInput:         defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
-        PasswordInput:      defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
-        NumberInput:        defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
-        DateInput:          defineAsyncComponent(() => import('../inputs/DateInput.vue')),
-        CheckBox:           defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
-        FileInput:          defineAsyncComponent(() => import('../inputs/FileInput.vue')),
+        StringInput:            defineAsyncComponent(() => import('../inputs/StringInput.vue')),
+        TextInput:              defineAsyncComponent(() => import('../inputs/TextInput.vue')),
+        PhoneInput:             defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
+        EmailInput:             defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
+        PasswordInput:          defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
+        NumberInput:            defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
+        DateInput:              defineAsyncComponent(() => import('../inputs/DateInput.vue')),
+        CheckBox:               defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
+        FileInput:              defineAsyncComponent(() => import('../inputs/FileInput.vue')),
 
-        PhoneHasDobInput:   defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
-        Select:             defineAsyncComponent(() => import('../inputs/Select.vue')),
-        SelectPopupInput:   defineAsyncComponent(() => import('../inputs/SelectPopup/SelectPopupInput.vue')),
+        PhoneHasDobInput:       defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
+        Select:                 defineAsyncComponent(() => import('../inputs/Select.vue')),
+        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/SelectPopup/SelectPopupInput.vue')),
+        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/SelectPopup/MultiSelectPopupInput.vue')),
 
-        BigFilesInput:      defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
-        BigFileInput:       defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
+        BigFilesInput:          defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
+        BigFileInput:           defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
 
-        DatePicker:         defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
-        MonthSelect:        defineAsyncComponent(() => import('../inputs/MonthSelect.vue')),
+        DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
+        MonthSelect:            defineAsyncComponent(() => import('../inputs/MonthSelect.vue')),
     },
+
     props: {
         inputs: {
             type: Array,
@@ -48,6 +52,7 @@ export default {
                         'text',
                         'select',
                         'selectPopup',
+                        'multiSelectPopup',
                         'checkbox',
                         'file',
                         'bigFile',
@@ -83,11 +88,19 @@ export default {
             type: Boolean,
             default: true,
         },
+        id: {
+            type: String,
+            default: null
+        },
     },
-    slots: ["default"],
+
     methods: {
         prepareProps(input) {
             const { type, label, ...rest } = input;
+
+            if(this.id !== null)
+                rest.form = this.id
+
             return rest;
         },
         getFormItemOrientation(input) {
@@ -98,7 +111,7 @@ export default {
 </script>
 
 <template>
-    <VerticalForm>
+    <VerticalForm :id>
         <template v-for="(_, name) in $slots" #[name]="slotData">
             <slot :name="name" v-bind="slotData || {}" />
         </template>
@@ -111,24 +124,25 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput        v-if="input.type === 'string'"          v-bind="prepareProps(input)" />
-                <TextInput          v-if="input.type === 'text'"            v-bind="prepareProps(input)" />
-                <NumberInput        v-if="input.type === 'number'"          v-bind="prepareProps(input)" />
-                <PhoneInput         v-if="input.type === 'phone'"           v-bind="prepareProps(input)" />
-                <PhoneHasDobInput   v-if="input.type === 'phoneHasDob'"     v-bind="prepareProps(input)" />
-                <EmailInput         v-if="input.type === 'email'"           v-bind="prepareProps(input)" />
-                <PasswordInput      v-if="input.type === 'password'"        v-bind="prepareProps(input)" />
-                <CheckBox           v-if="input.type === 'checkbox'"        v-bind="prepareProps(input)" />
-                <FileInput          v-if="input.type === 'file'"            v-bind="prepareProps(input)" />
-                <BigFileInput       v-if="input.type === 'bigFile'"         v-bind="prepareProps(input)" />
-                <BigFilesInput      v-if="input.type === 'bigFiles'"        v-bind="prepareProps(input)" />
-                <DateInput          v-if="input.type === 'date'"            v-bind="prepareProps(input)" />
+                <StringInput            v-if="input.type === 'string'"           v-bind="prepareProps(input)" />
+                <TextInput              v-if="input.type === 'text'"             v-bind="prepareProps(input)" />
+                <NumberInput            v-if="input.type === 'number'"           v-bind="prepareProps(input)" />
+                <PhoneInput             v-if="input.type === 'phone'"            v-bind="prepareProps(input)" />
+                <PhoneHasDobInput       v-if="input.type === 'phoneHasDob'"      v-bind="prepareProps(input)" />
+                <EmailInput             v-if="input.type === 'email'"            v-bind="prepareProps(input)" />
+                <PasswordInput          v-if="input.type === 'password'"         v-bind="prepareProps(input)" />
+                <CheckBox               v-if="input.type === 'checkbox'"         v-bind="prepareProps(input)" />
+                <FileInput              v-if="input.type === 'file'"             v-bind="prepareProps(input)" />
+                <BigFileInput           v-if="input.type === 'bigFile'"          v-bind="prepareProps(input)" />
+                <BigFilesInput          v-if="input.type === 'bigFiles'"         v-bind="prepareProps(input)" />
+                <DateInput              v-if="input.type === 'date'"             v-bind="prepareProps(input)" />
 
-                <SelectPopupInput   v-if="input.type === 'selectPopup'"     v-bind="prepareProps(input)" />
-                <Select             v-if="input.type === 'select'"          v-bind="prepareProps(input)" />
+                <SelectPopupInput       v-if="input.type === 'selectPopup'"      v-bind="prepareProps(input)" />
+                <MultiSelectPopupInput  v-if="input.type === 'multiSelectPopup'" v-bind="prepareProps(input)" />
+                <Select                 v-if="input.type === 'select'"           v-bind="prepareProps(input)" />
 
-                <DatePicker         v-if="input.type === 'datePicker'"      v-bind="prepareProps(input)" />
-                <MonthSelect        v-if="input.type === 'monthSelect'"     v-bind="prepareProps(input)" />
+                <DatePicker             v-if="input.type === 'datePicker'"       v-bind="prepareProps(input)" />
+                <MonthSelect            v-if="input.type === 'monthSelect'"      v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>

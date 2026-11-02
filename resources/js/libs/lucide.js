@@ -11,6 +11,7 @@ export {
 
     ArrowLeft                   as 'arrow-left',
     ArrowRight                  as 'arrow-right',
+    ArrowUp                     as 'arrow-up',
     RotateCcw                   as 'arrow-rotate-left',
 
     Circle                      as circle,
@@ -72,6 +73,8 @@ export {
 
     Search                      as 'search',
     SearchCheck                 as 'search-check',
+
+    LogOut                      as 'logout',
 
     CircleQuestionMark
 } from '@lucide/vue';

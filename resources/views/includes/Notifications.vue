@@ -10,6 +10,14 @@ export default {
         NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
         DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
     },
+
+    props: {
+        isChristmas: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     data() {
         return {
             isOpen: false,
@@ -85,6 +93,7 @@ export default {
 
         <BlueButton class="bell-container size-[40px]!" @click="togleOpen">
             <Ico type="bell" />
+            <span v-if="isChristmas" class="absolute top-[6px] left-[7px] text-[20px]!">🎀</span>
             <div v-show="numberNots > 0" class="couner-container">
                 <span class="text-white!"> {{ numberNots <= 99 ? numberNots : '99+' }} </span>
             </div>

@@ -7,6 +7,14 @@ export default {
             type: String,
             default: null,
         },
+        onApplyFilters: {
+            type: Function,
+            default: () => {}
+        },
+        id: {
+            type: String,
+            default: null
+        },
     },
 
     components: {
@@ -14,7 +22,7 @@ export default {
     },
 
     computed:{
-        currrentURL: () => location.href
+        currentURL: () => location.href
     },
 };
 </script>
@@ -32,15 +40,38 @@ export default {
                 <Form
                     ref="filtersForm"
                     method="GET"
-                    :action="currrentURL" class="pt-0!"
-                    :options="{ preserveState: true }"
+                    :action="currentURL" class="pt-0!"
+                    :options="{
+                        preserveState: true,
+                        onSuccess: onApplyFilters
+                    }"
                 >
                     <slot name="filters"></slot>
                 </Form>
             </div>
 
-            <div class="toolbar" v-if="'toolbar' in $slots">
-                <slot name="toolbar"></slot>
+            <div v-if="['toolbar-left', 'paginator', 'toolbar-right'].some(slot => $slots[slot])" class="flex justify-center w-full">
+                <div class="toolbar-left flex-1" v-if="'toolbar-left' in $slots">
+                    <Form
+                        ref="toolbarLeftRef"
+                        method="GET"
+                        :id
+                        :action="currentURL"
+                        :options="{
+                            preserveState: true,
+                        }"
+                    >
+                        <slot name="toolbar-left"></slot>
+                    </Form>
+                </div>
+
+                <div class="paginator" v-if="'paginator' in $slots">
+                    <slot name="paginator"></slot>
+                </div>
+
+                <div class="toolbar-right flex-1 " v-if="'toolbar-right' in $slots">
+                    <slot name="toolbar-right"></slot>
+                </div>
             </div>
         </div>
 
@@ -80,20 +111,31 @@ export default {
     .table-header
         display: flex
         flex-direction: column
+        gap: 10px
         padding: 0 10px
         .header
             font-weight: 600
             color: #1f2937
             line-height: 1.3
         .filters form
-            padding: 10px 0px
             display: flex
             flex-wrap: wrap
             align-items: center
             gap: 32px
-        .toolbar
+        .paginator
+            width: 385px
+        .toolbar-left form
             display: flex
-            justify-content: space-between
+            justify-content: flex-start
+            align-items: center
+            gap: 1rem
+            border: 0
+            padding: 0
+            margin: 0
+            width: fit-content
+        .toolbar-right
+            display: flex
+            justify-content: flex-end
             align-items: center
             gap: 1rem
 
