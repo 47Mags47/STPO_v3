@@ -219,7 +219,7 @@ export default {
             <Popup
                 v-if="isPopupOpen"
                 width="340px"
-                height="400px"
+                height="405px"
                 :onClose="popupCloseHandler"
                 :has-resize="false"
                 :position="(el) => {

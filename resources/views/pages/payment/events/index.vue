@@ -135,8 +135,7 @@ export default {
 
 <style lang="sass" scoped>
 #payment-event-resource-table
-    :deep()
-        .month-picker-container
+    .month-picker-container
             display: flex
             align-items: center
             gap: 15px
