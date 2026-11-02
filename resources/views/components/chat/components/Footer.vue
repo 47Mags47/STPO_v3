@@ -116,7 +116,7 @@ export default {
 
 <template>
     <div class="footer-wrapper">
-        <div class="files-wrapper" :class="{ 'open': files.length > 0 }">
+        <div class="files-wrapper p-3!" :class="{ 'open': files.length > 0 }">
             <template v-for="file in files">
                 <Investment :file :onRemove="(file) => removeFileButtonClickHandler(file)"/>
             </template>

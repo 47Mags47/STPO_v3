@@ -18,24 +18,26 @@ export default {
         TableTd,
         StringInput,
 
-        RowLink:        defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
-        FormItem:       defineAsyncComponent(() => import("../../FormItem.vue")),
+        RowLink:                defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
+        FormItem:               defineAsyncComponent(() => import("../../FormItem.vue")),
 
-        CreateButton:   defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
-        EditButton:     defineAsyncComponent(() => import("../buttons/EditButton.vue")),
-        ShowButton:     defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
-        DeleteButton:   defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
+        CreateButton:           defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
+        EditButton:             defineAsyncComponent(() => import("../buttons/EditButton.vue")),
+        ShowButton:             defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
+        DeleteButton:           defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
 
-        Ico:            defineAsyncComponent(() => import("../../Ico.vue")),
-        Paginator:      defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
-        BlueButton:     defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
-        RedButton:      defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
+        Ico:                    defineAsyncComponent(() => import("../../Ico.vue")),
+        Paginator:              defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
+        BlueButton:             defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+        RedButton:              defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
 
-        Checkbox:       defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
-        SingleSelect:   defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
-        MultiSelect:    defineAsyncComponent(() => import('../../inputs/filters/MultiSelect.vue')),
-        NumberBetween:  defineAsyncComponent(() => import('../../inputs/filters/NumberBetween.vue')),
-        DateFilter:     defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
+        Checkbox:               defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
+        SingleSelect:           defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
+        MultiSelect:            defineAsyncComponent(() => import('../../inputs/filters/MultiSelect.vue')),
+        NumberBetween:          defineAsyncComponent(() => import('../../inputs/filters/NumberBetween.vue')),
+        DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
+        MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
+        SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),
     },
 
     data() {
@@ -133,6 +135,8 @@ export default {
                         'datepicker',
                         'singleSelect',
                         'multiSelect',
+                        'selectPopup',
+                        'multiSelectPopup',
                         'numberBetween',
                         'dateFilter'
                     ].includes(input.type);
@@ -460,11 +464,14 @@ export default {
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                         <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <MultiSelect    v-if="filter.type === 'multiSelect'"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SingleSelect   v-if="filter.type === 'singleSelect'"  v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <Checkbox       v-if="filter.type === 'checkbox'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <NumberBetween  v-if="filter.type === 'numberBetween'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <DateFilter     v-if="filter.type === 'dateFilter'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <MultiSelect            v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <SingleSelect           v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <SelectPopupFilter      v-if="filter.type === 'selectPopup'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+
+                            <Checkbox               v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <NumberBetween          v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <DateFilter             v-if="filter.type === 'dateFilter'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         </div>
                     </div>
                 </div>

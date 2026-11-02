@@ -11,7 +11,6 @@ export default {
         appeals:            () => usePage().props.appeals,
         current_user:       () => usePage().props.current_user.data,
 
-        senders:            () => usePage().props.senders.data,
         themes:             () => usePage().props.themes.data,
         statuses:           () => usePage().props.statuses.data,
     },
@@ -105,11 +104,27 @@ export default {
                 name: 'created_at',
             },
             {
-                type: 'multiSelect',
+                type: 'multiSelectPopup',
                 label: 'Отправитель',
                 name: 'sender_ids',
                 labelKey: 'full_name',
-                options: senders,
+                caption: 'Отправители',
+                placeholder: 'Отправитель: выбрано -',
+                url: route('api.appeal.senders.index'),
+                columns: [
+                    {
+                        title: 'Фамилия',
+                        dataIndex: 'last_name',
+                    },
+                    {
+                        title: 'Имя',
+                        dataIndex: 'first_name',
+                    },
+                    {
+                        title: 'Отчество',
+                        dataIndex: 'middle_name',
+                    }
+                ]
             },
             {
                 type: 'multiSelect',
