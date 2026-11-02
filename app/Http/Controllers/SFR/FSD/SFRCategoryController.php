@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class SFRCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(SFRPaymentCategory::class, 'sfr_payment_category');
+    }
+
     public function index(){
         return Inertia::render('sfr/fsd/sfr-payment-categories/index', [
             'categories' => fn() => SFRPaymentCategory::getResource()

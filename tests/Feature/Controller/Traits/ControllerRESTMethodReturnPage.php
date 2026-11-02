@@ -15,8 +15,30 @@ trait ControllerRESTMethodReturnPage
         $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
 
         $response->assertStatus(200);
+    }
+
+    public function test_controller_method_index_return_view()
+    {
+        $this->checkIndexMethodExist();
+        $this->disableAuthMiddleware();
+        $this->runProdSeeder();
+
+        $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
+
         $response->assertInertia(fn(Assert $page) => $page
             ->component(str_replace('.', '/', $this->route) . '/index')
+        );
+    }
+
+    public function test_controller_method_index_return_prop()
+    {
+        $this->checkIndexMethodExist();
+        $this->disableAuthMiddleware();
+        $this->runProdSeeder();
+
+        $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
+
+        $response->assertInertia(fn(Assert $page) => $page
             ->has($this->props['index'])
             ->has($this->props['index'] . '.data')
         );
@@ -46,6 +68,17 @@ trait ControllerRESTMethodReturnPage
         $response = $this->get(route($this->route . '.show', $this->getShowRouteParams(record: $record)));
 
         $response->assertStatus(200);
+    }
+
+    public function test_controller_method_show_return_prop()
+    {
+        $this->checkShowMethodExist();
+        $this->disableAuthMiddleware();
+        $this->runProdSeeder();
+
+        $record = $this->createTestRecord();
+        $response = $this->get(route($this->route . '.show', $this->getShowRouteParams(record: $record)));
+
         $response->assertInertia(fn(Assert $page) => $page
             ->component(str_replace('.', '/', $this->route) . '/show')
         );
@@ -61,6 +94,17 @@ trait ControllerRESTMethodReturnPage
         $response = $this->get(route($this->route . '.edit', $this->getEditRouteParams(record: $record)));
 
         $response->assertStatus(200);
+    }
+
+    public function test_controller_method_edit_return_prop()
+    {
+        $this->checkEditMethodExist();
+        $this->disableAuthMiddleware();
+        $this->runProdSeeder();
+
+        $record = $this->createTestRecord();
+        $response = $this->get(route($this->route . '.edit', $this->getEditRouteParams(record: $record)));
+
         $response->assertInertia(fn(Assert $page) => $page
             ->component(str_replace('.', '/', $this->route) . '/edit')
         );

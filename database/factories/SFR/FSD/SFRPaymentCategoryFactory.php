@@ -18,7 +18,7 @@ class SFRPaymentCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'pay_number'    => $this->faker->numberBetween(1, 4),
+            'pay_number'    => (string) $this->faker->numberBetween(1, 4),
             'name'          => $this->faker->text(255),
         ];
     }

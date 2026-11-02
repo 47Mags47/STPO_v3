@@ -4,6 +4,7 @@ namespace Tests\Feature\Policy\Tests\SFR\FSD;
 
 use App\Models\Base\UploadFile;
 use App\Models\SFR\FSD\ResultFile;
+use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Model;
 use Override;
 use Tests\Feature\Policy\Cases\PolicyTestCase;
@@ -26,14 +27,18 @@ class ResultFilePolicyTest extends PolicyTestCase
     public ?string $route = 'sfr.fsd.result-files';
 
     #[Override]
-    public function getRouteParams(?Model $record = null): array
+    public function modifyCheckData(array $data): array
     {
-        $params = parent::getRouteParams($record);
+        unset($data['file_id']);
+        return $data;
+    }
 
-        $record = $params[$this->getRouteParameterName()];
-
-        $record->SFRFile->update(['file_id' => UploadFile::emptyFile()->file_id]);
-        $params['SFRFile'] = $record->SFRFile->fresh();
+    #[Override]
+    public function modifyRouteParams(?array $params = [], ?Model $record = null): array
+    {
+        $params['SFRFile'] = $record !== null
+            ? $record->SFRFile->id
+            : SFRFile::randomOrCreate(['file_id' => UploadFile::emptyFile()->file_id]);
 
         return $params;
     }

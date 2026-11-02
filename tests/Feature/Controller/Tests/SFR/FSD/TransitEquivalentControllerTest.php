@@ -11,7 +11,7 @@ class TransitEquivalentControllerTest extends RESTControllerTestCase
 {
     public string $controllerClass = TransitEquivalentController::class;
     public string $modelClass = TransitEquivalent::class;
-    public string $route = 'sfr.fsd.transit-categories';
+    public string $route = 'sfr.fsd.transit-equivalents';
 
     public array $props = [
         'index' => 'equivalents'

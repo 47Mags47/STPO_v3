@@ -19,7 +19,7 @@ class PaymentFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'in_date'   => now(),
+            'in_date'   => now()->format('Y-m-d'),
             'file_id'   => File::randomOrCreate(),
         ];
     }

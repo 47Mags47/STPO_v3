@@ -19,6 +19,7 @@ class PaymentFilePolicyTest extends PolicyTestCase
     public bool $hasEdit = false;
     public bool $hasUpdate = false;
     public bool $hasForceDelete = false;
+    public bool $hasRestore = false;
 
     public ?string $route = 'sfr.fsd.payment-files';
 }

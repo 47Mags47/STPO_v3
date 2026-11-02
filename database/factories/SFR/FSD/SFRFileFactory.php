@@ -19,9 +19,9 @@ class SFRFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'in_date'       => now(),
-            'date_start'    => now()->startOfMonth(),
-            'date_end'      => now()->endOfMonth(),
+            'in_date'       => now()->format('Y-m-d'),
+            'date_start'    => now()->startOfMonth()->format('Y-m-d'),
+            'date_end'      => now()->endOfMonth()->format('Y-m-d'),
             'file_id'       => File::randomOrCreate()
         ];
     }
