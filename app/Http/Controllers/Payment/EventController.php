@@ -68,7 +68,7 @@ class EventController extends Controller
         return redirect()->route('payment.events.index')->with('success', 'Запись успешно обновлена');
     }
 
-    public function delete(Event $event)
+    public function destroy(Event $event)
     {
         $event->delete();
 
