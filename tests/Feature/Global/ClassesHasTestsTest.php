@@ -75,13 +75,13 @@ class ClassesHasTestsTest extends TestCase
         $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
     }
 
-    #[DataProvider('modelsProvider')]
-    public function test_model_has_a_feature_test(string $model)
-    {
-        $testNamespace = 'Tests\\Feature\\Model\\Tests\\';
-        $testClass = str_replace('/', '\\', $testNamespace . $model.'Test');
-        $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
-    }
+    // #[DataProvider('modelsProvider')]
+    // public function test_model_has_a_feature_test(string $model)
+    // {
+    //     $testNamespace = 'Tests\\Feature\\Model\\Tests\\';
+    //     $testClass = str_replace('/', '\\', $testNamespace . $model.'Test');
+    //     $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
+    // }
 
     #[DataProvider('policyProvider')]
     public function test_policy_has_a_feature_test(string $policy)

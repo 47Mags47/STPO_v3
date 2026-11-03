@@ -9,10 +9,17 @@ use App\Models\Administrate\Payment;
 use App\Models\Payment\Event;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class EventController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Event::class);
+    }
     public function index(Request $request)
     {
         $date_start = CarbonImmutable::create(
