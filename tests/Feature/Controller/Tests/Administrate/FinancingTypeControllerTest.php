@@ -6,7 +6,7 @@ use App\Http\Controllers\Administrate\FinancingTypeController;
 use App\Models\Administrate\FinancingType;
 use Tests\Feature\Controller\Cases\RESTControllerTestCase;
 
-class FinancingTypesControllerTest extends RESTControllerTestCase
+class FinancingTypeControllerTest extends RESTControllerTestCase
 {
     public string $controllerClass = FinancingTypeController::class;
     public string $modelClass = FinancingType::class;

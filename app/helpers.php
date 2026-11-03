@@ -97,8 +97,9 @@ if (! function_exists('clearString')) {
 }
 
 if (! function_exists('waitDisabledFile')) {
-    function waitDisabledFile(FileModel $file) {
-        if($file->file->is_disabled){
+    function waitDisabledFile(FileModel $file)
+    {
+        if ($file->file->is_disabled) {
             sleep(1);
             waitDisabledFile($file->fresh());
         }
@@ -106,7 +107,27 @@ if (! function_exists('waitDisabledFile')) {
 }
 
 if (! function_exists('random_str')) {
-    function random_str(int $length = 40) {
+    function random_str(int $length = 40)
+    {
         return \Illuminate\Support\Str::random($length);
+    }
+}
+
+if (! function_exists('snakeCase')) {
+    function snakeCase(string $string)
+    {
+        if (preg_match("/[A-Z]/", $string) !== false) {
+            // Вставляем подчёркивание перед каждой заглавной буквой,
+            // которая стоит после строчной буквы или цифры
+            $result = preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $string);
+
+            // Вставляем подчёркивание и перед последовательностями заглавных
+            $result = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1_$2', $result);
+
+            return strtolower($result);
+        }
+
+        // Стандартная логика для строк без последовательных заглавных букв
+        return \Illuminate\support\Str::snake($string);
     }
 }

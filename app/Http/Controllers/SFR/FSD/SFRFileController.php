@@ -11,6 +11,11 @@ use Inertia\Inertia;
 
 class SFRFileController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(SFRFile::class, 'sfr_file');
+    }
+
     public function index()
     {
         return Inertia::render('sfr/fsd/sfr-files/index', [
