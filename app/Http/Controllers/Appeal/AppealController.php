@@ -20,10 +20,17 @@ use App\Events\Base\SendNotificationEvent;
 use App\Events\Appeal\MessageSent;
 use App\Events\Base\SendChatMessageEvent;
 use App\Models\Base\NotificationType;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class AppealController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Appeal::class);
+    }
     public function index()
     {
         return Inertia::render('appeal/appeals/index', [
