@@ -54,4 +54,18 @@ trait ControllerHasRESTMethod
 
         $this->assertTrue($this->checkControllerMethodExist('destroy'));
     }
+
+    public function test_controller_has_restore_method()
+    {
+        $this->checkRestoreMethodExist();
+
+        $this->assertTrue($this->checkControllerMethodExist('restore'));
+    }
+
+    public function test_controller_has_force_delete_method()
+    {
+        $this->checkForceDeleteMethodExist();
+
+        $this->assertTrue($this->checkControllerMethodExist('forceDelete'));
+    }
 }

@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class TransitEquivalentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TransitEquivalent::class);
+    }
+
     // HACK добавить изменение эквивалентов по проезду
     // HACK добавить удаление эквивалентов по проезду
     public function index() {

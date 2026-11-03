@@ -3,10 +3,13 @@
 namespace App\Models\SFR\FSD;
 
 use App\Classes\FileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResultFile extends FileModel
 {
+    use HasFactory;
+
     ### Настройки
     ##################################################
     protected $table = 'sfr__fsd__result_files';

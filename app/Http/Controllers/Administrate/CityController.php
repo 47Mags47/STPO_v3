@@ -9,12 +9,9 @@ use App\Http\Requests\Administrate\CityStoreRequest;
 use App\Http\Requests\Administrate\CityUpdateRequest;
 
 use App\Models\Administrate\City;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CityController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(City::class);
