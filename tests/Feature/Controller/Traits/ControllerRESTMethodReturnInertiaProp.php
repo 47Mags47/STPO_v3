@@ -48,6 +48,6 @@ trait ControllerRESTMethodReturnInertiaProp
         $record = $this->createTestRecord();
 
         $response = $this->get(route($this->route . '.edit', $this->getEditRouteParams(record: $record)));
-        $response->assertInertia(fn(Assert $page) => $page->component($this->pageProps['edit']));
+        $response->assertInertia(fn(Assert $page) => $page->has($this->pageProps['edit']));
     }
 }
