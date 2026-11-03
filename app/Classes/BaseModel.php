@@ -8,6 +8,12 @@ use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
+    public array $searchCollumns = [
+        'code',
+        'name',
+        'number'
+    ];
+
     ### Методы
     ##################################################
     public static function getTableName()
