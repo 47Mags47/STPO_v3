@@ -53,6 +53,17 @@ implements RESTControllerTestCaseInterface
         'edit'      => null
     ];
 
+    // Статусы ответов
+    public int $indexResponseStatus         = 200;
+    public int $createResponseStatus        = 200;
+    public int $storeResponseStatus         = 302;
+    public int $showResponseStatus          = 200;
+    public int $editResponseStatus          = 200;
+    public int $updateResponseStatus        = 302;
+    public int $destroyResponseStatus       = 302;
+    public int $restoreResponseStatus       = 302;
+    public int $forceDeleteResponseStatus   = 302;
+
     ### Methods
     ##################################################
     protected function getControllerMidlewares(): array

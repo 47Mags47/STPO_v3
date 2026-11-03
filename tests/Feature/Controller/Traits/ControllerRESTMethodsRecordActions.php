@@ -63,10 +63,10 @@ trait ControllerRESTMethodsRecordActions
         $record = $this->createTestRecord();
         $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
 
-        if(in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($this->modelClass)))
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($this->modelClass)))
             $this->assertSoftDeleted($record);
         else
-            $this->assertDatabaseMissing($this->modelClass::getTableName(), array_merge($record->getAttributes()));
+            $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
     }
 
     public function test_controller_method_restore_restore_record() {
