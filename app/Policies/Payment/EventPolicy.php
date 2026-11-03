@@ -36,6 +36,6 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
-        return $user->hasPermission('payment_event_delete');
+        return $user->hasPermission('payment_event_view');
     }
 }

@@ -72,6 +72,6 @@ class EventController extends Controller
     {
         $event->delete();
 
-        return redirect()->route('payment.events.index')->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }
