@@ -24,17 +24,12 @@ class Filter
             return $this->builder;
 
         return $this->builder->where(function ($query) {
-            if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'id'))
-                $query->orWhere('id', $this->request->input('search'));
+            $model = $query->getModel();
 
-            if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'code'))
-                $query->orWhereLike('code', $this->request->input('search'));
-
-            if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'name'))
-                $query->orWhereLike('name', $this->request->input('search'));
-
-            if (Schema::hasColumn($this->builder->getModel()->getTableName(), 'number'))
-                $query->orWhereLike('number', $this->request->input('search'));
+            foreach ($model->searchCollumns as $collumn) {
+                if (Schema::hasColumn($model->getTableName(), $collumn))
+                    $query->orWhereLike($collumn, '%' . $this->request->input('search') . '%');
+            }
         });
     }
 

@@ -6,8 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Controller\Cases\ControllerTestCase;
 use Tests\Feature\Controller\Interfaces\RESTControllerTestCaseInterface;
 use Tests\Feature\Controller\Traits\ControllerHasRESTMethod;
-use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnPage;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnInertiaPage;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnInertiaProp;
 use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnRedirect;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnStatus;
 use Tests\Feature\Controller\Traits\ControllerRESTMethodsRecordActions;
 use Tests\Feature\Controller\Traits\RESTControllerUseAuthorizesRequests;
 
@@ -18,13 +20,18 @@ implements RESTControllerTestCaseInterface
     use RefreshDatabase;
 
     use ControllerHasRESTMethod;
-    use ControllerRESTMethodReturnPage;
+
+    use ControllerRESTMethodReturnStatus;
+    use ControllerRESTMethodReturnInertiaPage;
     use ControllerRESTMethodReturnRedirect;
+    use ControllerRESTMethodReturnInertiaProp;
     use ControllerRESTMethodsRecordActions;
+
     use RESTControllerUseAuthorizesRequests;
 
     ### Settings
     ##################################################
+    // Методы контроллера
     public bool $hasIndex = true;
     public bool $hasCreate = true;
     public bool $hasStore = true;
@@ -35,7 +42,16 @@ implements RESTControllerTestCaseInterface
     public bool $hasRestore = false;
     public bool $hasForceDelete = false;
 
+    // Middleware контроллера
     public bool $useAuthorizesRequests = true;
+
+    // Inertia Компоненты страниц
+    public array $pageComponents = [
+        'index'     => null,
+        'create'    => null,
+        'show'      => null,
+        'edit'      => null
+    ];
 
     ### Methods
     ##################################################
@@ -115,5 +131,33 @@ implements RESTControllerTestCaseInterface
             $this->markTestSkipped('Пропуск проверки forceDelete метода');
 
         return $this->hasForceDelete;
+    }
+
+    protected function getIndexPageComponent(): string
+    {
+        return $this->pageComponents['index'] !== null
+            ? stringDotToSlash($this->pageComponents['index'])
+            : stringDotToSlash($this->route) . '/index';
+    }
+
+    protected function getCreatePageComponent(): string
+    {
+        return $this->pageComponents['create'] !== null
+            ? stringDotToSlash($this->pageComponents['create'])
+            : stringDotToSlash($this->route) . '/create';
+    }
+
+    protected function getShowPageComponent(): string
+    {
+        return $this->pageComponents['show'] !== null
+            ? stringDotToSlash($this->pageComponents['show'])
+            : stringDotToSlash($this->route) . '/show';
+    }
+
+    protected function getEditPageComponent(): string
+    {
+        return $this->pageComponents['edit'] !== null
+            ? stringDotToSlash($this->pageComponents['edit'])
+            : stringDotToSlash($this->route) . '/edit';
     }
 }

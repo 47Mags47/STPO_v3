@@ -15,7 +15,7 @@ class SFRFileControllerTest extends RESTControllerTestCase
     public string $modelClass = SFRFile::class;
     public string $route = 'sfr.fsd.sfr-files';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'files',
     ];
 

@@ -15,7 +15,7 @@ class PaymentFileControllerTest extends RESTControllerTestCase
     public string $modelClass = PaymentFile::class;
     public string $route = 'sfr.fsd.payment-files';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'files',
     ];
 

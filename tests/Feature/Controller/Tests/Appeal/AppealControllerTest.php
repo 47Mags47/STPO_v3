@@ -12,7 +12,7 @@ class AppealControllerTest extends RESTControllerTestCase
     public string $modelClass = Appeal::class;
     public string $route = 'appeal.appeals';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'appeals',
         'show'  => 'appeal',
     ];

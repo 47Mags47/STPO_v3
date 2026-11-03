@@ -14,7 +14,7 @@ interface RESTControllerTestCaseInterface
         set;
     }
 
-    public array $props {
+    public array $pageProps {
         get;
         set;
     }

@@ -12,7 +12,7 @@ class DivisionControllerTest extends RESTControllerTestCase
     public string $modelClass = Division::class;
     public string $route = 'administrate.divisions';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'divisions',
         'edit'  => 'division',
     ];
