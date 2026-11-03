@@ -1,5 +1,5 @@
 <script>
-import SelectPopup from '../selectPopup/SelectPopup.vue';
+import SelectPopup from '../SelectPopup/SelectPopup.vue';
 
 export default {
     components: {
