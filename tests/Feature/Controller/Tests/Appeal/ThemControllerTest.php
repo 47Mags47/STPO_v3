@@ -12,7 +12,7 @@ class ThemControllerTest extends RESTControllerTestCase
     public string $modelClass = Them::class;
     public string $route = 'appeal.thems';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'thems',
         'edit'  => 'them',
     ];

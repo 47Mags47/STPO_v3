@@ -12,7 +12,7 @@ class ThemGroupControllerTest extends RESTControllerTestCase
     public string $modelClass = ThemGroup::class;
     public string $route = 'appeal.them-groups';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'them-groups',
         'edit'  => 'them-group',
     ];

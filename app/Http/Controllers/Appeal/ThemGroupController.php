@@ -39,7 +39,7 @@ class ThemGroupController extends Controller
     public function edit(ThemGroup $themGroup)
     {
         return Inertia::render('appeal/them-groups/edit', [
-            'them_group' => fn() => $themGroup->toResource(),
+            'them-group' => fn() => $themGroup->toResource(),
         ]);
     }
 
