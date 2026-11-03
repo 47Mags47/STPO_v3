@@ -13,7 +13,7 @@ class TransitCategoryControllerTest extends RESTControllerTestCase
     public string $modelClass = TransitCategory::class;
     public string $route = 'sfr.fsd.transit-categories';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'categories',
         'edit'  => 'category'
     ];

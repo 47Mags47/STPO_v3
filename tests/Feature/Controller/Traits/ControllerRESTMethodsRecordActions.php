@@ -29,7 +29,7 @@ trait ControllerRESTMethodsRecordActions
 
         $response->assertInertia(
             fn(Assert $page) => $page->has(
-                $this->props['show'] . '.data',
+                $this->pageProps['show'] . '.data',
                 function (Assert $page) use ($record) {
                     foreach ($record->toResource()->toArray(request()) as $key => $value) {
                         $page->where($key, $value);

@@ -12,7 +12,7 @@ class FinancingTypeControllerTest extends RESTControllerTestCase
     public string $modelClass = FinancingType::class;
     public string $route = 'administrate.financing-types';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'types',
         'edit'  => 'type',
     ];

@@ -12,7 +12,7 @@ class PaymentControllerTest extends RESTControllerTestCase
     public string $modelClass = Payment::class;
     public string $route = 'administrate.payments';
 
-    public array $props = [
+    public array $pageProps = [
         'index' => 'payments',
         'edit'  => 'payment',
     ];

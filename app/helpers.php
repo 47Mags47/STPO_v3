@@ -131,3 +131,15 @@ if (! function_exists('snakeCase')) {
         return \Illuminate\support\Str::snake($string);
     }
 }
+if (! function_exists('stringDotToSlash')) {
+    /**
+     * Заменяет точки в строке на слеши
+     *
+     * @param string $string
+     * @return string
+     */
+    function stringDotToSlash(string $string): string
+    {
+        return str_replace('.', '/', $string);
+    }
+}
