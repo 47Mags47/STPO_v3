@@ -8,9 +8,16 @@ use App\Http\Requests\Appeal\ThemUpdateRequest;
 use App\Models\Appeal\Them;
 use App\Models\Appeal\ThemGroup;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ThemController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Them::class);
+    }
     public function index()
     {
         return Inertia::render('appeal/thems/index', [

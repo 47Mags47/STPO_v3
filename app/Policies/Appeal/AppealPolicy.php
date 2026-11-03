@@ -30,28 +30,4 @@ class AppealPolicy
     {
         return $user->hasPermission('appeal_work');
     }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Appeal $appeal): bool
-    {
-        return $user->hasPermission('appeal_work');
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Appeal $appeal): bool
-    {
-        return $user->hasPermission('appeal_work');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Appeal $appeal): bool
-    {
-        return $user->hasPermission('appeal_work');
-    }
 }
