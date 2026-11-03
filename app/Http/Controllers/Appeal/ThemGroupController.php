@@ -6,14 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\ThemGroupStoreRequest;
 use App\Http\Requests\Appeal\ThemGroupUpdateRequest;
 use App\Models\Appeal\ThemGroup;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class ThemGroupController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(ThemGroup::class);
+    }
     public function index()
     {
         return Inertia::render('appeal/them-groups/index', [
-            'them_groups' => fn() => ThemGroup::getResource(),
+            'them-groups' => fn() => ThemGroup::getResource(),
         ]);
     }
 
