@@ -25,5 +25,5 @@ class AppealControllerTest extends RESTControllerTestCase
     public bool $hasDestroy = false;
 
     // HACK доделать (задачи 274 - 276)
-    public bool $hasStore = false;
+    public bool $hasStore = true;
 }

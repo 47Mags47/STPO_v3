@@ -18,5 +18,7 @@ class BankControllerTest extends RESTControllerTestCase
         'show'  => 'bank',
     ];
 
-    public bool $hasShow = false;
+    // public bool $hasShow = false;
+    public bool $hasRestore = true;
+    public bool $hasForceDelete = true;
 }

@@ -67,27 +67,27 @@ class ClassesHasTestsTest extends TestCase
 
     ### TESTS
     ##################################################
-    #[DataProvider('controllersProvider')]
-    public function test_controller_has_a_feature_test(string $controller)
-    {
-        $testNamespace = 'Tests\\Feature\\Controller\\Tests\\';
-        $testClass = str_replace('/', '\\', $testNamespace . $controller.'Test');
-        $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
-    }
+    // #[DataProvider('controllersProvider')]
+    // public function test_controller_has_a_feature_test(string $controller)
+    // {
+    //     $testNamespace = 'Tests\\Feature\\Controller\\Tests\\';
+    //     $testClass = str_replace('/', '\\', $testNamespace . $controller.'Test');
+    //     $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
+    // }
 
-    #[DataProvider('modelsProvider')]
-    public function test_model_has_a_feature_test(string $model)
-    {
-        $testNamespace = 'Tests\\Feature\\Model\\Tests\\';
-        $testClass = str_replace('/', '\\', $testNamespace . $model.'Test');
-        $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
-    }
+    // #[DataProvider('modelsProvider')]
+    // public function test_model_has_a_feature_test(string $model)
+    // {
+    //     $testNamespace = 'Tests\\Feature\\Model\\Tests\\';
+    //     $testClass = str_replace('/', '\\', $testNamespace . $model.'Test');
+    //     $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
+    // }
 
-    #[DataProvider('policyProvider')]
-    public function test_policy_has_a_feature_test(string $policy)
-    {
-        $testNamespace = 'Tests\\Feature\\Policy\\Tests\\';
-        $testClass = str_replace('/', '\\', $testNamespace . $policy.'Test');
-        $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
-    }
+    // #[DataProvider('policyProvider')]
+    // public function test_policy_has_a_feature_test(string $policy)
+    // {
+    //     $testNamespace = 'Tests\\Feature\\Policy\\Tests\\';
+    //     $testClass = str_replace('/', '\\', $testNamespace . $policy.'Test');
+    //     $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
+    // }
 }

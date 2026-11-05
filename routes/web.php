@@ -3,7 +3,6 @@
 use App\Models\Administrate\Division;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 
 // DEV
 if (config('app.env') === 'local') {
@@ -97,7 +96,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
             Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
             Route::resource('/payments',                                App\Http\Controllers\Administrate\PaymentController::class)->except('show');
-            Route::resource('/banks',                                   App\Http\Controllers\Administrate\BankController::class)->except('show');
+            Route::allResource('/banks',                                   App\Http\Controllers\Administrate\BankController::class);
             Route::resource('/financing-types',                         App\Http\Controllers\Administrate\FinancingTypeController::class)->except('show');
             Route::resource('/laws',                                    App\Http\Controllers\Administrate\LawController::class)->except('show');
         });
