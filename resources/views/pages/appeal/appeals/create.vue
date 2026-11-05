@@ -15,7 +15,7 @@ export default{
     :inputs="[
         {
             type: 'selectPopup',
-            name: 'theme',
+            name: 'theme_id',
             label: 'Тема',
             caption: 'Темы',
             hasSearchInput: true,

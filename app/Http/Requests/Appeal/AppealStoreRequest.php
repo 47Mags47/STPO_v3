@@ -17,7 +17,7 @@ class AppealStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'theme' => ['required', 'exists:' . Them::class .',id'],
+            'theme_id' => ['required', 'exists:' . Them::class .',id'],
             'comment' => ['required', 'string', 'min:1', 'max:255']
         ];
     }
