@@ -12,7 +12,7 @@ class LawControllerTest extends RESTControllerTestCase
     public string $modelClass = Law::class;
     public string $route = 'administrate.laws';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'laws',
         'edit'  => 'law',
     ];

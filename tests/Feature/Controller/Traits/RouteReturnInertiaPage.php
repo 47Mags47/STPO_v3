@@ -4,8 +4,50 @@ namespace Tests\Feature\Controller\Traits;
 
 use Inertia\Testing\AssertableInertia as Assert;
 
-trait ControllerRESTMethodReturnInertiaPage
+trait RouteReturnInertiaPage
 {
+    ### Settings
+    ##################################################
+    // Inertia Компоненты страниц
+    public array $pageComponents = [
+        'index'     => null,
+        'create'    => null,
+        'show'      => null,
+        'edit'      => null
+    ];
+
+    ### Methods
+    ##################################################
+    protected function getIndexPageComponent(): string
+    {
+        return $this->pageComponents['index'] !== null
+            ? stringDotToSlash($this->pageComponents['index'])
+            : stringDotToSlash($this->route) . '/index';
+    }
+
+    protected function getCreatePageComponent(): string
+    {
+        return $this->pageComponents['create'] !== null
+            ? stringDotToSlash($this->pageComponents['create'])
+            : stringDotToSlash($this->route) . '/create';
+    }
+
+    protected function getShowPageComponent(): string
+    {
+        return $this->pageComponents['show'] !== null
+            ? stringDotToSlash($this->pageComponents['show'])
+            : stringDotToSlash($this->route) . '/show';
+    }
+
+    protected function getEditPageComponent(): string
+    {
+        return $this->pageComponents['edit'] !== null
+            ? stringDotToSlash($this->pageComponents['edit'])
+            : stringDotToSlash($this->route) . '/edit';
+    }
+
+    ### Tests
+    ##################################################
     public function test_route_return_inertia_page__index()
     {
         $this->checkIndexMethodExist();

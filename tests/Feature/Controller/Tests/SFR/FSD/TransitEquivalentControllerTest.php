@@ -13,7 +13,7 @@ class TransitEquivalentControllerTest extends RESTControllerTestCase
     public string $modelClass = TransitEquivalent::class;
     public string $route = 'sfr.fsd.transit-equivalents';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'equivalents'
     ];
 

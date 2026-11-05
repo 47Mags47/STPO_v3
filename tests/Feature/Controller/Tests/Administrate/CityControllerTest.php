@@ -12,7 +12,7 @@ class CityControllerTest extends RESTControllerTestCase
     public string $modelClass = City::class;
     public string $route = 'administrate.cities';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'cities',
         'edit'  => 'city',
     ];

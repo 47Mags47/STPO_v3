@@ -15,7 +15,7 @@ class TransitFileControllerTest extends RESTControllerTestCase
     public string $modelClass = TransitFile::class;
     public string $route = 'sfr.fsd.transit-files';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'files',
     ];
 

@@ -236,7 +236,7 @@ abstract class TestCase extends BaseTestCase
         return User::factory()->create();
     }
 
-    protected function createTestRecord(): BaseModel
+    protected function getModelFactory()
     {
         if (!method_exists($this->modelClass, 'factory'))
             $this->markTestSkipped($this->modelClass . ' не имеет метода factory');
@@ -244,19 +244,17 @@ abstract class TestCase extends BaseTestCase
         if ($this->modelClass::getGuessNames('factory'))
             $this->markTestSkipped('Не найдена фабрика для ' . $this->modelClass);
 
-        return $this->modelClass::factory()->create();
+        return $this->modelClass::factory();
     }
 
-    protected function createTestData(): array
+    public function createTestRecord(): BaseModel
     {
-        if (!method_exists($this->modelClass, 'factory'))
-            $this->markTestSkipped($this->modelClass . ' не имеет метода factory');
+        return $this->getModelFactory()->create();
+    }
 
-        if ($this->modelClass::getGuessNames('factory'))
-            $this->markTestSkipped('Не найдена фабрика для ' . $this->modelClass);
-
-
-        return $this->modifySendData($this->modelClass::factory()->make()->getAttributes());
+    public function createTestData(): array
+    {
+        return $this->modifySendData($this->getModelFactory()->make()->getAttributes());
     }
 
     ##################################################

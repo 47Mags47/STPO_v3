@@ -12,7 +12,7 @@ class AppealControllerTest extends RESTControllerTestCase
     public string $modelClass = Appeal::class;
     public string $route = 'appeal.appeals';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'appeals',
         'show'  => 'appeal',
     ];
@@ -21,7 +21,7 @@ class AppealControllerTest extends RESTControllerTestCase
     public bool $hasUpdate = false;
     public bool $hasDestroy = false;
 
-    // HACK доделать
+    // HACK доделать (задачи 274 - 276)
     public bool $hasShow = false;
     public bool $hasStore = false;
 }

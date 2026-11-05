@@ -13,7 +13,7 @@ class ASPCategoryControllerTest extends RESTControllerTestCase
     public string $modelClass = ASPPaymentCategory::class;
     public string $route = 'sfr.fsd.asp-payment-categories';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'categories',
         'edit'  => 'category',
     ];

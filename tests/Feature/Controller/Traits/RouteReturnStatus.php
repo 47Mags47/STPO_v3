@@ -2,8 +2,23 @@
 
 namespace Tests\Feature\Controller\Traits;
 
-trait ControllerRESTMethodReturnStatus
+trait RouteReturnStatus
 {
+    ### Settings
+    ##################################################
+    // Статусы ответов
+    public int $indexResponseStatus         = 200;
+    public int $createResponseStatus        = 200;
+    public int $storeResponseStatus         = 302;
+    public int $showResponseStatus          = 200;
+    public int $editResponseStatus          = 200;
+    public int $updateResponseStatus        = 302;
+    public int $destroyResponseStatus       = 302;
+    public int $restoreResponseStatus       = 302;
+    public int $forceDeleteResponseStatus   = 302;
+
+    ### Tests
+    ##################################################
     public function test_route_return_necessary_status__index()
     {
         $this->checkIndexMethodExist();

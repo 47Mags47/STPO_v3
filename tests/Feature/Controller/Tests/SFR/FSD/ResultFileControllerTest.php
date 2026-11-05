@@ -17,7 +17,7 @@ class ResultFileControllerTest extends RESTControllerTestCase
     public string $modelClass = ResultFile::class;
     public string $route = 'sfr.fsd.result-files';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'files',
     ];
 
@@ -27,7 +27,7 @@ class ResultFileControllerTest extends RESTControllerTestCase
     public bool $hasUpdate = false;
     public bool $hasDestroy = false;
 
-    public string $storeFlashMessage = 'Формирование файла запущено';
+    public ?string $storeFlashMessage = 'Формирование файла запущено';
 
     #[Override]
     public function modifyCheckData(array $data): array

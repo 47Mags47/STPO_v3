@@ -12,9 +12,10 @@ class BankControllerTest extends RESTControllerTestCase
     public string $modelClass = Bank::class;
     public string $route = 'administrate.banks';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'banks',
         'edit'  => 'bank',
+        'show'  => 'bank',
     ];
 
     public bool $hasShow = false;

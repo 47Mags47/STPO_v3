@@ -13,7 +13,7 @@ class SFRCategoryControllerTest extends RESTControllerTestCase
     public string $modelClass = SFRPaymentCategory::class;
     public string $route = 'sfr.fsd.sfr-payment-categories';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'categories',
         'edit'  => 'category'
     ];

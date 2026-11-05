@@ -69,7 +69,7 @@ implements PolicyTestCaseInterface
         return class_exists($this->modelClass::getGuessNames('policy'));
     }
 
-    protected function createTestRecord(): BaseModel
+    public function createTestRecord(): BaseModel
     {
         return $this->modelClass::factory()->create();
     }

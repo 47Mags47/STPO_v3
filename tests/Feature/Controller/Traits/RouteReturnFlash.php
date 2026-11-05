@@ -2,17 +2,65 @@
 
 namespace Tests\Feature\Controller\Traits;
 
-trait ControllerRESTMethodReturnFlash
+trait RouteReturnFlash
 {
-    public string $storeFlashMessage = 'Запись успешно создана';
-    public string $updateFlashMessage = 'Запись успешно обновлена';
-    public string $destroyFlashMessage = 'Запись удалена';
-    public string $restoreFlashMessage = 'Запись успешно восстановлена';
-    public string $forceDeleteFlashMessage = 'Запись безвозвратно удалена';
+    ### Settings
+    ##################################################
+    public ?string $storeFlashMessage        = 'Запись успешно создана';
+    public ?string $updateFlashMessage       = 'Запись успешно обновлена';
+    public ?string $destroyFlashMessage      = 'Запись удалена';
+    public ?string $restoreFlashMessage      = 'Запись успешно восстановлена';
+    public ?string $forceDeleteFlashMessage  = 'Запись безвозвратно удалена';
 
+    ### Methods
+    ##################################################
+    protected function checkStoreFlashExist(): bool
+    {
+        if($this->storeFlashMessage === null)
+            $this->markTestSkipped('Пропуск проверки flash store');
+
+        return $this->storeFlashMessage;
+    }
+
+    protected function checkUpdateFlashExist(): bool
+    {
+        if($this->updateFlashMessage === null)
+            $this->markTestSkipped('Пропуск проверки flash update');
+
+        return $this->updateFlashMessage;
+    }
+
+    protected function checkDestroyFlashExist(): bool
+    {
+        if($this->destroyFlashMessage === null)
+            $this->markTestSkipped('Пропуск проверки flash destroy');
+
+        return $this->destroyFlashMessage;
+    }
+
+    protected function checkRestoreFlashExist(): bool
+    {
+        if($this->restoreFlashMessage === null)
+            $this->markTestSkipped('Пропуск проверки flash restore');
+
+        return $this->restoreFlashMessage;
+    }
+
+    protected function checkForceDeleteFlashExist(): bool
+    {
+        if($this->forceDeleteFlashMessage === null)
+            $this->markTestSkipped('Пропуск проверки flash force delete');
+
+        return $this->forceDeleteFlashMessage;
+    }
+
+    ### Tests
+    ##################################################
     public function test_route_return_flash__store()
     {
         $this->checkStoreMethodExist();
+        $this->checkStoreFlashExist();
+
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
 
@@ -26,6 +74,8 @@ trait ControllerRESTMethodReturnFlash
     public function test_route_return_flash__update()
     {
         $this->checkUpdateMethodExist();
+        $this->checkUpdateFlashExist();
+
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
 
@@ -39,6 +89,8 @@ trait ControllerRESTMethodReturnFlash
     public function test_route_return_flash__destroy()
     {
         $this->checkDestroyMethodExist();
+        $this->checkDestroyFlashExist();
+
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
 
@@ -51,6 +103,8 @@ trait ControllerRESTMethodReturnFlash
     public function test_route_return_flash__restore()
     {
         $this->checkRestoreMethodExist();
+        $this->checkRestoreFlashExist();
+
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
 
@@ -62,6 +116,8 @@ trait ControllerRESTMethodReturnFlash
     public function test_route_return_flash__force_delete()
     {
         $this->checkForceDeleteMethodExist();
+        $this->checkForceDeleteFlashExist();
+
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
 
