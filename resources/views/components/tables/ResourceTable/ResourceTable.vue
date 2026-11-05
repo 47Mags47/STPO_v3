@@ -225,14 +225,14 @@ export default {
             const result = {};
 
             this.filters.forEach(({ name, type }) => {
-                let value;
+                let value
 
                 switch (type) {
                     case 'multiSelect':
                         value = formData
                             .getAll(`filters[${name}][]`)
-                            .map(Number);
-                        break;
+                            .map(Number)
+                        break
 
                     case 'numberBetween':
                     case 'dateFilter':
@@ -243,15 +243,25 @@ export default {
                         break;
 
                     case 'singleSelect':
-                        value = formData.get(`filters[${name}]`);
-                        break;
+                        value = formData.get(`filters[${name}]`)
+                        break
 
                     case 'checkbox':
-                        value = formData.has(`filters[${name}]`);
-                        break;
+                        value = formData.has(`filters[${name}]`)
+                        break
+
+                    case 'selectPopup':
+                        value = formData.get(`filters[${name}]`)
+                        break
+
+                    case 'multiSelectPopup':
+                        value = formData
+                            .getAll(`filters[${name}][]`)
+                            .map(Number)
+                        break
 
                     default:
-                        return;
+                        return
                 }
 
                 result[type] ??= { value: {} };
