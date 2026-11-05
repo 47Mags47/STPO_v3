@@ -97,6 +97,11 @@ export default {
 
         messageSendedHandler(message) {
             this.messages = [message, ...this.messages]
+            this.$nextTick(() => {
+                this.$refs.chatMessagesWrapperRef.scrollTo({
+                    top: 0,
+                });
+            });
         },
     },
 
@@ -110,7 +115,7 @@ export default {
             })
 
         let container = this.$refs.chatMessagesWrapperRef
-        container.scrollTop = container.scrollHeight;
+        container.scrollTop = 0
     },
 
     beforeUnmount() {

@@ -35,7 +35,6 @@ export default {
             try {
                 let data = {}
 
-
                 if(this.message.trim() === '' && this.files.length === 0)
                     return
 
