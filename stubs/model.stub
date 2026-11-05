@@ -15,6 +15,12 @@ class {{ class }} extends BaseModel
 
     protected $fillable = [];
 
+    public array $searchCollumns = [
+        'code',
+        'name',
+        'number'
+    ];
+
     ### Методы
     ##################################################
     //

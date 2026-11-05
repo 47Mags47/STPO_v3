@@ -76,6 +76,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         ];
     }
 
+    public array $searchCollumns = [
+        'first_name',
+        'last_name',
+        'middle_name',
+        'full_name',
+        'email',
+        'phone',
+    ];
+
     ### Методы
     ##################################################
     public function getCurrentDivision(): Division|null

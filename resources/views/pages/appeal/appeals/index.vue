@@ -111,6 +111,7 @@ export default {
                 caption: 'Отправители',
                 placeholder: 'Отправитель: выбрано -',
                 url: route('api.appeal.senders.index'),
+                hasSearchInput: true,
                 columns: [
                     {
                         title: 'Фамилия',
