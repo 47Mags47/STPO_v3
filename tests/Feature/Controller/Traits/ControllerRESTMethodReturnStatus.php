@@ -4,7 +4,7 @@ namespace Tests\Feature\Controller\Traits;
 
 trait ControllerRESTMethodReturnStatus
 {
-    public function test_controller_method_return_necessary_status__index()
+    public function test_route_return_necessary_status__index()
     {
         $this->checkIndexMethodExist();
 
@@ -14,7 +14,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->indexResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__create()
+    public function test_route_return_necessary_status__create()
     {
         $this->checkCreateMethodExist();
 
@@ -24,7 +24,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->createResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__store()
+    public function test_route_return_necessary_status__store()
     {
         $this->checkStoreMethodExist();
 
@@ -37,7 +37,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->storeResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__show() {
+    public function test_route_return_necessary_status__show() {
         $this->checkShowMethodExist();
 
         $this->disableAuthMiddleware();
@@ -48,7 +48,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->showResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__edit() {
+    public function test_route_return_necessary_status__edit() {
         $this->checkEditMethodExist();
 
         $this->disableAuthMiddleware();
@@ -59,7 +59,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->editResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__update() {
+    public function test_route_return_necessary_status__update() {
         $this->checkUpdateMethodExist();
 
         $this->disableAuthMiddleware();
@@ -71,7 +71,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->updateResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__destroy()
+    public function test_route_return_necessary_status__destroy()
     {
         $this->checkDestroyMethodExist();
 
@@ -83,7 +83,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->destroyResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__restore()
+    public function test_route_return_necessary_status__restore()
     {
         $this->checkRestoreMethodExist();
 
@@ -95,7 +95,7 @@ trait ControllerRESTMethodReturnStatus
         $response->assertStatus($this->restoreResponseStatus);
     }
 
-    public function test_controller_method_return_necessary_status__force_delete()
+    public function test_route_return_necessary_status__force_delete()
     {
         $this->checkForceDeleteMethodExist();
 

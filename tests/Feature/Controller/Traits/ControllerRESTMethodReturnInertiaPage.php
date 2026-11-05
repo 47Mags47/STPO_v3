@@ -6,7 +6,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 trait ControllerRESTMethodReturnInertiaPage
 {
-    public function test_controller_method_index_return_inertia_page()
+    public function test_route_return_inertia_page__index()
     {
         $this->checkIndexMethodExist();
 
@@ -16,7 +16,7 @@ trait ControllerRESTMethodReturnInertiaPage
         $response->assertInertia(fn(Assert $page) => $page->component($this->getIndexPageComponent()));
     }
 
-    public function test_controller_method_create_return_inertia_page()
+    public function test_route_return_inertia_page__create()
     {
         $this->checkCreateMethodExist();
 
@@ -26,7 +26,7 @@ trait ControllerRESTMethodReturnInertiaPage
         $response->assertInertia(fn(Assert $page) => $page->component($this->getCreatePageComponent()));
     }
 
-    public function test_controller_method_show_return_inertia_page()
+    public function test_route_return_inertia_page__show()
     {
         $this->checkShowMethodExist();
 
@@ -39,7 +39,7 @@ trait ControllerRESTMethodReturnInertiaPage
         $response->assertInertia(fn(Assert $page) => $page->component($this->getShowPageComponent()));
     }
 
-    public function test_controller_method_edit_return_inertia_page()
+    public function test_route_return_inertia_page__edit()
     {
         $this->checkEditMethodExist();
         $this->disableAuthMiddleware();

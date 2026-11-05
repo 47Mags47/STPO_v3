@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Controller\Cases\ControllerTestCase;
 use Tests\Feature\Controller\Interfaces\RESTControllerTestCaseInterface;
 use Tests\Feature\Controller\Traits\ControllerHasRESTMethod;
+use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnFlash;
 use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnInertiaPage;
 use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnInertiaProp;
 use Tests\Feature\Controller\Traits\ControllerRESTMethodReturnRedirect;
@@ -24,6 +25,7 @@ implements RESTControllerTestCaseInterface
     use ControllerRESTMethodReturnStatus;
     use ControllerRESTMethodReturnInertiaPage;
     use ControllerRESTMethodReturnRedirect;
+    use ControllerRESTMethodReturnFlash;
     use ControllerRESTMethodReturnInertiaProp;
     use ControllerRESTMethodsRecordActions;
 

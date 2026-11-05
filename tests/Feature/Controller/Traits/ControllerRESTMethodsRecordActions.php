@@ -6,7 +6,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 trait ControllerRESTMethodsRecordActions
 {
-    public function test_controller_method_store_create_record()
+    public function test_route_performs_an_action__store()
     {
         $this->checkStoreMethodExist();
         $this->disableAuthMiddleware();
@@ -18,7 +18,7 @@ trait ControllerRESTMethodsRecordActions
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
-    public function test_controller_method_show_return_record()
+    public function test_route_performs_an_action__show()
     {
         $this->checkShowMethodExist();
         $this->disableAuthMiddleware();
@@ -41,7 +41,7 @@ trait ControllerRESTMethodsRecordActions
         );
     }
 
-    public function test_controller_method_update_edit_record()
+    public function test_route_performs_an_action__update()
     {
         $this->checkUpdateMethodExist();
         $this->disableAuthMiddleware();
@@ -55,7 +55,7 @@ trait ControllerRESTMethodsRecordActions
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
-    public function test_controller_method_destroy_delete_record() {
+    public function test_route_performs_an_action__destroy() {
         $this->checkDestroyMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -69,7 +69,7 @@ trait ControllerRESTMethodsRecordActions
             $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
     }
 
-    public function test_controller_method_restore_restore_record() {
+    public function test_route_performs_an_action__restore() {
         $this->checkRestoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -81,7 +81,7 @@ trait ControllerRESTMethodsRecordActions
         $this->assertDatabaseHas($this->modelClass::getTableName(), array_merge($record->getAttributes(), ['deleted_at' => null]));
     }
 
-    public function test_controller_method_force_delete_delete_record() {
+    public function test_route_performs_an_action__force_delete() {
         $this->checkForceDeleteMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();

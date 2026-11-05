@@ -5,7 +5,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 trait ControllerRESTMethodReturnInertiaProp
 {
-    public function test_controller_method_index_return_inertia_prop()
+    public function test_route_return_inertia_prop__index()
     {
         $this->checkIndexMethodExist();
 
@@ -15,7 +15,7 @@ trait ControllerRESTMethodReturnInertiaProp
         $response->assertInertia(fn(Assert $page) => $page->has($this->pageProps['index']));
     }
 
-    public function test_controller_method_show_return_prop()
+    public function test_route_return_inertia_prop__show()
     {
         $this->checkShowMethodExist();
 
@@ -28,7 +28,7 @@ trait ControllerRESTMethodReturnInertiaProp
         $response->assertInertia(fn(Assert $page) => $page->has($this->pageProps['show']));
     }
 
-    public function test_controller_method_edit_return_prop()
+    public function test_route_return_inertia_prop_edit()
     {
         $this->checkEditMethodExist();
 
@@ -41,7 +41,7 @@ trait ControllerRESTMethodReturnInertiaProp
         $response->assertInertia(fn(Assert $page) => $page->has($this->pageProps['edit']));
     }
 
-    public function test_controller_index_prop_has_data()
+    public function test_route_return_prop_has_data__index()
     {
         $this->checkIndexMethodExist();
 
