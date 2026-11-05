@@ -56,7 +56,7 @@ class AppealController extends Controller
         $appeal = Appeal::create(collect($request->validated())->merge([
             'status_id' => Status::byCode('new')->id,
             'sender_id' => user()->id,
-            'them_id' => $request->input('theme'),
+            'them_id' => $request->input('theme_id'),
             'chat_id' => $chat->id,
             'comment' => $request->input('comment')
         ])->toArray());

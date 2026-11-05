@@ -1,12 +1,11 @@
 <script>
 import { router } from '@inertiajs/vue3';
+import { axiosLoading } from '@/helpers/axiosLoading';
 import Ico from './Ico.vue';
-import { silentRoutes } from '@/silentRoutes'
+import { silentRoutes } from '@/silentRoutes';
 
 export default {
-    components: {
-        Ico,
-    },
+    components: { Ico },
 
     data() {
         return {
@@ -15,27 +14,37 @@ export default {
     },
 
     mounted() {
-        this.unsubscribeStart = router.on('start', (event) => {
-            const routeObj = event.detail.visit
+        this.unsubscribeStart = router.on('start', event => {
+            const routeObj = event.detail.visit;
 
             const isSilentRoute = silentRoutes.some(silentRoute => {
-                return new RegExp(`^${silentRoute.url}$`).test(routeObj.url.href) && silentRoute.method === routeObj.method
-            })
+                return new RegExp(`^${silentRoute.url}$`).test(routeObj.url.href)
+                    && silentRoute.method === routeObj.method;
+            });
 
-            if (isSilentRoute)
-                return
-
-            this.isLoading = true
+            if (!isSilentRoute)
+                this.isLoading = true;
         });
 
         this.unsubscribeFinish = router.on('finish', () => {
-            this.isLoading = false
+            this.isLoading = false;
         });
+
+        axiosLoading.onStart = () => {
+            this.isLoading = true;
+        };
+
+        axiosLoading.onFinish = () => {
+            this.isLoading = false;
+        };
     },
 
     unmounted() {
         this.unsubscribeStart?.();
         this.unsubscribeFinish?.();
+
+        axiosLoading.onStart = null;
+        axiosLoading.onFinish = null;
     },
 };
 </script>

@@ -421,7 +421,7 @@ export default {
                 v-if="hasSearchInput"
                 :form="id"
                 class="string-input "
-                placeholder="Поиск (номер).."
+                placeholder="Поиск.."
                 name="search[appealId]"
                 :on-input="inputHandler"
             />

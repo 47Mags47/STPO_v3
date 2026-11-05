@@ -1,23 +1,9 @@
 <script>
 import { ResourceForm } from "@components";
-import { usePage } from "@inertiajs/vue3";
 
 export default{
     components: {
         ResourceForm
-    },
-
-    data() {
-        return {
-            selectedGroupId: null,
-        }
-    },
-
-    computed: {
-        groups:  () => usePage().props.them_GROUPBY_group.data.map(item => item.group),
-        getThems() {
-            return usePage().props.them_GROUPBY_group.data.find(item => item.group.id === this.selectedGroupId)?.thems ?? []
-        }
     },
 }
 </script>
@@ -28,21 +14,33 @@ export default{
     :action="route('appeal.appeals.store')"
     :inputs="[
         {
-            type: 'select',
-            name: 'group',
-            label: 'Раздел',
-            hasSearch: false,
-            options: groups,
-            onSelect: (option) => {
-                selectedGroupId = option.id
-            }
-        },
-        {
-            type: 'select',
-            name: 'theme',
-            options: getThems,
+            type: 'selectPopup',
+            name: 'theme_id',
             label: 'Тема',
-            hasSearch: false,
+            caption: 'Темы',
+            hasSearchInput: true,
+            url: route('api.appeal.thems.index'),
+            columns: [
+                {
+                    title: 'Раздел',
+                    dataIndex: 'group.name',
+                    width: '180px',
+                    name: 'group',
+                    rowspan: (row, index, data) => {
+                        const previous = data[index - 1]
+
+                        if (previous?.group.name === row.group.name) {
+                            return 0
+                        }
+
+                        return data.filter(item => item.group.name === row.group.name).length
+                    },
+                },
+                {
+                    title: 'Название',
+                    dataIndex: 'name',
+                },
+            ],
         },
         {
             type: 'text',

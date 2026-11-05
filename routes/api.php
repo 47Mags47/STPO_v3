@@ -10,6 +10,7 @@ Route::middleware(['web', 'auth'])->name('api.')->group(function () {
 
     Route::name('appeal.')->prefix('appeal')->group(function () {
         Route::resource('senders', App\Http\Controllers\Appeal\SendersApiController::class)->only('index');
+        Route::resource('thems',   App\Http\Controllers\Appeal\ThemApiController::class)->only('index');
     });
 });
 

@@ -73,6 +73,7 @@ export default {
         :columns="[
             {
                 title: 'Дата',
+                type: 'date',
                 dataIndex: 'in_date',
                 rowspan: (row, index, data) => {
                     const previous = data[index - 1]
