@@ -53,6 +53,10 @@ export default {
         onDateUpdate: {
             type: Function,
             default: () => {}
+        },
+        onInputClick: {
+            type: Function,
+            default: () => {}
         }
     },
     data() {
@@ -146,6 +150,9 @@ export default {
                 this.popupCloseHandler()
             }
         },
+        inputClickHandler() {
+            this.onInputClick(this.$data)
+        },
 
         // MATH
         getFormatted(date) {
@@ -201,6 +208,7 @@ export default {
             :onFromUpdate="updateDateFrom"
             :onToUpdate="updateDateTo"
             :on-popup-click="popupButtonClickHandler"
+            :on-input-click="inputClickHandler"
             :startInterval="start"
             :endInterval="end"
         />
@@ -211,6 +219,7 @@ export default {
             :value="getValue"
             :on-update="updateDate"
             :on-popup-click="popupButtonClickHandler"
+            :on-input-click="inputClickHandler"
             :startInterval="start"
             :endInterval="end"
         />

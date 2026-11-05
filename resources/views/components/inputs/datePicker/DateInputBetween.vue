@@ -50,6 +50,10 @@ export default {
             type: Function,
             default: () => {}
         },
+        onInputClick: {
+            type: Function,
+            default: () => {}
+        }
     },
     data() {
         return {
@@ -88,7 +92,7 @@ export default {
 </script>
 
 <template>
-    <div class="date-input-between-wrapper">
+    <div class="date-input-between-wrapper group" @click.stop="onInputClick">
         <div class="date-input-wrapper-from flex items-center">
             <input
                 type="date"
@@ -100,6 +104,8 @@ export default {
                 :value="selectedDateFrom !== null ? selectedDateFrom : null"
                 @blur="inputFromBlurHandler"
             />
+
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
         </div>
 
         <div class="date-input-wrapper-to flex items-center">
@@ -113,10 +119,12 @@ export default {
                 :value="selectedDateTo !== null ? selectedDateTo : null"
                 @blur="inputToBlurHandler"
             />
+
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
         </div>
 
-        <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click.stop="onPopupClick" />
+        <div class="ico-wrapper w-[16px] mr-2! cursor-pointer shrink-0">
+            <Ico type="calendar" class="ico" @click.stop="onPopupClick" />
         </div>
     </div>
 </template>
@@ -130,21 +138,13 @@ export default {
     width: 100%
     padding: 4px 6px
 
+    .ico
+        color: black
+
     .date-input-wrapper-from
         flex: 1
         height: 100%
         position: relative
-
-        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
-        &::after
-            content: ""
-            position: absolute
-            background: var(--background-color)
-            top: 0
-            right: 0
-
-            width: 25px
-            height: 100%
 
         .custom-date-input
             width: 100%
@@ -154,14 +154,6 @@ export default {
         flex: 1
         height: 100%
         position: relative
-
-        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
-        &::after
-            content: ""
-            position: absolute
-            background: var(--background-color)
-            top: 0
-            right: 0
 
             width: 25px
             height: 100%

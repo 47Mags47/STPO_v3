@@ -19,10 +19,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        onClick: {
-            type: Function,
-            default: () => {}
-        },
         selectedDate: {
             type: [String, Object],
             default: null,
@@ -35,6 +31,16 @@ export default {
             type: [Object, String],
             default: null
         },
+
+        // HANDLERS
+        onClick: {
+            type: Function,
+            default: () => {}
+        },
+        onInputClick: {
+            type: Function,
+            default: () => {}
+        }
     },
     computed: {
         now: () => DateTime.now(),
