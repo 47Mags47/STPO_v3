@@ -2,6 +2,7 @@
 import { usePage, router } from '@inertiajs/vue3';
 
 import { Chat, Ico, BlueButton, RedButton } from '@components'
+import { DateTime } from 'luxon';
 
 export default {
     components: {
@@ -13,6 +14,7 @@ export default {
     data() {
         return {
             status: {},
+            DateTime
         }
     },
 
@@ -88,7 +90,7 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
-                <span> {{ appeal.created }} </span>
+                <span> {{ DateTime.fromISO(appeal.created).setLocale('ru').toFormat('dd.MM.yyyy HH:mm') }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>
