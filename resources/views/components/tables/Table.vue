@@ -155,5 +155,7 @@ export default {
                         background: var(--table-row-background-color)
 
                     &:hover
-                        background: var(--table-row-background-color-hover)
+                        td:not([rowspan])
+                            background: var(--table-row-background-color-hover)
+
 </style>
