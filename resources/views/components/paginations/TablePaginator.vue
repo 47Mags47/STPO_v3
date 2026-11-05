@@ -93,8 +93,18 @@ export default {
                 : () => {
                     if (page.trim() === '') return;
 
+                    let pageNumber = Number(page)
+                    if (page > this.last_page) {
+                        pageNumber = this.last_page
+                        this.inputText = this.last_page
+                    }
+                    else if (page < 1) {
+                        pageNumber = 1
+                        this.inputText = 1
+                    }
+
                     router.get(
-                        this.generateLink(Number(page)),
+                        this.generateLink(pageNumber),
                         {},
                         {
                             preserveState: true,
