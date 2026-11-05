@@ -88,7 +88,7 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
-                <span> {{ appeal.created }} </span>
+                <span> {{ appeal.created_at }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>

@@ -72,7 +72,7 @@ export default {
 
         if (hasPermission('appeal_work')) {
             Echo.private('appeals')
-                .listen('.appeal.created', (data) => {
+                .listen('.appeal.created_at', (data) => {
                     this.appealList.unshift(data)
                 });
         }
@@ -149,7 +149,7 @@ export default {
             {
                 title: 'Создана',
                 type: 'datetime',
-                dataIndex: 'created',
+                dataIndex: 'created_at',
                 width: '135px',
             },
             {

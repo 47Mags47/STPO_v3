@@ -31,7 +31,12 @@ trait ControllerRESTMethodsRecordActions
             fn(Assert $page) => $page->has(
                 $this->pageProps['show'] . '.data',
                 function (Assert $page) use ($record) {
-                    foreach ($record->toResource()->toArray(request()) as $key => $value) {
+                    $expected = json_decode(
+                        $record->toResource()->toJson(),
+                        true
+                    );
+
+                    foreach ($expected as $key => $value) {
                         $page->where($key, $value);
                     }
 
@@ -55,7 +60,8 @@ trait ControllerRESTMethodsRecordActions
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
-    public function test_route_performs_an_action__destroy() {
+    public function test_route_performs_an_action__destroy()
+    {
         $this->checkDestroyMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -69,7 +75,8 @@ trait ControllerRESTMethodsRecordActions
             $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
     }
 
-    public function test_route_performs_an_action__restore() {
+    public function test_route_performs_an_action__restore()
+    {
         $this->checkRestoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -81,7 +88,8 @@ trait ControllerRESTMethodsRecordActions
         $this->assertDatabaseHas($this->modelClass::getTableName(), array_merge($record->getAttributes(), ['deleted_at' => null]));
     }
 
-    public function test_route_performs_an_action__force_delete() {
+    public function test_route_performs_an_action__force_delete()
+    {
         $this->checkForceDeleteMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();

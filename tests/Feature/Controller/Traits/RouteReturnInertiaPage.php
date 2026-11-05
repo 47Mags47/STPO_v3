@@ -20,28 +20,28 @@ trait RouteReturnInertiaPage
     ##################################################
     protected function getIndexPageComponent(): string
     {
-        return $this->pageComponents['index'] !== null
+        return array_key_exists('index', $this->pageComponents)
             ? stringDotToSlash($this->pageComponents['index'])
             : stringDotToSlash($this->route) . '/index';
     }
 
     protected function getCreatePageComponent(): string
     {
-        return $this->pageComponents['create'] !== null
+        return array_key_exists('create', $this->pageComponents)
             ? stringDotToSlash($this->pageComponents['create'])
             : stringDotToSlash($this->route) . '/create';
     }
 
     protected function getShowPageComponent(): string
     {
-        return $this->pageComponents['show'] !== null
+        return array_key_exists('show', $this->pageComponents)
             ? stringDotToSlash($this->pageComponents['show'])
             : stringDotToSlash($this->route) . '/show';
     }
 
     protected function getEditPageComponent(): string
     {
-        return $this->pageComponents['edit'] !== null
+        return array_key_exists('edit', $this->pageComponents)
             ? stringDotToSlash($this->pageComponents['edit'])
             : stringDotToSlash($this->route) . '/edit';
     }
