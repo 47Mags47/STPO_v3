@@ -7,7 +7,7 @@ use App\Models\SFR\FSD\SFRPaymentCategory;
 use Tests\Feature\Controller\Cases\RESTControllerTestCase;
 
 
-class SFRCategoryControllerTest extends RESTControllerTestCase
+class SFRPaymentCategoryControllerTest extends RESTControllerTestCase
 {
     public string $controllerClass = SFRCategoryController::class;
     public string $modelClass = SFRPaymentCategory::class;

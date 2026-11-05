@@ -3,9 +3,9 @@
 namespace App\Policies\SFR\FSD;
 
 use App\Models\Base\User;
-use App\Models\SFR\FSD\ASPPaymentCategory;
+use App\Models\SFR\FSD\SFRPaymentCategory;
 
-class SFRCategoryPolicy
+class SFRPaymentCategoryPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -24,17 +24,9 @@ class SFRCategoryPolicy
     }
 
     /**
-     * Determine whether the user can view model.
-     */
-    public function view(User $user): bool
-    {
-        return $user->hasPermission('FSD_administrator');
-    }
-
-    /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ASPPaymentCategory $category): bool
+    public function update(User $user, SFRPaymentCategory $category): bool
     {
         return $user->hasPermission('FSD_administrator');
     }
@@ -42,15 +34,7 @@ class SFRCategoryPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ASPPaymentCategory $category): bool
-    {
-        return $user->hasPermission('FSD_administrator');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, ASPPaymentCategory $category): bool
+    public function delete(User $user, SFRPaymentCategory $category): bool
     {
         return $user->hasPermission('FSD_administrator');
     }
