@@ -154,6 +154,8 @@ export default {
                     &:nth-child(even)
                         background: var(--table-row-background-color)
 
+                    td[rowspan]
+                        background: var(--table-row-background-color)
                     &:hover
                         td:not([rowspan])
                             background: var(--table-row-background-color-hover)
