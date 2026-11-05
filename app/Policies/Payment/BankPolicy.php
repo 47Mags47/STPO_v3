@@ -2,7 +2,6 @@
 
 namespace App\Policies\Payment;
 
-use App\Models\Payment\;
 use App\Models\Base\User;
 
 class BankPolicy
