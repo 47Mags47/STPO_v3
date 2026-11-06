@@ -17,7 +17,37 @@ export default {
     data() {
         return {
             isLoading: false,
+            startedAt: null,
+            timerInterval: null,
+            timer: null
         };
+    },
+
+    methods: {
+        startTimer() {
+            this.stopTimer();
+
+            this.timer = 0;
+            this.startedAt = performance.now();
+
+            this.timerInterval = setInterval(() => {
+                this.timer = performance.now() - this.startedAt;
+            }, 10);
+
+            this.isLoading = true;
+        },
+
+        stopTimer() {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+            this.isLoading = false;
+        },
+    },
+
+    computed: {
+        formattedTime() {
+            return (this.timer / 1000).toFixed(2);
+        },
     },
 
     mounted() {
@@ -32,19 +62,23 @@ export default {
 
                 if (!isSilentRoute) {
                     this.isLoading = true;
+                    this.startTimer()
                 }
             });
 
             this.unsubscribeFinish = router.on('finish', () => {
                 this.isLoading = false;
+                this.stopTimer()
             });
         } else {
             axiosLoading.onStart = () => {
                 this.isLoading = true;
+                this.startTimer()
             };
 
             axiosLoading.onFinish = () => {
                 this.isLoading = false;
+                this.stopTimer()
             };
         }
     },
@@ -52,6 +86,7 @@ export default {
     unmounted() {
         this.unsubscribeStart?.();
         this.unsubscribeFinish?.();
+        clearInterval(this.timeInterval);
 
         if (!this.isGlobal) {
             axiosLoading.onStart = null;
@@ -68,17 +103,22 @@ export default {
         class="z-[10000] flex items-center justify-center
             bg-black/10 backdrop-blur-[1px]"
     >
-        <div class="relative size-24">
-            <div
-                class="absolute inset-0 rounded-full border-[6px]
-                    border-[var(--border-color)]"
-            ></div>
+        <div class="relative size-36 p-3! flex flex-col bg-black/40 rounded-xl">
+            <div class="relative w-full aspect-square">
+                <div
+                    class="absolute inset-0 rounded-full border-[6px]
+                        border-[var(--border-color)]"
+                ></div>
 
-            <div
-                class="absolute inset-0 animate-spin rounded-full
-                    border-[10px] border-transparent
-                    border-t-[var(--text-color)]"
-            ></div>
+                <div
+                    class="absolute inset-0 animate-spin rounded-full
+                        border-[10px] border-transparent
+                        border-t-white"
+                ></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-white! font-bold! text-xl!"> {{ formattedTime }} </span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
