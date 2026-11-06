@@ -19,7 +19,7 @@ export default{
             label: 'Тема',
             caption: 'Темы',
             hasSearchInput: true,
-            url: route('api.appeal.thems.index'),
+            url: route('api.appeal.themes.index'),
             columns: [
                 {
                     title: 'Раздел',

@@ -6,31 +6,32 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 trait ControllerRESTMethodsRecordActions
 {
-    public function test_controller_method_store_create_record()
+    public function test_route_performs_an_action__store()
     {
         $this->checkStoreMethodExist();
-        $this->disableAuthMiddleware();
 
         $data = $this->createTestData();
-        $this->post(route($this->route . '.store'), $data);
-
-        $this->assertDatabaseHas($this->modelClass::getTableName(), $data);
+        $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
+        $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
-    public function test_controller_method_show_return_record()
+    public function test_route_performs_an_action__show()
     {
         $this->checkShowMethodExist();
-        $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
-        $response = $this
-            ->get(route($this->route . '.show', [$this->getRouteParameterName() => $record]));
+        $response = $this->get(route($this->route . '.show', $this->getShowRouteParams($record)));
 
         $response->assertInertia(
             fn(Assert $page) => $page->has(
-                $this->props['show'] . '.data',
+                $this->pageProps['show'] . '.data',
                 function (Assert $page) use ($record) {
-                    foreach ($record->toResource()->toArray(request()) as $key => $value) {
+                    $expected = json_decode(
+                        $record->toResource()->toJson(),
+                        true
+                    );
+
+                    foreach ($expected as $key => $value) {
                         $page->where($key, $value);
                     }
 
@@ -40,26 +41,45 @@ trait ControllerRESTMethodsRecordActions
         );
     }
 
-    public function test_controller_method_update_edit_record()
+    public function test_route_performs_an_action__update()
     {
         $this->checkUpdateMethodExist();
-        $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
         $data = $this->createTestData();
 
-        $this->put(route($this->route . '.update', [$this->getRouteParameterName() => $record]), $data);
-
-        $this->assertDatabaseHas($this->modelClass::getTableName(), $data);
+        $this->put(route($this->route . '.update', $this->getUpdateRouteParams($record)), $data);
+        $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
-    public function test_controller_method_destroy_delete_record() {
+    public function test_route_performs_an_action__destroy()
+    {
         $this->checkDestroyMethodExist();
-        $this->disableAuthMiddleware();
 
         $record = $this->createTestRecord();
-        $this->delete(route($this->route . '.destroy', [$this->getRouteParameterName() => $record]));
+        $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
 
-        $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->toArray());
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($this->modelClass)))
+            $this->assertSoftDeleted($record);
+        else
+            $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
+    }
+
+    public function test_route_performs_an_action__restore()
+    {
+        $this->checkRestoreMethodExist();
+
+        $record = $this->createTestRecord();
+        $this->post(route($this->route . '.restore', $this->getRestoreRouteParams($record)));
+        $this->assertDatabaseHas($this->modelClass::getTableName(), array_merge($record->getAttributes(), ['deleted_at' => null]));
+    }
+
+    public function test_route_performs_an_action__force_delete()
+    {
+        $this->checkForceDeleteMethodExist();
+
+        $record = $this->createTestRecord();
+        $this->delete(route($this->route . '.force-delete', $this->getForceDeleteRouteParams($record)));
+        $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
     }
 }

@@ -8,14 +8,4 @@ interface RESTControllerTestCaseInterface
         get;
         set;
     }
-
-    public string $route {
-        get;
-        set;
-    }
-
-    public array $props {
-        get;
-        set;
-    }
 }

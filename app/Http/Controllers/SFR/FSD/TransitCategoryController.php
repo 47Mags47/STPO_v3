@@ -10,14 +10,19 @@ use Inertia\Inertia;
 
 class TransitCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TransitCategory::class);
+    }
+
     public function index(){
-        return Inertia::render('sfr/fsd/transit-cateries/index', [
+        return Inertia::render('sfr/fsd/transit-categories/index', [
             'categories' => fn() => TransitCategory::getResource()
         ]);
     }
 
     public function create(){
-        return Inertia::render('sfr/fsd/transit-cateries/create');
+        return Inertia::render('sfr/fsd/transit-categories/create');
     }
 
     public function store(TransitCategoryStoreRequest $request){
@@ -27,7 +32,7 @@ class TransitCategoryController extends Controller
     }
 
     public function edit(TransitCategory $transitCategory){
-        return Inertia::render('sfr/fsd/transit-cateries/edit', [
+        return Inertia::render('sfr/fsd/transit-categories/edit', [
             'category' => fn() => $transitCategory->toResource()
         ]);
     }
@@ -41,6 +46,6 @@ class TransitCategoryController extends Controller
     public function destroy(TransitCategory $transitCategory){
         $transitCategory->delete();
 
-        return redirect()->route('sfr.fsd.transit-categories.index')->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

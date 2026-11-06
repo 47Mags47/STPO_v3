@@ -8,4 +8,14 @@ interface ControllerTestCaseInterface
         get;
         set;
     }
+
+    public string $route {
+        get;
+        set;
+    }
+
+    public ?array $pageProps {
+        get;
+        set;
+    }
 }

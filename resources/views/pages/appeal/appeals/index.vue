@@ -72,7 +72,7 @@ export default {
 
         if (hasPermission('appeal_work')) {
             Echo.private('appeals')
-                .listen('.appeal.created', (data) => {
+                .listen('.appeal.created_at', (data) => {
                     this.appealList.unshift(data)
                 });
         }
@@ -130,7 +130,7 @@ export default {
             {
                 type: 'multiSelect',
                 label: 'Тема',
-                name: 'them_ids',
+                name: 'theme_ids',
                 options: themes,
             },
             {
@@ -149,7 +149,7 @@ export default {
             {
                 title: 'Создана',
                 type: 'datetime',
-                dataIndex: 'created',
+                dataIndex: 'created_at',
                 width: '135px',
             },
             {
@@ -160,7 +160,7 @@ export default {
             {
                 title: 'Тема',
                 width: '300px',
-                value: (row) => `${row.them.group.name}<br>${row.them.name}`
+                value: (row) => `${row.theme.group.name}<br>${row.theme.name}`
             },
             {
                 title: 'Комментарий',

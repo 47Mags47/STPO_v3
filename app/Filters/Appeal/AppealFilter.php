@@ -12,9 +12,9 @@ class AppealFilter extends Filter
         return $this->builder->whereIn('status_id', $ids);
     }
 
-    public function themIds(array $ids)
+    public function themeIds(array $ids)
     {
-        return $this->builder->whereIn('them_id', $ids);
+        return $this->builder->whereIn('theme_id', $ids);
     }
 
     public function senderIds(array $ids)

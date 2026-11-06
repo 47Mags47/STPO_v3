@@ -6,6 +6,7 @@ use App\Classes\FileModel;
 use App\Jobs\Base\MoveUploadFileJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class UploadFile extends FileModel
 {
@@ -46,6 +47,31 @@ class UploadFile extends FileModel
         MoveUploadFileJob::dispatch($uploadFile, $model);
 
         return $model;
+    }
+
+    public static function emptyFile(): self
+    {
+        if (!Storage::disk('uploads')->has('empty'))
+            Storage::disk('uploads')->put('empty', '');
+
+        if (File::where('origin_name', 'empty')->count() == 0)
+            File::factory()->create([
+                'disk'          => 'uploads',
+                'path'          => '',
+                'name'          => 'empty',
+                'origin_name'   => 'empty',
+                'is_disabled'   => false,
+                'status_id'     => FileStatus::byCode('ok'),
+            ]);
+
+        $file = File::where('origin_name', 'empty')->get()->first();
+        if(self::where('file_id', $file->id)->count() == 0)
+            self::create([
+                'file_id' => $file->id,
+                'totalChunks' => 1
+            ]);
+
+        return self::where('file_id', $file->id)->get()->first();
     }
 
     ### Связи

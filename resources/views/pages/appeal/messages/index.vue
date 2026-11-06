@@ -94,7 +94,7 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>
-                <span> {{ appeal.them.name }} </span>
+                <span> {{ appeal.theme.name }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Статус: </span>

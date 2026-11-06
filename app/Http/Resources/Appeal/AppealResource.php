@@ -16,14 +16,14 @@ class AppealResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created' => $this->created_at,
+            'created_at' => $this->created_at,
             'comment' => $this->comment,
             'chat_id' => $this->chat_id,
-            'them' => [
-                'id' => $this->them->id,
-                'name' => $this->them->name,
+            'theme' => [
+                'id' => $this->theme->id,
+                'name' => $this->theme->name,
                 'group' => [
-                    'name' => $this->them->group->name
+                    'name' => $this->theme->group->name
                 ]
             ],
             'sender' => [
