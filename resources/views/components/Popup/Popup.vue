@@ -1,9 +1,11 @@
 <script>
+import LoadingOverlay from '../LoadingOverlay.vue';
 import PopupHeader from './PopupHeader.vue';
 
 export default {
     components: {
-        PopupHeader
+        PopupHeader,
+        LoadingOverlay
     },
 
     props: {
@@ -333,41 +335,42 @@ export default {
                 class="w-full flex-1 overflow-y-auto"
                 :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'"
             >
+                <LoadingOverlay :is-global="false"/>
                 <slot />
             </div>
 
             <!-- RESIZE -->
             <template v-if="hasResize">
                 <div
-                    class="resize-top-handle absolute top-0 left-[12px] right-[12px] h-[8px] cursor-ns-resize"
+                    class="resize-top-handle absolute top-0 left-[12px] right-[12px] h-[4px] cursor-ns-resize"
                     @mousedown="startResize($event,'top')"
                 />
                 <div
-                    class="resize-bottom-handle absolute bottom-0 left-[12px] right-[12px] h-[8px] cursor-ns-resize"
+                    class="resize-bottom-handle absolute bottom-0 left-[12px] right-[12px] h-[4px] cursor-ns-resize"
                     @mousedown="startResize($event,'bottom')"
                 />
                 <div
-                    class="resize-left-handle absolute left-0 top-[12px] bottom-[12px] w-[8px] cursor-ew-resize"
+                    class="resize-left-handle absolute left-0 top-[12px] bottom-[12px] w-[4px] cursor-ew-resize"
                     @mousedown="startResize($event,'left')"
                 />
                 <div
-                    class="resize-right-handle absolute right-0 top-[12px] bottom-[12px] w-[8px] cursor-ew-resize"
+                    class="resize-right-handle absolute right-0 top-[12px] bottom-[12px] w-[1px] cursor-ew-resize"
                     @mousedown="startResize($event,'right')"
                 />
                 <div
-                    class="resize-top-left-handle absolute top-0 left-0 w-[12px] h-[12px] cursor-nwse-resize"
+                    class="resize-top-left-handle absolute top-0 left-0 w-[12px] h-[4px] cursor-nwse-resize"
                     @mousedown="startResize($event,'topLeft')"
                 />
                 <div
-                    class="resize-top-right-handle absolute top-0 right-0 w-[12px] h-[12px] cursor-nesw-resize"
+                    class="resize-top-right-handle absolute top-0 right-0 w-[12px] h-[4px] cursor-nesw-resize"
                     @mousedown="startResize($event,'topRight')"
                 />
                 <div
-                    class="resize-bottom-left-handle absolute bottom-0 left-0 w-[12px] h-[12px] cursor-nesw-resize"
+                    class="resize-bottom-left-handle absolute bottom-0 left-0 w-[12px] h-[4px] cursor-nesw-resize"
                     @mousedown="startResize($event,'bottomLeft')"
                 />
                 <div
-                    class="resize-bottom-right-handle absolute bottom-0 right-0 w-[12px] h-[12px] cursor-nwse-resize"
+                    class="resize-bottom-right-handle absolute bottom-0 right-0 w-[12px] h-[4px] cursor-nwse-resize"
                     @mousedown="startResize($event,'bottomRight')"
                 />
             </template>

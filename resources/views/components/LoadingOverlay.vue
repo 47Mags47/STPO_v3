@@ -7,6 +7,13 @@ import { silentRoutes } from '@/silentRoutes';
 export default {
     components: { Ico },
 
+    props: {
+        isGlobal: {
+            type: Boolean,
+            default: true,
+        },
+    },
+
     data() {
         return {
             isLoading: false,
@@ -14,37 +21,42 @@ export default {
     },
 
     mounted() {
-        this.unsubscribeStart = router.on('start', event => {
-            const routeObj = event.detail.visit;
+        if (this.isGlobal) {
+            this.unsubscribeStart = router.on('start', event => {
+                const visit = event.detail.visit;
 
-            const isSilentRoute = silentRoutes.some(silentRoute => {
-                return new RegExp(`^${silentRoute.url}$`).test(routeObj.url.href)
-                    && silentRoute.method === routeObj.method;
+                const isSilentRoute = silentRoutes.some(silentRoute => {
+                    return new RegExp(`^${silentRoute.url}$`).test(visit.url.href)
+                        && silentRoute.method === visit.method;
+                });
+
+                if (!isSilentRoute) {
+                    this.isLoading = true;
+                }
             });
 
-            if (!isSilentRoute)
+            this.unsubscribeFinish = router.on('finish', () => {
+                this.isLoading = false;
+            });
+        } else {
+            axiosLoading.onStart = () => {
                 this.isLoading = true;
-        });
+            };
 
-        this.unsubscribeFinish = router.on('finish', () => {
-            this.isLoading = false;
-        });
-
-        axiosLoading.onStart = () => {
-            this.isLoading = true;
-        };
-
-        axiosLoading.onFinish = () => {
-            this.isLoading = false;
-        };
+            axiosLoading.onFinish = () => {
+                this.isLoading = false;
+            };
+        }
     },
 
     unmounted() {
         this.unsubscribeStart?.();
         this.unsubscribeFinish?.();
 
-        axiosLoading.onStart = null;
-        axiosLoading.onFinish = null;
+        if (!this.isGlobal) {
+            axiosLoading.onStart = null;
+            axiosLoading.onFinish = null;
+        }
     },
 };
 </script>
@@ -52,11 +64,21 @@ export default {
 <template>
     <div
         v-if="isLoading"
-        class="fixed inset-0 z-[10001] flex items-center justify-center backdrop-blur-[2px]"
+        :class="isGlobal ? 'fixed inset-0' : 'absolute size-full'"
+        class="z-[10000] flex items-center justify-center
+            bg-black/10 backdrop-blur-[1px]"
     >
-        <Ico
-            type="spinner"
-            class="size-[128px]! animate-spin text-(--text-color)!"
-        />
+        <div class="relative size-24">
+            <div
+                class="absolute inset-0 rounded-full border-[6px]
+                    border-[var(--border-color)]"
+            ></div>
+
+            <div
+                class="absolute inset-0 animate-spin rounded-full
+                    border-[10px] border-transparent
+                    border-t-[var(--text-color)]"
+            ></div>
+        </div>
     </div>
 </template>
