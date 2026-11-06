@@ -11,8 +11,10 @@ trait ControllerRESTMethodsRecordActions
         $this->checkStoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
+
         $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
 
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
@@ -23,6 +25,7 @@ trait ControllerRESTMethodsRecordActions
         $this->checkShowMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $response = $this->get(route($this->route . '.show', $this->getShowRouteParams($record)));
@@ -51,6 +54,7 @@ trait ControllerRESTMethodsRecordActions
         $this->checkUpdateMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $data = $this->createTestData();
@@ -65,6 +69,7 @@ trait ControllerRESTMethodsRecordActions
         $this->checkDestroyMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
@@ -80,6 +85,7 @@ trait ControllerRESTMethodsRecordActions
         $this->checkRestoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
 
@@ -93,6 +99,7 @@ trait ControllerRESTMethodsRecordActions
         $this->checkForceDeleteMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $this->delete(route($this->route . '.force-delete', $this->getForceDeleteRouteParams($record)));

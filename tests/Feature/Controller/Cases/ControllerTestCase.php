@@ -124,6 +124,7 @@ implements ControllerTestCaseInterface
         return $this->hasForceDelete;
     }
 
+    // создание тестовых данных
     protected function createTestUser(): User
     {
         return User::factory()->create();

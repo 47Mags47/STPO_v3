@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Controller\Traits;
 
+use App\Classes\BaseModel;
+
 trait RouteReturnRedirect
 {
     ### Settings
@@ -15,29 +17,29 @@ trait RouteReturnRedirect
 
     ### Methods
     ##################################################
-    protected function getStoreRedirectRoute(): string
+    public function getStoreRedirectURL(?array $data = []): string
     {
-        return $this->storeRedirectRoute ?? $this->route . '.index';
+        return route($this->storeRedirectRoute ?? $this->route . '.index', $this->getIndexRouteParams());
     }
 
-    protected function getUpdateRedirectRoute(): string
+    public function getUpdateRedirectURL(?BaseModel $record = null): string
     {
-        return $this->storeReupdateRedirectRoutedirectRoute ?? $this->route . '.index';
+        return route($this->updateRedirectRoute ?? $this->route . '.index', $this->getIndexRouteParams());
     }
 
-    protected function getDestroyRedirectRoute(): string
+    public function getDestroyRedirectURL(?BaseModel $record = null): string
     {
-        return $this->destroyRedirectRoute ?? $this->route . '.index';
+        return route($this->destroyRedirectRoute ?? $this->route . '.index', $this->getIndexRouteParams());
     }
 
-    protected function getRestoreRedirectRoute(): string
+    public function getRestoreRedirectURL(?BaseModel $record = null): string
     {
-        return $this->restoreRedirectRoute ?? $this->route . '.index';
+        return route($this->restoreRedirectRoute ?? $this->route . '.index', $this->getIndexRouteParams());
     }
 
-    protected function getForceDeleteRedirectRoute(): string
+    public function getForceDeleteRedirectURL(?BaseModel $record = null): string
     {
-        return $this->forceDeleteRedirectRoute ?? $this->route . '.index';
+        return route($this->forceDeleteRedirectRoute ?? $this->route . '.index', $this->getIndexRouteParams());
     }
 
     ### Tests
@@ -47,10 +49,11 @@ trait RouteReturnRedirect
         $this->checkStoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
         $response = $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
-        $response->assertredirect(route($this->getStoreRedirectRoute(), $this->getIndexRouteParams()));
+        $response->assertRedirect($this->getStoreRedirectURL());
     }
 
     public function test_route_return_redirect__update()
@@ -58,10 +61,12 @@ trait RouteReturnRedirect
         $this->checkUpdateMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
-        $response = $this->put(route($this->route . '.update', $this->getUpdateRouteParams()), $data);
-        $response->assertredirect(route($this->getUpdateRedirectRoute(), $this->getIndexRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->put(route($this->route . '.update', $this->getUpdateRouteParams($record)), $data);
+        $response->assertRedirect($this->getUpdateRedirectURL($record));
     }
 
     public function test_route_return_redirect__destroy()
@@ -69,10 +74,12 @@ trait RouteReturnRedirect
         $this->checkDestroyMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
-        $response = $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
         if ($this->forceDeleteRedirectRoute !== null)
-            $response->assertredirect(route($this->getDestroyRedirectRoute(), $this->getIndexRouteParams()));
+            $response->assertRedirect($this->getDestroyRedirectURL($record));
         else
             $response->assertRedirectBack();
     }
@@ -81,10 +88,12 @@ trait RouteReturnRedirect
         $this->checkRestoreMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
-        $response = $this->post(route($this->route . '.restore', $this->getRestoreRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->post(route($this->route . '.restore', $this->getRestoreRouteParams($record)));
         if ($this->forceDeleteRedirectRoute !== null)
-            $response->assertredirect(route($this->getRestoreRedirectRoute(), $this->getIndexRouteParams()));
+            $response->assertRedirect($this->getRestoreRedirectURL($record));
         else
             $response->assertRedirectBack();
     }
@@ -93,10 +102,12 @@ trait RouteReturnRedirect
         $this->checkForceDeleteMethodExist();
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
-        $response = $this->delete(route($this->route . '.force-delete', $this->getforceDeleteRouteParams()));
+        $record = $this->createTestRecord();
+        $response = $this->delete(route($this->route . '.force-delete', $this->getforceDeleteRouteParams($record)));
         if ($this->forceDeleteRedirectRoute !== null)
-            $response->assertredirect(route($this->getForceDeleteRedirectRoute(), $this->getIndexRouteParams()));
+            $response->assertRedirect($this->getForceDeleteRedirectURL($record));
         else
             $response->assertRedirectBack();
     }

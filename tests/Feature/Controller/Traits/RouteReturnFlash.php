@@ -63,8 +63,10 @@ trait RouteReturnFlash
 
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
+
         $response = $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
 
         $response->assertSessionHas('success');
@@ -75,6 +77,7 @@ trait RouteReturnFlash
     {
         $this->checkUpdateMethodExist();
         $this->checkUpdateFlashExist();
+        $this->actingAs($this->createTestUser());
 
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -90,6 +93,7 @@ trait RouteReturnFlash
     {
         $this->checkDestroyMethodExist();
         $this->checkDestroyFlashExist();
+        $this->actingAs($this->createTestUser());
 
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -104,6 +108,7 @@ trait RouteReturnFlash
     {
         $this->checkRestoreMethodExist();
         $this->checkRestoreFlashExist();
+        $this->actingAs($this->createTestUser());
 
         $this->disableAuthMiddleware();
         $this->runProdSeeder();
@@ -117,6 +122,7 @@ trait RouteReturnFlash
     {
         $this->checkForceDeleteMethodExist();
         $this->checkForceDeleteFlashExist();
+        $this->actingAs($this->createTestUser());
 
         $this->disableAuthMiddleware();
         $this->runProdSeeder();

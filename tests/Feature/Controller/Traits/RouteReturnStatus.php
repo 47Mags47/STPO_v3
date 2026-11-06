@@ -22,7 +22,6 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__index()
     {
         $this->checkIndexMethodExist();
-
         $this->disableAuthMiddleware();
 
         $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
@@ -32,7 +31,6 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__create()
     {
         $this->checkCreateMethodExist();
-
         $this->disableAuthMiddleware();
 
         $response = $this->get(route($this->route . '.create', $this->getCreateRouteParams()));
@@ -42,10 +40,9 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__store()
     {
         $this->checkStoreMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
         $response = $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
@@ -54,9 +51,7 @@ trait RouteReturnStatus
 
     public function test_route_return_necessary_status__show() {
         $this->checkShowMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
 
         $response = $this->get(route($this->route . '.show', $this->getShowRouteParams()));
@@ -65,10 +60,9 @@ trait RouteReturnStatus
 
     public function test_route_return_necessary_status__edit() {
         $this->checkEditMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $response = $this->get(route($this->route . '.edit', $this->getEditRouteParams()));
         $response->assertStatus($this->editResponseStatus);
@@ -76,10 +70,9 @@ trait RouteReturnStatus
 
     public function test_route_return_necessary_status__update() {
         $this->checkUpdateMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
         $response = $this->put(route($this->route . '.update', $this->getUpdateRouteParams()), $data);
@@ -89,10 +82,9 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__destroy()
     {
         $this->checkDestroyMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $response = $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams()));
         $response->assertStatus($this->destroyResponseStatus);
@@ -101,10 +93,9 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__restore()
     {
         $this->checkRestoreMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $response = $this->post(route($this->route . '.restore', $this->getRestoreRouteParams()));
         $response->assertStatus($this->restoreResponseStatus);
@@ -113,10 +104,9 @@ trait RouteReturnStatus
     public function test_route_return_necessary_status__force_delete()
     {
         $this->checkForceDeleteMethodExist();
-
         $this->disableAuthMiddleware();
-
         $this->runProdSeeder();
+        $this->actingAs($this->createTestUser());
 
         $response = $this->delete(route($this->route . '.force-delete', $this->getforceDeleteRouteParams()));
         $response->assertStatus($this->forceDeleteResponseStatus);

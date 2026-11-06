@@ -4,6 +4,7 @@ namespace Tests\Feature\Controller\Tests\Appeal;
 
 use App\Http\Controllers\Appeal\AppealController;
 use App\Models\Appeal\Appeal;
+use Override;
 use Tests\Feature\Controller\Cases\RESTControllerTestCase;
 
 class AppealControllerTest extends RESTControllerTestCase
@@ -24,6 +25,21 @@ class AppealControllerTest extends RESTControllerTestCase
     public bool $hasUpdate = false;
     public bool $hasDestroy = false;
 
-    // HACK доделать (задачи 274 - 276)
-    public bool $hasStore = true;
+    #[Override]
+    public function modifySendData(array $data): array
+    {
+        $send_data = [
+            'comment' => $data['comment'],
+            'theme_id' => $data['theme_id'],
+        ];
+
+        return $send_data;
+    }
+
+    #[Override]
+    public function getStoreRedirectURL(?array $data = []): string
+    {
+        $record = Appeal::query()->latest('id')->first();
+        return route('appeal.appeals.show', ['appeal' => $record]);
+    }
 }
