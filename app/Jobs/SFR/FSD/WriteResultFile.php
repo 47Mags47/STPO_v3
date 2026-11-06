@@ -43,8 +43,8 @@ class WriteResultFile implements ShouldQueue
         $this->resultFile->SFRFile->setStatus('reading');
         $this->resultFile->setStatus('creating');
 
-        $this->fromFileCursor = fopen($this->resultFile->SFRFile->getFullPath(), 'r');
-        $this->toFileCursor = fopen($this->resultFile->getFullPath(), 'w');
+        $this->fromFileCursor = fopen($this->resultFile->SFRFile->fullPath, 'r');
+        $this->toFileCursor = fopen($this->resultFile->fullPath, 'w');
 
         while (!feof($this->fromFileCursor)) {
             $recipientLine = fgets($this->fromFileCursor);

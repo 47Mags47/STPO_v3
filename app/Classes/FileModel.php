@@ -5,6 +5,7 @@ namespace App\Classes;
 use App\Events\Base\FileChangeStatusEvent;
 use App\Models\Base\File;
 use App\Models\Base\FileStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -85,26 +86,32 @@ abstract class FileModel extends BaseModel
         return $parent_flag and $child_flag;
     }
 
-    ### Методы
+    ### Аттрибуты
     ##################################################
     /**
      * Return local path
-     * @return string
+     * @return Attribute
      */
-    public function getLocalPath(): string
+    protected function localPath(): Attribute
     {
-        return $this->file->getLocalPath();
+        return new Attribute(
+            get: fn() => $this->file->localPath,
+        );
     }
 
     /**
      * Return full path
-     * @return string
+     * @return Attribute
      */
-    public function getFullPath(): string
+    protected function fullPath(): Attribute
     {
-        return $this->file->getFullPath();
+        return new Attribute(
+            get: fn() => $this->file->fullPath,
+        );
     }
 
+    ### Методы
+    ##################################################
     /**
      * get file content
      * @return string

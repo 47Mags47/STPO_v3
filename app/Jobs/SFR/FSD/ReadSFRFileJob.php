@@ -28,7 +28,7 @@ class ReadSFRFileJob implements ShouldQueue
     {
         $this->SFRFile->setStatus('reading');
 
-        $file = fopen($this->SFRFile->getFullPath(), 'r');
+        $file = fopen($this->SFRFile->fullPath, 'r');
 
         $date_start = $this->SFRFile->in_date->startOfMonth();
         $date_end = $this->SFRFile->in_date->endOfMonth();

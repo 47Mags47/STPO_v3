@@ -24,7 +24,7 @@ class AlfaBankWriter extends BankRaportWriter
 
     public function writeFileContent(FileModel $file, array $data): void
     {
-        $spreadsheet = IOFactory::load($this->template->getFullPath());
+        $spreadsheet = IOFactory::load($this->template->fullPath);
 
         $sheet = $spreadsheet->getSheetByName('Info');
 
@@ -46,6 +46,6 @@ class AlfaBankWriter extends BankRaportWriter
         }
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($file->getFullPath());
+        $writer->save($file->fullPath);
     }
 }

@@ -38,7 +38,7 @@ class File extends BaseModel
     public static function booted()
     {
         self::deleting(function ($model) {
-            Storage::disk($model->disk)->delete($model->getLocalPath());
+            Storage::disk($model->disk)->delete($model->localPath);
         });
     }
 
@@ -47,7 +47,31 @@ class File extends BaseModel
     protected function mime(): Attribute
     {
         return Attribute::make(
-            get: fn() => Storage::disk($this->disk)->mimeType($this->getLocalPath())
+            get: fn() => Storage::disk($this->disk)->mimeType($this->localPath)
+        );
+    }
+
+    /**
+     * Return local path
+     * @return Attribute
+     */
+    protected function localPath(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->path !== null
+                ? $this->path . '/' . $this->name
+                : $this->name,
+        );
+    }
+
+    /**
+     * Return full path
+     * @return Attribute
+     */
+    protected function fullPath(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Storage::disk($this->disk)->path($this->localPath),
         );
     }
 
@@ -92,26 +116,6 @@ class File extends BaseModel
     ### Методы хранилища
     ##################################################
     /**
-     * Return local path
-     * @return string
-     */
-    public function getLocalPath(): string
-    {
-        return $this->path !== null
-            ? $this->path . '/' . $this->name
-            : $this->name;
-    }
-
-    /**
-     * Return full path
-     * @return string
-     */
-    public function getFullPath(): string
-    {
-        return Storage::disk($this->disk)->path($this->getLocalPath());
-    }
-
-    /**
      * Moves the file to the file storage
      *
      * @param  ?string  $newDisk
@@ -121,7 +125,7 @@ class File extends BaseModel
      */
     public function move(?string $newName = null, ?string $newPath = null, ?string $newDisk = null): bool
     {
-        $from_path = $this->getFullPath();
+        $from_path = $this->fullPath;
 
         $newName = $newName ?? $this->name;
         $newPath = $newPath ?? $this->path;
@@ -140,7 +144,7 @@ class File extends BaseModel
      */
     public function write(string $content, ?string $encoding = 'UTF-8'): bool
     {
-        return Storage::disk($this->disk)->put($this->getLocalPath(), $encoding === 'UTF-8' ? $content : mb_convert_encoding($content, $encoding, 'UTF-8'));
+        return Storage::disk($this->disk)->put($this->localPath, $encoding === 'UTF-8' ? $content : mb_convert_encoding($content, $encoding, 'UTF-8'));
     }
 
     /**
@@ -149,8 +153,8 @@ class File extends BaseModel
      */
     public function download(): StreamedResponse
     {
-        return Storage::disk($this->disk)->exists($this->getLocalPath())
-            ? Storage::disk($this->disk)->download($this->getLocalPath(), $this->origin_name)
+        return Storage::disk($this->disk)->exists($this->localPath)
+            ? Storage::disk($this->disk)->download($this->localPath, $this->origin_name)
             : abort(404);
     }
 
@@ -160,7 +164,7 @@ class File extends BaseModel
      */
     public function getContent(): string
     {
-        return Storage::disk($this->disk)->get($this->getLocalPath());
+        return Storage::disk($this->disk)->get($this->localPath);
     }
 
     /**
@@ -169,7 +173,7 @@ class File extends BaseModel
      */
     public function hasInStorage(): bool
     {
-        return Storage::disk($this->disk)->has($this->getLocalPath());
+        return Storage::disk($this->disk)->has($this->localPath);
     }
 
     ### Связи

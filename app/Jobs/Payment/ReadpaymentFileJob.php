@@ -28,7 +28,7 @@ class ReadpaymentFileJob implements ShouldQueue
         $this->paymentFile->setDisabled();
         $this->paymentFile = $this->paymentFile->fresh();
 
-        $file = fopen($this->paymentFile->getFullPath(), 'r');
+        $file = fopen($this->paymentFile->fullPath, 'r');
         $isFirstLine = true;
         $count = 0;
         $lines = [];
