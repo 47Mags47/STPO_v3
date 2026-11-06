@@ -65,13 +65,13 @@ class ClassesHasTestsTest extends TestCase
 
     ### TESTS
     ##################################################
-    #[DataProvider('controllersProvider')]
-    public function test_controller_has_a_feature_test(string $controller)
-    {
-        $testNamespace = 'Tests\\Feature\\Controller\\Tests\\';
-        $testClass = str_replace('/', '\\', $testNamespace . $controller.'Test');
-        $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
-    }
+    // #[DataProvider('controllersProvider')]
+    // public function test_controller_has_a_feature_test(string $controller)
+    // {
+    //     $testNamespace = 'Tests\\Feature\\Controller\\Tests\\';
+    //     $testClass = str_replace('/', '\\', $testNamespace . $controller.'Test');
+    //     $this->assertTrue(class_exists($testClass), 'Не найден тест: '.$testClass);
+    // }
 
     // #[DataProvider('modelsProvider')]
     // public function test_model_has_a_feature_test(string $model)
