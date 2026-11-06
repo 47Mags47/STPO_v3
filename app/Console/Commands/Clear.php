@@ -61,7 +61,7 @@ class Clear extends Command
         $this->info('Пометка для удаления несуществующих файлов');
 
         foreach (File::all() as $file) {
-            if (!Storage::disk($file->disk)->exists($file->getLocalPath())) {
+            if (!Storage::disk($file->disk)->exists($file->localPath)) {
                 $file->delete();
                 continue;
             }

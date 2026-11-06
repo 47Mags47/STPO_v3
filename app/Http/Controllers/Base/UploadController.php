@@ -36,10 +36,10 @@ class UploadController extends Controller
         // Сборка файла
         $uploadFile = $chunk->uploadFile;
         if ($uploadFile->chunks()->where('uploaded', true)->count() == $uploadFile->totalChunks) {
-            $uploadFileResource = fopen($uploadFile->getFullPath(), "wb");
+            $uploadFileResource = fopen($uploadFile->fullPath, "wb");
 
             $uploadFile->chunks()->orderBy('npp')->get()->each(function ($chunk) use ($uploadFileResource) {
-                $chunkFileResource = fopen($chunk->getFullPath(), "rb");
+                $chunkFileResource = fopen($chunk->fullPath, "rb");
                 stream_copy_to_stream($chunkFileResource, $uploadFileResource);
                 fclose($chunkFileResource);
 

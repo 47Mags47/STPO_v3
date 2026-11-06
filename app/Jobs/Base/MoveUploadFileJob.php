@@ -36,7 +36,7 @@ class MoveUploadFileJob implements ShouldQueue
         $this->fileModel->setDisabled();
         $this->fileModel = $this->fileModel->fresh();
 
-        $oldPath = $this->uploadFile->getFullPath();
+        $oldPath = $this->uploadFile->fullPath;
 
         $newPath = Storage::disk($this->fileModel::$storage_file_disk)->path(
             $this->fileModel::$storage_file_path !== ''
