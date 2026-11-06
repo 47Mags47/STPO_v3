@@ -24,10 +24,28 @@ export default {
             label: 'Дата',
         },
         {
-            type: 'select',
+            type: 'selectPopup',
             name: 'payment_id',
             label: 'Выплата',
-            options: payments,
+            caption: 'Выплаты',
+            url: route('api.administrate.payments.index'),
+            hasSearchInput: true,
+            columns: [
+                {
+                    title: 'Код',
+                    dataIndex: 'code',
+                    width: '150px'
+                },
+                {
+                    title: 'КБК',
+                    dataIndex: 'kbk',
+                    width: '200px',
+                },
+                {
+                    title: 'Наименование',
+                    dataIndex: 'name',
+                },
+            ]
         },
     ]"
 />

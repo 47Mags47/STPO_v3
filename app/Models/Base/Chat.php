@@ -16,7 +16,7 @@ class Chat extends BaseModel
 
     ### Настройки
     ##################################################
-    protected $table = 'base__chat';
+    protected $table = 'base__chats';
 
     protected $fillable = [
     ];

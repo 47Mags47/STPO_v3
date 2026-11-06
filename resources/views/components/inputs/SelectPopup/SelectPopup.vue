@@ -1,13 +1,21 @@
 <script>
 import Ico from '../../Ico.vue';
 import ResourceTable from '../../tables/ResourceTable/ResourceTable.vue';
+import RadioButton from '../RadioButton.vue';
 import CheckBox from '../CheckBox.vue';
 import RedButton from '../../buttons/RedButton.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Popup from '../../Popup/Popup.vue';
 
 export default {
+    provide() {
+        return {
+            onPaginate: (...args) => this.paginateClickHandler(...args),
+        }
+    },
+
     components: {
+        RadioButton,
         CheckBox,
         ResourceTable,
         Ico,
@@ -16,51 +24,58 @@ export default {
     },
 
     props: {
-        ico: {
-            type: [String, Function],
-            default: 'book-text'
-        },
-
-        selectItemHandler: {
-            type: Function,
-            default: () => {}
-        },
-
-        selectedItems: {
-            type: Array,
-            default: () => []
-        },
-
+        // INPUT
         name: {
             type: String,
-            default: 'name'
-        },
-
-        labelKey: {
-            type: String,
-            default: 'name'
+            default: null
         },
         valueKey: {
             type: String,
             default: "id"
         },
+        value: {
+            type: [Number, String, Array],
+            default: null
+        },
 
+        // HANDLERS
         onClose: {
             type: Function,
             default: () => {}
-        }
+        },
+        onSelect: {
+            type: Function,
+            default: () => {}
+        },
+
+        // OTHER
+        ico: {
+            type: [String, Function],
+            default: 'book-text'
+        },
+        url: {
+            type: String,
+            default: location.href
+        },
     },
 
     data() {
         return {
+            data: [],
+            meta: {},
+            links: {},
             isDragging: false,
             isFullScreen: false
         }
     },
 
     computed: {
+        isArray() {
+            return Array.isArray(this.value)
+        },
+
         columns() {
-            const columns = [...(this.$attrs.collumns ?? [])]
+            const columns = [...(this.$attrs.columns ?? [])]
 
             // Добавляем во все колонки обязательную колонку выбора
             columns.push(
@@ -68,13 +83,16 @@ export default {
                     type: 'render',
                     width: '40px',
                     render: (row) => {
+                        const value = Object.get(row, this.valueKey)
+
                         return {
-                            component: CheckBox,
+                            component: this.isArray ? CheckBox : RadioButton,
                             props: {
-                                name: `${this.name}[]`,
-                                value: Object.get(row, this.valueKey),
-                                checked: this.selectedItems.includes(row.id.toString()),
-                                onClick: (e) => this.selectItemHandler(e)
+                                name: this.isArray ? `${this.name}[]` : this.name,
+                                checked: this.isArray
+                                    ? this.value.includes(value)
+                                    : this.value === value,
+                                onClick: (e) => this.onSelect(e, row)
                             }
                         };
                     }
@@ -82,22 +100,65 @@ export default {
             )
 
             return columns
-        }
+        },
     },
+
+    methods: {
+        searchInputHandler(e) {
+            const page = e.target?.value
+            // HACK Вынести в метод
+            axios
+                .get(this.url, {
+                    params: {
+                        search: page
+                    }
+                })
+                .then(function(response){
+                    this.data = response.data.data
+                    this.meta = response.data.meta
+                    this.links = response.data.links
+                }.bind(this))
+        },
+        paginateClickHandler(page) {
+            axios
+                .get(this.url, {
+                    params: {
+                        page: page
+                    }
+                })
+                .then(function(response){
+                    this.data = response.data.data
+                    this.meta = response.data.meta
+                    this.links = response.data.links
+                }.bind(this))
+        },
+    },
+
+    created() {
+        axios
+            .get(this.url)
+            .then(function(response){
+                this.data = response.data.data
+                this.meta = response.data.meta
+                this.links = response.data.links
+            }.bind(this))
+    }
 }
 </script>
 
 <template>
     <div class="select-popup-content size-full overflow-y-auto">
         <ResourceTable
-            :hasCreateButton="false"
-            :hasDeleteButton="false"
-            :hasEditButton="false"
-
-            :preserve-state-pagination="true"
-
             v-bind="$attrs"
-            :collumns="columns"
+            :id="`popup-table-${name}`"
+            :has-create-button="false"
+            :has-delete-button="false"
+            :has-edit-button="false"
+            :on-search-input="searchInputHandler"
+            :columns
+            :data
+            :meta
+            :links
         />
     </div>
 </template>

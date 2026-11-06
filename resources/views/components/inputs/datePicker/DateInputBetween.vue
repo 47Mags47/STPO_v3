@@ -45,51 +45,33 @@ export default {
         onToUpdate: {
             type: Function,
             default: () => {}
+        },
+        onPopupClick: {
+            type: Function,
+            default: () => {}
+        },
+        onInputClick: {
+            type: Function,
+            default: () => {}
         }
     },
     data() {
         return {
-            isPopupOpen:        false,
-
-            isFirstClick:       true,
             // HACK добавить валидацию формата даты
-            selectedDateFrom:   this.value?.from ? this.value.from : null,
-            selectedDateTo:     this.value?.to   ? this.value.to   : null,
-            selectedDate:       null,
+            selectedDateFrom: this.value?.from !== null
+                ? this.value?.from
+                : null,
+
+            selectedDateTo: this.value?.to !== null
+                ? this.value?.to
+                : null,
         };
     },
     methods: {
-        popupButtonClickHandler() {
-            this.isPopupOpen = !this.isPopupOpen
-        },
-
-        //  Пикер
-        dayClickHandler(date) {
-            this.selectedDate = date
-
-            if (this.isFirstClick) {
-                this.selectedDateFrom = date
-                this.selectedDateTo   = null
-            }
-            else
-                this.selectedDateTo   = date
-
-            const dateNotNull = this.selectedDateFrom?.isValid && this.selectedDateTo?.isValid
-
-            if (dateNotNull && this.selectedDateFrom > this.selectedDateTo)
-                [this.selectedDateFrom, this.selectedDateTo] = [this.selectedDateTo, this.selectedDateFrom]
-
-            this.onFromUpdate(this.selectedDateFrom)
-            this.onToUpdate(this.selectedDateTo)
-
-            this.isFirstClick = !this.isFirstClick
-        },
-
         inputFromBlurHandler(e) {
             let value = e.target.value
 
             this.selectedDateFrom = DateTime.fromFormat(value, 'yyyy-MM-dd')
-
             this.onFromUpdate(this.selectedDateFrom)
         },
         inputToBlurHandler(e) {
@@ -98,16 +80,19 @@ export default {
             this.selectedDateTo = DateTime.fromFormat(value, 'yyyy-MM-dd')
             this.onToUpdate(this.selectedDateTo)
         },
+    },
 
-        closeClickHandler(e) {
-            this.isPopupOpen = false
+    watch: {
+        value(val) {
+            this.selectedDateFrom = val?.from ?? null
+            this.selectedDateTo = val?.to ?? null
         },
     },
 }
 </script>
 
 <template>
-    <div class="date-input-between-wrapper" ref="wrapper">
+    <div class="date-input-between-wrapper group" @click.stop="onInputClick">
         <div class="date-input-wrapper-from flex items-center">
             <input
                 type="date"
@@ -116,9 +101,11 @@ export default {
                 :name="`${name}_from`"
                 :disabled
                 :placeholder
-                :value="selectedDateFrom !== null ? selectedDateFrom.toFormat('yyyy-MM-dd') : null"
+                :value="selectedDateFrom !== null ? selectedDateFrom : null"
                 @blur="inputFromBlurHandler"
             />
+
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
         </div>
 
         <div class="date-input-wrapper-to flex items-center">
@@ -129,43 +116,16 @@ export default {
                 :name="`${name}_to`"
                 :disabled
                 :placeholder
-                :value="selectedDateTo !== null ? selectedDateTo.toFormat('yyyy-MM-dd') : null"
+                :value="selectedDateTo !== null ? selectedDateTo : null"
                 @blur="inputToBlurHandler"
             />
+
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
         </div>
 
-        <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click.stop="popupButtonClickHandler" />
+        <div class="ico-wrapper w-[16px] mr-2! cursor-pointer shrink-0">
+            <Ico type="calendar" class="ico" @click.stop="onPopupClick" />
         </div>
-        <Transition name="popup">
-            <Popup
-                v-if="isPopupOpen"
-                width="340px"
-                height="400px"
-                :onClose="closeClickHandler"
-                :has-resize="false"
-                :position="(el) => {
-                    const wrapper = this.$refs.wrapper
-                    const inputPopupRect = wrapper.getBoundingClientRect()
-
-                    return {
-                        left: inputPopupRect.left + 'px',
-                        top: inputPopupRect.bottom + 'px'
-                    }
-                }"
-            >
-                <DateInputPopup
-                    :isRange
-                    :checkValid
-                    :onClick="dayClickHandler"
-                    :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-                    :selectedDateBetween="{
-                        from: selectedDateFrom?.toFormat('yyyy-MM-dd'),
-                        to:   selectedDateTo?.toFormat('yyyy-MM-dd')
-                    }"
-                />
-            </Popup>
-        </Transition>
     </div>
 </template>
 
@@ -178,21 +138,13 @@ export default {
     width: 100%
     padding: 4px 6px
 
+    .ico
+        color: black
+
     .date-input-wrapper-from
         flex: 1
         height: 100%
         position: relative
-
-        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
-        &::after
-            content: ""
-            position: absolute
-            background: var(--background-color)
-            top: 0
-            right: 0
-
-            width: 25px
-            height: 100%
 
         .custom-date-input
             width: 100%
@@ -202,14 +154,6 @@ export default {
         flex: 1
         height: 100%
         position: relative
-
-        // HACK поправить оверлеи (при закрытии фильтра могут на время мерцать)
-        &::after
-            content: ""
-            position: absolute
-            background: var(--background-color)
-            top: 0
-            right: 0
 
             width: 25px
             height: 100%

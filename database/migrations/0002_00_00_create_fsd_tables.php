@@ -75,19 +75,29 @@ return new class extends Migration
         Schema::create('sfr__fsd__payments', function (Blueprint $table) {
             $table->id();
 
-            $table->string('first_name')->nullable()->default(null);
-            $table->string('last_name')->nullable()->default(null);
-            $table->string('middle_name')->nullable()->default(null);
-
+            $table->string('first_name', 100)->nullable()->default(null);
+            $table->string('last_name', 100)->nullable()->default(null);
+            $table->string('middle_name', 100)->nullable()->default(null);
             $table->decimal('amount', 8, 2)->nullable()->default(null);
-            $table->string('SNILS')->nullable()->default(null);
+            $table->string('SNILS', 14)->nullable()->default(null);
+            $table->date('file_in_date');
 
-            $table->foreignId('asp_payment_category_id')->nullable()->constrained(ASPPaymentCategory::getTableName());
-            $table->foreignId('financing_type_id')->nullable()->constrained(FinancingType::getTableName());
-            $table->foreignId('file_id')->constrained(PaymentFile::getTableName())
+            $table->foreignId('asp_payment_category_id')
+                ->nullable()
+                ->constrained(ASPPaymentCategory::getTableName());
+            $table->foreignId('financing_type_id')
+                ->nullable()
+                ->constrained(FinancingType::getTableName());
+            $table->foreignId('file_id')
+                ->constrained(PaymentFile::getTableName())
                 ->cascadeOnDelete();
 
+            // Индекс для поиска
             $table->index(['SNILS']);
+
+            // Проверка уникальности перед вставкой
+            $table->string('duplicate_hash', 64)->nullable();
+            $table->unique('duplicate_hash', 'uq_payments_duplicate_hash');
         });
 
         Schema::create('sfr__fsd__transit_categories', function (Blueprint $table) {
@@ -126,7 +136,7 @@ return new class extends Migration
         Schema::create('sfr__fsd__transit_recipients', function (Blueprint $table) {
             $table->id();
 
-            $table->string('SNILS');
+            $table->string('SNILS', 14);
             $table->date('date_start')->index();
             $table->date('date_end')->index();
 

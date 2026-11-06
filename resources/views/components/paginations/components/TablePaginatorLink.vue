@@ -4,11 +4,19 @@ import Ico from "../../Ico.vue";
 import BlueButton from "../../buttons/BlueButton.vue";
 
 export default {
+    inject: {
+        onPaginate: {
+            type: Function,
+            default: null
+        }
+    },
+
     components: {
         Link,
         BlueButton,
         Ico
     },
+
     props: {
         url: {
             type: String,
@@ -26,15 +34,14 @@ export default {
             type: Boolean,
             default: false,
         },
-        saveState: {
-            type: Boolean,
-            default: false
-        }
     },
 
     methods: {
         linkClickHandler(){
-            router.visit(this.url, { preserveState: this.saveState })
+            if (this.onPaginate === null)
+                router.get(this.url, {}, { preserveState: true })
+            else
+                this.onPaginate(this.page)
         }
     }
 }
@@ -44,7 +51,7 @@ export default {
     <li class="paginate-link-container">
         <BlueButton class="ico-button" :active @click="linkClickHandler">
             <Ico v-if="icoType !== null" :type="icoType" />
-            <span v-if="page !== null">{{ page }}</span>
+            <span v-else>{{ page }}</span>
         </BlueButton>
     </li>
 </template>

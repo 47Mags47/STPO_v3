@@ -30,12 +30,12 @@ export default {
                 label: 'Сумма',
             },
             {
-                type: 'date',
+                type: 'datePicker',
                 name: 'date_start',
                 label: 'Дата начала',
             },
             {
-                type: 'date',
+                type: 'datePicker',
                 name: 'date_end',
                 label: 'Дата окончания',
             },

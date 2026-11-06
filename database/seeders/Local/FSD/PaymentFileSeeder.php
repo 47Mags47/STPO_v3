@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Local\FSD;
 
-use App\Models\FSD\PaymentFile;
-use App\Models\FSD\SFRFile;
+use App\Models\SFR\FSD\PaymentFile;
+use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Seeder;
 
 class PaymentFileSeeder extends Seeder

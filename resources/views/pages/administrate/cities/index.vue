@@ -31,7 +31,7 @@ export default {
 
         :data="cities.data"
         :meta="cities.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'name',

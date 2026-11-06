@@ -15,8 +15,8 @@ export default {
     <BaseAlertPopUp type="info">
         <template #header>
             <div class="size-full flex flex-col justify-center items-center">
-                 <div class="bg-sky-50 rounded-full p-1.5! size-fit">
-                    <Ico type="circle-info" class="size-[25px]! text-sky-500"/>
+                 <div class="bg-(--flash-alert-info-text-color) rounded-full p-[4px]! size-fit">
+                    <Ico type="circle-info" class="size-[25px]! text-(--flash-alert-info-background-content-color)!"/>
                  </div>
             </div>
         </template>

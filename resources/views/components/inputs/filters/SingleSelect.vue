@@ -30,10 +30,21 @@ export default {
             type: String,
             default: null
         },
+        checked: {
+            type: Boolean,
+            default: false
+        },
 
         id: {
             type: String,
             default: null
+        }
+    },
+
+    data() {
+        return {
+            isOpen: false,
+            selectedRow: null,
         }
     },
 
@@ -44,20 +55,21 @@ export default {
         clickOutsideHandler(event) {
             this.isOpen = false;
         },
-    },
-
-    data() {
-        return {
-            isOpen: false
+        radioClickHandler(e) {
+            this.selectedRow = e.target.value
         }
-    }
+    },
 }
 </script>
 
 <template>
     <div class="single-select-container" v-outsideClick="clickOutsideHandler">
-        <div class="single-select" @click="selectClickHandler">
-            <span> {{ label }}</span>
+        <div
+            class="single-select"
+            :class="{ 'active': isOpen }"
+            @click="selectClickHandler"
+        >
+            <span> {{ label }}: {{ selectedRow ?? 'не назначено' }} </span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
@@ -72,10 +84,11 @@ export default {
                 <input
                     type="radio"
                     :name
-                    :value="Object.get(option, valueKey)"
+                    :checked
+                    :value="Object.get(option, labelKey)"
                     :id="`${name}_${index}`"
                 />
-                 <span> {{ option.label }} </span>
+                <span> {{ Object.get(option, labelKey) }} </span>
             </label>
         </div>
     </div>
@@ -92,6 +105,10 @@ export default {
         cursor: pointer
         transition: .5s ease
         @include input()
+
+        &.active
+            border-bottom-right-radius: 0
+            border-bottom-left-radius: 0
 
         &:hover
             background-color: var(--button-background-color)
@@ -123,6 +140,7 @@ export default {
         z-index: 10
         width: 100%
         border: 0 solid var(--border-color)
+        background: var(--background-color)
 
         @include scroll
 

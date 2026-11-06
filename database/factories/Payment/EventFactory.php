@@ -19,7 +19,7 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'in_date' => now()->addDays(rand(-10, 10)),
+            'in_date' => now()->addDays(rand(-10, 10))->format('Y-m-d'),
             'payment_id' => Payment::randomOrCreate()->id,
         ];
     }

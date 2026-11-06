@@ -9,7 +9,12 @@ export default {
 
     methods: {
         clickHandler() {
-            router.get(route('appeal.appeals.index'))
+            router.get(route('appeal.appeals.index'),
+                {},
+                {
+                    hasFilters: true
+                }
+            )
         }
     }
 }

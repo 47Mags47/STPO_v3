@@ -163,6 +163,15 @@ class File extends BaseModel
         return Storage::disk($this->disk)->get($this->getLocalPath());
     }
 
+    /**
+     * Check file exist in storage
+     * @return bool
+     */
+    public function hasInStorage(): bool
+    {
+        return Storage::disk($this->disk)->has($this->getLocalPath());
+    }
+
     ### Связи
     ##################################################
     public function status(): BelongsTo

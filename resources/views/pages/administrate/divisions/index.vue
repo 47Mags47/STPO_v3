@@ -31,7 +31,7 @@ export default {
 
         :data="divisions.data"
         :meta="divisions.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'name',

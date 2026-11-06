@@ -105,6 +105,7 @@ export default {
         display: none
     .file-name-input
         grid-area: A
+        border-color: var(--border-color)
     .add-file-button
         grid-area: B
         padding: 7px

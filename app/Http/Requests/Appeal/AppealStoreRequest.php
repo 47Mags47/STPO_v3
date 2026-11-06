@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Appeal;
 
-use App\Models\Appeal\ThemGroup;
-use App\Models\Appeal\Them;
-use App\Models\Base\User;
+use App\Models\Appeal\Theme;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AppealStoreRequest extends FormRequest
@@ -17,8 +15,7 @@ class AppealStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'group'   => ['required', 'exists:'  . ThemGroup::class . ',id'],
-            'theme' => ['required', 'exists:' . Them::class .',id'],
+            'theme_id' => ['required', 'exists:' . Theme::class .',id'],
             'comment' => ['required', 'string', 'min:1', 'max:255']
         ];
     }

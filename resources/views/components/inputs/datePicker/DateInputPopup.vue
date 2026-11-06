@@ -15,24 +15,13 @@ export default {
         YearSelect
     },
     props: {
-        checkValid: {
-            type: Function,
-            default: (day) => true
-        },
-        onClick: {
-            type: Function,
-            default: () => {}
+        isRange: {
+            type: Boolean,
+            default: false,
         },
         selectedDate: {
-            type: String,
+            type: [String, Object],
             default: null,
-            validator(val){
-                return /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(val)
-            }
-        },
-        selectedDateBetween: {
-            type: Object,
-            defeault: {}
         },
         startInterval: {
             type: [Object, String],
@@ -42,9 +31,15 @@ export default {
             type: [Object, String],
             default: null
         },
-        test: {
-            type: Object,
-            default: {}
+
+        // HANDLERS
+        onClick: {
+            type: Function,
+            default: () => {}
+        },
+        onInputClick: {
+            type: Function,
+            default: () => {}
         }
     },
     computed: {
@@ -78,28 +73,11 @@ export default {
             let endInterval = this.endInterval ?? this.now.endOf('year').plus({'year': 5})
             return Interval.fromDateTimes(startInterval, endInterval)
         },
-
-        initialDate(){
-            if(this.selectedDate !== null)
-                return DateTime.fromFormat(this.selectedDate, 'yyyy-MM-dd')
-
-            if(this.startInterval !== null)
-                if(typeof this.startInterval === 'string')
-                    return DateTime.fromFormat(this.startInterval, 'yyyy-MM-dd')
-                else if(typeof this.startInterval === 'object')
-                    return this.startInterval
-
-            return DateTime.now()
-        }
     },
     data() {
-        let inintialDate = DateTime.now()
-
-        if(this.selectedDate !== null)
-            inintialDate = DateTime.fromFormat(this.selectedDate, 'yyyy-MM-dd')
-
         return {
-            currentDate: inintialDate
+            currentDate: DateTime.now(),
+            hoveredDate: null
         }
     },
     methods: {
@@ -116,6 +94,9 @@ export default {
         },
 
         dayClickHandler(date){
+            if(this.isDisabled(date))
+                return
+
             this.onClick(date)
         },
 
@@ -150,20 +131,63 @@ export default {
             return true
         },
 
-        inRange(date) {
-            if (!this.selectedDateBetween?.from || !this.selectedDateBetween?.to)
+        isDisabled(date) {
+            return !this.checkDateInMonth(date) || !this.checkSelectable(date)
+        },
+
+        // MATH
+        isCurrentDay(date) {
+           return date.hasSame(this.now, 'day')
+        },
+        isSelectedDay(date) {
+            const isCurrentDate          = !date.hasSame(this.now, 'day')
+            const isDateSelected         = date.toFormat('yyyy-MM-dd') === this.selectedDate?.from ||
+                date.toFormat('yyyy-MM-dd') === this.selectedDate?.to                              ||
+                date.toFormat('yyyy-MM-dd') === this.selectedDate
+            const isSelectedDateToNull   = this.selectedDate?.to === null || this.selectedDate?.to === undefined
+            const isHoveredDateNotNull   = this.hoveredDate !== null
+            const isDateHovered          = isHoveredDateNotNull && date.hasSame(this.hoveredDate, 'day')
+
+            return isCurrentDate && isDateSelected || isSelectedDateToNull && isDateHovered
+        },
+        isInRange(date) {
+            if (!this.isRange)
                 return false
 
-            return date > DateTime.fromISO(this.selectedDateBetween?.from) &&
-                date < DateTime.fromISO(this.selectedDateBetween?.to)
-        },
+            const { from, to } = this.selectedDate ?? {}
+
+            if (!from)
+                return false
+
+            const fromDate = DateTime.fromISO(from)
+            const toDate = to
+                ? DateTime.fromISO(to)
+                : this.hoveredDate
+
+            return toDate != null
+                ? date > Math.min(fromDate, toDate) && date < Math.max(fromDate, toDate)
+                : false
+        }
     },
     watch: {
         selectedDate: {
-            handler(newv){
-                this.currentDate = DateTime.fromFormat(newv, 'yyyy-MM-dd')
-            }
-        }
+            handler(newValue) {
+                const date = this.isRange
+                    ? newValue?.from
+                    : newValue
+
+                if (!date) return
+
+                const parsedDate = DateTime.isDateTime(date)
+                    ? date
+                    : DateTime.fromISO(date)
+
+                if (parsedDate.isValid) {
+                    this.currentDate = parsedDate
+                }
+            },
+            immediate: true,
+        },
     },
 }
 </script>
@@ -209,27 +233,16 @@ export default {
                     <tr v-for="weekInterval in interval.splitBy({ week: 1 })" >
                         <td v-for="dayInterval in weekInterval.splitBy({ day: 1 })">
                             <div
-                                v-if="checkValid(dayInterval.start) && checkDateInMonth(dayInterval.start) && checkSelectable(dayInterval.start)"
+                                @mouseenter="hoveredDate = dayInterval.start"
+                                @mouseleave="hoveredDate = null"
                                 class="day-cell-container available"
                                 :class="{
-                                    'current-day'   : dayInterval.start.toMillis()   === now.startOf('day').toMillis(),
-                                    'selected-day'  : dayInterval.start.toMillis()   !== now.startOf('day').toMillis() &&
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.from ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDateBetween?.to   ||
-                                        dayInterval.start.toFormat('yyyy-MM-dd')     === selectedDate,
-                                    'in-range'      : !(dayInterval.start.toMillis() == now.startOf('day').toMillis()) &&inRange(dayInterval.start),
+                                    'current-day'   : isCurrentDay(dayInterval.start),
+                                    'selected-day'  : isSelectedDay(dayInterval.start),
+                                    'disabled'      : isDisabled(dayInterval.start),
+                                    'in-range'      : isInRange(dayInterval.start)
                                 }"
                                 @click="() => dayClickHandler(dayInterval.start)"
-                            >
-                                {{ dayInterval.start.day }}
-                            </div>
-                            <div
-                                v-else
-                                class="day-cell-container"
-                                :class="{
-                                    'disabled': !checkValid(dayInterval.start) || !checkSelectable(dayInterval.start),
-                                    'other-month': !checkDateInMonth(dayInterval.start)
-                                }"
                             >
                                 {{ dayInterval.start.day }}
                             </div>
@@ -283,6 +296,10 @@ export default {
         table
             width: 100%
             height: 100%
+            thead
+                tr
+                    th
+                        color: var(--text-color)
             td
                 width: 45px
                 height: 45px
@@ -301,7 +318,7 @@ export default {
 
                 color: var(--text-color)
                 &.current-day
-                    color: orange
+                    color: orange !important
                 &.selected-day
                     color: #a770ff
                 &.in-range
@@ -309,7 +326,7 @@ export default {
                 &.available
                     cursor: pointer
                     &:hover
-                        background: #a3a3a3
+                        background: #70707020
                 &.disabled, &.other-month
                     cursor: not-allowed
                     color: #aaa

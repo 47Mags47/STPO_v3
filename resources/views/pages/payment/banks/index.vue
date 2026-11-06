@@ -45,7 +45,7 @@ export default {
                 'onClick': (bank) => goToFilesButtonClickhandler(bank)
             }
         ]"
-        :collumns="[
+        :columns="[
             {
                 title: 'Код',
                 dataIndex: 'number',
