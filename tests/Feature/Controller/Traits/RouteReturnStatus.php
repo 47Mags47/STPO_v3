@@ -23,6 +23,7 @@ trait RouteReturnStatus
     {
         $this->checkIndexMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
         $response = $this->get(route($this->route . '.index', $this->getIndexRouteParams()));
         $response->assertStatus($this->indexResponseStatus);
@@ -32,6 +33,7 @@ trait RouteReturnStatus
     {
         $this->checkCreateMethodExist();
         $this->disableAuthMiddleware();
+        $this->runProdSeeder();
 
         $response = $this->get(route($this->route . '.create', $this->getCreateRouteParams()));
         $response->assertStatus($this->createResponseStatus);
