@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\Payment\PaymentFileStoreRequest;
 use App\Jobs\Payment\ReadpaymentFileJob;
 use App\Models\Administrate\Bank;
@@ -13,6 +14,12 @@ use Inertia\Inertia;
 
 class PaymentFileController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(PaymentFile::class);
+    }
     public function index(Event $event)
     {
         return Inertia::render('payment/payment-files/index', [
@@ -46,6 +53,6 @@ class PaymentFileController extends Controller
     public function destroy(Event $event, PaymentFile $paymentFile){
         $paymentFile->delete();
 
-        return redirect()->route('payment.payment-files.index', ['event' => $event->id])->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Requests\SFR\FSD\SFRPaymentCategoryUpdateRequest;
 use App\Models\SFR\FSD\SFRPaymentCategory;
 use Inertia\Inertia;
 
-class SFRCategoryController extends Controller
+class SFRPaymentCategoryController extends Controller
 {
     public function __construct()
     {

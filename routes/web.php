@@ -117,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::resource('/sfr-files',                               App\Http\Controllers\SFR\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
                 Route::resource('/sfr-files/{SFRFile}/result-files',        App\Http\Controllers\SFR\FSD\ResultFileController::class)->only(['index', 'store', 'show']);
                 Route::resource('/payment-files',                           App\Http\Controllers\SFR\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
-                Route::resource('/sfr-payment-categories',                  App\Http\Controllers\SFR\FSD\SFRCategoryController::class)->except(['show']);
+                Route::resource('/sfr-payment-categories',                  App\Http\Controllers\SFR\FSD\SFRPaymentCategoryController::class)->except(['show']);
                 Route::resource('/asp-payment-categories',                  App\Http\Controllers\SFR\FSD\ASPCategoryController::class)->except(['show']);
                 Route::resource('/transit-categories',                      App\Http\Controllers\SFR\FSD\TransitCategoryController::class)->except(['show']);
                 Route::resource('/transit-equivalents',                     App\Http\Controllers\SFR\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);
