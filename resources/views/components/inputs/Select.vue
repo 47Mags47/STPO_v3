@@ -54,7 +54,6 @@ export default {
             search: '',
             selected: this.value ?? null,
             activeElementIndex: 0,
-            isOverflow: false,
         };
     },
 
@@ -74,28 +73,6 @@ export default {
         },
     },
 
-    watch: {
-        open(isOpen) {
-            // HACK убрать рефы отсюда
-            let input = this.$refs.input.$el
-            let dropdown = this.$refs.dropdown
-
-            if(isOpen) {
-                // если список выше инпута
-                if (dropdown.getBoundingClientRect().top < input.getBoundingClientRect().top) {
-                    dropdown.style.borderBottom  = '0'
-
-                    input.style.borderRadius     = '0 0 var(--input-border-radius) var(--input-border-radius)'
-                    dropdown.style.borderRadius  = 'var(--input-border-radius) var(--input-border-radius) 0 0'
-                } else {
-                    dropdown.style.borderTop = '0'
-                    input.style.borderRadius = 'var(--input-border-radius) var(--input-border-radius) 0 0'
-                }
-            } else
-                input.style.borderRadius = 'var(--input-border-radius)'
-        }
-    },
-
     methods: {
         getLabel(option){
             return option === null
@@ -110,8 +87,6 @@ export default {
         },
 
         openList() {
-            fixOverflow(this.$refs.dropdown)
-
             const selectedIndex = this.filtered.findIndex(
                 option => this.checkSelected(option)
             );
@@ -181,6 +156,34 @@ export default {
         value(option){
             this.selected = option
         },
+
+        open(isOpen) {
+            // HACK убрать рефы отсюда
+            let input = this.$refs.input.$el
+            let dropdown = this.$refs.dropdown
+
+            if (isOpen) {
+                fixOverflow(dropdown);
+
+                this.$nextTick(() => {
+                    const inputRect = input.getBoundingClientRect();
+                    const dropdownRect = dropdown.getBoundingClientRect();
+
+                    const isOpenUp = dropdownRect.bottom <= inputRect.top;
+
+                    if (isOpenUp) {
+                        input.classList.add('open-up');
+                        dropdown.classList.add('open-up');
+                    } else {
+                        input.classList.add('open-down');
+                        dropdown.classList.add('open-down');
+                    }
+                });
+            } else {
+                input.classList.remove('open-up', 'open-down');
+                dropdown.classList.remove('open-up', 'open-down');
+            }
+        }
     }
 };
 </script>
@@ -188,7 +191,6 @@ export default {
 <template>
     <div
         class="custom-select-box"
-        :class="{ 'open': open }"
         v-outsideClick="closeList"
     >
         <div class="input-container">
@@ -210,27 +212,27 @@ export default {
             />
 
             <Ico type="chevron-down" :class="{ 'rotated': open }" />
-        </div>
 
-        <div ref="dropdown" class="list-container" :class="open ? 'open' : 'closed'">
-            <div class="search-input-container" v-if="hasSearch">
-                <Baseinput
-                    type="text"
-                    placeholder="Поиск..."
-                    :value="search"
-                    :name="null"
-                    :onInput="(e) => (search = e.target.value)"
-                />
+            <div ref="dropdown" class="list-container">
+                <div class="search-input-container" v-if="hasSearch">
+                    <Baseinput
+                        type="text"
+                        placeholder="Поиск..."
+                        :value="search"
+                        :name="null"
+                        :onInput="(e) => (search = e.target.value)"
+                    />
+                </div>
+
+                <ul>
+                    <li v-for="(option, i) in filtered"
+                        :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
+                        @click="() => selectHandler(option)"
+                    >
+                        <span> {{ getLabel(option) }} </span>
+                    </li>
+                </ul>
             </div>
-
-            <ul>
-                <li v-for="(option, i) in filtered"
-                    :class="{'selected': checkSelected(option), 'active': i === activeElementIndex}"
-                    @click="() => selectHandler(option)"
-                >
-                    <span> {{ getLabel(option) }} </span>
-                </li>
-            </ul>
         </div>
     </div>
 </template>
@@ -238,8 +240,15 @@ export default {
 <style lang="sass" scoped>
 .custom-select-box
     position: relative
+
     .input-container
         position: relative
+
+        input
+            &.open-up
+                border-radius: 0 0 $input-border-radius $input-border-radius
+            &.open-down
+                border-radius: $input-border-radius $input-border-radius 0 0
 
         .ico-container
             position: absolute
@@ -267,53 +276,51 @@ export default {
             text-overflow: ellipsis
 
             transition: none
-    .list-container
-        width: 100%
-        max-height: 0
 
-        position: absolute
-        left: 0
-        top: 100%
-
-        z-index: 9
-
-        background: var(--background-color)
-
-
-        border-radius: 0 0 $input-border-radius $input-border-radius
-        border: var(--border)
-
-        opacity: 0
-
-        overflow: hidden
-
-        transition: all 0.4s ease
-
-        &.open
-            max-height: 250px
-            opacity: 1
-
-        &.closed
+        .list-container
+            width: 100%
             max-height: 0
-            opacity: 0
 
-        .search-input-container
-            padding: 10px
-            border-bottom: var(--border)
-        ul
-            max-height: 250px
-            overflow: auto
-            @include scroll
+            position: absolute
+            left: 0
+            top: 100%
 
-            li
-                padding: 5px 15px
-                cursor: pointer
-                transition: .2s
+            z-index: 9
 
-                &:hover
-                    background: var(--option-background-color-active)
-                &.active
-                    background: var(--option-background-color-active)
-                &.selected
-                    background: var(--option-background-color-selected)
+            background: var(--background-color)
+
+            border: 0 solid var(--border-color)
+
+            overflow: hidden
+
+            transition: border .5s ease, max-height .5s ease
+
+            &.open-up
+                max-height: 250px
+                border-radius: $input-border-radius $input-border-radius 0 0
+                border: var(--border)
+            &.open-down
+                max-height: 250px
+                border-radius: 0 0 $input-border-radius $input-border-radius
+                border: var(--border)
+
+            .search-input-container
+                padding: 10px
+                border-bottom: var(--border)
+            ul
+                max-height: 250px
+                overflow: auto
+                @include scroll
+
+                li
+                    padding: 5px 15px
+                    cursor: pointer
+                    transition: .2s
+
+                    &:hover
+                        background: var(--option-background-color-active)
+                    &.active
+                        background: var(--option-background-color-active)
+                    &.selected
+                        background: var(--option-background-color-selected)
 </style>
