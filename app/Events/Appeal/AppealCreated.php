@@ -29,11 +29,11 @@ class AppealCreated implements ShouldBroadcast
             'id' => $this->appeal->id,
             'created' => $this->appeal->created_at->format('d.m.Y'),
             'comment' => $this->appeal->comment,
-            'them' => [
-                'id' => $this->appeal->them->id,
-                'name' => $this->appeal->them->name,
+            'theme' => [
+                'id' => $this->appeal->theme->id,
+                'name' => $this->appeal->theme->name,
                 'group' => [
-                    'name' => $this->appeal->them->group->name
+                    'name' => $this->appeal->theme->group->name
                 ]
             ],
             'status' => [

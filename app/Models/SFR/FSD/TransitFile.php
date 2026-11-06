@@ -3,10 +3,13 @@
 namespace App\Models\SFR\FSD;
 
 use App\Classes\FileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TransitFile extends FileModel
 {
+    use HasFactory;
+
     ### Настройки
     ##################################################
     protected $table = 'sfr__fsd__transit_files';

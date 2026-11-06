@@ -1,11 +1,9 @@
 <?php
 
-use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
-use App\Models\Appeal\Them;
-use App\Models\Appeal\ThemGroup;
+use App\Models\Appeal\Theme;
+use App\Models\Appeal\ThemeGroup;
 use App\Models\Base\Chat;
-use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +16,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appeal__them_groups', function (Blueprint $table) {
+        Schema::create('appeal__theme_groups', function (Blueprint $table) {
             $table->id();
 
             $table->string('code');
@@ -27,11 +25,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('appeal__thems', function (Blueprint $table) {
+        Schema::create('appeal__themes', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
-            $table->foreignId('group_id')->constrained(ThemGroup::getTableName());
+            $table->foreignId('group_id')->constrained(ThemeGroup::getTableName());
 
             $table->timestamps();
         });
@@ -53,7 +51,7 @@ return new class extends Migration
             $table->foreignId('chat_id')->constrained(Chat::getTableName());
             $table->foreignId('sender_id')->constrained(User::getTableName());
             $table->foreignId('worker_id')->nullable()->constrained(User::getTableName());
-            $table->foreignId('them_id')->constrained(Them::getTableName());
+            $table->foreignId('theme_id')->constrained(Theme::getTableName());
             $table->foreignId('status_id')->constrained(Status::getTableName());
 
             $table->timestamps();
@@ -67,7 +65,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('appeal__appeals');
         Schema::dropIfExists('appeal__statuses');
-        Schema::dropIfExists('appeal__thems');
-        Schema::dropIfExists('appeal__them_groups');
+        Schema::dropIfExists('appeal__themes');
+        Schema::dropIfExists('appeal__theme_groups');
     }
 };

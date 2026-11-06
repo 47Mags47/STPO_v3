@@ -6,13 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\BankStoreRequest;
 use App\Http\Requests\Administrate\BankUpdateRequest;
 use App\Models\Administrate\Bank;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class BankController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(Bank::class);
@@ -37,6 +34,13 @@ class BankController extends Controller
         return redirect()->route('administrate.banks.index')->with('success', 'Запись успешно создана');
     }
 
+    public function show(Bank $bank)
+    {
+        return Inertia::render('administrate/banks/show', [
+            'bank' => fn() => $bank->toResource(),
+        ]);
+    }
+
     public function edit(Bank $bank)
     {
         return Inertia::render('administrate/banks/edit', [
@@ -56,5 +60,19 @@ class BankController extends Controller
         $bank->delete();
 
         return redirect()->back()->with('success', 'Запись удалена');
+    }
+
+    public function restore(Bank $bank)
+    {
+        $bank->restore();
+
+        return redirect()->back()->with('success', 'Запись успешно восстановлена');
+    }
+
+    public function forceDelete(Bank $bank)
+    {
+        $bank->forceDelete();
+
+        return redirect()->back()->with('success', 'Запись безвозвратно удалена');
     }
 }

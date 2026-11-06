@@ -31,7 +31,8 @@ class PermissionsSeeder extends Seeder
 
         ### Appeals
         ##################################################
-        Permission::create(['code' => 'appeal_work',                'name' => 'Работа с обращениями']);
+        Permission::create(['code' => 'appeal_work',                    'name' => 'Работа с обращениями']);
+        Permission::create(['code' => 'appeal_them',                    'name' => 'Работа с темами']);
 
         ### Payments
         ##################################################

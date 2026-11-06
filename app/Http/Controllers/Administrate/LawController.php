@@ -6,13 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrate\LawStoreRequest;
 use App\Http\Requests\Administrate\LawUpdateRequest;
 use App\Models\Administrate\Law;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class LawController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(Law::class);

@@ -12,14 +12,21 @@ use Inertia\Inertia;
 
 class ResultFileController extends Controller
 {
-    public function index(SFRFile $SFRFile){
+    public function __construct()
+    {
+        $this->authorizeResource(ResultFile::class);
+    }
+
+    public function index(SFRFile $SFRFile)
+    {
         return Inertia::render('sfr/fsd/result-files/index', [
             'SFRFile' => fn() => $SFRFile->toResource(),
             'files' => fn() => $SFRFile->resultFiles->toResourceCollection()
         ]);
     }
 
-    public function store(SFRFile $SFRFile){
+    public function store(SFRFile $SFRFile)
+    {
         $resultFile = File::createChildren(ResultFile::class, [
             'sfr_file_id'   => $SFRFile->id,
             'status_id'     => FileStatus::byCode('creating')->id,
@@ -31,7 +38,8 @@ class ResultFileController extends Controller
         return redirect()->route('sfr.fsd.result-files.index', ['SFRFile' => $SFRFile])->with('success', 'Формирование файла запущено');
     }
 
-    public function show(SFRFile $SFRFile, ResultFile $resultFile) {
+    public function show(SFRFile $SFRFile, ResultFile $resultFile)
+    {
         return $resultFile->download();
     }
 }
