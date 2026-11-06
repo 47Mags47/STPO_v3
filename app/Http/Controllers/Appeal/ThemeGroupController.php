@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\ThemeGroupStoreRequest;
 use App\Http\Requests\Appeal\ThemeGroupUpdateRequest;
 use App\Models\Appeal\ThemeGroup;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class ThemeGroupController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(ThemeGroup::class);
+    }
+
     public function index()
     {
         return Inertia::render('appeal/theme-groups/index', [

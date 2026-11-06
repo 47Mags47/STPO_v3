@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Classes\BaseModel;
 use App\Http\Middleware\CurrentDivisionMiddleware;
+use App\Models\Administrate\Division;
 use App\Models\Base\User;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\Authorize;
@@ -234,6 +235,19 @@ abstract class TestCase extends BaseTestCase
     protected function createTestUser(): User
     {
         return User::factory()->create();
+    }
+
+    protected function actingAsUser(): self
+    {
+        $user = $this->createTestUser();
+        $this->actingAs($user);
+
+        $division = Division::randomOrCreate();
+        $user->divisions()->attach($division->id);
+
+        $this->withSession(['division_id' => $division->id]);
+
+        return $this;
     }
 
     protected function getModelFactory()

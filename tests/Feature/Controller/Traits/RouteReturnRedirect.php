@@ -47,9 +47,6 @@ trait RouteReturnRedirect
     public function test_route_return_redirect__store()
     {
         $this->checkStoreMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
         $response = $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
@@ -59,9 +56,6 @@ trait RouteReturnRedirect
     public function test_route_return_redirect__update()
     {
         $this->checkUpdateMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
         $record = $this->createTestRecord();
@@ -72,9 +66,6 @@ trait RouteReturnRedirect
     public function test_route_return_redirect__destroy()
     {
         $this->checkDestroyMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $response = $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
@@ -86,9 +77,6 @@ trait RouteReturnRedirect
     public function test_route_return_redirect__restore()
     {
         $this->checkRestoreMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $response = $this->post(route($this->route . '.restore', $this->getRestoreRouteParams($record)));
@@ -100,9 +88,6 @@ trait RouteReturnRedirect
     public function test_route_return_redirect__force_delete()
     {
         $this->checkForceDeleteMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $response = $this->delete(route($this->route . '.force-delete', $this->getforceDeleteRouteParams($record)));

@@ -61,14 +61,9 @@ trait RouteReturnFlash
         $this->checkStoreMethodExist();
         $this->checkStoreFlashExist();
 
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
-
         $data = $this->createTestData();
 
         $response = $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
-
         $response->assertSessionHas('success');
         $response->assertSessionHas('success', $this->storeFlashMessage);
     }
@@ -77,14 +72,10 @@ trait RouteReturnFlash
     {
         $this->checkUpdateMethodExist();
         $this->checkUpdateFlashExist();
-        $this->actingAs($this->createTestUser());
-
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
 
         $data = $this->createTestData();
-        $response = $this->put(route($this->route . '.update', $this->getUpdateRouteParams()), $data);
 
+        $response = $this->put(route($this->route . '.update', $this->getUpdateRouteParams()), $data);
         $response->assertSessionHas('success');
         $response->assertSessionHas('success', $this->updateFlashMessage);
     }
@@ -93,13 +84,8 @@ trait RouteReturnFlash
     {
         $this->checkDestroyMethodExist();
         $this->checkDestroyFlashExist();
-        $this->actingAs($this->createTestUser());
-
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
 
         $response = $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams()));
-
         $response->assertSessionHas('success');
         $response->assertSessionHas('success', $this->destroyFlashMessage);
     }
@@ -108,10 +94,6 @@ trait RouteReturnFlash
     {
         $this->checkRestoreMethodExist();
         $this->checkRestoreFlashExist();
-        $this->actingAs($this->createTestUser());
-
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
 
         $response = $this->post(route($this->route . '.restore', $this->getRestoreRouteParams()));
         $response->assertSessionHas('success');
@@ -122,10 +104,6 @@ trait RouteReturnFlash
     {
         $this->checkForceDeleteMethodExist();
         $this->checkForceDeleteFlashExist();
-        $this->actingAs($this->createTestUser());
-
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
 
         $response = $this->delete(route($this->route . '.force-delete', $this->getforceDeleteRouteParams()));
         $response->assertSessionHas('success');

@@ -16,7 +16,7 @@ class PaymentFileControllerTest extends RESTControllerTestCase
     public string $modelClass = PaymentFile::class;
     public string $route = 'payment.payment-files';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'files',
     ];
 

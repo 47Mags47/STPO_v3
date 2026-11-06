@@ -7,10 +7,18 @@ use App\Http\Requests\Appeal\ThemeStoreRequest;
 use App\Http\Requests\Appeal\ThemeUpdateRequest;
 use App\Models\Appeal\Theme;
 use App\Models\Appeal\ThemeGroup;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class ThemeController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Theme::class);
+    }
+
     public function index()
     {
         return Inertia::render('appeal/themes/index', [

@@ -9,23 +9,15 @@ trait ControllerRESTMethodsRecordActions
     public function test_route_performs_an_action__store()
     {
         $this->checkStoreMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $data = $this->createTestData();
-
         $this->post(route($this->route . '.store', $this->getStoreRouteParams()), $data);
-
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
     public function test_route_performs_an_action__show()
     {
         $this->checkShowMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $response = $this->get(route($this->route . '.show', $this->getShowRouteParams($record)));
@@ -52,24 +44,17 @@ trait ControllerRESTMethodsRecordActions
     public function test_route_performs_an_action__update()
     {
         $this->checkUpdateMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $data = $this->createTestData();
 
         $this->put(route($this->route . '.update', $this->getUpdateRouteParams($record)), $data);
-
         $this->assertDatabaseHas($this->modelClass::getTableName(), $this->modifyCheckData($data));
     }
 
     public function test_route_performs_an_action__destroy()
     {
         $this->checkDestroyMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $this->delete(route($this->route . '.destroy', $this->getDestroyRouteParams($record)));
@@ -83,27 +68,18 @@ trait ControllerRESTMethodsRecordActions
     public function test_route_performs_an_action__restore()
     {
         $this->checkRestoreMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
-
         $this->post(route($this->route . '.restore', $this->getRestoreRouteParams($record)));
-
         $this->assertDatabaseHas($this->modelClass::getTableName(), array_merge($record->getAttributes(), ['deleted_at' => null]));
     }
 
     public function test_route_performs_an_action__force_delete()
     {
         $this->checkForceDeleteMethodExist();
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-        $this->actingAs($this->createTestUser());
 
         $record = $this->createTestRecord();
         $this->delete(route($this->route . '.force-delete', $this->getForceDeleteRouteParams($record)));
-
         $this->assertDatabaseMissing($this->modelClass::getTableName(), $record->getAttributes());
     }
 }

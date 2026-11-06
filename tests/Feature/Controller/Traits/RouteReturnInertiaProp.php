@@ -49,9 +49,6 @@ trait RouteReturnInertiaProp
         $this->checkShowMethodExist();
         $this->checkHasPropShow();
 
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
-
         $record = $this->createTestRecord();
 
         $response = $this->get(route($this->route . '.show', $this->getShowRouteParams(record: $record)));
@@ -62,9 +59,6 @@ trait RouteReturnInertiaProp
     {
         $this->checkEditMethodExist();
         $this->checkHasPropEdit();
-
-        $this->disableAuthMiddleware();
-        $this->runProdSeeder();
 
         $record = $this->createTestRecord();
 

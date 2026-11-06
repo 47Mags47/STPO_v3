@@ -12,7 +12,7 @@ class EventControllerTest extends RESTControllerTestCase
     public string $modelClass = Event::class;
     public string $route = 'payment.events';
 
-    public array $pageProps = [
+    public ?array $pageProps = [
         'index' => 'events',
         'edit'  => 'event',
     ];

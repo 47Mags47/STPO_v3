@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Controller\Cases;
 
-use App\Models\Base\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Override;
 use Tests\Feature\Controller\Interfaces\ControllerTestCaseInterface;
 use Tests\Feature\Controller\Traits\ControllerHasRESTMethod;
 use Tests\Feature\Controller\Traits\RouteReturnFlash;
@@ -20,6 +20,7 @@ implements ControllerTestCaseInterface
     use RefreshDatabase;
 
     use ControllerHasRESTMethod;
+
     use RouteReturnStatus;
     use RouteReturnInertiaPage;
     use RouteReturnRedirect;
@@ -38,6 +39,16 @@ implements ControllerTestCaseInterface
     public bool $hasDestroy = true;
     public bool $hasRestore = false;
     public bool $hasForceDelete = false;
+
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->disableAuthMiddleware();
+        $this->runProdSeeder();
+        $this->actingAsUser();
+    }
 
     ### Methods
     ##################################################
@@ -122,11 +133,5 @@ implements ControllerTestCaseInterface
             $this->markTestSkipped('Пропуск проверки forceDelete метода');
 
         return $this->hasForceDelete;
-    }
-
-    // создание тестовых данных
-    protected function createTestUser(): User
-    {
-        return User::factory()->create();
     }
 }

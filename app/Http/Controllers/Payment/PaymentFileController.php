@@ -40,7 +40,7 @@ class PaymentFileController extends Controller
     {
         foreach ($request->input('file_ids') as $uploadFileId) {
             $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated(), [
-                'division_id' => 1,
+                'division_id' => $request->session()->get('division_id'),
                 'event_id' => $event->id
             ]));
 
