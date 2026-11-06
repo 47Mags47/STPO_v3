@@ -121,9 +121,8 @@ export default {
         },
 
         setPosition() {
-            this.$nextTick(() => {
+            this.$nextTick(async () => {
                 const popup = this.$refs.popup
-
 
                 if (this.position === 'top') {
                     this.currentX = (window.innerWidth - popup.offsetWidth) / 2 + 'px'
@@ -162,6 +161,7 @@ export default {
                     this.currentY = (window.innerHeight - popup.offsetHeight) / 2 + 'px'
                 }
 
+                await this.$nextTick();
                 fixOverflow(popup)
             })
         },
@@ -303,6 +303,7 @@ export default {
 
     mounted() {
         this.setPosition()
+
     },
 
     beforeUnmount() {

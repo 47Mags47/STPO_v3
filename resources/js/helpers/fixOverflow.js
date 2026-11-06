@@ -16,15 +16,14 @@ export function fixOverflow(el) {
     const overflowRight  = rect.right > window.innerWidth;
 
     // Если вылез снизу за экран
-    if(overflowBottom) {
-        el.style.top    = 'auto'
-        el.style.bottom = '100%'
-
-        isOverflow = true
+    if (overflowBottom) {
+        el.style.top = 'auto';
+        el.style.bottom = '10px';
+        isOverflow = true;
     }
     if(overflowRight) {
         el.style.left    = 'auto'
-        el.style.right = '0'
+        el.style.right = '10px'
 
         isOverflow = true
     }
