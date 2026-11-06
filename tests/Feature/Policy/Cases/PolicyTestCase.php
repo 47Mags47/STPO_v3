@@ -3,7 +3,8 @@
 namespace Tests\Feature\Policy\Cases;
 
 use App\Classes\BaseModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Tests\Feature\Policy\Interfaces\PolicyTestCaseInterface;
 use Tests\Feature\Policy\Traits\PolicyRESTAccepts;
@@ -16,7 +17,7 @@ abstract class PolicyTestCase
 extends TestCase
 implements PolicyTestCaseInterface
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     use PolicyRESTMethodExist;
     use PolicyRESTAccepts;
@@ -25,6 +26,9 @@ implements PolicyTestCaseInterface
 
     ### Settings
     ##################################################
+    // Общие данные
+    protected static bool $seeded = false;
+
     // requeried
     public string $policyClass = '';
     public string $controllerClass = '';
@@ -53,8 +57,17 @@ implements PolicyTestCaseInterface
     {
         parent::setUp();
 
-        $this->policyClass = $this->modelClass::getGuessNames('policy');
-        $this->controllerClass = $this->modelClass::getGuessNames('controller');
+        if (!$this::$seeded) {
+            $this->runProdSeeder();
+
+            DB::commit();
+            DB::beginTransaction();
+
+            $this::$seeded = true;
+        }
+
+        $this->policyClass      = $this->modelClass::getGuessNames('policy');
+        $this->controllerClass  = $this->modelClass::getGuessNames('controller');
     }
 
     ### Methods

@@ -89,7 +89,6 @@ trait PolicyRESTCan
     {
         $this->checkViewAnyExist();
         $this->checkViewAnyPermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -110,7 +109,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_create(){
         $this->checkCreateExist();
         $this->checkCreatePermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -131,7 +129,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_view(){
         $this->checkViewExist();
         $this->checkViewPermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -153,7 +150,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_update(){
         $this->checkUpdateExist();
         $this->checkUpdatePermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -175,7 +171,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_delete(){
         $this->checkDeleteExist();
         $this->checkDeletePermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -197,7 +192,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_restore(){
         $this->checkRestoreExist();
         $this->checkRestorePermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();
@@ -219,7 +213,6 @@ trait PolicyRESTCan
     public function test_policy_user_can_forceDelete(){
         $this->checkForceDeleteExist();
         $this->checkForceDeletePermissionNotEmpty();
-        $this->runProdSeeder();
 
         $policy = new ($this->policyClass)();
         $user = $this->createTestUser();

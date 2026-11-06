@@ -19,8 +19,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -40,8 +38,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -60,8 +56,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $this->actingAs($user);
 
@@ -79,8 +73,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
@@ -102,8 +94,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
         $this->actingAs($user);
@@ -122,8 +112,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
@@ -144,8 +132,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
         $this->actingAs($user);
@@ -164,8 +150,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
@@ -188,8 +172,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $user = $this->createTestUser();
         $record = $this->createTestRecord();
         $this->actingAs($user);
@@ -208,8 +190,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['viewAny'] as $permission) {
             $user = $this->createTestUser();
@@ -235,8 +215,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         foreach ($this->permissions['create'] as $permission) {
             $user = $this->createTestUser();
             $user->permissions()->attach([Permission::byCode($permission)->id]);
@@ -259,8 +237,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         foreach ($this->permissions['create'] as $permission) {
             $user = $this->createTestUser();
@@ -287,8 +263,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $record = $this->createTestRecord();
         foreach ($this->permissions['create'] as $permission) {
@@ -318,8 +292,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $record = $this->createTestRecord();
         foreach ($this->permissions['update'] as $permission) {
             $user = $this->createTestUser();
@@ -344,8 +316,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $record = $this->createTestRecord();
         foreach ($this->permissions['update'] as $permission) {
@@ -372,8 +342,6 @@ trait PolicyRESTHTTPStatus
             CurrentDivisionMiddleware::class,
         ]);
 
-        $this->runProdSeeder();
-
         $record = $this->createTestRecord();
         foreach ($this->permissions['delete'] as $permission) {
             $user = $this->createTestUser();
@@ -398,8 +366,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $record = $this->createTestRecord();
         $record->delete();
@@ -427,8 +393,6 @@ trait PolicyRESTHTTPStatus
             Authenticate::class,
             CurrentDivisionMiddleware::class,
         ]);
-
-        $this->runProdSeeder();
 
         $record = $this->createTestRecord();
         foreach ($this->permissions['delete'] as $permission) {

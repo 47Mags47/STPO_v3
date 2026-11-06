@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Controller\Cases;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Override;
 use Tests\Feature\Controller\Interfaces\ControllerTestCaseInterface;
 use Tests\Feature\Controller\Traits\ControllerHasRESTMethod;
@@ -17,7 +18,7 @@ abstract class ControllerTestCase
 extends TestCase
 implements ControllerTestCaseInterface
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     use ControllerHasRESTMethod;
 
@@ -29,15 +30,18 @@ implements ControllerTestCaseInterface
 
     ### Settings
     ##################################################
+    // Общие данные
+    protected static bool $seeded = false;
+
     // Методы контроллера
-    public bool $hasIndex = true;
-    public bool $hasCreate = true;
-    public bool $hasStore = true;
-    public bool $hasShow = true;
-    public bool $hasEdit = true;
-    public bool $hasUpdate = true;
-    public bool $hasDestroy = true;
-    public bool $hasRestore = false;
+    public bool $hasIndex       = true;
+    public bool $hasCreate      = true;
+    public bool $hasStore       = true;
+    public bool $hasShow        = true;
+    public bool $hasEdit        = true;
+    public bool $hasUpdate      = true;
+    public bool $hasDestroy     = true;
+    public bool $hasRestore     = false;
     public bool $hasForceDelete = false;
 
     #[Override]
@@ -46,7 +50,16 @@ implements ControllerTestCaseInterface
         parent::setUp();
 
         $this->disableAuthMiddleware();
-        $this->runProdSeeder();
+
+        if (!$this::$seeded) {
+            $this->runProdSeeder();
+
+            DB::commit();
+            DB::beginTransaction();
+
+            $this::$seeded = true;
+        }
+
         $this->actingAsUser();
     }
 
@@ -65,7 +78,7 @@ implements ControllerTestCaseInterface
 
     protected function checkIndexMethodExist()
     {
-        if(!$this->hasIndex)
+        if (!$this->hasIndex)
             $this->markTestSkipped('Пропуск проверки index метода');
 
         return $this->hasIndex;
@@ -73,7 +86,7 @@ implements ControllerTestCaseInterface
 
     protected function checkCreateMethodExist()
     {
-        if(!$this->hasCreate)
+        if (!$this->hasCreate)
             $this->markTestSkipped('Пропуск проверки create метода');
 
         return $this->hasCreate;
@@ -81,7 +94,7 @@ implements ControllerTestCaseInterface
 
     protected function checkStoreMethodExist()
     {
-        if(!$this->hasStore)
+        if (!$this->hasStore)
             $this->markTestSkipped('Пропуск проверки store метода');
 
         return $this->hasStore;
@@ -89,7 +102,7 @@ implements ControllerTestCaseInterface
 
     protected function checkShowMethodExist()
     {
-        if(!$this->hasShow)
+        if (!$this->hasShow)
             $this->markTestSkipped('Пропуск проверки show метода');
 
         return $this->hasShow;
@@ -97,7 +110,7 @@ implements ControllerTestCaseInterface
 
     protected function checkEditMethodExist()
     {
-        if(!$this->hasEdit)
+        if (!$this->hasEdit)
             $this->markTestSkipped('Пропуск проверки edit метода');
 
         return $this->hasEdit;
@@ -105,7 +118,7 @@ implements ControllerTestCaseInterface
 
     protected function checkUpdateMethodExist()
     {
-        if(!$this->hasUpdate)
+        if (!$this->hasUpdate)
             $this->markTestSkipped('Пропуск проверки update метода');
 
         return $this->hasUpdate;
@@ -113,7 +126,7 @@ implements ControllerTestCaseInterface
 
     protected function checkDestroyMethodExist()
     {
-        if(!$this->hasDestroy)
+        if (!$this->hasDestroy)
             $this->markTestSkipped('Пропуск проверки destroy метода');
 
         return $this->hasDestroy;
@@ -121,7 +134,7 @@ implements ControllerTestCaseInterface
 
     protected function checkRestoreMethodExist()
     {
-        if(!$this->hasRestore)
+        if (!$this->hasRestore)
             $this->markTestSkipped('Пропуск проверки restore метода');
 
         return $this->hasRestore;
@@ -129,7 +142,7 @@ implements ControllerTestCaseInterface
 
     protected function checkForceDeleteMethodExist()
     {
-        if(!$this->hasForceDelete)
+        if (!$this->hasForceDelete)
             $this->markTestSkipped('Пропуск проверки forceDelete метода');
 
         return $this->hasForceDelete;

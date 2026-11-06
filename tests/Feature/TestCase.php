@@ -9,6 +9,8 @@ use App\Models\Base\User;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -237,7 +239,7 @@ abstract class TestCase extends BaseTestCase
         return User::factory()->create();
     }
 
-    protected function actingAsUser(): self
+    protected function actingAsUser(): User
     {
         $user = $this->createTestUser();
         $this->actingAs($user);
@@ -247,7 +249,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->withSession(['division_id' => $division->id]);
 
-        return $this;
+        return $user;
     }
 
     protected function getModelFactory()
@@ -300,6 +302,13 @@ abstract class TestCase extends BaseTestCase
 
     protected function runProdSeeder()
     {
+        if (DB::transactionLevel() > 0) {
+            DB::rollBack();
+        }
+        Artisan::call('migrate:fresh', ['--force' => true]);
+
         $this->runSeeder(\Database\Seeders\Prod\ProdSeeder::class);
+
+        DB::beginTransaction();
     }
 }
