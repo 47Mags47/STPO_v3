@@ -3,27 +3,26 @@
 namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
-use App\Traits\HasCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ThemGroup extends BaseModel
+class Theme extends BaseModel
 {
-    use HasFactory, HasCode;
+    use HasFactory;
 
     ### Настройки
     ##################################################
-    protected $table = 'appeal__them_groups';
+    protected $table = 'appeal__themes';
 
     protected $fillable = [
-        'code',
         'name',
+        'group_id',
     ];
 
     ### Связи
     ##################################################
-    public function thems(): HasMany
+    public function group(): BelongsTo
     {
-        return $this->hasMany(Them::class, 'group_id');
+        return $this->belongsTo(ThemeGroup::class, 'group_id');
     }
 }

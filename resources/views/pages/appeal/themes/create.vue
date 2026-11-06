@@ -18,7 +18,7 @@ export default {
     <ResourceForm
         header="Новая запись (Темы обращений)"
         sbm="Добавить"
-        :action="route('appeal.thems.store')"
+        :action="route('appeal.themes.store')"
         :inputs="[
 {
                 type: 'string',

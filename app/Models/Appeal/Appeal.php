@@ -23,7 +23,7 @@ class Appeal extends BaseModel
         'sender_id',
         'worker_id',
         'status_id',
-        'them_id',
+        'theme_id',
     ];
 
     ### SCOPES
@@ -59,9 +59,9 @@ class Appeal extends BaseModel
         return $this->belongsTo(User::class, 'worker_id');
     }
 
-    public function them(): BelongsTo
+    public function theme(): BelongsTo
     {
-        return $this->belongsTo(Them::class, 'them_id');
+        return $this->belongsTo(Theme::class, 'theme_id');
     }
 
     public function status(): BelongsTo

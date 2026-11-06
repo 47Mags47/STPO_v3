@@ -5,25 +5,25 @@ namespace App\Models\Appeal;
 use App\Classes\BaseModel;
 use App\Traits\HasCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Them extends BaseModel
+class ThemeGroup extends BaseModel
 {
-    use HasFactory;
+    use HasFactory, HasCode;
 
     ### Настройки
     ##################################################
-    protected $table = 'appeal__thems';
+    protected $table = 'appeal__theme_groups';
 
     protected $fillable = [
+        'code',
         'name',
-        'group_id',
     ];
 
     ### Связи
     ##################################################
-    public function group(): BelongsTo
+    public function themes(): HasMany
     {
-        return $this->belongsTo(ThemGroup::class, 'group_id');
+        return $this->hasMany(Theme::class, 'group_id');
     }
 }

@@ -7,7 +7,7 @@ export default {
         ResourceTable,
     },
     computed: {
-        them_groups: () => usePage().props.them_groups,
+        theme_groups: () => usePage().props.theme_groups,
     },
 };
 </script>
@@ -20,7 +20,7 @@ export default {
         :hasDeleteButton="true"
         :hasEditButton="true"
 
-        :data="them_groups.data"
+        :data="theme_groups.data"
         :meta="divisions.meta"
         :columns="[
             {

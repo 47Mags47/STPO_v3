@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Appeal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Appeal\Them;
+use App\Models\Appeal\Theme;
 
-class ThemApiController extends Controller
+class ThemeApiController extends Controller
 {
     public function index()
     {
-        return Them::getResource();
+        return Theme::getResource();
     }
 }

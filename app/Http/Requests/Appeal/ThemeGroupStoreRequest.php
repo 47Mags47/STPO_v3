@@ -4,7 +4,7 @@ namespace App\Http\Requests\Appeal;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AppealUpdateRequest extends FormRequest
+class ThemeGroupStoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class AppealUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'min:1', 'max:255'],
+            'code' => ['required', 'string', 'min:1', 'max:255'],
         ];
     }
 }

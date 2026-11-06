@@ -21,7 +21,7 @@ class ProdSeeder extends Seeder
         $this->call(Administrate\ModulSeeder::class);
         $this->call(Administrate\FinancingTypeSeeder::class);
 
-        $this->call(Appeal\ThemSeeder::class);
+        $this->call(Appeal\ThemeSeeder::class);
         $this->call(Appeal\StatusSeeder::class);
 
         $this->call(SFR\FSD\TransitCategorySeeder::class);

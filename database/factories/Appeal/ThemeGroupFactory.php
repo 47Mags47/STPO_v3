@@ -5,9 +5,9 @@ namespace Database\Factories\Appeal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appeal\ThemGroup>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appeal\ThemeGroup>
  */
-class ThemGroupFactory extends Factory
+class ThemeGroupFactory extends Factory
 {
     /**
      * Define the model's default state.

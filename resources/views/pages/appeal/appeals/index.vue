@@ -130,7 +130,7 @@ export default {
             {
                 type: 'multiSelect',
                 label: 'Тема',
-                name: 'them_ids',
+                name: 'theme_ids',
                 options: themes,
             },
             {
@@ -160,7 +160,7 @@ export default {
             {
                 title: 'Тема',
                 width: '300px',
-                value: (row) => `${row.them.group.name}<br>${row.them.name}`
+                value: (row) => `${row.theme.group.name}<br>${row.theme.name}`
             },
             {
                 title: 'Комментарий',

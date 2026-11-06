@@ -7,10 +7,10 @@ export default {
         ResourceForm,
     },
     data() {
-        const them = usePage().props.them.data;
+        const theme = usePage().props.theme.data;
         const groups = usePage().props.groups.data;
 
-        return { them, groups };
+        return { theme, groups };
     },
 };
 </script>
@@ -20,21 +20,21 @@ export default {
         header="Редактировать запись (Темы обращений)"
         sbm="Сохранить"
         method="PUT"
-        :action="route('appeal.thems.update', { them: them.id })"
+        :action="route('appeal.themes.update', { theme: theme.id })"
         :inputs="[
             {
                 type: 'string',
                 name: 'name',
                 label: 'Наименование',
                 placeholder: 'Введите наименование',
-                value: them.name,
+                value: theme.name,
             },
             {
                 type: 'select',
                 name: 'group_id',
                 label: 'Группа',
                 options: groups,
-                value: them.group.id,
+                value: theme.group.id,
             },
         ]"
     >

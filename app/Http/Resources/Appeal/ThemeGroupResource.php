@@ -5,7 +5,7 @@ namespace App\Http\Resources\Appeal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ThemGROUPBYGroupResource extends JsonResource
+class ThemeGroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,13 @@ class ThemGROUPBYGroupResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'group' => $this->toResource(),
-            'thems' => $this->thems->toResourceCollection()
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'themes' => $this->themes->map(fn($theme) => [
+                'id' => $theme->id,
+                'name' => $theme->name,
+            ]),
         ];
     }
 }

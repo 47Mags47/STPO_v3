@@ -7,7 +7,7 @@ export default {
         ResourceTable,
     },
     computed: {
-        thems: () => usePage().props.thems,
+        themes: () => usePage().props.themes,
     },
     setup() {
         const columns = [
@@ -33,8 +33,8 @@ export default {
         :hasDeleteButton="true"
         :hasEditButton="true"
 
-        :data="thems.data"
-        :meta="thems.meta"
+        :data="themes.data"
+        :meta="themes.meta"
         :columns="[
             {
                 title: 'Наименование',

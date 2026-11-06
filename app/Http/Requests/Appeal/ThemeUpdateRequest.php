@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Appeal;
 
-use App\Models\Appeal\ThemGroup;
+use App\Models\Appeal\ThemeGroup;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ThemUpdateRequest extends FormRequest
+class ThemeUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,7 +16,7 @@ class ThemUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:1', 'max:255'],
-            'group_id' => ['required', 'exists:' . ThemGroup::class . ',id',]
+            'group_id' => ['required', 'exists:' . ThemeGroup::class . ',id',]
         ];
     }
 }

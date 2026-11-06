@@ -2,13 +2,13 @@
 
 namespace Database\Factories\Appeal;
 
-use App\Models\Appeal\ThemGroup;
+use App\Models\Appeal\ThemeGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appeal\Them>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appeal\Theme>
  */
-class ThemFactory extends Factory
+class ThemeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,7 @@ class ThemFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'group_id' => ThemGroup::randomOrCreate(),
+            'group_id' => ThemeGroup::randomOrCreate(),
         ];
     }
 }
