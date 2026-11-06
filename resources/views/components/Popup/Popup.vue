@@ -317,7 +317,7 @@ export default {
     <div class="popup-wrapper fixed z-10000 inset-0 flex flex-col" :class="isDragging ? 'pointer-events-none select-none' : 'pointer-events-auto select-auto'">
         <div
             ref="popup"
-            class="popup fixed rounded-xl drop-shadow-xl bg-(--popup-background-color) flex flex-col overflow-hidden border border-(--border-color) pointer-events-auto"
+            class="popup fixed rounded-xl drop-shadow-xl bg-(--popup-background-color) flex flex-col overflow-hidden border border-(--header-background-color) pointer-events-auto"
             :class="popupClass"
             :style="popupStyle"
             v-outsideClick="onClose"
