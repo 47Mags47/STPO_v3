@@ -28,7 +28,7 @@ abstract class BaseModel extends Model
      */
     public static function scopeGetResource(
         Builder $query,
-        string|array|null $orderCollumn = 'id',
+        string|array|null $orderColumn = 'id',
         ?string $orderDesc = 'asc',
         ?bool $withTrashed = false,
         ?int $paginate = 25,
@@ -38,7 +38,7 @@ abstract class BaseModel extends Model
             $query = $query->withTrashed();
 
         // search, filters and sort
-        $query = $query->sort($orderCollumn, $orderDesc);
+        $query = $query->sort($orderColumn, $orderDesc);
         $query = $query->filter();
 
         // paginate

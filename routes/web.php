@@ -134,11 +134,9 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::name('veteran.')->prefix('/veteran')->group(function () {
-            Route::resource('/accesses',                                      App\Http\Controllers\Veteran\AccessController::class)->only(['index', 'create', 'store', 'destroy']);
-
-            Route::resource('/reports',                                     App\Http\Controllers\Veteran\ReportController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
-            Route::patch('/reports/{report}/restore',                       [App\Http\Controllers\Veteran\ReportController::class, 'restore'])->withTrashed()->name('reports.restore');
-            Route::resource('/reports/{report}/records',                    App\Http\Controllers\Veteran\RecordController::class)->except(['destroy']);
+            Route::resource('/accesses',                                    App\Http\Controllers\Veteran\AccessController::class)->only(['index', 'create', 'store', 'destroy']);
+            Route::resource('/dates',                                       App\Http\Controllers\Veteran\DateController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
+            Route::resource('dates/{date}/reports',                         App\Http\Controllers\Veteran\ReportController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
         });
     });
 });

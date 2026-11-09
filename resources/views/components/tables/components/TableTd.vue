@@ -31,12 +31,13 @@ export default {
                     'date',
                     'datetime',
                     'render',
-                    'file-status'
+                    'file-status',
+                    'bool'
                 ].includes(value);
             },
         },
         value: {
-            type: [String, Number, Function],
+            type: [String, Number, Function, Boolean],
             default: "",
         },
         format: {
@@ -105,6 +106,11 @@ export default {
 
                 return '<h1>test<h1>'
             }
+
+            if (this.type == 'bool')
+                return this.value
+                    ? 'Да'
+                    : 'Нет'
         },
     },
 

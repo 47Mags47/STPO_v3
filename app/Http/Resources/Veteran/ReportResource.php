@@ -16,14 +16,13 @@ class ReportResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'start_at'      => $this->start_at,
-            'is_active'     => $this->is_active,
-
-            'amount'        => $this->records->sum('amount'),
-            'online_form'   => $this->records->sum('online_form'),
-            'MFC'           => $this->records->sum('MFC'),
-
-            'deleted_at'    => $this->deleted_at
+            'all'           => $this->all,
+            'online'        => $this->online,
+            'MFC'           => $this->MFC,
+            'division'      => [
+                'id'        => $this->division->id,
+                'name'      => $this->division->name,
+            ]
         ];
     }
 }

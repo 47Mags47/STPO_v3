@@ -4,90 +4,51 @@ namespace App\Http\Controllers\Veteran;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Veteran\ReportStoreRequest;
-use App\Http\Requests\Veteran\ReportUpdateRequest;
-use App\Http\Resources\Base\UserResource;
-use App\Http\Resources\Veteran\ReportResource;
-use App\Models\Base\User;
-use App\Models\Veteran\Record;
+use App\Models\Veteran\Date;
 use App\Models\Veteran\Report;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ReportController extends Controller
 {
-    // use AuthorizesRequests;
-    public function __construct()
+    public function index(Report $report, Date $date)
     {
-        // $this->authorizeResource(Report::class);
-    }
-    public function index()
-    {
-        if (user()->hasPermission('veteran_work_admin')) {
-            return Inertia::render('veteran/reports/index', [
-                'reports' => fn() => Report::getResource(orderCollumn: 'start_at', orderDesc: 'desc', withTrashed: true),
-            ]);
-        }
-
-        return redirect()->route('veteran-work.records.create', ['report' => Report::getActive()]);
+        return Inertia::render('veteran/reports/index', [
+            'date'      => $date->toResource(),
+            'reports'   => $date->reports->toResourceCollection()
+        ]);
     }
 
-    public function create()
+    public function create(Date $date)
     {
-        return Inertia::render('veteran/reports/create');
+        return Inertia::render('veteran/reports/create', [
+            'date' => fn() => $date->toResource(),
+        ]);
     }
-    public function store(ReportStoreRequest $request)
-    {
-        if ($request->input('activate')) {
-            Report::where('is_active', true)->update(['is_activate', false]);
-        }
 
-        Report::create(array_merge($request->validated(), [
-            'is_active' => $request->input('activate'),
+    public function store(ReportStoreRequest $request, Date $date)
+    {
+        $report = Report::create(array_merge($request->validated(), [
+            'user_id' => user()->id,
+            'division_id' => user()->getCurrentDivision()->id,
+            'date_id' => $date->id,
         ]));
 
-        return redirect()->route('veteran-work.reports.index')->with('success', 'Запись успешно создана');
+        return redirect()->route('veteran.reports.show', [
+            'date' => $date->id,
+            'report' => $report->id,
+        ])->with('success', 'Запись успешно создана');
     }
 
-    public function update(ReportUpdateRequest $request, Report $report)
-    {
-        if($report->deleted_at !== null)
-            abort(404);
-
-        $data = $request->validated();
-
-        if ($data['is_active'])
-            Report::where('id', '!=', $report->id)->update(['is_active' => false]);
-
-        $report->update($data);
-
-        return redirect()->route('veteran-work.reports.index')->with('success', 'Запись успешно обновлена');
+    public function show(Date $date, Report $report){
+        return Inertia::render('veteran/reports/show', [
+            'date' => fn() => $date->toResource(),
+            'report' => fn() => $report->toResource(),
+        ]);
     }
 
-    public function show(Report $report)
-    {
-        if($report->deleted_at !== null)
-            abort(404);
-
-        dd('show');
-    }
-
-    public function destroy(Report $report)
-    {
-        if($report->deleted_at !== null)
-            abort(404);
-
-        if($report->is_active)
-            return redirect()->back()->with('error', 'Удаление невозможно: отчёт активен');
-
+    public function destroy(Date $date, Report $report){
         $report->delete();
 
         return redirect()->back()->with('success', 'Запись удалена');
-    }
-
-    public function restore(Report $report) {
-        $report->restore();
-
-        return redirect()->back()->with('success', 'Запись успешно восстановлена');
     }
 }

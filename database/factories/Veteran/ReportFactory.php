@@ -2,6 +2,10 @@
 
 namespace Database\Factories\Veteran;
 
+use App\Models\Administrate\Division;
+use App\Models\Auth\Permission;
+use App\Models\Base\User;
+use App\Models\Veteran\Date;
 use App\Models\Veteran\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,11 +21,20 @@ class ReportFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::randomOrCreate();
+        $division = Division::randomOrCreate();
+
+        $user->divisions()->attach($division->id);
+        $user->permissions()->attach(Permission::byCode('veteran_worker')->id);
+
         return [
-            'start_at' => $this->faker
-                ->unique()
-                ->dateTimeBetween('today', '+3 months')
-                ->format('Y-m-d'),
+            'all'           => $this->faker->numberBetween(0, 1000),
+            'online'        => $this->faker->numberBetween(0, 1000),
+            'MFC'           => $this->faker->numberBetween(0, 1000),
+
+            'date_id'       => Date::randomOrCreate()->id,
+            'user_id'       => $user->id,
+            'division_id'   => $division->id
         ];
     }
 }
