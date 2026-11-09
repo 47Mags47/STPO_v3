@@ -4,7 +4,6 @@ namespace Database\Factories\Base;
 
 use App\Models\Base\ChatMessage;
 use App\Models\Base\ChatMessageAttachment;
-use App\Models\Base\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +21,6 @@ class ChatMessageAttachmentFactory extends Factory
         return [
             'is_image' => false,
             'message_id' => ChatMessage::randomOrCreate()->id,
-            'file_id' => File::randomOrCreate()->id,
         ];
     }
 }
