@@ -42,7 +42,7 @@ class PermissionsSeeder extends Seeder
 
         ### Veteran
         ##################################################
-        Permission::create(['code' => 'veteran_work_admin',             'name' => 'Админ формы "Ветеран труда"',                    'group_id' => PermissionGroup::byCode('veteran_work')->id]);
-        Permission::create(['code' => 'veteran_work_worker',            'name' => 'Работник формы "Ветеран труда"',                 'group_id' => PermissionGroup::byCode('veteran_work')->id]);
+        Permission::create(['code' => 'veteran_admin',                  'name' => 'Администратор формы "Ветеран труда"',            'group_id' => PermissionGroup::byCode('veteran')->id]);
+        Permission::create(['code' => 'veteran_worker',                 'name' => 'Заполняющий формы "Ветеран труда"',              'group_id' => PermissionGroup::byCode('veteran')->id]);
     }
 }
