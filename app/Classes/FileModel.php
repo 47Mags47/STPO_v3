@@ -28,15 +28,14 @@ abstract class FileModel extends BaseModel
     public static function booted()
     {
         self::creating(function ($model) {
-            if ($model->file_id === null)
-                $model->file_id = File::factory()->create([
-                    'disk' => $model::$storage_file_disk,
-                    'path' => $model::$storage_file_path,
-                ])->id;
+            if ($model->file_id === null){
+                $file = File::createFromChildren($model::class);
+                $model->file_id = $file->id;
+                $model->setRelation('file', $file);
+            }
 
             if ($model::$createInStorage && !$model->hasInStorage())
                 $model->write('');
-
             return $model;
         });
 

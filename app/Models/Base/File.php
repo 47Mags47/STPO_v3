@@ -96,7 +96,7 @@ class File extends BaseModel
     }
 
     /**
-     * создает модель File
+     * создает модель File с аттрибутами дочерней модели
      * @param string $model
      * @param array|null $attributes
      * @return File
