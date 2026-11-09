@@ -12,6 +12,7 @@ export default {
         bind() {
             return {
                 auth: usePage().props.current_user !== null ? true : false,
+                hasDivision: usePage().props.current_user?.data.current_division !== null ? true : false,
             };
         },
     },
@@ -19,10 +20,10 @@ export default {
 </script>
 
 <template>
-    <GuestLayout v-if="!bind.auth">
+    <GuestLayout v-if="!bind.auth || !bind.hasDivision">
         <slot name="default" />
     </GuestLayout>
-    <AuthLayout v-if="bind.auth">
+    <AuthLayout v-else-if="bind.auth && bind.hasDivision">
         <slot name="default" />
     </AuthLayout>
 </template>

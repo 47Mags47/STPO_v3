@@ -52,15 +52,16 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/select-division',                                 App\Http\Controllers\Auth\SelectDivisionController::class)->only('index', 'store');
+    Route::post('/logout',                                              [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('auth.logout');
 
     Route::middleware(['current.division'])->group(function () {
         // SYSTEM
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
         Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
+
         // AUTH
         Route::name('auth.')->group(function () {
-            Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
             Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
         });
 
