@@ -56,13 +56,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
         Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
 
-        // AUTH
-        Route::name('auth.')->group(function () {
-            Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
-        });
-
+        // DASHBOARD
         Route::get('/dashboard',                                          fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
-        Route::get('/users/show/{user}',                                  [App\Http\Controllers\Auth\UserController::class,  'show'])->name('users.show');
 
         // EMAIL
         Route::name('verification.')->prefix('/email')->group(function () {
@@ -72,13 +67,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/verification-notification',                    [App\Http\Controllers\Auth\EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
         });
 
-        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function() {
+        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function () {
             Route::get('/edit', 'edit')->name('email.edit');
             Route::put('/{user}/update', 'update')->name('email.update');
         });
 
         // PASSWORD
-        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function() {
+        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function () {
             Route::get('/edit', 'edit')->name('password.edit');
             Route::put('/{user}/update', 'update')->name('password.update');
         });
@@ -86,6 +81,11 @@ Route::middleware(['auth'])->group(function () {
         // CHAT
         Route::name('chat.')->prefix('/chat')->group(function () {
             Route::apiResource('/{chat}/messages',                 App\Http\Controllers\Base\ChatMessageController::class)->only(['index', 'store']);
+        });
+
+        // BASE
+        Route::name('base.')->prefix('/base')->group(function () {
+            Route::resource('/users',                                  App\Http\Controllers\Base\UserController::class)->only(['edit', 'update', 'show']);
         });
 
         // ADMINISTRATE
