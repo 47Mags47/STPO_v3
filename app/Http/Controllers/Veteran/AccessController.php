@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Veteran;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\veteran\AccessDestroyRequest;
 use App\Http\Requests\veteran\AccessStoreRequest;
 use App\Http\Resources\Veteran\UserAccessResource;
 use App\Models\Auth\Permission;
@@ -16,7 +15,7 @@ class AccessController extends Controller
     public function index()
     {
         return Inertia::render('veteran/access/index', [
-            'users' => User::whereHasPermissionGroup('veteran_work')->getResource(resource: UserAccessResource::class),
+            'users' => User::whereHasPermissionGroup('veteran')->getResource(resource: UserAccessResource::class),
         ]);
     }
 
@@ -26,7 +25,7 @@ class AccessController extends Controller
             // HACK Добавить частичную загрузку (как по скролу) select
             // HACK Добавить отдельный ресурс с пользователем и его permissions
             'users' => fn() => User::all(),
-            'permissions' => fn() => PermissionGroup::byCode('veteran_work')->permissions
+            'permissions' => fn() => PermissionGroup::byCode('veteran')->permissions
         ]);
     }
 
@@ -37,7 +36,7 @@ class AccessController extends Controller
 
         $user->permissions()->attach($permission->id);
 
-        return redirect()->route('veteran-work.access.index')->with('success', 'Запись успешно сохранена');
+        return redirect()->route('veteran.accesses.index')->with('success', 'Запись успешно сохранена');
     }
 
     public function destroy($request)

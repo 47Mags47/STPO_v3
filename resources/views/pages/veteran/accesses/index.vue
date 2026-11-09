@@ -26,7 +26,6 @@ export default {
 </script>
 
 <template>
-    {{ console.log(permissions) }}
     <ResourceTable
         caption='Доступ к модулю "Ветеран труда"'
         :hasCreateButton="true"

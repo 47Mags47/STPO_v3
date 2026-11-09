@@ -22,7 +22,7 @@ class UserAccessResource extends JsonResource
             'middle_name'       => $this->middle_name,
             'full_name'         => $this->full_name,
             'permissions'       => $this->permissions()
-                ->where('group_id', PermissionGroup::byCode('veteran_work')->id)
+                ->where('group_id', PermissionGroup::byCode('veteran')->id)
                 ->get()
                 ->map(fn($permission) => array_merge(
                     ['division_id' => $permission->pivot->division_id],
