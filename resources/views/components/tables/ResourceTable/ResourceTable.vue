@@ -2,13 +2,12 @@
 import { h } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import { router } from '@inertiajs/vue3';
-
 import Table from '../Table.vue';
 import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
-
 import StringInput from '../../inputs/StringInput.vue';
+import useFiltersStore from '../../../../js/store/filters';
 
 export default {
     components: {
@@ -43,9 +42,9 @@ export default {
     data() {
         return {
             isFilterOpen: false,
-            filterResetKey: 0,
-            cachedFilters: {},
+            storedFilters: {},
             filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
+            filtersStore: useFiltersStore(),
             searchInputTimer: null,
         }
     },
@@ -178,13 +177,9 @@ export default {
     methods: {
         // FILTERS
         resetFilters() {
-            localStorage.removeItem(this.filtersStorageKey)
-            this.cachedFilters = {}
+            this.filtersStore.clearFilters(this.filtersStorageKey);
 
-            // Увеличиваем ключ - этот ключ у каждого компонента фильтров и он конкатенируется с filter.name
-            // Это нужно для сброса, чтобы создавался новый компонент (при изменении ключа компонент пересоздаётся),
-            // Оставался фильтр открытым, а значения компонентов сбрасывались
-            this.filterResetKey++
+            this.storedFilters = {};
 
             router.get(
                 window.location.pathname,
@@ -198,7 +193,7 @@ export default {
         preparePropsFromFilter(filter) {
             const { type, label, ...rest } = filter;
 
-            rest.value = this.cachedFilters[type]?.value?.[rest.name] ?? rest.value
+            rest.value = this.storedFilters[type]?.value?.[rest.name] ?? rest.value
             rest.name = `filters[${rest.name}]`
 
             return rest;
@@ -206,18 +201,7 @@ export default {
         toggleFilterVisible() {
             this.isFilterOpen = !this.isFilterOpen;
         },
-        restoreFilters() {
-            try {
-                const savedFilters = localStorage.getItem(this.filtersStorageKey);
 
-                if (savedFilters) {
-                    this.cachedFilters = JSON.parse(savedFilters);
-                }
-            } catch (error) {
-                console.error('Не удалось восстановить фильтры:', error);
-                this.cachedFilters = {};
-            }
-        },
         applyFilters() {
             const form = this.$refs.table.$refs.filtersForm.$el;
             const formData = new FormData(form);
@@ -272,11 +256,11 @@ export default {
                 new URLSearchParams(window.location.search)
             );
 
-            this.cachedFilters = result;
+            this.storedFilters = result;
 
-            localStorage.setItem(
+            this.filtersStore.setFilters(
                 this.filtersStorageKey,
-                JSON.stringify(result)
+                result
             );
         },
 
@@ -382,10 +366,11 @@ export default {
         },
     },
 
-    async mounted() {
-        // Берём из localStorage значения фильтров пихуем в компоненты и кликаем (отправляем на сервер)
-        this.restoreFilters()
+    created() {
+        this.storedFilters = this.filtersStore.getFilters(this.filtersStorageKey);
+    },
 
+    async mounted() {
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
                 console.error('Неверный формат канала');
@@ -473,7 +458,7 @@ export default {
                     :class="{ 'opened': isFilterOpen }"
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                        <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
+                        <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters">
                             <MultiSelect            v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <SingleSelect           v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />

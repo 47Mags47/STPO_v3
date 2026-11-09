@@ -1,4 +1,5 @@
 import { router } from '@inertiajs/vue3';
+import { useFiltersStore } from '../store';
 
 const originalVisit = router.visit.bind(router);
 
@@ -9,8 +10,8 @@ router.visit = (href, options = {}) => {
         const filtersStorageKey = `resource-table-filters:${new URL(href, window.location.origin).pathname}`;
 
         try {
-            const savedFilters = localStorage.getItem(filtersStorageKey);
-            const urlParams = JSON.parse(savedFilters)?.urlParams ?? {};
+            const savedFilters = useFiltersStore().getFilters(filtersStorageKey);
+            const urlParams = savedFilters?.urlParams ?? {};
 
             rest.data = {
                 ...rest.data,

@@ -10,8 +10,8 @@ export default defineConfig({
     resolve: {
         alias: {
             "@components":  "/resources/views/components",
-            "@widjets":     "/resources/views/widjets",
             "@layouts":     "/resources/views/layouts",
+            "store":        "/resources/js/store"
         },
     },
     plugins: [

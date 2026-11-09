@@ -52,7 +52,7 @@ export default {
                         router.post(route('appeal.reaccept', { appeal: this.appeal.id }))
                 }
             };
-        }
+        },
     },
 
     methods: {
@@ -90,7 +90,7 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
-                <span> {{ DateTime.fromISO(appeal.created).setLocale('ru').toFormat('dd.MM.yyyy HH:mm') }} </span>
+                <span> {{ DateTime.fromISO(appeal.created_at).setLocale('ru').toFormat('dd.MM.yyyy HH:mm') }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>
