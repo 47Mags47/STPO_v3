@@ -31,21 +31,28 @@ abstract class BaseModel extends Model
         string|array|null $orderCollumn = 'id',
         ?string $orderDesc = 'asc',
         ?bool $withTrashed = false,
-        bool|int $paginate = 25,
+        ?int $paginate = 25,
+        ?string $resource = null
     ): ResourceCollection {
         if ($withTrashed)
             $query = $query->withTrashed();
 
+        // search, filters and sort
         $query = $query->sort($orderCollumn, $orderDesc);
         $query = $query->filter();
 
-        $queryResult = $paginate !== false
+        // paginate
+        $queryResult = $paginate !== null
             ? $query->paginate($paginate)
             : $query->get();
 
-        return self::getGuessNames('resource')
-            ? self::getGuessNames('resource')::collection($queryResult)
-            : $queryResult->toResourceCollection();
+        // resource
+        if ($resource !== null)
+            return $resource::collection($queryResult);
+        else
+            return self::getGuessNames('resource')
+                ? self::getGuessNames('resource')::collection($queryResult)
+                : $queryResult->toResourceCollection();
     }
 
     public static function scopeFilter(Builder $builder): Builder
@@ -57,7 +64,7 @@ abstract class BaseModel extends Model
 
     public static function scopeSort(Builder $builder, ?string $collumn = 'id', ?string $desc = 'asc',): Builder
     {
-        return $builder->orderBy($collumn, $desc);
+        return $builder->orderBy(self::getTableName() . '.' . $collumn, $desc);
     }
 
     ### Методы
