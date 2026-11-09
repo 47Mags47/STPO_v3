@@ -2,12 +2,12 @@
 
 namespace Database\Factories\SFR\FSD;
 
-use App\Models\Base\File;
-use App\Models\Model;
+use App\Models\Administrate\Division;
+use App\Models\SFR\FSD\PaymentFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<PaymentFile>
  */
 class PaymentFileFactory extends Factory
 {
@@ -19,8 +19,8 @@ class PaymentFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'in_date'   => now()->format('Y-m-d'),
-            'file_id'   => File::randomOrCreate(),
+            'in_date'       => now()->format('Y-m-d'),
+            'division_id'   => Division::randomOrCreate(),
         ];
     }
 }

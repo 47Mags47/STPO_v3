@@ -2,7 +2,6 @@
 
 namespace Database\Factories\SFR\FSD;
 
-use App\Models\Base\File;
 use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +21,6 @@ class SFRFileFactory extends Factory
             'in_date'       => now()->format('Y-m-d'),
             'date_start'    => now()->startOfMonth()->format('Y-m-d'),
             'date_end'      => now()->endOfMonth()->format('Y-m-d'),
-            'file_id'       => File::randomOrCreate()
         ];
     }
 }

@@ -1,14 +1,11 @@
 <?php
 
-use App\Models\Administrate\Division;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // DEV
 if (config('app.env') === 'local') {
-    Route::get('/test', fn() => Inertia::render('test', [
-        'divisions' => Division::paginate(25)->toResourceCollection(),
-    ]));
+    Route::get('/test', fn() => Inertia::render('test'));
     Route::post('/test', fn() => dd(request()->all()));
     Route::get('/view', fn() => Inertia::render('view'));
 }
