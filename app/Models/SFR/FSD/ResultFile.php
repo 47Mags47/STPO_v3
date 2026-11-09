@@ -21,6 +21,8 @@ class ResultFile extends FileModel
 
     public static string|null $storage_file_disk = 'fsd';
     public static string|null $storage_file_path = 'output';
+    public static bool $createInStorage = false;
+
     public static string|null $channel = 'sfr.fsd.result-files';
 
     ### Методы

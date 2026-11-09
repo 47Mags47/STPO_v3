@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Base;
 
-use App\Models\Base\File;
 use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -18,13 +17,5 @@ class FileFactory extends Factory
             'origin_name' => now()->format('Y-m-d-H-i-s_') . Str::random(40),
             'status_id' => FileStatus::byCode('creating')->id,
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (File $file) {
-            if(!$file->hasInStorage())
-                $file->write('');
-        });
     }
 }

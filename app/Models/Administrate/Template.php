@@ -21,6 +21,7 @@ class Template extends FileModel
 
     public static string|null $storage_file_disk = 'templates';
     public static string|null $storage_file_path = 'payment';
+
     ### Методы
     ##################################################
     public function writeTemplate(){
@@ -28,8 +29,4 @@ class Template extends FileModel
         if($this->writer !== null)
             new ($this->writer)();
     }
-
-    ### Связи
-    ##################################################
-    //
 }

@@ -28,12 +28,14 @@ abstract class FileModel extends BaseModel
     public static function booted()
     {
         self::creating(function ($model) {
-            if ($model::$createInStorage && $model->file_id === null) {
+            if ($model->file_id === null)
                 $model->file_id = File::factory()->create([
                     'disk' => $model::$storage_file_disk,
                     'path' => $model::$storage_file_path,
                 ])->id;
-            }
+
+            if ($model::$createInStorage && !$model->hasInStorage())
+                $model->write('');
 
             return $model;
         });
@@ -110,17 +112,48 @@ abstract class FileModel extends BaseModel
         );
     }
 
-    ### Методы
+    ### Методы модели
     ##################################################
     /**
-     * get file content
-     * @return string
+     * Adds an error to the record
+     * @param string $error
      */
-    public function getContent(): string
+    public function addError(string $error): self
     {
-        return $this->file->getContent();
+        $this->file->addError($error);
+
+        return $this;
     }
 
+    /**
+     * Set file status
+     *
+     * @param FileStatus|string $status
+     * @return bool
+     */
+    public function setStatus(FileStatus|string $status): bool
+    {
+        $result = $this->file->setStatus($status);
+
+        if($result and $this::$channel !== null)
+            FileChangeStatusEvent::dispatch($this);
+
+        return $result;
+    }
+
+    /**
+     * Set file disabled
+     *
+     * @param bool $disabled
+     * @return bool
+     */
+    public function setDisabled(bool $disabled = true): bool
+    {
+        return $this->file->setDisabled($disabled);
+    }
+
+    ### Методы хранилища
+    ##################################################
     /**
      * Moves the file to the file storage
      *
@@ -132,17 +165,6 @@ abstract class FileModel extends BaseModel
     public function move(?string $newName = null, ?string $newPath = null, ?string $newDisk = null): bool
     {
         return $this->file->move($newName, $newPath, $newDisk);
-    }
-
-    /**
-     * Adds an error to the record
-     * @param string $error
-     */
-    public function addError(string $error): self
-    {
-        $this->file->addError($error);
-
-        return $this;
     }
 
     /**
@@ -167,40 +189,21 @@ abstract class FileModel extends BaseModel
     }
 
     /**
-     * Set file status
-     *
-     * @param FileStatus|string $status
-     * @return bool
+     * get file content
+     * @return string
      */
-    public function setStatus(FileStatus|string $status): bool
+    public function getContent(): string
     {
-        if (is_string($status))
-            $status = FileStatus::byCode($status);
-
-        $is_updated = $this->file->update([
-            'status_id' => $status->id,
-        ]);
-
-        if ($is_updated === false)
-            return false;
-
-        if ($this::$channel !== null)
-            FileChangeStatusEvent::dispatch($this);
-
-        return true;
+        return $this->file->getContent();
     }
 
     /**
-     * Set file disabled
-     *
-     * @param bool $disabled
+     * Check file exist in storage
      * @return bool
      */
-    public function setDisabled(bool $disabled = true): bool
+    public function hasInStorage(): bool
     {
-        return $this->file->update([
-            'is_disabled' => $disabled,
-        ]);
+        return $this->file->hasInStorage();
     }
 
     ### Связи

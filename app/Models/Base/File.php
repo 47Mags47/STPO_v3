@@ -3,6 +3,7 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
+use App\Classes\FileModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,7 +78,14 @@ class File extends BaseModel
 
     ### Методы модели
     ##################################################
-    public static function createChildren(string $model, ?array $attributes = [])
+    /**
+     * Создает модель File и дочернюю модель
+     *
+     * @param string $model
+     * @param array|null $attributes
+     * @return FileModel
+     */
+    public static function createChildren(string $model, ?array $attributes = []): FileModel
     {
         $childAttributes = array_intersect_key($attributes, array_flip(new $model()->getFillable()));
         $fileModel = self::createFromChildren($model, $attributes);
@@ -87,7 +95,14 @@ class File extends BaseModel
         ], $childAttributes));
     }
 
-    public static function createFromChildren(string $model, ?array $attributes = []): self {
+    /**
+     * создает модель File
+     * @param string $model
+     * @param array|null $attributes
+     * @return File
+     */
+    public static function createFromChildren(string $model, ?array $attributes = []): self
+    {
         $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
 
         $fileModel = self::factory()->create(array_merge([
@@ -111,6 +126,40 @@ class File extends BaseModel
         );
 
         return $this;
+    }
+
+    /**
+     * Set file status
+     *
+     * @param FileStatus|string $status
+     * @return bool
+     */
+    public function setStatus(FileStatus|string $status): bool
+    {
+        if (is_string($status))
+            $status = FileStatus::byCode($status);
+
+        $is_updated = $this->update([
+            'status_id' => $status->id,
+        ]);
+
+        if ($is_updated === false)
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Set file disabled
+     *
+     * @param bool $disabled
+     * @return bool
+     */
+    public function setDisabled(bool $disabled = true): bool
+    {
+        return $this->update([
+            'is_disabled' => $disabled,
+        ]);
     }
 
     ### Методы хранилища
