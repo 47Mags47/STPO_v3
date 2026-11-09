@@ -149,7 +149,7 @@ export default {
         <ResourceForm
             :inputs="inputsForm"
             :sbm-disabled="isReadonly"
-            :action="route('auth.users.update', { user: current_user.id })"
+            :action="route('base.users.update', { user: current_user.id })"
             method="put"
         >
             <template #header>
