@@ -136,5 +136,23 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('payments')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('payment_event_view'));
+
+        ### Payments
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Темы',
+            'route_name'    => 'appeal.themes.index',
+            'group_id'      => ModulGroup::byCode('appeals')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('appeal_theme'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Категории тем',
+            'route_name'    => 'appeal.theme-groups.index',
+            'group_id'      => ModulGroup::byCode('appeals')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('appeal_theme'));
     }
 }

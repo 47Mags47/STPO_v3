@@ -8,20 +8,7 @@ export default {
     },
     computed: {
         themes: () => usePage().props.themes,
-    },
-    setup() {
-        const columns = [
-            {
-                title: 'Наименование',
-                dataIndex: 'name',
-            },
-            {
-                title: 'Группа',
-                dataIndex: 'group.name',
-            },
-        ];
-        return { columns };
-    },
+    }
 };
 </script>
 
@@ -29,20 +16,30 @@ export default {
     <ResourceTable
         caption="Темы обращений"
 
-        :hasCreateButton="true"
-        :hasDeleteButton="true"
-        :hasEditButton="true"
+        :has-create-button="true"
+        :has-delete-button="true"
+        :has-edit-button="true"
+        :has-search-input="true"
 
         :data="themes.data"
         :meta="themes.meta"
         :columns="[
             {
-                title: 'Наименование',
-                dataIndex: 'name',
-            },
-            {
                 title: 'Группа',
                 dataIndex: 'group.name',
+                rowspan: (row, index, data) => {
+                    const previous = data[index - 1]
+
+                    if (previous?.group.name === row.group.name) {
+                        return 0
+                    }
+
+                    return data.filter(item => item.group.name === row.group.name).length
+                },
+            },
+            {
+                title: 'Наименование',
+                dataIndex: 'name',
             },
         ]"
     />

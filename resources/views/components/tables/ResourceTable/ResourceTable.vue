@@ -75,7 +75,7 @@ export default {
         },
         hasSearchInput: {
             type: [Boolean, Function],
-            default: false
+            default: true
         },
 
         // Actions
