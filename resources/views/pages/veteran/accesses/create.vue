@@ -33,12 +33,12 @@ export default {
 
 <template>
     <ResourceForm
-        :action="route('veteran-work.access.store')"
+        :action="route('veteran.accesses.store')"
         sbm="Добавить"
         :inputs="[
             {
                 type: 'selectPopup',
-                name: 'division_id',
+                name: 'filters[division_id]',
                 label: 'Организация',
                 url: route('api.administrate.divisions.index'),
                 onSelect: selectDivisionHandler,
@@ -55,6 +55,7 @@ export default {
                 label: 'Пользователь',
                 labelKey: 'full_name',
                 url: route('api.base.users.index'),
+                urlParams: { filters: { division: division?.id }},
                 disabled: division === null,
                 onSelect: selectUserHandler,
                 columns: [

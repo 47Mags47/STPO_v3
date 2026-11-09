@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Veteran;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\veteran\AccessStoreRequest;
+use App\Http\Requests\Veteran\AccessStoreRequest;
 use App\Http\Resources\Veteran\UserAccessResource;
 use App\Models\Auth\Permission;
 use App\Models\Auth\PermissionGroup;
@@ -14,7 +14,7 @@ class AccessController extends Controller
 {
     public function index()
     {
-        return Inertia::render('veteran/access/index', [
+        return Inertia::render('veteran/accesses/index', [
             'users' => User::whereHasPermissionGroup('veteran')->getResource(resource: UserAccessResource::class),
         ]);
     }
@@ -25,7 +25,7 @@ class AccessController extends Controller
             // HACK Добавить частичную загрузку (как по скролу) select
             // HACK Добавить отдельный ресурс с пользователем и его permissions
             'users' => fn() => User::all(),
-            'permissions' => fn() => PermissionGroup::byCode('veteran')->permissions
+            'permissions' => fn() => PermissionGroup::byCode('veteran')->permissions->toResourceCollection()
         ]);
     }
 

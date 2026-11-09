@@ -47,7 +47,7 @@ export default {
             {
                 title: 'Доступ',
                 dataIndex: 'permission.name',
-                width: 350
+                width: '350px'
             },
         ]"
     />
