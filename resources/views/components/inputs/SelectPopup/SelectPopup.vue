@@ -64,8 +64,6 @@ export default {
             data: [],
             meta: {},
             links: {},
-            isDragging: false,
-            isFullScreen: false
         }
     },
 

@@ -48,16 +48,14 @@ export default {
     computed: {
         reports: () => usePage().props.reports
     }
-
-    // HACK Добавить is_active
-    // HACK поменять иконку на стрелочку
 }
 </script>
 
 <template>
     <ResourceTable
         caption="Отчёты"
-        :hasCreateButton="true"
+        :has-create-button="true"
+        :has-search-input="true"
         :data="reports.data"
         :meta="reports.meta"
         :rowLinks="[
@@ -83,7 +81,7 @@ export default {
             }
         ]"
         :rowClasses="getRowClasses"
-        :collumns="[
+        :columns="[
             {
                 type: 'date',
                 title: 'Дата отчёта',
@@ -110,14 +108,17 @@ export default {
 
 <style lang="sass" scoped>
 :deep(.table-content table tbody tr.row-deleted)
-    background: var(--table-row-deleted-background-color)
-
-    &:hover
-        background: var(--table-row-deleted-background-color)
+    background: color-mix(
+        in srgb,
+        var(--table-row-deleted-background-color) 50%,
+        transparent
+    )
 
 :deep(.table-content table tbody tr.row-active)
-    background: var(--table-row-active-background-color)
+    background: color-mix(
+        in srgb,
+        var(--table-row-active-background-color) 50%,
+        transparent
+    ) !important
 
-    &:hover
-        background: var(--table-row-active-background-color)
 </style>

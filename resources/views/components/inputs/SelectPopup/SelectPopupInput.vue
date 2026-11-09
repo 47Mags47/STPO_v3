@@ -21,31 +21,33 @@ export default {
             default: 'book-text'
         },
 
+        // INPUT
         hidden: {
             type: Boolean,
             default: false
         },
-
         name: {
             type: String,
             default: null
         },
-
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         value: {
             type: Object,
             default: {},
         },
-
         labelKey: {
             type: String,
             default: 'name'
         },
-
         valueKey: {
             type: String,
             default: 'id'
         },
 
+        // HANDLERS
         onSelect: {
             type: Function,
             default: () => {}
@@ -93,13 +95,13 @@ export default {
 
 <template>
     <div class="select-popup-input-wrapper">
-        <div ref="selectPopupInput" v-if="!hidden" class="select-popup-input" >
+        <div ref="selectPopupInput" v-if="!hidden" class="select-popup-input" :class="{ 'disabled': disabled }" >
             <span>{{ selectedItemLabel ?? 'Не выбрано' }} </span>
         </div>
 
         <input v-if="selectedItemValue" type="hidden" :name :value="selectedItemValue">
 
-        <BlueButton @click.stop="showPopupButtonHandler">
+        <BlueButton @click.stop="showPopupButtonHandler" :disabled>
             <Ico :type="ico" />
         </BlueButton>
 
@@ -130,6 +132,14 @@ export default {
     height: 35px
     .select-popup-input
         @include input()
+
+        &.disabled
+            border-color: var(--input-disabled-border-color)
+            cursor: not-allowed
+
+
+            span
+                color: var(--input-disabled-text-color)
 
     :deep(.blue-button)
         width: 35px
