@@ -45,6 +45,11 @@ export default {
             type: String,
             default: 'id'
         },
+
+        onSelect: {
+            type: Function,
+            default: () => {}
+        },
     },
 
     data() {
@@ -63,6 +68,9 @@ export default {
         selectItemHandler(e, item) {
             this.selectedItemValue = Object.get(item, this.valueKey)
             this.selectedItemLabel = Object.get(item, this.labelKey)
+
+            this.onSelect(item)
+
         },
 
         closeClickHandler() {

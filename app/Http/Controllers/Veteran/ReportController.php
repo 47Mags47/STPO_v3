@@ -25,7 +25,7 @@ class ReportController extends Controller
     {
         if (user()->hasPermission('veteran_work_admin')) {
             return Inertia::render('veteran/reports/index', [
-                'reports' => fn() => Report::getResource(withTrashed: true, order: 'start_at', orderDesc: 'desc'),
+                'reports' => fn() => Report::getResource(order: 'start_at', orderDesc: 'desc', withTrashed: true),
             ]);
         }
 
