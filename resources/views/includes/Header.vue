@@ -7,7 +7,6 @@ import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
 import Leaf from './Leaf.vue';
-import { toggleSeason, getCurrentSeason } from '@/season';
 import Game from '../components/game/Game.vue';
 import ChristmasLayout from '../layouts/ChristmasLayout.vue';
 
@@ -87,7 +86,7 @@ export default {
         </div>
 
         <Game
-            v-if="counter === 3"
+            v-if="counter === 3 || true"
             :on-close-game
         />
     </ChristmasLayout>
