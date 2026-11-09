@@ -20,7 +20,7 @@ export default {
         :hasDeleteButton="true"
         :data="categories.data"
         :meta="categories.meta"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'name',

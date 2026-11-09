@@ -7,13 +7,9 @@ import { route } from "ziggy-js";
 
 export default {
     components: {
+        DashboardLayout,
         VerticalForm,
         BlueButton
-    },
-
-    data() {
-        return {
-        }
     },
 
     computed: {
@@ -42,35 +38,35 @@ export default {
             router.get(route(routeName))
         }
     },
-
-    layout: DashboardLayout,
 }
 </script>
 
 <template>
-    <VerticalForm>
-        <template #header>
-            <div>
-                <span class="text-2xl!"> настройки </span>
-            </div>
-        </template>
+    <DashboardLayout>
+        <VerticalForm>
+            <template #header>
+                <div>
+                    <span class="text-2xl!"> настройки </span>
+                </div>
+            </template>
 
-        <template #content>
-            <BlueButton :on-click="() => routeTo('email.edit')">
-                Сменить почту
-            </BlueButton>
-            <BlueButton :on-click="() => routeTo('password.edit')">
-                Сменить пароль
-            </BlueButton>
-            <BlueButton
-                v-if="this.current_user.divisions.length > 1"
-                :on-click="() => routeTo('select-division.index')"
-            >
-                Сменить организацию
-            </BlueButton>
-            <BlueButton :on-click="toggleTheme">
-                Сменить тему
-            </BlueButton>
-        </template>
-    </VerticalForm>
+            <template #content>
+                <BlueButton :on-click="() => routeTo('email.edit')">
+                    Сменить почту
+                </BlueButton>
+                <BlueButton :on-click="() => routeTo('password.edit')">
+                    Сменить пароль
+                </BlueButton>
+                <BlueButton
+                    v-if="this.current_user.divisions.length > 1"
+                    :on-click="() => routeTo('select-division.index')"
+                >
+                    Сменить организацию
+                </BlueButton>
+                <BlueButton :on-click="toggleTheme">
+                    Сменить тему
+                </BlueButton>
+            </template>
+        </VerticalForm>
+    </DashboardLayout>
 </template>

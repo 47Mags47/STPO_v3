@@ -11,7 +11,6 @@ export default {
         appeals:            () => usePage().props.appeals,
         current_user:       () => usePage().props.current_user.data,
 
-        senders:            () => usePage().props.senders.data,
         themes:             () => usePage().props.themes.data,
         statuses:           () => usePage().props.statuses.data,
     },
@@ -45,7 +44,7 @@ export default {
                         if (canAccept)
                             router.post(route('appeal.accept', { appeal: row.id }))
                         else if (canGo)
-                            router.get(route('appeal.messages.index', { appeal: row.id }))
+                            router.get(route('appeal.appeals.show', { appeal: row.id }))
                     }
                 },
                 second: {
@@ -73,7 +72,7 @@ export default {
 
         if (hasPermission('appeal_work')) {
             Echo.private('appeals')
-                .listen('.appeal.created', (data) => {
+                .listen('.appeal.created_at', (data) => {
                     this.appealList.unshift(data)
                 });
         }
@@ -92,7 +91,9 @@ export default {
 
 <template>
     <ResourceTable
+        caption="Обращения"
         :hasCreateButton="true"
+        :hasSearchInput="true"
         :data="appealList"
         :meta="appeals.meta"
         :filters="[
@@ -103,16 +104,33 @@ export default {
                 name: 'created_at',
             },
             {
-                type: 'multiSelect',
+                type: 'multiSelectPopup',
                 label: 'Отправитель',
                 name: 'sender_ids',
                 labelKey: 'full_name',
-                options: senders,
+                caption: 'Отправители',
+                placeholder: 'Отправитель: выбрано -',
+                url: route('api.appeal.senders.index'),
+                hasSearchInput: true,
+                columns: [
+                    {
+                        title: 'Фамилия',
+                        dataIndex: 'last_name',
+                    },
+                    {
+                        title: 'Имя',
+                        dataIndex: 'first_name',
+                    },
+                    {
+                        title: 'Отчество',
+                        dataIndex: 'middle_name',
+                    }
+                ]
             },
             {
                 type: 'multiSelect',
                 label: 'Тема',
-                name: 'them_ids',
+                name: 'theme_ids',
                 options: themes,
             },
             {
@@ -122,7 +140,7 @@ export default {
                 options: statuses,
             },
         ]"
-        :collumns="[
+        :columns="[
             {
                 title: 'ID',
                 dataIndex: 'id',
@@ -130,8 +148,9 @@ export default {
             },
             {
                 title: 'Создана',
-                dataIndex: 'created',
-                width: '100px',
+                type: 'datetime',
+                dataIndex: 'created_at',
+                width: '135px',
             },
             {
                 title: 'Отправитель',
@@ -141,7 +160,7 @@ export default {
             {
                 title: 'Тема',
                 width: '300px',
-                value: (row) => `${row.them.group.name}<br>${row.them.name}`
+                value: (row) => `${row.theme.group.name}<br>${row.theme.name}`
             },
             {
                 title: 'Комментарий',

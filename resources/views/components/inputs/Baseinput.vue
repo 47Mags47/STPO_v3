@@ -24,9 +24,17 @@ export default {
             type: [String, Boolean, Number],
             default: '',
         },
+        checked: {
+            type: Boolean,
+            default: false
+        },
         autocomplete: {
             type: Boolean,
             default: false,
+        },
+        form: {
+            type: String,
+            default: null
         },
 
         hidden: {
@@ -68,8 +76,6 @@ export default {
         }
     },
 };
-
-
 </script>
 
 <template>
@@ -84,6 +90,8 @@ export default {
         :autocomplete
         :value
         :readonly
+        :form
+        :checked
         @input="inputHandler"
         @click="clickHandler"
         @change="changeHandler"

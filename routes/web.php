@@ -6,6 +6,7 @@ use Inertia\Inertia;
 // DEV
 if (config('app.env') === 'local') {
     Route::get('/test', fn() => Inertia::render('test'));
+    Route::post('/test', fn() => dd(request()->all()));
     Route::get('/view', fn() => Inertia::render('view'));
 }
 
@@ -47,16 +48,16 @@ Route::middleware('guest')->group(function () {
 ##################################################
 Route::middleware(['auth'])->group(function () {
     Route::resource('/select-division',                                 App\Http\Controllers\Auth\SelectDivisionController::class)->only('index', 'store');
+    Route::post('/logout',                                              [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('auth.logout');
 
     Route::middleware(['current.division'])->group(function () {
         // SYSTEM
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
-        Route::post('/messages-readed',                                  [App\Http\Controllers\Base\MessageController::class, 'readAll'])->name('message-readAll');
         Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
+
         // AUTH
         Route::name('auth.')->group(function () {
-            Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
             Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
         });
 
@@ -82,25 +83,29 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{user}/update', 'update')->name('password.update');
         });
 
+        // CHAT
+        Route::name('chat.')->prefix('/chat')->group(function () {
+            Route::apiResource('/{chat}/messages',                 App\Http\Controllers\Base\ChatMessageController::class)->only(['index', 'store']);
+        });
+
         // ADMINISTRATE
         Route::name('administrate.')->prefix('/administrate')->group(function () {
-            Route::resource('/cities',                                      App\Http\Controllers\Administrate\CityController::class)->except('show');
-            Route::resource('/divisions',                                   App\Http\Controllers\Administrate\DivisionController::class)->except('show');
-            Route::resource('/payments',                                    App\Http\Controllers\Administrate\PaymentController::class)->except('show');
-            Route::resource('/banks',                                       App\Http\Controllers\Administrate\BankController::class)->except('show');
-            Route::resource('/financing-types',                             App\Http\Controllers\Administrate\FinancingTypeController::class)->except('show');
-            Route::resource('/laws',                                        App\Http\Controllers\Administrate\LawController::class)->except('show');
+            Route::resource('/cities',                                  App\Http\Controllers\Administrate\CityController::class)->except('show');
+            Route::resource('/divisions',                               App\Http\Controllers\Administrate\DivisionController::class)->except('show');
+            Route::resource('/payments',                                App\Http\Controllers\Administrate\PaymentController::class)->except('show');
+            Route::allResource('/banks',                                   App\Http\Controllers\Administrate\BankController::class);
+            Route::resource('/financing-types',                         App\Http\Controllers\Administrate\FinancingTypeController::class)->except('show');
+            Route::resource('/laws',                                    App\Http\Controllers\Administrate\LawController::class)->except('show');
         });
 
         Route::name('appeal.')->prefix('/appeal')->group(function () {
-            Route::resource('/them-groups',                                 App\Http\Controllers\Appeal\ThemGroupController::class)->except('show');
-            Route::resource('/thems',                                       App\Http\Controllers\Appeal\ThemController::class)->except('show');
-            Route::resource('/appeals',                                     App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store']);
+            Route::resource('/theme-groups',                            App\Http\Controllers\Appeal\ThemeGroupController::class)->except('show');
+            Route::resource('/themes',                                  App\Http\Controllers\Appeal\ThemeController::class)->except('show');
+            Route::resource('/appeals',                                 App\Http\Controllers\Appeal\AppealController::class)->only(['index', 'create', 'store', 'show']);
             Route::prefix('/appeals/{appeal}')->group(function () {
-                Route::resource('/messages',                                App\Http\Controllers\Appeal\MessageController::class)->except(['create', 'destroy']);
-                Route::post('/accept',                                      [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
-                Route::post('/close',                                       [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
-                Route::post('/reaccept',                                    [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');
+                Route::post('/accept',                     [App\Http\Controllers\Appeal\AppealController::class, 'accept'])->name('accept');
+                Route::post('/close',                      [App\Http\Controllers\Appeal\AppealController::class, 'close'])->name('close');
+                Route::post('/reaccept',                   [App\Http\Controllers\Appeal\AppealController::class, 'reaccept'])->name('reaccept');
             });
         });
 
@@ -109,7 +114,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::resource('/sfr-files',                               App\Http\Controllers\SFR\FSD\SFRFileController::class)->only(['index', 'create', 'store', 'show']);
                 Route::resource('/sfr-files/{SFRFile}/result-files',        App\Http\Controllers\SFR\FSD\ResultFileController::class)->only(['index', 'store', 'show']);
                 Route::resource('/payment-files',                           App\Http\Controllers\SFR\FSD\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
-                Route::resource('/sfr-payment-categories',                  App\Http\Controllers\SFR\FSD\SFRCategoryController::class)->except(['show']);
+                Route::resource('/sfr-payment-categories',                  App\Http\Controllers\SFR\FSD\SFRPaymentCategoryController::class)->except(['show']);
                 Route::resource('/asp-payment-categories',                  App\Http\Controllers\SFR\FSD\ASPCategoryController::class)->except(['show']);
                 Route::resource('/transit-categories',                      App\Http\Controllers\SFR\FSD\TransitCategoryController::class)->except(['show']);
                 Route::resource('/transit-equivalents',                     App\Http\Controllers\SFR\FSD\TransitEquivalentController::class)->only(['index', 'create', 'store']);

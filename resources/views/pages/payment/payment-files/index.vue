@@ -32,7 +32,7 @@ export default {
                 'onClick': (file) => goToRecipientsButtonClickHandler(file)
             }
         ]"
-        :collumns="[
+        :columns="[
             {
                 // HACK показывать только адмиинистратору
                 title: 'Организация',

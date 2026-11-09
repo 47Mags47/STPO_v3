@@ -5,6 +5,7 @@ namespace App\Classes;
 use App\Events\Base\FileChangeStatusEvent;
 use App\Models\Base\File;
 use App\Models\Base\FileStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -27,13 +28,14 @@ abstract class FileModel extends BaseModel
     public static function booted()
     {
         self::creating(function ($model) {
-            if ($model::$createInStorage && $model->file_id === null) {
-                $model->file_id = File::factory()->create([
-                    'disk' => $model::$storage_file_disk,
-                    'path' => $model::$storage_file_path,
-                ])->id;
+            if ($model->file_id === null){
+                $file = File::createFromChildren($model::class);
+                $model->file_id = $file->id;
+                $model->setRelation('file', $file);
             }
 
+            if ($model::$createInStorage && !$model->hasInStorage())
+                $model->write('');
             return $model;
         });
 
@@ -85,35 +87,72 @@ abstract class FileModel extends BaseModel
         return $parent_flag and $child_flag;
     }
 
-    ### Методы
+    ### Аттрибуты
     ##################################################
     /**
      * Return local path
-     * @return string
+     * @return Attribute
      */
-    public function getLocalPath(): string
+    protected function localPath(): Attribute
     {
-        return $this->file->getLocalPath();
+        return new Attribute(
+            get: fn() => $this->file->localPath,
+        );
     }
 
     /**
      * Return full path
-     * @return string
+     * @return Attribute
      */
-    public function getFullPath(): string
+    protected function fullPath(): Attribute
     {
-        return $this->file->getFullPath();
+        return new Attribute(
+            get: fn() => $this->file->fullPath,
+        );
+    }
+
+    ### Методы модели
+    ##################################################
+    /**
+     * Adds an error to the record
+     * @param string $error
+     */
+    public function addError(string $error): self
+    {
+        $this->file->addError($error);
+
+        return $this;
     }
 
     /**
-     * get file content
-     * @return string
+     * Set file status
+     *
+     * @param FileStatus|string $status
+     * @return bool
      */
-    public function getContent(): string
+    public function setStatus(FileStatus|string $status): bool
     {
-        return $this->file->getContent();
+        $result = $this->file->setStatus($status);
+
+        if($result and $this::$channel !== null)
+            FileChangeStatusEvent::dispatch($this);
+
+        return $result;
     }
 
+    /**
+     * Set file disabled
+     *
+     * @param bool $disabled
+     * @return bool
+     */
+    public function setDisabled(bool $disabled = true): bool
+    {
+        return $this->file->setDisabled($disabled);
+    }
+
+    ### Методы хранилища
+    ##################################################
     /**
      * Moves the file to the file storage
      *
@@ -125,17 +164,6 @@ abstract class FileModel extends BaseModel
     public function move(?string $newName = null, ?string $newPath = null, ?string $newDisk = null): bool
     {
         return $this->file->move($newName, $newPath, $newDisk);
-    }
-
-    /**
-     * Adds an error to the record
-     * @param string $error
-     */
-    public function addError(string $error): self
-    {
-        $this->file->addError($error);
-
-        return $this;
     }
 
     /**
@@ -160,40 +188,21 @@ abstract class FileModel extends BaseModel
     }
 
     /**
-     * Set file status
-     *
-     * @param FileStatus|string $status
-     * @return bool
+     * get file content
+     * @return string
      */
-    public function setStatus(FileStatus|string $status): bool
+    public function getContent(): string
     {
-        if (is_string($status))
-            $status = FileStatus::byCode($status);
-
-        $is_updated = $this->file->update([
-            'status_id' => $status->id,
-        ]);
-
-        if ($is_updated === false)
-            return false;
-
-        if ($this::$channel !== null)
-            FileChangeStatusEvent::dispatch($this);
-
-        return true;
+        return $this->file->getContent();
     }
 
     /**
-     * Set file disabled
-     *
-     * @param bool $disabled
+     * Check file exist in storage
      * @return bool
      */
-    public function setDisabled(bool $disabled = true): bool
+    public function hasInStorage(): bool
     {
-        return $this->file->update([
-            'is_disabled' => $disabled,
-        ]);
+        return $this->file->hasInStorage();
     }
 
     ### Связи

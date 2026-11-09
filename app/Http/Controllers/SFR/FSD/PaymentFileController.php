@@ -11,10 +11,15 @@ use Inertia\Inertia;
 
 class PaymentFileController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(PaymentFile::class, 'payment_file');
+    }
+
     public function index()
     {
         return Inertia::render('sfr/fsd/payment-files/index', [
-            'files' => fn() => PaymentFile::getResource(['in_date' => 'desc', 'created_at' => 'desc'])
+            'files' => fn() => PaymentFile::getResource(['in_date' => 'desc', 'file_id' => 'asc'])
         ]);
     }
 
@@ -26,7 +31,9 @@ class PaymentFileController extends Controller
     public function store(PaymentFileStoreRequest $request)
     {
         foreach ($request->input('file_ids') as $uploadFileId) {
-            $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated()));
+            $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated(), [
+                'division_id' => session()->get('division_id')
+            ]));
 
             ReadPaymentFileJob::dispatch($paymentFile);
         }

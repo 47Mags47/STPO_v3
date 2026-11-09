@@ -11,6 +11,11 @@ use Inertia\Inertia;
 
 class TransitFileController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TransitFile::class);
+    }
+
     public function index()
     {
         return Inertia::render('sfr/fsd/transit-files/index', [

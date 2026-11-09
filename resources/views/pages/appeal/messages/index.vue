@@ -2,6 +2,7 @@
 import { usePage, router } from '@inertiajs/vue3';
 
 import { Chat, Ico, BlueButton, RedButton } from '@components'
+import { DateTime } from 'luxon';
 
 export default {
     components: {
@@ -13,6 +14,7 @@ export default {
     data() {
         return {
             status: {},
+            DateTime
         }
     },
 
@@ -71,7 +73,7 @@ export default {
 </script>
 
 <template>
-    <div class="size-full flex flex-col">
+    <div class="h-full flex flex-col">
         <div
             class="flex gap-5 h-[50px] items-center px-4! py-2! border-b border-b-(--border-color)"
         >
@@ -88,11 +90,11 @@ export default {
             </div>
             <div>
                 <span class="font-bold!"> Создана: </span>
-                <span> {{ appeal.created }} </span>
+                <span> {{ DateTime.fromISO(appeal.created).setLocale('ru').toFormat('dd.MM.yyyy HH:mm') }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Тема: </span>
-                <span> {{ appeal.them.name }} </span>
+                <span> {{ appeal.theme.name }} </span>
             </div>
             <div>
                 <span class="font-bold!"> Статус: </span>
@@ -109,6 +111,6 @@ export default {
             </div>
         </div>
 
-        <Chat :channel-name="`appeal.${appeal.id}`" :messages="messages" />
+        <Chat :chat-id="appeal.chat_id"/>
     </div>
 </template>

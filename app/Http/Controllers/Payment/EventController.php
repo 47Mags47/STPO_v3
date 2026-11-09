@@ -9,10 +9,17 @@ use App\Models\Administrate\Payment;
 use App\Models\Payment\Event;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class EventController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Event::class);
+    }
     public function index(Request $request)
     {
         $date_start = CarbonImmutable::create(
@@ -61,10 +68,10 @@ class EventController extends Controller
         return redirect()->route('payment.events.index')->with('success', 'Запись успешно обновлена');
     }
 
-    public function delete(Event $event)
+    public function destroy(Event $event)
     {
         $event->delete();
 
-        return redirect()->route('payment.events.index')->with('success', 'Запись удалена');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 }

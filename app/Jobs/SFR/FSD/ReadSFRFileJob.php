@@ -5,6 +5,7 @@ namespace App\Jobs\SFR\FSD;
 use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Carbon;
 
 class ReadSFRFileJob implements ShouldQueue
@@ -16,14 +17,18 @@ class ReadSFRFileJob implements ShouldQueue
         $this->onQueue('SFR-FSD');
     }
 
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("file:" . $this->SFRFile->file_id))->shared()
+        ];
+    }
+
     public function handle(): void
     {
-        waitDisabledFile($this->SFRFile);
-        $this->SFRFile->setDisabled();
         $this->SFRFile->setStatus('reading');
-        $this->SFRFile = $this->SFRFile->fresh();
 
-        $file = fopen($this->SFRFile->getFullPath(), 'r');
+        $file = fopen($this->SFRFile->fullPath, 'r');
 
         $date_start = $this->SFRFile->in_date->startOfMonth();
         $date_end = $this->SFRFile->in_date->endOfMonth();
@@ -48,6 +53,5 @@ class ReadSFRFileJob implements ShouldQueue
         ]);
 
         $this->SFRFile->setStatus('ok');
-        $this->SFRFile->setDisabled(false);
     }
 }

@@ -26,7 +26,10 @@ export default {
 <template>
     <VerticalForm>
         <template #header>
-            <div>
+            <div v-if="'header' in $slots">
+                <slot name="header" />
+            </div>
+            <div v-else>
                 <span class="text-2xl!"> Выберите организацию </span>
             </div>
         </template>
@@ -35,7 +38,6 @@ export default {
             <DivisionItem
                 v-for="division in divisions"
                 :division="division"
-                :role-name="division.role?.name"
                 :clickHandler
             />
         </template>

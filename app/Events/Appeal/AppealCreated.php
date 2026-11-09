@@ -5,9 +5,9 @@ namespace App\Events\Appeal;
 use App\Models\Appeal\Appeal;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AppealCreated implements ShouldBroadcastNow
+class AppealCreated implements ShouldBroadcast
 {
     public function __construct(
         public Appeal $appeal,
@@ -29,11 +29,11 @@ class AppealCreated implements ShouldBroadcastNow
             'id' => $this->appeal->id,
             'created' => $this->appeal->created_at->format('d.m.Y'),
             'comment' => $this->appeal->comment,
-            'them' => [
-                'id' => $this->appeal->them->id,
-                'name' => $this->appeal->them->name,
+            'theme' => [
+                'id' => $this->appeal->theme->id,
+                'name' => $this->appeal->theme->name,
                 'group' => [
-                    'name' => $this->appeal->them->group->name
+                    'name' => $this->appeal->theme->group->name
                 ]
             ],
             'status' => [

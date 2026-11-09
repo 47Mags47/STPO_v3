@@ -24,6 +24,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'ЕДВ по оплате услуги телефонов связи')->get()->first()->id, 'name' => 'ЕДВ абонентам сети фиксиров.телефон.связи']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Денежная выплата отдельным категориям граждан взамен получения ими продуктовых наборов (156-ОЗ)')->get()->first()->id, 'name' => 'КДВ отд. кат.граждан взамен проднаборов']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Денежная выплата отдельным категориям граждан взамен получения ими продуктовых наборов (156-ОЗ)')->get()->first()->id, 'name' => 'КДВ отд. кат.граждан взамен проднаборов (п.12 ст.1']);
 
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежегодная денежная компенсация расходов на текущий ремонт транспортного средства и горюче-смазочные материалы')->get()->first()->id, 'name' => 'ГДК на текущий ремонт ТС и ГСМ (несчастный случай ']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Ежегодная денежная компенсация расходов на текущий ремонт транспортного средства и горюче-смазочные материалы')->get()->first()->id, 'name' => 'Компенсация расходов на текущий ремонт ТС и ГСМ']);
@@ -61,6 +62,7 @@ class ASPPaymentCategorySeeder extends Seeder
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация на оплату сточных вод на ОДН в МКД']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату ГВС на ОДН (ком.услуги)']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация на оплату ХВС на ОДН (ком.услуги)']);
+        ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '30% компенсация по оплате газоснабжения в баллонах']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация по оплате газоснабжения в баллонах']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '100% компенсация оплаты за газоснабжение в баллона']);
         ASPPaymentCategory::create(['sfr_payment_category_id' => SFRPaymentCategory::where('name', 'Компенсация на оплату ЖКУ')->get()->first()->id,        'name' => '50% компенсация за вывоз бытовых и других отходов']);

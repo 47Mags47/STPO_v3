@@ -99,7 +99,7 @@ class BankRaportWriter extends FileWriter
     public function write(): bool
     {
         $zip = new ZipArchive();
-        $zip->open($this->raport->getFullPath(), ZipArchive::CREATE);
+        $zip->open($this->raport->fullPath, ZipArchive::CREATE);
 
         foreach ($this->recipientChunks as $in_raport_npp => $recipients) {
             $npp = $this->getFileNPP();
@@ -124,7 +124,7 @@ class BankRaportWriter extends FileWriter
         // HACK добавить удаление временных файлов после операции
 
         foreach ($this->files as $file) {
-            $zip->addFile($file->getFullPath(), $file->origin_name);
+            $zip->addFile($file->fullPath, $file->origin_name);
         }
 
         $flag = $zip->close();

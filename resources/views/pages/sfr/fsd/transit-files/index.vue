@@ -23,7 +23,7 @@ export default {
         caption="Федеральная социальная доплата (Файлы проезда)"
         fileChannel="sfr.fsd.transit-files"
         :hasCreateButton="true"
-        :collumns="[
+        :columns="[
             {
                 title: 'Наименование',
                 dataIndex: 'file.name',

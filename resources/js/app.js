@@ -1,12 +1,14 @@
 import './bootstrap'
 import './helpers';
+import './reset';
 import { initTheme } from './theme';
 import { initSeason } from './season.js';
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import * as derectives from "./derectives";
 import { ZiggyVue } from "ziggy-js";
-import AuthLayout from "../views/layouts/AuthLayout.vue";
+import MainLayout from '../views/layouts/MainLayout.vue';
+import LoadingOverlay from '../views/components/LoadingOverlay.vue';
 
 initTheme();
 initSeason();
@@ -19,18 +21,21 @@ createInertiaApp({
 
         const page = await importPage();
 
-        const exceptions = ['httpErrors/', 'NoEmail', 'SelectDivision', 'auth/']
+        const exceptions = ['httpErrors/', 'NoEmail']
         const isException = exceptions.some(n => name.startsWith(n))
 
         if (!isException) {
-            page.default.layout ??= AuthLayout;
+            page.default.layout ??= MainLayout;
         }
 
         return page;
     },
 
     setup({ el, App, props, plugin }) {
-        const app = createApp({ render: () => h(App, props) });
+        const app = createApp({ render: () => [
+            h(App, props),
+            h(LoadingOverlay),
+        ]});
 
         app.use(plugin);
         app.use(ZiggyVue, Ziggy);

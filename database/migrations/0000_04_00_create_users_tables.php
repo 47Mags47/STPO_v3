@@ -31,8 +31,8 @@ return new class extends Migration
             $table->unsignedInteger('gameScore')->default(0);
 
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('auth__password_reset_tokens', function (Blueprint $table) {

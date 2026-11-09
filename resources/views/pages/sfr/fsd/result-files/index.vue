@@ -38,7 +38,7 @@ export default {
                 'onClick': (file) => downloadButtonClickHandler(file)
             }
         ]"
-        :collumns="[
+        :columns="[
             {
                 type: 'date',
                 format: 'dd.MM.yyyy HH:mm',

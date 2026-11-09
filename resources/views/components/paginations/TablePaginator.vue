@@ -1,10 +1,21 @@
 <script>
 import { default as Link } from './components/TablePaginatorLink.vue'
+import NumberInput from '../inputs/NumberInput.vue';
+import { router } from '@inertiajs/vue3';
 
 export default {
     inheritAttrs: false,
+
+    inject: {
+        onPaginate: {
+            type: Function,
+            default: null
+        }
+    },
+
     components: {
-        Link
+        Link,
+        NumberInput
     },
 
     props: {
@@ -44,6 +55,13 @@ export default {
                     "bottom-right",
                 ].includes(val);
             },
+        },
+    },
+
+    data() {
+        return {
+            searchInputTimer: null,
+            inputText: ''
         }
     },
 
@@ -51,34 +69,60 @@ export default {
         getURL(){
             return new URL(location.href);
         },
-        isActiveLink(page){
-            return this.current_page == page
-        },
-
-        pages() {
-            let start = Math.max(1, this.current_page - 1);
-            let end = Math.min(this.last_page, start + 2);
-
-            // Если дошли до конца, сдвигаем окно влево
-            start = Math.max(1, end - 2);
-
-            const pages = [];
-
-            for (let i = start; i <= end; i++) {
-                pages.push(i);
-            }
-
-            return pages;
-        }
     },
+
     methods:{
         generateLink(page){
+
             let url = this.getURL;
 
             url.searchParams.set("page", page)
 
             return url.href
         },
+
+        inputHandler(event) {
+            const page = event?.target?.value ?? '';
+            this.inputText = page
+
+            clearTimeout(this.searchInputTimer);
+
+            this.searchInputTimer = setTimeout(
+                this.onPaginate !== null
+                ? () => this.onPaginate(page)
+                : () => {
+                    if (page.trim() === '') return;
+
+                    let pageNumber = Number(page)
+                    if (page > this.last_page) {
+                        pageNumber = this.last_page
+                        this.inputText = this.last_page
+                    }
+                    else if (page < 1) {
+                        pageNumber = 1
+                        this.inputText = 1
+                    }
+
+                    router.get(
+                        this.generateLink(pageNumber),
+                        {},
+                        {
+                            preserveState: true,
+                            preserveScroll: true,
+                        }
+                    );
+                }, 1000
+            );
+        },
+    },
+
+    watch: {
+        current_page: {
+            immediate: true,
+            handler(val) {
+                this.inputText = val
+            }
+        }
     }
 }
 </script>
@@ -86,17 +130,24 @@ export default {
 <template>
     <div class="paginate-container">
         <ul :class="['paginate-list-container', position]">
-            <Link icoType="chevron-left" :url="generateLink(1)" />
+            <Link v-if="current_page > 3" :page="1" icoType="chevron-left"   :url="generateLink(1)"                />
+            <Link v-if="current_page > 2" :page="current_page - 2"           :url="generateLink(current_page - 2)" />
+            <Link v-if="current_page > 1" :page="current_page - 1"           :url="generateLink(current_page - 1)" />
 
-            <Link
-                v-for="page in pages"
-                :key="page"
-                :page="page"
-                :active="page === current_page"
-                :url="generateLink(page)"
+            <NumberInput
+                class="string-input"
+                :style="{
+                    width: `${String(inputText).length + 3}ch`
+                }"
+                placeholder="..."
+                name="search[page]"
+                :value="inputText"
+                :on-input="inputHandler"
             />
 
-            <Link icoType="chevron-right" :url="generateLink(last_page)"/>
+            <Link v-if="current_page < last_page"     :page="current_page + 1" :url="generateLink(current_page + 1)" />
+            <Link v-if="current_page < last_page - 1" :page="current_page + 2" :url="generateLink(current_page + 2)" />
+            <Link v-if="current_page < last_page - 2" :page="last_page" icoType="chevron-right"  :url="generateLink(last_page)"        />
         </ul>
     </div>
 </template>

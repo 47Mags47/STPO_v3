@@ -24,6 +24,12 @@ export default {
             this.isChecked = !this.isChecked
         }
     },
+
+    watch: {
+        checked(val) {
+            this.isChecked = val
+        }
+    }
 }
 </script>
 
@@ -46,11 +52,15 @@ export default {
 
     &.active
         background-color: var(--button-background-color)
-        color: white
+        span
+            transition: .5s ease
+            color: white
 
     &:hover
         background-color: var(--button-background-color)
-        color: white
+        span
+            transition: .5s ease
+            color: white
 
     input
         display: none

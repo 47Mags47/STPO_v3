@@ -58,9 +58,7 @@ class UserController extends Controller
 
         // HACK дописать Role::byCode('code')
         $user = User::create(collect($data)->except('division')->toArray());
-        $user->divisions()->attach($data['division'], [
-            'role_id' => 3
-        ]);
+        $user->divisions()->attach($data['division']);
 
         event(new Registered($user));
 

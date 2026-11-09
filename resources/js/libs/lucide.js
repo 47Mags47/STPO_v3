@@ -11,6 +11,7 @@ export {
 
     ArrowLeft                   as 'arrow-left',
     ArrowRight                  as 'arrow-right',
+    ArrowUp                     as 'arrow-up',
     RotateCcw                   as 'arrow-rotate-left',
     ArrowBigUp                  as 'arrow-big-up',
 
@@ -28,6 +29,8 @@ export {
     FileArchive                 as 'file-zipper',
     Download                    as download,
     Paperclip                   as paperclip,
+
+    BookText                    as 'book-text',
 
     Bell                        as bell,
     Mail                        as envelope,
@@ -65,6 +68,14 @@ export {
 
     EyeClosed                   as 'eye-closed',
     Eye                         as 'eye',
+
+    Maximize2                   as 'maximize',
+    Minimize2                   as 'minimize',
+
+    Search                      as 'search',
+    SearchCheck                 as 'search-check',
+
+    LogOut                      as 'logout',
 
     CircleQuestionMark
 } from '@lucide/vue';

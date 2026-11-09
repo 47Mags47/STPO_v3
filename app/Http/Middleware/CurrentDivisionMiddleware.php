@@ -25,7 +25,6 @@ class CurrentDivisionMiddleware
         }
 
         $division = Division::whereKey($division_id)->first();
-
         if ($division === null) {
             // Если в сессии есть ключ организации, но такой организации не существует
             // возможно, что человек подменил сессию, или организация была удалена

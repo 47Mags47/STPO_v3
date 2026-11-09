@@ -6,11 +6,15 @@ use App\Classes\FileModel;
 use App\Models\Base\UploadFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Storage;
 
 class MoveUploadFileJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, InteractsWithQueue;
+
+    public $timeout = 999;
 
     public function __construct(
         public UploadFile $uploadFile,
@@ -19,13 +23,20 @@ class MoveUploadFileJob implements ShouldQueue
         $this->onQueue('files');
     }
 
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("file:" . $this->uploadFile->file_id))->shared()
+        ];
+    }
+
     public function handle(): void
     {
         $this->fileModel->setStatus('moving');
         $this->fileModel->setDisabled();
         $this->fileModel = $this->fileModel->fresh();
 
-        $oldPath = $this->uploadFile->getFullPath();
+        $oldPath = $this->uploadFile->fullPath;
 
         $newPath = Storage::disk($this->fileModel::$storage_file_disk)->path(
             $this->fileModel::$storage_file_path !== ''
@@ -43,6 +54,6 @@ class MoveUploadFileJob implements ShouldQueue
         $this->fileModel->setStatus('ok');
         $this->fileModel->setDisabled(false);
 
-        $this->uploadFile->delete();
+        $this->uploadFile->forceDelete();
     }
 }

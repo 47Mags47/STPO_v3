@@ -32,11 +32,15 @@ export default {
             type: String,
             default: null
         },
+        value: {
+            type: Array,
+            default: () => []
+        },
 
         id: {
             type: String,
             default: null
-        }
+        },
     },
 
     methods: {
@@ -50,31 +54,62 @@ export default {
 
     data() {
         return {
-            isOpen: false
+            isOpen: false,
+            selectedRows: []
         }
     },
+
+    watch: {
+        value: {
+            handler(values) {
+                this.selectedRows = [...values]
+            },
+            deep: true,
+            immediate: true,
+        }
+    }
 }
 </script>
 
 <template>
     <div class="multi-select-container" v-outsideClick="clickOutsideHandler">
-        <div class="multi-select" @click="selectClickHandler">
-            <span> {{ label }}</span>
+        <div
+            class="multi-select"
+            :class="{ 'active': isOpen }"
+            @click="selectClickHandler"
+        >
+            <span> {{ label }}: выбрано - {{ selectedRows.length }}</span>
 
             <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
         </div>
 
-        <div class="multi-select-content-container"
-        :class="{ 'active': isOpen }">
+        <div
+            class="multi-select-content-container"
+            :class="{ 'active': isOpen }"
+        >
             <label v-for="(option, index) in options"
                 class="multi-select-content"
+                :class="{ selected: selectedRows.includes(Object.get(option, valueKey)) }"
                 :for="`${name}_${index}`"
-                @click="radioClickHandler"
             >
                 <Checkbox
                     :name="`${name}[]`"
                     :value="Object.get(option, valueKey)"
                     :id="`${name}_${index}`"
+                    :checked="selectedRows.some(
+                        id => String(id) === String(Object.get(option, valueKey))
+                    )"
+                    :on-click="(e) => {
+                        const id = Object.get(option, valueKey);
+
+                        if (e.target.checked) {
+                            if (!selectedRows.includes(id)) {
+                                selectedRows.push(id);
+                            }
+                        } else {
+                            selectedRows = selectedRows.filter(item => item !== id);
+                        }
+                    }"
                 />
                 <span> {{ Object.get(option, labelKey) }} </span>
             </label>
@@ -100,6 +135,10 @@ export default {
         cursor: pointer
         transition: .5s ease
         @include input()
+
+        &.active
+            border-bottom-right-radius: 0
+            border-bottom-left-radius: 0
 
         &:hover
             background-color: var(--button-background-color)
@@ -127,7 +166,6 @@ export default {
         position: absolute
         width: 100%
         max-height: 0px
-        overflow: hidden
         overflow: auto
         transition: .5s ease
         z-index: 10
@@ -151,5 +189,7 @@ export default {
                 width: 100%
                 height: 100%
             &:hover
-                background-color: var(--option-background-color-hover)
+                background-color: var(--option-background-color-active)
+            &.selected
+                background-color: var(--option-background-color-selected)
 </style>

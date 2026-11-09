@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Base\Chat;
 use App\Models\Base\User;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -7,6 +8,12 @@ use Illuminate\Support\Facades\Broadcast;
 ##################################################
 Broadcast::channel('user.{userId}.notifications', function (User $user, int $userId) {
     return $user->id === $userId;
+});
+
+### CHAT
+##################################################
+Broadcast::channel('chats.{chat}.messages', function (User $user, Chat $chat) {
+    return $chat->subscribers()->where('user_id', $user->id)->exists();
 });
 
 ### APPEALS

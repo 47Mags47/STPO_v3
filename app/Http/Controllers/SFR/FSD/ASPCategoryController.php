@@ -11,6 +11,11 @@ use Inertia\Inertia;
 
 class ASPCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(ASPPaymentCategory::class, 'asp_payment_category');
+    }
+
     public function index(){
         return Inertia::render('sfr/fsd/asp-payment-categories/index', [
             'categories' => fn() => ASPPaymentCategory::getResource()

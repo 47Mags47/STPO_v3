@@ -20,10 +20,28 @@ export default {
         :action="route('payment.payment-files.store', { event: event.id })"
         :inputs="[
             {
-                type: 'select',
+                type: 'selectPopup',
                 name: 'bank_id',
                 label: 'Банк',
-                options: banks
+                caption: 'Банки',
+                url: route('api.administrate.banks.index'),
+                hasSearchInput: true,
+                columns: [
+                    {
+                        title: 'Код',
+                        dataIndex: 'code',
+                        width: '150px'
+                    },
+                    {
+                        title: 'Номер',
+                        dataIndex: 'number',
+                        width: '150px',
+                    },
+                    {
+                        title: 'Наименование',
+                        dataIndex: 'name',
+                    },
+                ]
             },
             {
                 type: 'bigFiles',

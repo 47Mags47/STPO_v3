@@ -10,7 +10,7 @@ class SelectDivisionController extends Controller
 {
     public function index()
     {
-        return Inertia::render('SelectDivision', [
+        return Inertia::render('select-division/index', [
             'divisions' => fn() => user()->divisions->toResourceCollection()
         ]);
     }

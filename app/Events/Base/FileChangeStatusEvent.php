@@ -13,7 +13,9 @@ class FileChangeStatusEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public FileModel $file) {}
+    public function __construct(public FileModel $file) {
+        $this->file = $file->fresh();
+    }
 
     public function broadcastOn(): array
     {

@@ -1,26 +1,20 @@
 <script>
 import { DateTime } from "luxon";
 import Ico from "../../Ico.vue";
-import DateInputPopup from './DateInputPopup.vue'
-import { Teleport } from "vue";
 
 export default {
     components: {
         Ico,
-        DateInputPopup
     },
     props: {
-        isRange: {
-            type: Boolean,
-            default: false,
-        },
         // Input
         name: {
             type: String,
             default: null
         },
         value: {
-            type: [Object, String]
+            type: [Object, String],
+            default: null
         },
         disabled: {
             type: Boolean,
@@ -32,10 +26,6 @@ export default {
         },
 
         // Functions
-        checkValid: {
-            type: Function,
-            default: (day) => true
-        },
         startInterval: {
             type: [Object, String],
             default: null
@@ -50,25 +40,17 @@ export default {
             type: Function,
             default: () => {}
         },
+        onPopupClick: {
+            type: Function,
+            default: () => {}
+        },
     },
     data() {
         return {
-            isPopupOpen: false,
             selectedDate: this.value !== null ? this.value : null,
         };
     },
     methods: {
-        popupButtonClickHandler() {
-            this.isPopupOpen = !this.isPopupOpen
-            this.isPopupOpen ? fixOverflow(this.$refs.dateInputPopup.$el) : null
-        },
-
-        dayClickHandler(date) {
-            this.selectedDate = date
-            this.onUpdate(this.selectedDate.toFormat('yyyy-MM-dd'))
-            this.isPopupOpen = false
-        },
-
         inputBlurHandler(e) {
             let value = e.target.value
             let luxonDate = DateTime.fromFormat(value, 'yyyy-MM-dd')
@@ -90,26 +72,21 @@ export default {
                 this.onUpdate(value)
             }
         },
-
-        outsideClickHandler(e) {
-            if (!this.$refs.wrapper.contains(e.target)){
-                this.isPopupOpen = false
-            };
-        },
     },
 
-    mounted(){
-        document.addEventListener("mousedown", this.outsideClickHandler)
-    },
-    unmounted(){
-        document.removeEventListener("mousedown", this.outsideClickHandler)
-    },
+    watch: {
+        value(val) {
+            const isValid = typeof val === 'string' && DateTime.fromFormat(val, 'yyyy-MM-dd').isValid
+            if (isValid) {
+                this.selectedDate = val
+            }
+        }
+    }
 }
 </script>
 
 <template>
-    <div class="date-input-wrapper" ref="wrapper">
-
+    <div class="date-input-wrapper">
         <div class="date-input-container flex items-center">
             <input
                 type="date"
@@ -118,24 +95,14 @@ export default {
                 :name
                 :disabled
                 :placeholder
-                :value="selectedDate !== null ? selectedDate.toFormat('yyyy-MM-dd') : value"
+                :value="selectedDate !== null ? selectedDate : value"
                 @blur="inputBlurHandler"
             />
         </div>
 
         <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click="popupButtonClickHandler" />
+            <Ico type="calendar" class="text-(--text-color)!" @click.stop="onPopupClick" />
         </div>
-        <DateInputPopup
-            :class="isPopupOpen ? 'opacity-100 scale-100' : 'opacity-0 pointer-events-none scale-95'"
-            ref="dateInputPopup"
-            :isRange
-            :checkValid
-            :startInterval
-            :endInterval
-            :onClick="dayClickHandler"
-            :selectedDate="selectedDate?.toFormat('yyyy-MM-dd') ?? null"
-        />
     </div>
 </template>
 
@@ -157,7 +124,7 @@ export default {
             position: absolute
             background: var(--background-color)
             top: 0
-            right: 1px
+            right: 0
 
             width: 25px
             height: 100%

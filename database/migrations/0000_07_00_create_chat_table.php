@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('base__chat', function (Blueprint $table) {
+        Schema::create('base__chats', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('base__chat');
+        Schema::dropIfExists('base__chats');
     }
 };

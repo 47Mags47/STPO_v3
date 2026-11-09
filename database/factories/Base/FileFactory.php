@@ -12,7 +12,7 @@ class FileFactory extends Factory
     {
         return [
             'disk' => config('filesystems.default'),
-            'path' => '',
+            'path' => 'factory',
             'name' => Str::random(40),
             'origin_name' => now()->format('Y-m-d-H-i-s_') . Str::random(40),
             'status_id' => FileStatus::byCode('creating')->id,

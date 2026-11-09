@@ -5,11 +5,11 @@ namespace App\Events\Base;
 use App\Models\Base\Notification;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendNotificationEvent implements ShouldBroadcastNow
+class SendNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -29,6 +29,6 @@ class SendNotificationEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ['notification' => $this->notification->toResource()];
+        return $this->notification->toResource()->toArray(request());
     }
 }

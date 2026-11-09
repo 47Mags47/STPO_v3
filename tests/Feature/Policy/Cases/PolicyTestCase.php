@@ -3,7 +3,9 @@
 namespace Tests\Feature\Policy\Cases;
 
 use App\Classes\BaseModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Tests\Feature\Policy\Interfaces\PolicyTestCaseInterface;
 use Tests\Feature\Policy\Traits\PolicyRESTAccepts;
 use Tests\Feature\Policy\Traits\PolicyRESTCan;
@@ -15,7 +17,7 @@ abstract class PolicyTestCase
 extends TestCase
 implements PolicyTestCaseInterface
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     use PolicyRESTMethodExist;
     use PolicyRESTAccepts;
@@ -24,6 +26,9 @@ implements PolicyTestCaseInterface
 
     ### Settings
     ##################################################
+    // Общие данные
+    protected static bool $seeded = false;
+
     // requeried
     public string $policyClass = '';
     public string $controllerClass = '';
@@ -52,8 +57,17 @@ implements PolicyTestCaseInterface
     {
         parent::setUp();
 
-        $this->policyClass = $this->modelClass::getGuessNames('policy');
-        $this->controllerClass = $this->modelClass::getGuessNames('controller');
+        if (!$this::$seeded) {
+            $this->runProdSeeder();
+
+            DB::commit();
+            DB::beginTransaction();
+
+            $this::$seeded = true;
+        }
+
+        $this->policyClass      = $this->modelClass::getGuessNames('policy');
+        $this->controllerClass  = $this->modelClass::getGuessNames('controller');
     }
 
     ### Methods
@@ -68,7 +82,7 @@ implements PolicyTestCaseInterface
         return class_exists($this->modelClass::getGuessNames('policy'));
     }
 
-    protected function createTestRecord(): BaseModel
+    public function createTestRecord(): BaseModel
     {
         return $this->modelClass::factory()->create();
     }
@@ -139,6 +153,30 @@ implements PolicyTestCaseInterface
         return $this->hasForceDelete;
     }
 
+    public function checkCreateRouteExist(): bool
+    {
+        if (!$this->hasCreate)
+            $this->markTestSkipped('Пропуск проверки Create метода');
+
+        $result = Route::has($this->route . '.create');
+        if (!$result)
+            $this->markTestSkipped('Нет маршрута для Create');
+
+        return $result;
+    }
+
+    public function checkEditRouteExist(): bool
+    {
+        if (!$this->hasUpdate)
+            $this->markTestSkipped('Пропуск проверки Edit метода');
+
+        $result = Route::has($this->route . '.edit');
+        if (!$result)
+            $this->markTestSkipped('Нет маршрута для Edit');
+
+        return $result;
+    }
+
     /**
      * Проверяет наличие заполненного $route
      *
@@ -151,16 +189,6 @@ implements PolicyTestCaseInterface
             $this->markTestSkipped('Route не задан');
 
         return $result;
-    }
-
-    /**
-     * Возвращает имя route параметра по модели
-     *
-     * @return string
-     */
-    protected function getRouteParameterName(): string
-    {
-        return ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', class_basename($this->modelClass))), '_');
     }
 
     ### Tests
