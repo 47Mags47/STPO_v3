@@ -25,6 +25,6 @@ export default {
 
 <template>
     <BlueButton @click="clickHandler" class="ico-button">
-        <Ico type="arrow-right-to-bracket" />
+        <Ico type="arrow-up" />
     </BlueButton>
 </template>

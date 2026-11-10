@@ -740,9 +740,6 @@ export default {
                 gap: 25px
 
                 font-size: 1.2rem
-            .table-button-cell .table-cell-container .button
-                width: 35px
-                height: 30px
             .table-file-status-cell .table-cell-container
                 padding: 5px
 </style>

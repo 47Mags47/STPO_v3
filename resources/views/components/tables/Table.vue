@@ -147,6 +147,9 @@ export default {
             border-collapse: collapse
             color: #374151
             tbody
+                tr.row-active
+                    td:not([rowspan])
+                        background: color-mix(in srgb, var(--table-row-active-background-color) 40%, transparent)
                 tr
                     transition: background 0.15s ease
                     color: var(--text-color)

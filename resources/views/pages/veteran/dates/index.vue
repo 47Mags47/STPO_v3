@@ -27,6 +27,11 @@ export default {
         :hasShowButton="true"
         :data="dates.data"
         :meta="dates.meta"
+        :row-classes="(row) => {
+            if (row.is_active)
+                return 'row-active'
+            return ''
+        }"
         :columns="[
             {
                 type: 'date',
