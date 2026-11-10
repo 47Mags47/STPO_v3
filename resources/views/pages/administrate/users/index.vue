@@ -30,7 +30,7 @@ export default {
                 dataIndex: 'last_name',
             },
             {
-                title: 'Фамилия',
+                title: 'Отчество',
                 dataIndex: 'middle_name',
             },
             {

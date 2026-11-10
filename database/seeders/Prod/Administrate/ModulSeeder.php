@@ -154,5 +154,22 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('appeals')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('appeal_theme'));
+        ### Veteran
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Доступ',
+            'route_name'    => 'veteran.accesses.index',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_admin'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Даты отчета',
+            'route_name'    => 'veteran.dates.index',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_admin'));
     }
 }

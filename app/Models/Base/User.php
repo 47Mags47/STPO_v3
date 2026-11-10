@@ -18,6 +18,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, MustVerifyEmailContract
 {
@@ -31,6 +32,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     use Notifiable;
 
+    use SoftDeletes;
     ### Настройки
     ##################################################
     protected $table = 'base__users';
@@ -87,6 +89,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     ### Методы
     ##################################################
+    // HACK Переписать на аттрибут division/currentDivision
     public function getCurrentDivision(): Division|null
     {
         return session()->get('current_division_id') !== null

@@ -166,7 +166,7 @@ export default {
             default: [],
         },
         rowClasses: {
-            type: [Array, String, Function],
+            type: [Array, String, Function, Object],
             default: null
         },
         actions: {
@@ -316,6 +316,9 @@ export default {
 
             if (typeof this.rowClasses === 'string')
                 return this.rowClasses
+
+            if (typeof this.rowClasses === 'object')
+                return Object.keys().filter((key) => this.rowClasses[key] === true).join(' ')
 
             if (Array.isArray(this.rowClasses))
                 return this.rowClasses.join(' ')

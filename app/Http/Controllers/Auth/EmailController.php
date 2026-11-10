@@ -19,7 +19,7 @@ class EmailController extends Controller
         $data = $request->validated();
         $user->update($data);
 
-        return redirect()->route('auth.users.edit', $user)->with('success', 'Email адрес изменён');
+        return redirect()->route('base.users.edit', $user)->with('success', 'Email адрес изменён');
     }
 
     public function notice(){

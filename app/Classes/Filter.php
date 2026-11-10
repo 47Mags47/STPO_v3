@@ -33,6 +33,20 @@ class Filter
         });
     }
 
+    public function sort()
+    {
+        if (request()->has('sort')) {
+            $this->builder->reorder();
+            $sort = request()->input('sort');
+            if (is_string($sort))
+                $this->builder = $this->builder->reorder($sort);
+            if (is_array($sort))
+                foreach ($sort as $collumn => $desk) {
+                    $this->builder = $this->builder->reorder($collumn, $desk);
+                }
+        }
+    }
+
     public function filter()
     {
         $this->builder->where(function () {
@@ -56,11 +70,14 @@ class Filter
 
     public function apply(): Builder
     {
+        if ($this->request->has('search'))
+            $this->search();
+
         if ($this->request->has('filters'))
             $this->filter();
 
-        if ($this->request->has('search'))
-            $this->search();
+        if ($this->request->has('sort'))
+            $this->sort();
 
         return $this->builder;
     }

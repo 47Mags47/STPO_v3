@@ -26,7 +26,7 @@ export default {
                     isHover: false,
                 },
                 {
-                    url: route('auth.users.edit', { user: this.current_user.id }),
+                    url: route('base.users.edit', { user: this.current_user.id }),
                     name: 'настройки',
                     isHover: false,
                 },

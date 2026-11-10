@@ -32,7 +32,7 @@ export default {
 
     methods: {
         friendClickHandler() {
-            router.get(route('users.show', { user: this.message?.sender?.id }))
+            router.get(route('base.users.show', { user: this.message?.sender?.id }))
         }
     }
 }

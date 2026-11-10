@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
@@ -13,6 +14,58 @@ abstract class BaseModel extends Model
         'name',
         'number'
     ];
+
+    ### SCOPES
+    ##################################################
+    /**
+     * Возвращает отфильтрованный и отсортированный ресурс
+     *
+     * @param Builder $query
+     * @param string $order
+     * @param string|null $orderDesc
+     * @param boolean|null $withTrashed
+     * @return ResourceCollection Отфильтрованный и отсортированный ресурс
+     */
+    public static function scopeGetResource(
+        Builder $query,
+        string|array|null $orderColumn = 'id',
+        ?string $orderDesc = 'asc',
+        ?bool $withTrashed = false,
+        ?int $paginate = 25,
+        ?string $resource = null
+    ): ResourceCollection {
+        if ($withTrashed)
+            $query = $query->withTrashed();
+
+        // search, filters and sort
+        $query = $query->sort($orderColumn, $orderDesc);
+        $query = $query->filter();
+
+        // paginate
+        $queryResult = $paginate !== null
+            ? $query->paginate($paginate)
+            : $query->get();
+
+        // resource
+        if ($resource !== null)
+            return $resource::collection($queryResult);
+        else
+            return self::getGuessNames('resource')
+                ? self::getGuessNames('resource')::collection($queryResult)
+                : $queryResult->toResourceCollection();
+    }
+
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        return self::getGuessNames('filter')
+            ? new (self::getGuessNames('filter'))($builder)->apply()
+            : new \App\Classes\Filter($builder)->apply();
+    }
+
+    public static function scopeSort(Builder $builder, ?string $collumn = 'id', ?string $desc = 'asc',): Builder
+    {
+        return $builder->orderBy(self::getTableName() . '.' . $collumn, $desc);
+    }
 
     ### Методы
     ##################################################
@@ -50,38 +103,6 @@ abstract class BaseModel extends Model
         return $name !== null
             ? $names[$name]
             : $names;
-    }
-
-    public function scopeFilter(Builder $builder): Builder
-    {
-        return self::getGuessNames('filter')
-            ? new (self::getGuessNames('filter'))($builder)->apply()
-            : new \App\Classes\Filter($builder)->apply();
-    }
-
-    public static function getResource(string|array|null $order = 'id', ?string $orderDesc = 'asc')
-    {
-        $query = self::Filter();
-
-        if (is_array($order))
-            foreach ($order as $key => $value) {
-                if (is_string($key))
-                    $query->orderBy($key, $value);
-                else
-                    $query->orderBy($value, 'asc');
-            }
-        else
-            $query->orderBy($order, $orderDesc);
-
-        $paginate = getRequestPaginate();
-
-        $data = $paginate !== false
-            ? $query->paginate($paginate)
-            : $query->get();
-
-        return self::getGuessNames('resource')
-            ? self::getGuessNames('resource')::collection($data)
-            : $data->toResourceCollection();
     }
 
     public static function randomOrCreate(array $attributes = [])
