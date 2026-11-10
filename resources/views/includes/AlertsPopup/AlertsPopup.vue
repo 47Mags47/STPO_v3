@@ -1,5 +1,5 @@
 <script>
-import { usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { defineAsyncComponent } from 'vue';
 
 export default {
@@ -18,17 +18,6 @@ export default {
         };
     },
 
-    methods: {
-        closeAlert(id) {
-            clearTimeout(this.alertTimers[id]);
-            delete this.alertTimers[id];
-
-            this.alertsList = this.alertsList.filter(
-                alert => alert.id !== id
-            );
-        },
-    },
-
     computed: {
         alerts: () => usePage().props.flash,
 
@@ -42,28 +31,40 @@ export default {
         },
     },
 
-    watch: {
-        alerts: {
-            deep: true,
-            immediate: true,
+    methods: {
+        showAlerts(flash) {
+            for (const type of Object.keys(this.alertComponents)) {
+                for (const message of flash?.[type] ?? []) {
+                    const id = ++this.nextId;
 
-            handler(flash) {
-                for (const type of Object.keys(this.alertComponents)) {
-                    for (const message of flash?.[type] ?? []) {
-                        const id = ++this.nextId;
+                    this.alertsList.push({ id, type, message });
 
-                        this.alertsList.push({ id, type, message });
-
-                        this.alertTimers[id] = setTimeout(() => {
-                            this.closeAlert(id);
-                        }, 3000);
-                    }
+                    this.alertTimers[id] = setTimeout(() => {
+                        this.closeAlert(id);
+                    }, 3000);
                 }
-            },
+            }
+        },
+
+        closeAlert(id) {
+            clearTimeout(this.alertTimers[id]);
+            delete this.alertTimers[id];
+
+            this.alertsList = this.alertsList.filter(
+                alert => alert.id !== id
+            );
         },
     },
 
+    mounted() {
+        this.removeSuccessListener = router.on('success', () => {
+            this.showAlerts(usePage().props.flash);
+        });
+    },
+
     beforeUnmount() {
+        this.removeSuccessListener?.();
+
         Object.values(this.alertTimers).forEach(clearTimeout);
     },
 };
