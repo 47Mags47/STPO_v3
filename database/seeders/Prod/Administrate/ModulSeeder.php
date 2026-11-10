@@ -149,10 +149,18 @@ class ModulSeeder extends Seeder
 
         $modul = Modul::firstOrCreate([
             'in_production' => true,
-            'name'          => 'Даты отчета',
+            'name'          => 'Отчеты',
             'route_name'    => 'veteran.dates.index',
             'group_id'      => ModulGroup::byCode('veteran')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('veteran_admin'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Отчет',
+            'route_name'    => 'veteran.report',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_worker'));
     }
 }

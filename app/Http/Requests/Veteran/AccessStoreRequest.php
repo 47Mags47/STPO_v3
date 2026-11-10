@@ -4,8 +4,10 @@ namespace App\Http\Requests\Veteran;
 
 use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
+use App\Models\Auth\PermissionGroup;
 use App\Models\Base\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AccessStoreRequest extends FormRequest
 {
@@ -19,7 +21,11 @@ class AccessStoreRequest extends FormRequest
         return [
             'division_id'   => ['required', 'exists:' . Division::class . ',id'],
             'user_id'       => ['required', 'exists:' . User::class . ',id'],
-            'permission_id' => ['required', 'exists:' . Permission::class . ',id']
+            'permission_id' => [
+                'required',
+                Rule::exists(Permission::class, 'id')
+                    ->where('group_id', PermissionGroup::byCode('veteran')->id)
+            ]
         ];
     }
 }
