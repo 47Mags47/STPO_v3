@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class DateController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Date::class);
+    }
+
     public function index()
     {
         return Inertia::render('veteran/dates/index', [

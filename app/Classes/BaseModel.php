@@ -2,6 +2,7 @@
 
 namespace App\Classes;
 
+use App\Traits\ModelMethods;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
+    use ModelMethods;
+
     public array $searchCollumns = [
         'code',
         'name',
@@ -69,11 +72,6 @@ abstract class BaseModel extends Model
 
     ### Методы
     ##################################################
-    public static function getTableName()
-    {
-        return with(new static)->getTable();
-    }
-
     protected static function getGuessNames(?string $name = null): array| string| bool
     {
         $modelClass = static::class;
@@ -129,19 +127,5 @@ abstract class BaseModel extends Model
             return $namespace . '\\' . $class;
 
         return false;
-    }
-
-    public function getFillableAttributes(): array
-    {
-        $fillable = new $this()->getFillable();
-        if (array_search('*', $fillable) !== false)
-            unset($fillable[array_search('*', $fillable)]);
-
-        $attributes = [];
-        foreach ($fillable as $attribute) {
-            $attributes[$attribute] = $this->$attribute;
-        }
-
-        return $attributes;
     }
 }

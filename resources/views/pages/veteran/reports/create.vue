@@ -10,11 +10,15 @@ export default {
 
     computed: {
         date: () => usePage().props.date.data,
+        current_user: () => usePage().props.current_user.data,
         dateString() {
             return DateTime.fromISO(this.date.in_date).setLocale('ru').toFormat('dd.MM.yyyy')
         },
         formName() {
-            return 'Отчет по количеству заявлений на присвоение звания "Ветеран труда" на ' + this.dateString
+            return 'Отчет по количеству заявлений на присвоение звания "Ветеран труда" на '
+                + this.dateString
+                + ' от '
+                + this.current_user.current_division.name
         }
     }
 }

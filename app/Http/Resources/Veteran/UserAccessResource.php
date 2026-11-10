@@ -24,9 +24,20 @@ class UserAccessResource extends JsonResource
             'permissions'       => $this->permissions()
                 ->where('group_id', PermissionGroup::byCode('veteran')->id)
                 ->get()
-                ->map(fn($permission) => array_merge(
-                    ['division_id' => $permission->pivot->division_id],
-                    $permission->toResource()->toArray(request())),
+                ->map(
+                    function ($permission) {
+                        return array_merge(
+                            [
+                                'division' => $permission->pivot->division !== null
+                                    ? [
+                                        'id'    => $permission->pivot->division->id,
+                                        'name'  => $permission->pivot->division->name
+                                    ]
+                                    : []
+                            ],
+                            $permission->toResource()->toArray(request())
+                        );
+                    }
                 )
         ];
     }

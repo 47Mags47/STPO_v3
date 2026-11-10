@@ -10,9 +10,17 @@ class ReportPolicy
     /**
      * Determine whether the user can view any models.
      */
+    public function report(User $user): bool
+    {
+        return $user->hasPermission('veteran_worker');
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('veteran_work_admin');
+        return $user->hasPermission('veteran_admin');
     }
 
     /**
@@ -20,7 +28,7 @@ class ReportPolicy
      */
     public function view(User $user, Report $report): bool
     {
-        return $user->hasPermission('veteran_work_admin');
+        return $user->hasPermission('veteran_admin') or $user->hasPermission('veteran_worker');
     }
 
     /**
@@ -28,15 +36,7 @@ class ReportPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermission('veteran_work_admin');
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Report $report): bool
-    {
-        return $user->hasPermission('veteran_work_admin');
+        return $user->hasPermission('veteran_admin') or $user->hasPermission('veteran_worker');
     }
 
     /**
@@ -44,14 +44,6 @@ class ReportPolicy
      */
     public function delete(User $user, Report $report): bool
     {
-        return $user->hasPermission('veteran_work_admin');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Report $report): bool
-    {
-        return $user->hasPermission('veteran_work_admin');
+        return $user->hasPermission('veteran_admin');
     }
 }

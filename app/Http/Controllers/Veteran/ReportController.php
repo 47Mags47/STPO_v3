@@ -10,7 +10,20 @@ use Inertia\Inertia;
 
 class ReportController extends Controller
 {
-    public function index(Report $report, Date $date)
+    public function __construct()
+    {
+        $this->authorizeResource(Report::class);
+    }
+
+    public function report()
+    {
+        if(!user()->can('report', Report::class))
+            abort(403);
+
+        return redirect()->route('veteran.reports.create', ['date' => Date::getActive()->id]);
+    }
+
+    public function index(Date $date, Report $report)
     {
         return Inertia::render('veteran/reports/index', [
             'date'      => $date->toResource(),
@@ -39,14 +52,16 @@ class ReportController extends Controller
         ])->with('success', 'Запись успешно создана');
     }
 
-    public function show(Date $date, Report $report){
+    public function show(Date $date, Report $report)
+    {
         return Inertia::render('veteran/reports/show', [
             'date' => fn() => $date->toResource(),
             'report' => fn() => $report->toResource(),
         ]);
     }
 
-    public function destroy(Date $date, Report $report){
+    public function destroy(Date $date, Report $report)
+    {
         $report->delete();
 
         return redirect()->back()->with('success', 'Запись удалена');

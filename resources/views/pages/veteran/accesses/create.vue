@@ -10,12 +10,12 @@ export default {
         return {
             division: null,
             user: null,
-            users: []
         }
     },
     methods: {
         selectDivisionHandler(division) {
             this.division = division
+            this.user = null
         },
         selectUserHandler(user) {
             this.user = user
@@ -38,7 +38,7 @@ export default {
         :inputs="[
             {
                 type: 'selectPopup',
-                name: 'filters[division_id]',
+                name: 'division_id',
                 label: 'Организация',
                 url: route('api.administrate.divisions.index'),
                 onSelect: selectDivisionHandler,
@@ -58,6 +58,7 @@ export default {
                 urlParams: { filters: { division: division?.id }},
                 disabled: division === null,
                 onSelect: selectUserHandler,
+                value: user ?? {},
                 columns: [
                     {
                         title: 'Фамилия',
