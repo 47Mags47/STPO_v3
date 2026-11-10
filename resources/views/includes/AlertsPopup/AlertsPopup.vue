@@ -84,44 +84,44 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-    .alerts-popup-container
-        position: absolute
-        top: 100%
-        right: 0
-        padding: 7px
-        z-index: 1000
-        pointer-events: none
+.alerts-popup-container
+    position: absolute
+    top: 100%
+    right: 0
+    padding: 7px
+    z-index: 1000
+    pointer-events: none
 
-    .alerts-list
-        display: flex
-        flex-direction: column
-        align-items: flex-end
-        gap: 8px
+.alerts-list
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    gap: 8px
 
-    .alerts-list > *
-        pointer-events: auto
+.alerts-list > *
+    pointer-events: auto
 
-    .alert-enter-active
-        transition: opacity .4s ease, transform .4s ease
+.alert-enter-active
+    transition: opacity .4s ease, transform .4s ease
 
-    .alert-enter-from
-        opacity: 0
-        transform: translateX(35px) scale(.92)
+.alert-enter-from
+    opacity: 0
+    transform: translateX(35px) scale(.92)
 
-    .alert-leave-active
-        transition: opacity 1s ease, transform 1s ease, filter 1s ease
-        pointer-events: none
+.alert-leave-active
+    transition: opacity 1s ease, transform 1s ease, filter 1s ease
+    pointer-events: none
 
-    .alert-leave-from
-        opacity: 1
-        transform: translateX(0) scale(1)
-        filter: blur(0)
+.alert-leave-from
+    opacity: 1
+    transform: translateX(0) scale(1)
+    filter: blur(0)
 
-    .alert-leave-to
-        opacity: 0
-        transform: translateX(50px) scale(.95)
-        filter: blur(4px)
+.alert-leave-to
+    opacity: 0
+    transform: translateX(50px) scale(.95)
+    filter: blur(4px)
 
-    .alert-move
-        transition: transform .5s ease
+.alert-move
+    transition: transform .5s ease
 </style>

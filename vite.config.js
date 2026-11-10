@@ -28,9 +28,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             sass: {
-                additionalData: `
-                    @use '/resources/sass/abstracts' as *
-                `,
+                additionalData: `@use '/resources/sass/abstracts' as *\n`,
             },
         },
     },

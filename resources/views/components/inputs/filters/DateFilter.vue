@@ -50,25 +50,25 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-    :deep(.date-input-between-wrapper)
+:deep(.date-input-between-wrapper)
+    cursor: pointer
+    transition: background-color .2s ease-in-out
+    .custom-date-input
         cursor: pointer
-        transition: background-color .2s ease-in-out
-        .custom-date-input
-            cursor: pointer
-            transition: color .2s ease-in-out
+        transition: color .2s ease-in-out
 
-        .ico-wrapper
-            display: none
+    .ico-wrapper
+        display: none
+
+    .overlay
+        transition: background-color .2s ease-in-out
+
+    &:hover
+        background-color: var(--button-background-color)
+
+        .custom-date-input
+            color: white
 
         .overlay
-            transition: background-color .2s ease-in-out
-
-        &:hover
             background-color: var(--button-background-color)
-
-            .custom-date-input
-                color: white
-
-            .overlay
-                background-color: var(--button-background-color)
 </style>
