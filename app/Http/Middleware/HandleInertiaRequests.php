@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
-use App\Services\NotificationService;
-
 class HandleInertiaRequests extends Middleware
 {
     /**

@@ -27,9 +27,30 @@ class Modul extends BaseModel
     ##################################################
     public function hasAccess(): bool
     {
-        return $this->permissions()->count() > 0
-            ? $this->permissions->intersect(user()->permissions)->count() > 0
-            : true;
+        // Если для модуля не указаны требуемые права - возвращаем true
+        if($this->permissions()->count() === 0)
+            return true;
+
+        // Проверяем наличие прав без привязки к территории
+        // Если есть - возвращаем true
+        $flag = true;
+
+        $intersectPermissions = user()->permissions->intersect($this->permissions);
+        foreach ($intersectPermissions as $permission) {
+            if($permission->pivot->division_id !== null)
+                $flag = false;
+        }
+        if($flag)
+            return true;
+
+        // Проверяем права с привязкой к территории
+        $flag = false;
+        foreach ($intersectPermissions as $permission) {
+            if($permission->pivot->division_id === user()->getCurrentDivision()->id)
+                $flag = true;
+        }
+
+        return $flag;
     }
 
     ### Связи
