@@ -4,6 +4,8 @@ namespace Database\Seeders\Local\Auth;
 
 use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
+use App\Models\Base\Notification;
+use App\Models\Base\NotificationType;
 use App\Models\Base\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -34,5 +36,11 @@ class SuperUserSeeder extends Seeder
         // Add all permissions
         $permission_ids = Permission::get('id')->pluck('id');
         $superuser->permissions()->attach($permission_ids);
+
+        // Add all type notifications
+        NotificationType::all()->each(fn($type) => Notification::factory()->create([
+            'type_id' => $type->id,
+            'recipient_id' => $superuser->id
+        ]));
     }
 }
