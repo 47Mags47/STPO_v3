@@ -21,7 +21,9 @@ return new class extends Migration
 
             $table->text('message')->nullable();
             $table->json('context');
+
             $table->boolean('is_readed')->default(false);
+            $table->boolean('is_system')->default(false);
 
             $table->foreignId('recipient_id')->constrained(User::getTableName());
             $table->foreignId('sender_id')->nullable()->constrained(User::getTableName());
