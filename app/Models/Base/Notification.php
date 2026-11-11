@@ -28,8 +28,9 @@ class Notification extends BaseModel
     protected function casts(): array
     {
         return [
-            'is_readed' => 'boolean',
             'context'   => 'array',
+            'is_readed' => 'boolean',
+            'is_system' => 'boolean',
         ];
     }
 
