@@ -20,17 +20,15 @@ use App\Events\Base\SendNotificationEvent;
 use App\Events\Appeal\MessageSent;
 use App\Events\Base\SendChatMessageEvent;
 use App\Models\Base\NotificationType;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class AppealController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct()
     {
         $this->authorizeResource(Appeal::class);
     }
+
     public function index()
     {
         return Inertia::render('appeal/appeals/index', [
@@ -81,6 +79,9 @@ class AppealController extends Controller
 
     public function accept(Appeal $appeal)
     {
+        if(user()->cannot('accept', $appeal))
+            return abort(403);
+
         $appeal->update([
             'status_id' => 2,
             'worker_id' => user()->id,
@@ -107,7 +108,7 @@ class AppealController extends Controller
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
-                'type_id' => NotificationType::byCode('new_message'),
+                'type_id' => NotificationType::byCode('message'),
                 'context' => [
                     'chat_id' => $message->chat_id,
                 ]
@@ -121,6 +122,9 @@ class AppealController extends Controller
 
     public function close(Appeal $appeal)
     {
+        if(user()->cannot('close', $appeal))
+            return abort(403);
+
         $appeal->update([
             'status_id' => 3,
         ]);
@@ -144,7 +148,7 @@ class AppealController extends Controller
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
-                'type_id' => NotificationType::byCode('new_message'),
+                'type_id' => NotificationType::byCode('message'),
                 'context' => [
                     'chat_id' => $message->chat_id,
                 ]
@@ -158,6 +162,9 @@ class AppealController extends Controller
 
     public function reaccept(Appeal $appeal)
     {
+        if(user()->cannot('reaccept', $appeal))
+            return abort(403);
+
         $appeal->update([
             'status_id' => 4
         ]);
@@ -181,7 +188,7 @@ class AppealController extends Controller
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
-                'type_id' => NotificationType::byCode('new_message'),
+                'type_id' => NotificationType::byCode('message'),
                 'context' => [
                     'chat_id' => $message->chat_id,
                 ]

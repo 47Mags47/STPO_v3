@@ -31,11 +31,9 @@ class NotificationFactory extends Factory
     public function configure(): static
     {
         return $this->afterMaking(function (Notification $notification) {
-            $type = NotificationType::find($notification->type_id);
-
             $hasUserContext = !empty($notification->context);
 
-            switch ($type->code) {
+            switch ($notification->type->code) {
                 case 'file':
                     if (!$hasUserContext) {
                         $file = File::randomOrCreate();
@@ -65,7 +63,7 @@ class NotificationFactory extends Factory
                     $notification->message ??= $this->faker->text();
             }
 
-            $notification->is_system = !in_array($type->code, ['message']);
+            $notification->is_system = !in_array($notification->type->code, ['message']);
         });
     }
 }
