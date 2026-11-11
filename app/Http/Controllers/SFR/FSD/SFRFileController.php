@@ -19,7 +19,7 @@ class SFRFileController extends Controller
     public function index()
     {
         return Inertia::render('sfr/fsd/sfr-files/index', [
-            'files' => fn() => SFRFile::getResource(order: 'created_at', orderDesc: 'desc'),
+            'files' => fn() => SFRFile::getResource(orderColumn: 'created_at', orderDesc: 'desc'),
         ]);
     }
 
