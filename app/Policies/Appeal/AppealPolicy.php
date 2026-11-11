@@ -7,27 +7,36 @@ use App\Models\Base\User;
 
 class AppealPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('appeal_work');
+        return true;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
+        return true;
+    }
+
+    public function view(User $user, Appeal $appeal): bool
+    {
+        return $appeal->chat->subscribers()->where('user_id', $user->id)->exists();
+    }
+
+    public function accept(User $user, Appeal $appeal): bool
+    {
         return $user->hasPermission('appeal_work');
     }
 
-    /**
-     * Determine whether the user can view model.
-     */
-    public function view(User $user, Appeal $appeal): bool
+    public function close(User $user, Appeal $appeal): bool
     {
-        return $user->hasPermission('appeal_work');
+        return $appeal->sender_id === $user->id or $appeal->worker_id === $user->id;
+    }
+
+    public function reaccept(User $user, Appeal $appeal): bool
+    {
+        return
+            $user->hasPermission('appeal_work')
+            or $appeal->sender_id === $user->id
+            or $appeal->worker_id === $user->id;
     }
 }
