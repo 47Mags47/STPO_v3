@@ -19,7 +19,7 @@ export default {
     :action="route('payment.events.store')"
     :inputs="[
         {
-            type: 'datePicker',
+            type: 'date',
             name: 'in_date',
             label: 'Дата',
         },

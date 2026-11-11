@@ -119,17 +119,10 @@ export default {
                     readonly: true
                 },
                 {
-                    type: 'phone',
+                    type: 'phoneHasDob',
                     name: 'phone',
                     label: 'Телефон',
                     value: this.current_user.phone,
-                    readonly: this.isReadonly
-                },
-                {
-                    type: 'string',
-                    name: 'phone_dob',
-                    label: 'Доп. телефон',
-                    value: this.current_user.phone_dob,
                     readonly: this.isReadonly
                 },
             ]

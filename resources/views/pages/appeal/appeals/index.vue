@@ -98,7 +98,7 @@ export default {
         :meta="appeals.meta"
         :filters="[
             {
-                type: 'dateFilter',
+                type: 'date',
                 isRange: true,
                 label: 'Дата создания',
                 name: 'created_at',

@@ -16,7 +16,7 @@ export default {
         :action="route('sfr.fsd.payment-files.store', { sfrFile: route().params.sfrFile })"
         :inputs="[
             {
-                type: 'datePicker',
+                type: 'date',
                 name: 'in_date',
                 label: 'На дату',
             },
