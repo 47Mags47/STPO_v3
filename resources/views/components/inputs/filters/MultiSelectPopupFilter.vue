@@ -20,25 +20,27 @@ export default {
             default: 'book-text'
         },
 
+        // INPUT
         name: {
             type: String,
             default: null
         },
-
         value: {
             type: Array,
             default: () => [],
         },
-
         valueKey: {
             type: String,
             default: 'id'
         },
-
         placeholder: {
             type: String,
             default: 'Выбрано:'
-        }
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
     },
 
     data() {
@@ -82,9 +84,14 @@ export default {
 
 <template>
     <div class="select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
-        <div ref="selectPopupInput" class="select-popup-input" >
-            <span> {{ placeholder }} {{ selectedItems.length }} </span>
-        </div>
+        <Baseinput
+            type="text"
+            ref="selectPopupInput"
+            class="select-popup-input"
+            :value="`${placeholder} ${selectedItems.length}`"
+            :disabled
+            :readonly="true"
+        />
 
         <input v-for="value in selectedItems" type="hidden" :name="`${name}[]`" :value>
 
@@ -114,15 +121,15 @@ export default {
     gap: 5px
 
     height: 35px
+
     .select-popup-input
-        @include input()
         cursor: pointer
+        color: var(--text-color)
+        transition: color .5s ease, background-color .5s ease
 
         &:hover
             background-color: var(--button-background-color)
-            span
-                color: white
-                transition: color .5s ease
+            color: white
 
     :deep(.blue-button)
         width: 35px

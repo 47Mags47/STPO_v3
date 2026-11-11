@@ -35,7 +35,7 @@ export default {
                 <span class="">{{ label }}</span>
             </div>
 
-            <span class="text-xs! font-semibold! text-slate-400!">
+            <span class="text-xs font-semibold text-slate-400">
                 {{ Math.round(progressWidth * 100) }}%
             </span>
         </div>

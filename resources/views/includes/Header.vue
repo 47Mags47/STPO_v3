@@ -54,7 +54,7 @@ export default {
     <ChristmasLayout v-slot="{ isChristmas, year }">
         <div class="header-container">
             <div class="logo-container flex items-center gap-[10px]">
-                <h3 class="text-white!" @click="gameOn">СТПО</h3>
+                <h3 @click="gameOn">СТПО</h3>
                 <Theme/>
 
                 <div v-if="isChristmas" class="new-year">
