@@ -14,7 +14,7 @@ export default {
 
         StringInput:            defineAsyncComponent(() => import('../inputs/StringInput.vue')),
         TextInput:              defineAsyncComponent(() => import('../inputs/TextInput.vue')),
-        PhoneHasDobInput:       defineAsyncComponent(() => import('../inputs/PhoneHasDobInput.vue')),
+        PhoneInput:             defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
         EmailInput:             defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
         PasswordInput:          defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
         NumberInput:            defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
@@ -44,7 +44,7 @@ export default {
                         'string',
                         'number',
                         'email',
-                        'phoneHasDob',
+                        'phone',
                         'password',
                         'text',
                         'select',
@@ -123,7 +123,7 @@ export default {
                 <StringInput            v-if="input.type === 'string'"           v-bind="prepareProps(input)" />
                 <TextInput              v-if="input.type === 'text'"             v-bind="prepareProps(input)" />
                 <NumberInput            v-if="input.type === 'number'"           v-bind="prepareProps(input)" />
-                <PhoneHasDobInput       v-if="input.type === 'phoneHasDob'"      v-bind="prepareProps(input)" />
+                <PhoneInput             v-if="input.type === 'phone'"      v-bind="prepareProps(input)" />
                 <EmailInput             v-if="input.type === 'email'"            v-bind="prepareProps(input)" />
                 <PasswordInput          v-if="input.type === 'password'"         v-bind="prepareProps(input)" />
                 <CheckBox               v-if="input.type === 'checkbox'"         v-bind="prepareProps(input)" />

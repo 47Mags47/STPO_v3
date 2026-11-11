@@ -20,7 +20,6 @@ class UserUpdateRequest extends FormRequest
             'middle_name'       => ['nullable', 'string', 'max:255'],
             'full_name'         => ['required', 'string', 'min:2', 'max:255'],
             'phone'             => ['nullable', 'string', 'regex:/\+7 \([0-9]{3}\) [0-9]{3} [0-9]{2}-[0-9]{2}/'],
-            'division'          => ['required', 'string'],
             'phone_dob'         => ['nullable', 'string', 'max:10'],
             'login'             => ['required', 'string', 'min:2', 'max:255', 'unique:' . User::class . ',login,' . $this->route('user')->id]
         ];
