@@ -18,7 +18,7 @@ class DateController extends Controller
     public function index()
     {
         return Inertia::render('veteran/dates/index', [
-            'dates' => fn() => Date::getResource(orderColumn: 'in_date', orderDesc: 'desc'),
+            'dates' => fn() => Date::getResource(order: ['in_date' => 'desc']),
         ]);
     }
 

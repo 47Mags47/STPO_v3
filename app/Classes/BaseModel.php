@@ -25,14 +25,12 @@ abstract class BaseModel extends Model
      *
      * @param Builder $query
      * @param string $order
-     * @param string|null $orderDesc
      * @param boolean|null $withTrashed
      * @return ResourceCollection Отфильтрованный и отсортированный ресурс
      */
     public static function scopeGetResource(
         Builder $query,
-        string|array|null $orderColumn = 'id',
-        ?string $orderDesc = 'asc',
+        string|array|null $order = 'id',
         ?bool $withTrashed = false,
         ?int $paginate = 25,
         ?string $resource = null
@@ -41,7 +39,7 @@ abstract class BaseModel extends Model
             $query = $query->withTrashed();
 
         // search, filters and sort
-        $query = $query->sort($orderColumn, $orderDesc);
+        $query = $query->sort($order);
         $query = $query->filter();
 
         // paginate
@@ -65,9 +63,20 @@ abstract class BaseModel extends Model
             : new \App\Classes\Filter($builder)->apply();
     }
 
-    public static function scopeSort(Builder $builder, ?string $collumn = 'id', ?string $desc = 'asc',): Builder
+    public static function scopeSort(Builder $builder, string|array|null $order = 'id'): Builder
     {
-        return $builder->orderBy(self::getTableName() . '.' . $collumn, $desc);
+        if(is_array($order))
+            foreach ($order as $column => $value) {
+                if(is_string($column))
+                    $builder->orderBy($column, $value);
+                else
+                    $builder->orderBy($value);
+            }
+
+        if(is_string($order))
+            $builder->orderBy($order);
+
+        return $builder;
     }
 
     ### Методы

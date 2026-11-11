@@ -24,7 +24,7 @@ class ASPCategoryController extends Controller
 
     public function create(){
         return Inertia::render('sfr/fsd/asp-payment-categories/create', [
-            'sfr_categories' => fn() => SFRPaymentCategory::getResource(orderColumn: 'name'),
+            'sfr_categories' => fn() => SFRPaymentCategory::getResource(order: 'name'),
         ]);
     }
 
@@ -37,7 +37,7 @@ class ASPCategoryController extends Controller
     public function edit(ASPPaymentCategory $aspPaymentCategory){
         return Inertia::render('sfr/fsd/asp-payment-categories/edit', [
             'category' => fn() => $aspPaymentCategory->toResource(),
-            'sfr_categories' => fn() => SFRPaymentCategory::getResource(orderColumn: 'name'),
+            'sfr_categories' => fn() => SFRPaymentCategory::getResource(order: 'name'),
         ]);
     }
 
