@@ -93,7 +93,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function getCurrentDivision(): Division|null
     {
         return session()->get('current_division_id') !== null
-            ? $this->divisions()->where('division_id', session()->get('current_division_id'))->get()->first()
+            ? $this->divisions()->where('division_id', (int) session()->get('current_division_id'))->get()->first()
             : null;
     }
 

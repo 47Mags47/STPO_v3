@@ -31,11 +31,11 @@ class Modul extends BaseModel
         if($this->permissions()->count() === 0)
             return true;
 
+        $intersectPermissions = user()->permissions->intersect($this->permissions);
+
         // Проверяем наличие прав без привязки к территории
         // Если есть - возвращаем true
         $flag = true;
-
-        $intersectPermissions = user()->permissions->intersect($this->permissions);
         foreach ($intersectPermissions as $permission) {
             if($permission->pivot->division_id !== null)
                 $flag = false;

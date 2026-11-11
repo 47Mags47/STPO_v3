@@ -13,7 +13,7 @@ export default {
 
     data() {
         return {
-            moduls: usePage().props.menu,
+            moduls: usePage().props.menu ?? [],
             isOpen: false,
         };
     },
