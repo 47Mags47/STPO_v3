@@ -49,7 +49,16 @@ export default {
                 'message':  'message',
                 'file' :    'file',
                 'info' :    'info',
-                'alert':    'circle-xmark'
+                'alert':    'triangle-alert'
+            }[this.type.code]
+        },
+
+        notificationClass() {
+            return {
+                message: 'message',
+                file:    'file',
+                info:    'info',
+                alert:   'alert'
             }[this.type.code]
         }
     },
@@ -57,8 +66,10 @@ export default {
 </script>
 
 <template>
-    <div class="notification-container" :class="{ 'is-readed': is_readed }">
-
+    <div class="notification-container" :class="notificationClass">
+        <div v-if="!is_readed" class="absolute right-0 bottom-0 rounded-tl-lg px-2! bg-(--notification-not-readed-background) text-md">
+            новое!
+        </div>
         <div class="notification-header">
             <template v-if="'header' in $slots">
                 <slot name="header" />
@@ -90,7 +101,6 @@ export default {
 .notification-container
     position: relative
     padding: 12px 14px
-    background: var(--notification-background, #3d9ad1) // HACK Добавить переменную
     border: 1px solid transparent
     transition: background .15s ease
 
@@ -100,15 +110,36 @@ export default {
 
     color: white
 
-    transition: .5s
+    transition: background-color .5s ease
+
+    background: transparent
 
     border-bottom: 1px solid white
 
-    &:hover
-        background: var(--notification-hover-background, #3d9ad1) // HACK Добавить переменную
+    &.message
+        background-color: color-mix(in srgb, var(--notification-message-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-message-background)
 
-    &:not(.is-readed)
-        background: var(--notification-not-readed-background, #3d9ad1) // HACK Добавить переменную
+    &.file
+        background-color: color-mix(in srgb, var(--notification-file-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-file-background)
+
+    &.info
+        background-color: color-mix(in srgb, var(--notification-info-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-info-background)
+
+    &.alert
+        background-color: color-mix(in srgb, var(--notification-alert-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-alert-background)
+
 
     .notification-header
         display: flex
@@ -125,11 +156,9 @@ export default {
             align-items: center
             justify-content: center
 
-            background: var(--button-background-color)
-
             .ico-container
-                width: 16px
-                height: 16px
+                width: 20px
+                height: 20px
 
         .sender
             font-weight: 600

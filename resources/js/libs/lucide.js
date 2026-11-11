@@ -15,6 +15,8 @@ export {
     RotateCcw                   as 'arrow-rotate-left',
     ArrowBigUp                  as 'arrow-big-up',
 
+    TriangleAlert               as 'triangle-alert',
+
     Circle                      as circle,
     CircleAlert                 as 'circle-exclamation',
     CircleCheck                 as 'circle-check',

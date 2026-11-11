@@ -90,7 +90,6 @@ export default {
 
 <template>
     <div class="notifications-container" v-outsideClick="outsideClickHandler">
-
         <BlueButton class="bell-container size-[40px]!" @click="togleOpen">
             <Ico type="bell" />
             <span v-if="isChristmas" class="absolute top-[6px] left-[7px] text-[20px]!">🎀</span>
@@ -100,7 +99,6 @@ export default {
         </BlueButton>
 
         <div class="notification-list-container" :class="{ 'open': isOpen }">
-
             <div class="notification-list" v-if="notifications.length > 0" ref="notificationList">
                 <template v-for="notification in notifications">
                     <Notification v-bind="notification" :closeFunction="closePopup" />
@@ -164,16 +162,16 @@ export default {
     .notification-list-container
         position: absolute
         top: 100%
-        right: 0
+        right: 6px
 
         width: 350px
         height: 0
 
-        background: var(--menu-background-color)
-
         overflow: hidden
 
         transition: .5s
+
+        border-radius: 0 0 0 16px
 
         &.open
             height: 400px

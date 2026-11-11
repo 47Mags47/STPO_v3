@@ -19,7 +19,7 @@ export default {
 
 <template>
     <Message v-if="type.code === 'message'" :type v-bind="$attrs" />
-    <File v-if="type.code === 'file'" :type v-bind="$attrs" />
-    <Info v-if="type.code === 'info'" :type v-bind="$attrs" />
-    <Alert v-if="type.code === 'alert'" :type v-bind="$attrs" />
+    <File    v-if="type.code === 'file'"    :type v-bind="$attrs" />
+    <Info    v-if="type.code === 'info'"    :type v-bind="$attrs" />
+    <Alert   v-if="type.code === 'alert'"   :type v-bind="$attrs" />
 </template>
