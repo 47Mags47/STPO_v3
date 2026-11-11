@@ -77,5 +77,7 @@ export {
 
     LogOut                      as 'logout',
 
-    CircleQuestionMark
+    CircleQuestionMark,
+
+    CornerUpRight               as 'corner-up-right',
 } from '@lucide/vue';

@@ -7,77 +7,62 @@ export default {
         Ico
     },
     props: {
-        type: {
-            type: String,
-            default: null,
-            validator: (value) => [
-                'download-file-notification',
-                'new-message-notification'
-            ].includes(value)
-        },
         sender: {
             type: Object,
-            default: {}
+            default: () => ({})
         },
-        message: {
-            type: String,
-            default: ''
-        },
-        isReaded: {
+        is_readed: {
             type: Boolean,
-            default: true,
+            default: false,
         },
-        createdAt: {
-            type: String,
-            default: null
+        is_system: {
+            type: Boolean,
+            default: false,
         },
-        ico: {
-            type: String,
-            default: 'circle-exclamation'
-        }
+        created_at: {
+            type: String
+        },
     },
     computed: {
-        classes() {
-            let classes = {}
+        date() {
+            let created_at = DateTime.fromISO(this.created_at).setLocale('ru')
 
-            classes[this.type] = true
-            classes['is_readed'] = this.isReaded
-
-            return classes
-        },
-        createdAtObject() {
-            return DateTime.fromISO(this.createdAt)
+            return created_at < DateTime.now().minus({hours: 24})
+                ?  created_at.toFormat('dd.MM T')
+                : created_at.toRelative()
         }
     },
-    slots: [
-        'default',
-        'actions'
-    ],
 };
 </script>
 
 <template>
-    <div class="notification-container" :class="classes">
+    <div class="notification-container" :class="{'is_readed': is_readed}">
         <div class="notification-header">
-            <Ico :type="ico" />
-            <span class="sender-container text-white!">{{ sender?.full_name ?? 'SYSTEM' }}</span>
-            <span class="date-container text-white!">{{ createdAtObject.toFormat('dd.MM T') }}</span>
+            <template v-if="'header' in $slots">
+                <slot name="header" />
+            </template>
+            <template v-else>
+                <Ico type="message" />
+                <span class="sender">{{ is_system ? 'SYSTEM' : sender.full_name }}</span>
+                <span class="date">{{ date }}</span>
+            </template>
         </div>
 
         <div class="notification-content">
-            <div class="message-container">
-                <span class="text-white!">{{ message }}</span>
-            </div>
-            <div class="action-container" v-if="'actions' in this.$slots">
-                <slot name="actions" />
-            </div>
+            <template v-if="'content' in $slots">
+                <slot name="content" />
+            </template>
+        </div>
+
+        <div class="notification-footer">
+            <template v-if="'footer' in $slots">
+                <slot name="footer" />
+            </template>
         </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
-@use 'sass:color';
-
 .notification-container
     position: relative
     padding: 10px 6px 4px 6px
@@ -95,24 +80,12 @@ export default {
         align-items: center
         font-weight: bold
         gap: 5px
-        :deep()
-            .ico-container
-                width: 20px
-                height: 20px
-    .notification-content
-        display: flex
-        flex-direction: column
-        .message-container
-            word-wrap: break-word
-        .action-container
-            width: 100%
-            height: 30px
-
-            display: flex
-            justify-content: end
-
-            :deep(.button, .red-button)
-                height: 100%
-                width: fit-content
-                min-height: 0
+        .ico-container
+            width: 20px
+            height: 20px
+        .sender
+            font-weight: bold
+            text-transform: uppercase
+        .date
+            font-size: .8rem
 </style>

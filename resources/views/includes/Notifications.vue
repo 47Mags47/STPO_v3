@@ -1,14 +1,14 @@
 <script>
-import { defineAsyncComponent } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { Ico, BlueButton } from '@components';
 import axios from 'axios';
+import Notification from '../components/Notifications/Notification.vue';
 
 export default {
     components: {
-        Ico, BlueButton,
-        NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
-        DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
+        Ico,
+        BlueButton,
+        Notification
     },
 
     props: {
@@ -20,7 +20,7 @@ export default {
 
     data() {
         return {
-            isOpen: false,
+            isOpen: true,
             isLoaded: false,
             notifications: [],
             channel: null
@@ -103,21 +103,7 @@ export default {
 
             <div class="notification-list" v-if="notifications.length > 0" ref="notificationList">
                 <template v-for="notification in notifications">
-                    <DownloadFileNotification v-if="notification.type.code === 'file_generated'"
-                        :sender="notification.sender"
-                        :message="notification.message"
-                        :file="notification.context"
-                        :isReaded="notification.is_readed"
-                        :createdAt="notification.created_at"
-                    />
-                    <NewMessageNotification v-if="notification.type.code === 'new_message'"
-                        :sender="notification.sender"
-                        :message="notification.message"
-                        :appeal-id="notification.context.appeal_id"
-                        :close-popup="closePopup"
-                        :isReaded="notification.is_readed"
-                        :createdAt="notification.created_at"
-                    />
+                    <Notification v-bind="notification" :closeFunction="closePopup" />
                 </template>
             </div>
 
