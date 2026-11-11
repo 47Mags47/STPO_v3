@@ -30,6 +30,10 @@ export default {
             type: String,
             default: null
         },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
         disabled: {
             type: Boolean,
             default: false
@@ -95,9 +99,14 @@ export default {
 
 <template>
     <div class="select-popup-input-wrapper">
-        <div ref="selectPopupInput" v-if="!hidden" class="select-popup-input" :class="{ 'disabled': disabled }" >
-            <span>{{ selectedItemLabel ?? 'Не выбрано' }} </span>
-        </div>
+        <Baseinput
+            v-if="!hidden"
+            type="text"
+            ref="selectPopupInput"
+            :value="selectedItemLabel ?? 'Не выбрано'"
+            :disabled
+            :readonly="true"
+        />
 
         <input v-if="selectedItemValue" type="hidden" :name :value="selectedItemValue">
 
@@ -130,16 +139,6 @@ export default {
     gap: 5px
 
     height: 35px
-    .select-popup-input
-        @include input()
-
-        &.disabled
-            border-color: var(--input-disabled-border-color)
-            cursor: not-allowed
-
-
-            span
-                color: var(--input-disabled-text-color)
 
     :deep(.blue-button)
         width: 35px

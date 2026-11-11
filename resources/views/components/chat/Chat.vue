@@ -132,16 +132,15 @@ export default {
             <template v-for="message, index in messages" :key="message.id">
                 <Message :message />
                 <div v-if="showDateSeparator(index)" class="w-full flex items-center justify-center my-6!">
-                    <div class="flex items-center gap-3 w-full max-w-[320px]">
+                    <div class="flex items-center gap-3 w-full max-w-[320px]
+                      text-gray-600 text-[12px] text-center"
+                    >
                         <div class="h-px flex-1 bg-gray-200"></div>
                         <span class="shrink-0
                         px-5! py-1.5!
                         rounded-full
                         bg-gray-100
                         border border-gray-200
-                        text-gray-600!
-                        text-[12px]!
-                        text-center
                         font-medium
                         shadow-sm">
                             {{ formatMessageDateSeporator(message.created_at) }}
@@ -213,8 +212,9 @@ export default {
             justify-content: center
             align-items: center
 
+            color: var(--text-color)
+
             .ico-container
                 width: 35px
                 height: 35px
-                color: var(--text-color)
 </style>

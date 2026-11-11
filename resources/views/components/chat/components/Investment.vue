@@ -67,7 +67,11 @@ export default {
             </template>
         </template>
 
-        <Ico type="x" class="remove-button bg-(--chat-message-uploaded-file-delete-color) border border-red-500" :onClick="removeButtonClickHandler"/>
+        <Ico
+            type="x"
+            class="remove-button bg-(--chat-message-uploaded-file-delete-color) border border-red-500"
+            :onClick="removeButtonClickHandler"
+        />
     </div>
 </template>
 

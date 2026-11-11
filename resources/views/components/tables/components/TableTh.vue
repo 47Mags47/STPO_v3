@@ -37,7 +37,6 @@ export default {
 <style lang="sass" scoped>
 table
     thead tr
-
         &:first-child th
             border-top: none
         th

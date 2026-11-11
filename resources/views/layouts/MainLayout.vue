@@ -11,8 +11,8 @@ export default {
     computed: {
         bind() {
             return {
-                auth: usePage().props.current_user !== null ? true : false,
-                hasDivision: usePage().props.current_user?.data.current_division !== null ? true : false,
+                auth: usePage().props.current_user !== undefined,
+                hasDivision: usePage().props.current_user?.data.current_division !== null,
             };
         },
     },

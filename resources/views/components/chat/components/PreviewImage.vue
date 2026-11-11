@@ -118,7 +118,7 @@ export default {
             </div>
 
             <div
-                class="absolute bottom-8 bg-zinc-900/80 rounded-lg px-5! py-3! flex items-center gap-3"
+                class="absolute bottom-8 bg-zinc-900/80 rounded-lg px-5! py-3! flex items-center gap-3 text-white"
                 @click.stop
             >
                 <input
@@ -128,11 +128,11 @@ export default {
                     step="0.1"
                     v-model.number="imageScale"
                 >
-                <span class="text-white! w-[5ch]"> {{ Math.round(imageScale*100) }}% </span>
+                <span class="w-[5ch]"> {{ Math.round(imageScale*100) }}% </span>
             </div>
 
-            <div class="preview-image-header absolute top-6">
-                <span class="text-white! text-4xl!">
+            <div class="preview-image-header absolute top-6 text-white text-4xl">
+                <span>
                     {{ imageAttachments.findIndex(image => image.id === previewImage.id) + 1 }}/{{ imageAttachments.length }}
                 </span>
             </div>

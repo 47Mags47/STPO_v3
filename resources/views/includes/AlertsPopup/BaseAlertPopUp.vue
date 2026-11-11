@@ -74,7 +74,7 @@ export default {
             <div class="size-full flex flex-col justify-between">
                 <span class="font-bold! text-xl!" :class="colors.text"> {{ title }} </span>
 
-                <span class=""> {{ message }} </span>
+                <span class="text-(--text-color)"> {{ message }} </span>
             </div>
         </div>
 

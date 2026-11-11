@@ -52,16 +52,16 @@ export default {
 <style lang="sass" scoped>
 :deep(.date-input-between-wrapper)
     cursor: pointer
-    transition: background-color .2s ease-in-out
+    transition: background-color .5s ease
     .custom-date-input
         cursor: pointer
-        transition: color .2s ease-in-out
+        transition: color .5s ease
 
     .ico-wrapper
         display: none
 
     .overlay
-        transition: background-color .2s ease-in-out
+        transition: background-color .5s ease
 
     &:hover
         background-color: var(--button-background-color)

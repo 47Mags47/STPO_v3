@@ -30,7 +30,7 @@ export default {
     <div class="size-full bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 flex justify-center items-center">
         <div class="flex flex-col justify-center items-center">
 
-            <p class="text-[180px]! leading-none text-blue-200">
+            <p class="text-[180px] leading-none ">
                 <slot name="code" v-if="$slots.code"/>
                 <template v-else>
                     {{ code }}
@@ -38,7 +38,7 @@ export default {
             </p>
 
 
-            <span class="text-[20px]! text-white mt-5!">
+            <span class="text-[20px] mt-5!">
                 <slot name="code" v-if="$slots.title"/>
                 <template v-else>
                     {{ title }}
@@ -46,7 +46,7 @@ export default {
             </span>
 
             <div class="mt-2!">
-                <p class="text-slate-400">
+                <p class="">
                     <slot name="code" v-if="$slots.description"/>
                     <template v-else>
                         {{ description }}
@@ -54,8 +54,8 @@ export default {
                 </p>
             </div>
 
-            <button class="mt-2!">
-                <a class="text-blue-300! hover:text-blue-100! cursor-pointer" :href="homeUrl">
+            <button class="mt-2! text-blue-300 hover:text-blue-100 cursor-pointer">
+                <a :href="homeUrl">
                         {{ homeDescription }}
                 </a>
             </button>

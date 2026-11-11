@@ -99,11 +99,11 @@ export default {
 <template>
     <div
         v-if="isLoading"
-        :class="isGlobal ? 'fixed inset-0' : 'absolute size-full'"
-        class="z-[10000] flex items-center justify-center
+        :class="isGlobal ? 'fixed inset-0' : 'absolute size-full '"
+        class="z-[10000] flex items-center justify-center text-(--overlay-text-color) font-bold text-xl
             bg-black/10 backdrop-blur-[1px]"
     >
-        <div class="relative size-36 p-3! flex flex-col bg-black/40 rounded-xl">
+        <div class="relative size-36 p-3! flex flex-col bg-black/40 rounded-xl ">
             <div class="relative w-full aspect-square">
                 <div
                     class="absolute inset-0 rounded-full border-[6px]
@@ -116,9 +116,14 @@ export default {
                         border-t-white"
                 ></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-white! font-bold! text-xl!"> {{ formattedTime }} </span>
+                    <span> {{ formattedTime }} </span>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<style lang="sass" scoped>
+.test
+    color: white !important
+</style>

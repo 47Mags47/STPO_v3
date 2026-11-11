@@ -46,7 +46,7 @@ export default {
         <VerticalForm>
             <template #header>
                 <div>
-                    <span class="text-2xl!"> настройки </span>
+                    <span class="text-2xl!"> Настройки </span>
                 </div>
             </template>
 

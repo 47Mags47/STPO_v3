@@ -102,8 +102,6 @@ export default {
 
     width: 45px
     height: 45px
-    .ico-container
-        color: var(--text-color)
     .file-type
         position: absolute
         top: 50%

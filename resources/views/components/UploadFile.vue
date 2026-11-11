@@ -135,6 +135,7 @@ export default {
 .upload-file-container
     border: 1px solid #eee
     padding: 5px 10px
+    color: var(--text-color)
     .file-info-line
         display: grid
         grid-template-areas: 'A B C'
@@ -157,7 +158,6 @@ export default {
             overflow: hidden
             text-overflow: ellipsis
             white-space: nowrap
-            color: var(--text-color)
         .file-action-button
             grid-area: C
             width: 20px

@@ -499,7 +499,7 @@ export default {
                     @click="toggleFilterVisible">
                         <span> фильтры </span>
                         <div class="filter-btn-item-icon">
-                            <Ico type="chevron-down" class="text-white" />
+                            <Ico type="chevron-down" />
                         </div>
                     </button>
                 </div>
@@ -584,7 +584,7 @@ export default {
                     class="not-data-cell"
                 >
                     <Ico
-                        class="text-(--text-color)! h-[148px]!"
+                        class="h-[148px]!"
                         type="database"
                     />
 
@@ -739,6 +739,7 @@ export default {
                 gap: 25px
 
                 font-size: 1.2rem
+
             .table-file-status-cell .table-cell-container
                 padding: 5px
 </style>

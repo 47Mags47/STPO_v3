@@ -89,5 +89,5 @@ export default {
 </script>
 
 <template>
-    <Baseinput @input="inputHandler" :value="current_value" />
+    <Baseinput @input="inputHandler" v-bind="$attrs" :value="current_value" />
 </template>

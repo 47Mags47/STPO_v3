@@ -133,8 +133,13 @@ export default {
         border-radius: 12px
         border: 1px solid var(--border-color)
         cursor: pointer
-        transition: .5s ease
         @include input()
+
+        transition: background-color .5s ease
+
+        span,
+        .ico-chevron
+            transition: color .5s ease
 
         &.active
             border-bottom-right-radius: 0
@@ -143,7 +148,6 @@ export default {
         &:hover
             background-color: var(--button-background-color)
             span
-                transition: .5s ease
                 color: white
 
             .ico-chevron
@@ -158,7 +162,6 @@ export default {
 
             color: var(--text-color)
 
-            transition: .4s ease
             &.active
                 transform: rotate(540deg)
 
