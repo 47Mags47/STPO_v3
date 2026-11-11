@@ -1,5 +1,4 @@
 <script>
-import { isReadonly } from 'vue';
 import { default as BaseInput } from "./Baseinput.vue";
 
 export default {

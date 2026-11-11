@@ -12,7 +12,7 @@ export default {
     },
     data() {
         return {
-            isReadonly: true,
+            formDisabled: true,
             first_name: '',
             last_name: '',
             middle_name: '',
@@ -20,16 +20,19 @@ export default {
     },
     methods: {
         editClickHandler(event) {
-            this.isReadonly = !event.target.checked
+            this.formDisabled = !event.target.checked
         },
         inputsClasses(name = null) {
             if (name === 'email') {
-                if (this.isReadonly)
+                if (this.formDisabled)
                     return this.isEmailVerified ? "text-gray-400! border-gray-400!" : 'text-gray-400! border-(--warning-border-color)!'
 
                 return this.isEmailVerified ? '' : 'border-(--warning-border-color)!'
             }
         },
+        submitHandler(){
+            this.formDisabled = true
+        }
     },
     computed: {
         current_user: () => usePage().props.current_user.data,
@@ -64,7 +67,7 @@ export default {
                     name: 'first_name',
                     label: '* Имя',
                     value: this.first_name,
-                    readonly: this.isReadonly,
+                    disabled: this.formDisabled,
                     onInput: (val) => {
                         this.first_name = val.target.value
                     }
@@ -74,7 +77,7 @@ export default {
                     name: 'last_name',
                     label: 'Фамилия',
                     value: this.last_name,
-                    readonly: this.isReadonly,
+                    disabled: this.formDisabled,
                     onInput: (val) => {
                         this.last_name = val.target.value
                     }
@@ -84,7 +87,7 @@ export default {
                     name: 'middle_name',
                     label: 'Отчество',
                     value: this.middle_name,
-                    readonly: this.isReadonly,
+                    disabled: this.formDisabled,
                     onInput: (val) => {
                         this.middle_name = val.target.value
                     }
@@ -92,16 +95,16 @@ export default {
                 {
                     type: 'string',
                     name: 'full_name',
-                    label: '* ФИО',
+                    label: '* Отображаемое имя',
                     value: this.full_name,
-                    readonly: true
+                    disabled: this.formDisabled
                 },
                 {
                     type: 'string',
                     name: 'login',
                     label: '* Логин',
                     value: this.current_user.login,
-                    readonly: this.isReadonly
+                    disabled: this.formDisabled
                 },
                 {
                     class: this.inputsClasses('email'),
@@ -109,21 +112,23 @@ export default {
                     name: 'email',
                     label: 'почта',
                     value: this.current_user.email,
-                    readonly: true
+                    disabled: true
                 },
                 {
                     type: 'string',
                     name: 'division',
                     label: 'организация',
                     value: this.current_user.current_division?.name,
-                    readonly: true
+                    disabled: true
                 },
                 {
-                    type: 'phoneHasDob',
+                    type: 'phone',
                     name: 'phone',
                     label: 'Телефон',
+                    hasDob: true,
                     value: this.current_user.phone,
-                    readonly: this.isReadonly
+                    dobValue: this.current_user.phone_dob,
+                    disabled: this.formDisabled
                 },
             ]
         }
@@ -141,8 +146,9 @@ export default {
     <DashboardLayout>
         <ResourceForm
             :inputs="inputsForm"
-            :sbm-disabled="isReadonly"
+            :sbm-disabled="formDisabled"
             :action="route('base.users.update', { user: current_user.id })"
+            @success="submitHandler"
             method="put"
         >
             <template #header>
@@ -152,14 +158,14 @@ export default {
                     <input type="file" ref="avatar" hidden />
 
                     <Ico type="circle-user" class="text-gray-400! hover:text-gray-500!"
-                        :class="isReadonly ? 'cursor-not-allowed' : 'cursor-pointer'"
+                        :class="formDisabled ? 'cursor-not-allowed' : 'cursor-pointer'"
                     />
 
                     <span class="text-2xl!"> данные </span>
                     <SwitcherInput
                         class="justify-self-end"
                         :on-click="editClickHandler"
-                        :value="isReadonly"
+                        :value="formDisabled"
                         label="редактировать"
                     />
                 </div>

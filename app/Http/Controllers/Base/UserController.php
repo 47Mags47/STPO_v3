@@ -16,11 +16,7 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $data = $request->validated();
-
-        unset($data['division'], $data['email']);
-
-        $user->update($data);
+        $user->update($request->validated());
 
         return redirect()->route('dashboard')->with('success', 'Запись успешно обновлена');
     }

@@ -43,7 +43,13 @@ export default {
 
 <template>
     <div :class="containerClasses" class="form-container">
-        <Form :class="classes" :method="method.toUpperCase()" :action :id>
+        <Form
+            :class="classes"
+            :method="method.toUpperCase()"
+            :action
+            :id
+            v-bind="$attrs"
+        >
             <div v-if="'header' in $slots || header !== null" class="form-header-container">
                 <template v-if="'header' in $slots">
                     <slot name="header" />
