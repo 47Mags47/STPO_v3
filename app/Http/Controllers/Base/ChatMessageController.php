@@ -38,7 +38,7 @@ class ChatMessageController extends Controller
             }
         }
 
-        $target_url = '';
+        $target_url = '/404';
         switch ($message->entity::class) {
             case \App\Models\Appeal\Appeal::class:
                 $target_url = route('appeal.appeals.show', ['appeal' => $message->entity]);
@@ -52,7 +52,7 @@ class ChatMessageController extends Controller
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
-                'type_id' => NotificationType::byCode('new_message'),
+                'type_id' => NotificationType::byCode('message'),
                 'context' => [
                     'target_url' => $target_url,
                 ]

@@ -102,15 +102,11 @@ class AppealController extends Controller
             $appeal->id,
         ));
 
-        $appeal->chat->subscribers->each(function ($subscriber) use ($message) {
+        $appeal->chat->subscribers->each(function ($subscriber) use ($appeal, $message) {
             $notification = Notification::factory()->create([
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('new_message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
+                'type_id' => NotificationType::byCode('info'),
             ]);
 
             broadcast(new SendNotificationEvent($notification));
@@ -143,11 +139,7 @@ class AppealController extends Controller
             $notification = Notification::factory()->create([
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('new_message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
+                'type_id' => NotificationType::byCode('info'),
             ]);
 
             broadcast(new SendNotificationEvent($notification));
@@ -180,11 +172,7 @@ class AppealController extends Controller
             $notification = Notification::factory()->create([
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('new_message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
+                'type_id' => NotificationType::byCode('info'),
             ]);
 
             broadcast(new SendNotificationEvent($notification));
