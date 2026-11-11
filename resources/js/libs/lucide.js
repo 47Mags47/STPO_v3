@@ -80,4 +80,5 @@ export {
     CircleQuestionMark,
 
     CornerUpRight               as 'corner-up-right',
+    Info                        as 'info',
 } from '@lucide/vue';

@@ -3,61 +3,85 @@ import { DateTime } from 'luxon';
 import Ico from '../Ico.vue';
 
 export default {
-    components: {
-        Ico
-    },
+    components: { Ico },
+
     props: {
         sender: {
             type: Object,
             default: () => ({})
         },
-        is_readed: {
-            type: Boolean,
-            default: false,
-        },
         is_system: {
             type: Boolean,
-            default: false,
+            default: false
+        },
+        type: {
+            type: Object,
+            default: () => ({
+                code: 'message'
+            })
         },
         created_at: {
             type: String
         },
+        is_readed: {
+            type: Boolean,
+            default: false
+        },
     },
+
     computed: {
         date() {
-            let created_at = DateTime.fromISO(this.created_at).setLocale('ru')
+            const created = DateTime.fromISO(this.created_at).setLocale('ru');
 
-            return created_at < DateTime.now().minus({hours: 24})
-                ?  created_at.toFormat('dd.MM T')
-                : created_at.toRelative()
+            if (!created.isValid) return '';
+
+            return created < DateTime.now().minus({ hours: 24 })
+                ? created.toFormat('dd.MM T')
+                : created.toRelative();
+        },
+
+        senderFullName() {
+            return this.is_system ? 'Система' : this.sender.full_name
+        },
+
+        ico() {
+            return {
+                'message':  'message',
+                'file' :    'file',
+                'info' :    'info',
+                'alert':    'circle-xmark'
+            }[this.type.code]
         }
     },
 };
 </script>
 
 <template>
-    <div class="notification-container" :class="{'is_readed': is_readed}">
+    <div class="notification-container" :class="{ 'is-readed': is_readed }">
+
         <div class="notification-header">
             <template v-if="'header' in $slots">
                 <slot name="header" />
             </template>
             <template v-else>
-                <Ico type="message" />
-                <span class="sender">{{ is_system ? 'SYSTEM' : sender.full_name }}</span>
+                <span class="badge">
+                    <Ico :type="ico" />
+                </span>
+                <span class="sender">{{ senderFullName }}</span>
                 <span class="date">{{ date }}</span>
             </template>
         </div>
 
-        <div class="notification-content">
-            <template v-if="'content' in $slots">
-                <slot name="content" />
-            </template>
+        <div v-if="'content' in $slots" class="notification-content">
+            <slot name="content" />
         </div>
 
-        <div class="notification-footer">
-            <template v-if="'footer' in $slots">
-                <slot name="footer" />
-            </template>
+        <div v-if="'action' in $slots" class="notification-action">
+            <slot name="action" />
+        </div>
+
+        <div v-if="'footer' in $slots" class="notification-footer">
+            <slot name="footer" />
         </div>
     </div>
 </template>
@@ -65,27 +89,59 @@ export default {
 <style lang="sass" scoped>
 .notification-container
     position: relative
-    padding: 10px 6px 4px 6px
+    padding: 12px 14px
+    background: var(--notification-background, #3d9ad1) // HACK Добавить переменную
+    border: 1px solid transparent
+    transition: background .15s ease
 
     display: flex
     flex-direction: column
-    gap: 5px
+    gap: 7px
 
-    &:not(.is_readed)
-        background: var(--notification-not-readed-background-color)
+    color: white
+
+    transition: .5s
+
+    border-bottom: 1px solid white
+
+    &:hover
+        background: var(--notification-hover-background, #3d9ad1) // HACK Добавить переменную
+
+    &:not(.is-readed)
+        background: var(--notification-not-readed-background, #3d9ad1) // HACK Добавить переменную
 
     .notification-header
         display: flex
-        justify-content: space-between
         align-items: center
-        font-weight: bold
-        gap: 5px
-        .ico-container
-            width: 20px
-            height: 20px
+        gap: 8px
+        min-width: 0
+
+        .badge
+            width: 28px
+            height: 28px
+            border-radius: 8px
+
+            display: flex
+            align-items: center
+            justify-content: center
+
+            background: var(--button-background-color)
+
+            .ico-container
+                width: 16px
+                height: 16px
+
         .sender
-            font-weight: bold
+            font-weight: 600
+            font-size: .875rem
             text-transform: uppercase
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+
         .date
-            font-size: .8rem
+            margin-left: auto
+            flex-shrink: 0
+            font-size: .75rem
+            font-weight: 400
 </style>

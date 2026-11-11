@@ -20,7 +20,7 @@ export default {
 
     data() {
         return {
-            isOpen: true,
+            isOpen: false,
             isLoaded: false,
             notifications: [],
             channel: null

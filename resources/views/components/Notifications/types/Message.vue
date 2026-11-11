@@ -36,30 +36,26 @@ export default {
 </script>
 
 <template>
-    <BaseNotification ico="message">
+    <BaseNotification type="message" ico="message">
         <template #content>
-            <div class="message-container">
-                <span>{{ message }}</span>
-            </div>
-            <div v-if="context.target_url" class="action-container">
-                <BlueButton :onClick="goToMessageClickHandler">
-                    <Ico type="corner-up-right" />
-                </BlueButton>
-            </div>
+            <p class="message-text">{{ message }}</p>
+        </template>
+        <template #action>
+            <BlueButton v-if="context.target_url" class="go-to-message" @click="goToMessageClickHandler">
+                Перейти в чат
+                <Ico type="arrow-right" />
+            </BlueButton>
         </template>
     </BaseNotification>
 </template>
 
 <style lang="sass" scoped>
-.notification-content
-    display: flex
-    flex-direction: column
-    .message-container
-        word-wrap: break-word
-    .action-container
-        width: 100%
-        height: 30px
+.notification-container
+    .message-text
+        overflow-wrap: break-word
 
-        display: flex
-        justify-content: end
+    .go-to-message
+        .ico-container
+            width: 20px
+            height: 20px
 </style>
