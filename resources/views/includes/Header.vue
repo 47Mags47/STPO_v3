@@ -6,7 +6,6 @@ import Notifications from './Notifications.vue';
 import AlertsPopup from './AlertsPopup/AlertsPopup.vue'
 import Theme from './Theme.vue';
 import BlueButton from '../components/buttons/BlueButton.vue';
-import Leaf from './Leaf.vue';
 import Game from '../components/game/Game.vue';
 import ChristmasLayout from '../layouts/ChristmasLayout.vue';
 
@@ -18,7 +17,6 @@ export default {
         AlertsPopup,
         Theme,
         BlueButton,
-        Leaf,
 
         Game,
         ChristmasLayout,
@@ -40,7 +38,7 @@ export default {
             this.counter++;
         },
 
-        onCloseGame() {
+        closeGameClickHandler() {
             this.counter = 0
         }
     },
@@ -56,7 +54,7 @@ export default {
     <ChristmasLayout v-slot="{ isChristmas, year }">
         <div class="header-container">
             <div class="logo-container flex items-center gap-[10px]">
-                <h3 @click="gameOn">СТПО</h3>
+                <h3 class="cursor-pointer" @click="gameOn">СТПО</h3>
                 <Theme/>
 
                 <div v-if="isChristmas" class="new-year">
@@ -91,10 +89,12 @@ export default {
             <AlertsPopup />
         </div>
 
-        <Game
-            v-if="counter === 3 || true"
-            :on-close-game
-        />
+        <Transition name="popup">
+            <Game
+                v-if="counter === 3"
+                :on-close-game="closeGameClickHandler"
+            />
+        </Transition>
     </ChristmasLayout>
 </template>
 

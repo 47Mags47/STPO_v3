@@ -2,7 +2,6 @@ import './bootstrap'
 import './helpers';
 import './reset';
 import { initTheme } from './theme';
-import { initSeason } from './season.js';
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import * as derectives from "./derectives";
@@ -11,7 +10,6 @@ import MainLayout from '../views/layouts/MainLayout.vue';
 import LoadingOverlay from '../views/components/LoadingOverlay.vue';
 
 initTheme();
-initSeason();
 
 createInertiaApp({
     resolve: async (name) => {
