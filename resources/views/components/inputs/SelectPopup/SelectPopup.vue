@@ -57,6 +57,10 @@ export default {
             type: String,
             default: location.href
         },
+        urlParams: {
+            type: Object,
+            default: {}
+        }
     },
 
     data() {
@@ -64,8 +68,6 @@ export default {
             data: [],
             meta: {},
             links: {},
-            isDragging: false,
-            isFullScreen: false
         }
     },
 
@@ -110,7 +112,7 @@ export default {
             axios
                 .get(this.url, {
                     params: {
-                        search: page
+                        search: page,
                     }
                 })
                 .then(function(response){
@@ -123,7 +125,8 @@ export default {
             axios
                 .get(this.url, {
                     params: {
-                        page: page
+                        ...this.urlParams,
+                        page: page,
                     }
                 })
                 .then(function(response){
@@ -136,7 +139,9 @@ export default {
 
     created() {
         axios
-            .get(this.url)
+            .get(this.url, {
+                params: this.urlParams
+            })
             .then(function(response){
                 this.data = response.data.data
                 this.meta = response.data.meta

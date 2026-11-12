@@ -21,7 +21,7 @@ class DefaultWriter extends BankRaportWriter
 
     public function writeFileContent(FileModel $file, array $data): void
     {
-        $spreadsheet = IOFactory::load($this->template->getFullPath());
+        $spreadsheet = IOFactory::load($this->template->fullPath);
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -44,6 +44,6 @@ class DefaultWriter extends BankRaportWriter
         $sheet->setCellValue('D' . $excelIndex + 1, $data['recipients']->sum('amount'));
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save($file->getFullPath());
+        $writer->save($file->fullPath);
     }
 }

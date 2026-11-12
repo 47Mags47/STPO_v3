@@ -13,6 +13,6 @@ class FileController extends Controller
     }
 
     public function show(File $file){
-        return response()->file($file->getFullPath());
+        return response()->file($file->fullPath);
     }
 }

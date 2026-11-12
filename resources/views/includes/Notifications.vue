@@ -1,14 +1,14 @@
 <script>
-import { defineAsyncComponent } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { Ico, BlueButton } from '@components';
 import axios from 'axios';
+import Notification from '../components/Notifications/Notification.vue';
 
 export default {
     components: {
-        Ico, BlueButton,
-        NewMessageNotification:   defineAsyncComponent(() => import('@components/Notifications/NewMessageNotification.vue')),
-        DownloadFileNotification: defineAsyncComponent(() => import('@components/Notifications/DownloadFileNotification.vue')),
+        Ico,
+        BlueButton,
+        Notification
     },
 
     props: {
@@ -90,7 +90,6 @@ export default {
 
 <template>
     <div class="notifications-container" v-outsideClick="outsideClickHandler">
-
         <BlueButton class="bell-container size-[40px]!" @click="togleOpen">
             <Ico type="bell" />
             <span v-if="isChristmas" class="absolute top-[6px] left-[7px] text-[20px]!">🎀</span>
@@ -100,24 +99,9 @@ export default {
         </BlueButton>
 
         <div class="notification-list-container" :class="{ 'open': isOpen }">
-
             <div class="notification-list" v-if="notifications.length > 0" ref="notificationList">
                 <template v-for="notification in notifications">
-                    <DownloadFileNotification v-if="notification.type.code === 'file_generated'"
-                        :sender="notification.sender"
-                        :message="notification.message"
-                        :file="notification.context"
-                        :isReaded="notification.is_readed"
-                        :createdAt="notification.created_at"
-                    />
-                    <NewMessageNotification v-if="notification.type.code === 'new_message'"
-                        :sender="notification.sender"
-                        :message="notification.message"
-                        :appeal-id="notification.context.appeal_id"
-                        :close-popup="closePopup"
-                        :isReaded="notification.is_readed"
-                        :createdAt="notification.created_at"
-                    />
+                    <Notification v-bind="notification" :closeFunction="closePopup" />
                 </template>
             </div>
 
@@ -178,16 +162,16 @@ export default {
     .notification-list-container
         position: absolute
         top: 100%
-        right: 0
+        right: 6px
 
         width: 350px
         height: 0
 
-        background: var(--menu-background-color)
-
         overflow: hidden
 
         transition: .5s
+
+        border-radius: 0 0 0 16px
 
         &.open
             height: 400px

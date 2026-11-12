@@ -4,6 +4,9 @@ namespace App\Traits;
 
 use App\Models\Auth\Permission;
 use App\Models\Administrate\Division;
+use App\Models\Auth\PermissionGroup;
+use App\Models\Auth\UserPermission;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait Permissions
@@ -12,8 +15,35 @@ trait Permissions
     ##################################################
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'auth__user_pivot_permission', 'user_id', 'permission_id')
+        return $this->belongsToMany(Permission::class, UserPermission::getTableName(), 'user_id', 'permission_id')
+            ->using(UserPermission::class)
             ->withPivot('division_id');
+    }
+
+    ### SCOPES
+    ##################################################
+    public static function scopeWhereHasPermissionGroup(Builder $query, PermissionGroup|string $permissionGroup)
+    {
+        $permissionGroup = $permissionGroup instanceof PermissionGroup
+            ? $permissionGroup
+            : PermissionGroup::byCode($permissionGroup);
+
+        $permission_ids = $permissionGroup->permissions()->get('id')->pluck('id');
+
+        return $query->whereHas('permissions', function ($query) use ($permission_ids) {
+            $query->whereIn(Permission::getTableName() . '.id', $permission_ids);
+        });
+    }
+
+    public static function scopeWhereHasPermission(Builder $query, Permission|string $permission): Builder
+    {
+        $permission = $permission instanceof Permission
+            ? $permission
+            : Permission::byCode($permission);
+
+        return $query->whereHas('permissions', function ($query) use ($permission) {
+            $query->where(Permission::getTableName() . '.id', $permission->id);
+        });
     }
 
     ### Методы

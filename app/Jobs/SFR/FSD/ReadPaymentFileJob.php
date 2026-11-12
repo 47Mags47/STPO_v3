@@ -37,10 +37,10 @@ class ReadPaymentFileJob implements ShouldQueue
         $this->paymentFile->setDisabled();
         $this->paymentFile = $this->paymentFile->fresh();
 
-        Log::driver('check')->debug('Чтение файла: ' . $this->paymentFile->getLocalPath());
+        Log::driver('check')->debug('Чтение файла: ' . $this->paymentFile->localPath);
 
 
-        $path = $this->paymentFile->getFullPath();
+        $path = $this->paymentFile->fullPath;
 
         if (!is_readable($path)) {
             Log::driver('check')->error('Файл недоступен для чтения: ' . $path);

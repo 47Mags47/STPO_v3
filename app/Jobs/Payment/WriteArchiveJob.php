@@ -29,7 +29,7 @@ class WriteArchiveJob implements ShouldQueue
         $banks = Bank::whereIn('id', $bank_ids)->get();
 
         $zip = new ZipArchive();
-        $zip->open($this->archive->getFullPath(), ZipArchive::CREATE);
+        $zip->open($this->archive->fullPath, ZipArchive::CREATE);
 
         foreach ($banks as $bank) {
             $raport = File::createChildren(BankRaport::class, [
@@ -41,7 +41,7 @@ class WriteArchiveJob implements ShouldQueue
             $writer = new ($bank->payment_template->writer)($raport);
             $writer->write();
 
-            $zip->addFile($raport->getFullPath(), $raport->origin_name);
+            $zip->addFile($raport->fullPath, $raport->origin_name);
         }
 
         $zip->close();

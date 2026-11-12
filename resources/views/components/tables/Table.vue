@@ -115,7 +115,6 @@ export default {
         padding: 0 10px
         .header
             font-weight: 600
-            color: #1f2937
             line-height: 1.3
         .filters form
             display: flex
@@ -145,12 +144,12 @@ export default {
         table
             width: 100%
             border-collapse: collapse
-            color: #374151
             tbody
+                tr.row-active
+                    td:not([rowspan])
+                        background: color-mix(in srgb, var(--table-row-active-background-color) 40%, transparent)
                 tr
                     transition: background 0.15s ease
-                    color: var(--text-color)
-
                     &:nth-child(even)
                         background: var(--table-row-background-color)
 

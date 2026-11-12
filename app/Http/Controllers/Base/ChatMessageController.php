@@ -17,11 +17,17 @@ class ChatMessageController extends Controller
 {
     public function index(Chat $chat)
     {
+        if(user()->cannot('view', $chat))
+            return abort(403);
+
         return $chat->messages()->orderBy('created_at', 'desc')->paginate(25)->toResourceCollection();
     }
 
     public function store(ChatMessageStoreRequest $request, Chat $chat)
     {
+        if(user()->cannot('view', $chat))
+            return abort(403);
+
         $message = ChatMessage::factory()->create([
             'message'       => $request->message,
             'sender_id'     => user()->id,
@@ -52,7 +58,7 @@ class ChatMessageController extends Controller
                 'recipient_id' => $subscriber->id,
                 'message' => $message->message,
 
-                'type_id' => NotificationType::byCode('new_message'),
+                'type_id' => NotificationType::byCode('message'),
                 'context' => [
                     'target_url' => $target_url,
                 ]

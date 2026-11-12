@@ -31,10 +31,10 @@ export default {
         BlueButton:             defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
         RedButton:              defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
 
-        Checkbox:               defineAsyncComponent(() => import("../../inputs/filters/Checkbox.vue")),
-        SingleSelect:           defineAsyncComponent(() => import('../../inputs/filters/SingleSelect.vue')),
-        MultiSelect:            defineAsyncComponent(() => import('../../inputs/filters/MultiSelect.vue')),
-        NumberBetween:          defineAsyncComponent(() => import('../../inputs/filters/NumberBetween.vue')),
+        CheckboxFilter:         defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
+        SingleSelectFilter:     defineAsyncComponent(() => import('../../inputs/filters/SingleSelectFilter.vue')),
+        MultiSelectFilter:      defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
+        NumberBetweenFilter:    defineAsyncComponent(() => import('../../inputs/filters/NumberBetweenFilter.vue')),
         DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
         MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
         SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),
@@ -75,7 +75,7 @@ export default {
         },
         hasSearchInput: {
             type: [Boolean, Function],
-            default: false
+            default: true
         },
 
         // Actions
@@ -132,13 +132,12 @@ export default {
                 let hasInvalidType = value.filter((input) => {
                     return ![
                         'checkbox',
-                        'datepicker',
                         'singleSelect',
                         'multiSelect',
                         'selectPopup',
                         'multiSelectPopup',
                         'numberBetween',
-                        'dateFilter'
+                        'date'
                     ].includes(input.type);
                 });
 
@@ -166,7 +165,7 @@ export default {
             default: [],
         },
         rowClasses: {
-            type: [Array, String, Function],
+            type: [Array, String, Function, Object],
             default: null
         },
         actions: {
@@ -235,7 +234,7 @@ export default {
                         break
 
                     case 'numberBetween':
-                    case 'dateFilter':
+                    case 'date':
                         value = {
                             from: formData.get(`filters[${name}]_from`) ?? '',
                             to: formData.get(`filters[${name}]_to`) ?? '',
@@ -316,6 +315,9 @@ export default {
 
             if (typeof this.rowClasses === 'string')
                 return this.rowClasses
+
+            if (typeof this.rowClasses === 'object')
+                return Object.keys().filter((key) => this.rowClasses[key] === true).join(' ')
 
             if (Array.isArray(this.rowClasses))
                 return this.rowClasses.join(' ')
@@ -474,14 +476,14 @@ export default {
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                         <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <MultiSelect            v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SingleSelect           v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <MultiSelectFilter      v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <SingleSelectFilter     v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <SelectPopupFilter      v-if="filter.type === 'selectPopup'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
 
-                            <Checkbox               v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <NumberBetween          v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <DateFilter             v-if="filter.type === 'dateFilter'"       v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <CheckboxFilter         v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <NumberBetweenFilter    v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <DateFilter             v-if="filter.type === 'date'"             v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         </div>
                     </div>
                 </div>
@@ -497,7 +499,7 @@ export default {
                     @click="toggleFilterVisible">
                         <span> фильтры </span>
                         <div class="filter-btn-item-icon">
-                            <Ico type="chevron-down" class="text-white" />
+                            <Ico type="chevron-down" />
                         </div>
                     </button>
                 </div>
@@ -582,7 +584,7 @@ export default {
                     class="not-data-cell"
                 >
                     <Ico
-                        class="text-(--text-color)! h-[148px]!"
+                        class="h-[148px]!"
                         type="database"
                     />
 
@@ -737,9 +739,7 @@ export default {
                 gap: 25px
 
                 font-size: 1.2rem
-            .table-button-cell .table-cell-container .button
-                width: 35px
-                height: 30px
+
             .table-file-status-cell .table-cell-container
                 padding: 5px
 </style>

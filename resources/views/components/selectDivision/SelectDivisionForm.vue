@@ -26,7 +26,10 @@ export default {
 <template>
     <VerticalForm>
         <template #header>
-            <div>
+            <div v-if="'header' in $slots">
+                <slot name="header" />
+            </div>
+            <div v-else>
                 <span class="text-2xl!"> Выберите организацию </span>
             </div>
         </template>

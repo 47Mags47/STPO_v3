@@ -32,12 +32,17 @@ class PermissionsSeeder extends Seeder
         ### Appeals
         ##################################################
         Permission::create(['code' => 'appeal_work',                    'name' => 'Работа с обращениями']);
-        Permission::create(['code' => 'appeal_them',                    'name' => 'Работа с темами']);
+        Permission::create(['code' => 'appeal_theme',                   'name' => 'Работа с темами']);
 
         ### Payments
         ##################################################
         Permission::create(['code' => 'payment_event_view',             'name' => 'Доступ к календарю выплат',                      'group_id' => PermissionGroup::byCode('payment_work')->id]);
         Permission::create(['code' => 'payment_file_upload',            'name' => 'Загрузка файлов на выплату',                     'group_id' => PermissionGroup::byCode('payment_work')->id]);
         Permission::create(['code' => 'payment_raport_create',          'name' => 'Формирование отчетов по выплате',                'group_id' => PermissionGroup::byCode('payment_work')->id]);
+
+        ### Veteran
+        ##################################################
+        Permission::create(['code' => 'veteran_admin',                  'name' => 'Администратор формы "Ветеран труда"',            'group_id' => PermissionGroup::byCode('veteran')->id]);
+        Permission::create(['code' => 'veteran_worker',                 'name' => 'Заполняющий формы "Ветеран труда"',              'group_id' => PermissionGroup::byCode('veteran')->id]);
     }
 }

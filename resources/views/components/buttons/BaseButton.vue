@@ -54,7 +54,7 @@ export default {
 </script>
 
 <template>
-    <button :class="getClasses" :type="type" :disabled="disabled" @click="onClick">
+    <button :class="getClasses" :type :disabled @click="onClick">
         <slot />
     </button>
 </template>

@@ -261,7 +261,6 @@ export default {
             height: 25px
 
             pointer-events: none
-            transition: 0.3s
 
             color: var(--text-color)
 

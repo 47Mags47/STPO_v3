@@ -65,7 +65,7 @@ export default {
         <template v-else>
             <div class="message-wrapper">
                 <div class="message-sender" v-if="message.sender !== null">
-                    <a :href="route('users.show', { user: message.sender.id })">{{ message.sender.name }}</a>
+                    <a :href="route('base.users.show', { user: message.sender.id })">{{ message.sender.name }}</a>
                 </div>
 
                 <div v-if="imageAttachments.length > 0" class="message-attachment-images-wrapper" :class="['grid-type-' + ((imageAttachments.length + 3) % 3)]">

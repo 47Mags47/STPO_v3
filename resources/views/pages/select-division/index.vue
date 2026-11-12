@@ -28,10 +28,16 @@ export default {
         <SelectDivisionForm
             :divisions="current_user.divisions"
             :clickHandler="clickHandler"
-        />
-        <button class="absolute top-[10px] right-10 flex group cursor-pointer h-[32px] p-1.5! items-center" @click="logoutHandler">
-            <Ico type="logout" class="text-red-400!" />
-            <span class="text-red-400! text-lg! rounded px-2! group-hover:text-red-300! group-active:text-red-600!"> выход </span>
-        </button>
+        >
+            <template #header>
+                <span class="text-2xl!"> Выберите организацию </span>
+                <div class="w-full flex items-center justify-end">
+                    <button class="flex group cursor-pointer h-[32px] p-1.5! items-center" @click="logoutHandler">
+                        <Ico type="logout" class="text-red-400!" />
+                        <span class="text-red-400! text-lg! rounded px-2! font-normal! group-hover:text-red-300! group-active:text-red-600!"> выход </span>
+                    </button>
+                </div>
+            </template>
+        </SelectDivisionForm>
     </div>
 </template>

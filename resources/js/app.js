@@ -21,7 +21,7 @@ createInertiaApp({
 
         const page = await importPage();
 
-        const exceptions = ['httpErrors/', 'NoEmail', 'SelectDivision', 'auth/']
+        const exceptions = ['httpErrors/', 'NoEmail']
         const isException = exceptions.some(n => name.startsWith(n))
 
         if (!isException) {
@@ -40,6 +40,7 @@ createInertiaApp({
         app.use(plugin);
         app.use(ZiggyVue, Ziggy);
         app.directive("outsideClick", derectives.outsideClick);
+        app.directive("tooltip",      derectives.tooltip);
         app.mount(el);
     },
 });

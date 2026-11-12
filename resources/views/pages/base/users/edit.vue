@@ -14,21 +14,6 @@ export default {
 
     computed: {
         current_user: () => usePage().props.current_user.data,
-
-        inputsForm() {
-            return [
-                {
-                    type: 'string',
-                    name: 'first_name',
-                    label: '* Имя',
-                    value: this.first_name,
-                    readonly: this.isReadonly,
-                    onInput: (val) => {
-                        this.first_name = val.target.value
-                    }
-                },
-            ]
-        }
     },
 
     methods: {
@@ -46,7 +31,7 @@ export default {
         <VerticalForm>
             <template #header>
                 <div>
-                    <span class="text-2xl!"> настройки </span>
+                    <span class="text-2xl!"> Настройки </span>
                 </div>
             </template>
 

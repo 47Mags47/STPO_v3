@@ -136,5 +136,48 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('payments')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('payment_event_view'));
+
+        ### Payments
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Темы',
+            'route_name'    => 'appeal.themes.index',
+            'group_id'      => ModulGroup::byCode('appeals')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('appeal_theme'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Категории тем',
+            'route_name'    => 'appeal.theme-groups.index',
+            'group_id'      => ModulGroup::byCode('appeals')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('appeal_theme'));
+        ### Veteran
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Доступ',
+            'route_name'    => 'veteran.accesses.index',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_admin'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Отчеты',
+            'route_name'    => 'veteran.dates.index',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_admin'));
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Отчет',
+            'route_name'    => 'veteran.report',
+            'group_id'      => ModulGroup::byCode('veteran')->id,
+        ]);
+        $modul->permissions()->attach(Permission::byCode('veteran_worker'));
     }
 }

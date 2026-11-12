@@ -10,6 +10,10 @@ class NotificationSeeder extends Seeder
 {
     public function run(): void
     {
-        User::get()->each(fn($user) => Notification::factory(5)->create(['recipient_id' => $user->id]));
+        User::all()->each(function ($user) {
+            Notification::factory(5)->create([
+                'recipient_id' => $user->id
+            ]);
+        });
     }
 }

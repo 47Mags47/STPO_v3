@@ -10,12 +10,20 @@ class NotificationTypeSeeder extends Seeder
     public function run(): void
     {
         NotificationType::create([
-            'code' => 'file_generated',
-            'name'=> 'Файл готов к загрузке',
+            'code' => 'file',
+            'name'=> 'Файл',
         ]);
         NotificationType::create([
-            'code' => 'new_message',
-            'name'=> 'Новое сообщение в чате',
+            'code' => 'message',
+            'name'=> 'Сообщение',
+        ]);
+        NotificationType::create([
+            'code' => 'info',
+            'name'=> 'Информационное собщение',
+        ]);
+        NotificationType::create([
+            'code' => 'alert',
+            'name'=> 'Оповещение',
         ]);
     }
 }

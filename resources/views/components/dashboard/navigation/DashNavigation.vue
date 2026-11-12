@@ -22,17 +22,17 @@ export default {
             return [
                 {
                     url: route('dashboard'),
-                    name: 'данные',
+                    name: 'Данные',
                     isHover: false,
                 },
                 {
-                    url: route('auth.users.edit', { user: this.current_user.id }),
-                    name: 'настройки',
+                    url: route('base.users.edit', { user: this.current_user.id }),
+                    name: 'Настройки',
                     isHover: false,
                 },
                 this.current_user.divisions.length > 1 ? {
                     url: route('select-division.index'),
-                    name: 'сменить организацию',
+                    name: 'Сменить организацию',
                     isHover: false,
                 } : null,
             ].filter(Boolean)

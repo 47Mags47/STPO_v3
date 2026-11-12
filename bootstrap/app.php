@@ -13,7 +13,7 @@ use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        channels: __DIR__.'/../routes/channels.php',
+        channels: __DIR__ . '/../routes/channels.php',
         web: __DIR__ . '/../routes/web.php',
         api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
@@ -30,6 +30,13 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, $request) {
+            if (config('app.env') === 'local') {
+                logger()->debug('403', [
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTrace()
+                ]);
+            }
+
             // 403
             if (
                 $e instanceof AuthorizationException ||

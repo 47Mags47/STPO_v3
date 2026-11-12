@@ -2,7 +2,6 @@
 
 namespace Database\Factories\SFR\FSD;
 
-use App\Models\Base\File;
 use App\Models\SFR\FSD\ResultFile;
 use App\Models\SFR\FSD\SFRFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +20,6 @@ class ResultFileFactory extends Factory
     {
         return [
             'sfr_file_id'   => SFRFile::randomOrCreate()->id,
-            'file_id'       => File::randomOrCreate()->id,
         ];
     }
 }

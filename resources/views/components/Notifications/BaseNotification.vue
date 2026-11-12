@@ -3,116 +3,174 @@ import { DateTime } from 'luxon';
 import Ico from '../Ico.vue';
 
 export default {
-    components: {
-        Ico
-    },
+    components: { Ico },
+
     props: {
-        type: {
-            type: String,
-            default: null,
-            validator: (value) => [
-                'download-file-notification',
-                'new-message-notification'
-            ].includes(value)
-        },
         sender: {
             type: Object,
-            default: {}
+            default: () => ({})
         },
-        message: {
-            type: String,
-            default: ''
-        },
-        isReaded: {
+        is_system: {
             type: Boolean,
-            default: true,
+            default: false
         },
-        createdAt: {
-            type: String,
-            default: null
+        type: {
+            type: Object,
+            default: () => ({
+                code: 'message'
+            })
         },
-        ico: {
-            type: String,
-            default: 'circle-exclamation'
-        }
+        created_at: {
+            type: String
+        },
+        is_readed: {
+            type: Boolean,
+            default: false
+        },
     },
+
     computed: {
-        classes() {
-            let classes = {}
+        date() {
+            const created = DateTime.fromISO(this.created_at).setLocale('ru');
 
-            classes[this.type] = true
-            classes['is_readed'] = this.isReaded
+            if (!created.isValid) return '';
 
-            return classes
+            return created < DateTime.now().minus({ hours: 24 })
+                ? created.toFormat('dd.MM T')
+                : created.toRelative();
         },
-        createdAtObject() {
-            return DateTime.fromISO(this.createdAt)
+
+        senderFullName() {
+            return this.is_system ? 'Система' : this.sender.full_name
+        },
+
+        ico() {
+            return {
+                'message':  'message',
+                'file' :    'file',
+                'info' :    'info',
+                'alert':    'triangle-alert'
+            }[this.type.code]
+        },
+
+        notificationClass() {
+            return {
+                message: 'message',
+                file:    'file',
+                info:    'info',
+                alert:   'alert'
+            }[this.type.code]
         }
     },
-    slots: [
-        'default',
-        'actions'
-    ],
 };
 </script>
 
 <template>
-    <div class="notification-container" :class="classes">
+    <div class="notification-container" :class="notificationClass">
+        <div v-if="!is_readed" class="absolute right-0 bottom-0 rounded-tl-lg px-2! bg-(--notification-not-readed-background) text-md">
+            новое!
+        </div>
         <div class="notification-header">
-            <Ico :type="ico" />
-            <span class="sender-container text-white!">{{ sender?.full_name ?? 'SYSTEM' }}</span>
-            <span class="date-container text-white!">{{ createdAtObject.toFormat('dd.MM T') }}</span>
+            <template v-if="'header' in $slots">
+                <slot name="header" />
+            </template>
+            <template v-else>
+                <span class="badge">
+                    <Ico :type="ico" />
+                </span>
+                <span class="sender">{{ senderFullName }}</span>
+                <span class="date">{{ date }}</span>
+            </template>
         </div>
 
-        <div class="notification-content">
-            <div class="message-container">
-                <span class="text-white!">{{ message }}</span>
-            </div>
-            <div class="action-container" v-if="'actions' in this.$slots">
-                <slot name="actions" />
-            </div>
+        <div v-if="'content' in $slots" class="notification-content">
+            <slot name="content" />
+        </div>
+
+        <div v-if="'action' in $slots" class="notification-action">
+            <slot name="action" />
+        </div>
+
+        <div v-if="'footer' in $slots" class="notification-footer">
+            <slot name="footer" />
         </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
-@use 'sass:color';
-
 .notification-container
     position: relative
-    padding: 10px 6px 4px 6px
+    padding: 12px 14px
+    border: 1px solid transparent
+    transition: background .15s ease
 
     display: flex
     flex-direction: column
-    gap: 5px
+    gap: 7px
 
-    &:not(.is_readed)
-        background: var(--notification-not-readed-background-color)
+    color: white
+
+    transition: background-color .5s ease
+
+    background: transparent
+
+    border-bottom: 1px solid white
+
+    &.message
+        background-color: color-mix(in srgb, var(--notification-message-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-message-background)
+
+    &.file
+        background-color: color-mix(in srgb, var(--notification-file-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-file-background)
+
+    &.info
+        background-color: color-mix(in srgb, var(--notification-info-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-info-background)
+
+    &.alert
+        background-color: color-mix(in srgb, var(--notification-alert-background) 90%, transparent)
+        backdrop-filter: blur(4px)
+        &:hover
+            background-color: var(--notification-alert-background)
+
 
     .notification-header
         display: flex
-        justify-content: space-between
         align-items: center
-        font-weight: bold
-        gap: 5px
-        :deep()
+        gap: 8px
+        min-width: 0
+
+        .badge
+            width: 28px
+            height: 28px
+            border-radius: 8px
+
+            display: flex
+            align-items: center
+            justify-content: center
+
             .ico-container
                 width: 20px
                 height: 20px
-    .notification-content
-        display: flex
-        flex-direction: column
-        .message-container
-            word-wrap: break-word
-        .action-container
-            width: 100%
-            height: 30px
 
-            display: flex
-            justify-content: end
+        .sender
+            font-weight: 600
+            font-size: .875rem
+            text-transform: uppercase
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
 
-            :deep(.button, .red-button)
-                height: 100%
-                width: fit-content
-                min-height: 0
+        .date
+            margin-left: auto
+            flex-shrink: 0
+            font-size: .75rem
+            font-weight: 400
 </style>

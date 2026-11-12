@@ -45,6 +45,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
 
         onInput: {
             type: Function,
@@ -81,7 +85,7 @@ export default {
 <template>
     <input
         ref="input"
-        :class="{ 'base-input': true, 'hidden': hidden, 'readonly': readonly }"
+        :class="{ 'base-input': true, 'hidden': hidden, 'readonly': readonly, 'disabled': disabled }"
         :type
         :id
         :name
@@ -90,6 +94,7 @@ export default {
         :autocomplete
         :value
         :readonly
+        :disabled
         :form
         :checked
         @input="inputHandler"
@@ -101,11 +106,15 @@ export default {
 <style lang="sass" scoped>
 .base-input
     @include input()
+
     &.hidden
         display: none
 
     &.readonly
         color: #aaa
+
+    &.disabled
+        color: #aaa
         border: 1px solid #aaa
-        cursor: not-allowed !important
+        cursor: not-allowed
 </style>

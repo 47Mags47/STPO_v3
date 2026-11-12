@@ -19,7 +19,7 @@ class TransitFileController extends Controller
     public function index()
     {
         return Inertia::render('sfr/fsd/transit-files/index', [
-            'files' => fn() => TransitFile::getResource('created_at', 'desc'),
+            'files' => fn() => TransitFile::getResource(order: ['created_at' => 'desc']),
         ]);
     }
 

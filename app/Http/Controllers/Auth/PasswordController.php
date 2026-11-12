@@ -22,6 +22,6 @@ class PasswordController extends Controller
             'password' => $data['new_password'],
         ]);
 
-        return redirect()->route('auth.users.edit', $user)->with('success', 'Пароль успешно изменён');
+        return redirect()->route('base.users.edit', $user)->with('success', 'Пароль успешно изменён');
     }
 }

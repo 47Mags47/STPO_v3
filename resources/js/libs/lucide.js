@@ -13,6 +13,9 @@ export {
     ArrowRight                  as 'arrow-right',
     ArrowUp                     as 'arrow-up',
     RotateCcw                   as 'arrow-rotate-left',
+    ArrowBigUp                  as 'arrow-big-up',
+
+    TriangleAlert               as 'triangle-alert',
 
     Circle                      as circle,
     CircleAlert                 as 'circle-exclamation',
@@ -28,6 +31,7 @@ export {
     FileArchive                 as 'file-zipper',
     Download                    as download,
     Paperclip                   as paperclip,
+    Upload                      as upload,
 
     BookText                    as 'book-text',
 
@@ -76,5 +80,8 @@ export {
 
     LogOut                      as 'logout',
 
-    CircleQuestionMark
+    CircleQuestionMark,
+
+    CornerUpRight               as 'corner-up-right',
+    Info                        as 'info',
 } from '@lucide/vue';

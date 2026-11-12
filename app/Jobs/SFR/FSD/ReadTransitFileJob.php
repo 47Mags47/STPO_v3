@@ -31,7 +31,7 @@ class ReadTransitFileJob implements ShouldQueue
     {
         $this->transitFile->setStatus('reading');
 
-        $file = fopen($this->transitFile->getFullPath(), 'r');
+        $file = fopen($this->transitFile->fullPath, 'r');
 
         $count = 0;
         $lines = [];

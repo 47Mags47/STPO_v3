@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
-use App\Services\NotificationService;
-
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -63,22 +61,18 @@ class HandleInertiaRequests extends Middleware
             $shared['flash']['loading'] = [$request->session()->get('loading')];
 
         // User
-        $current_user = Auth::user() !== null
-            ? CurrentUserResource::make(Auth::user())
-            : null;
-
-        $shared['current_user'] = $current_user;
+        if (Auth::user() !== null)
+            $shared['current_user'] = CurrentUserResource::make(Auth::user());
 
         // Menu
-        $shared['menu'] = collect(
-            Modul::whereNull('group_id')->where('in_production', true)
-                ->get()
-                ->filter(fn($modul) => $modul->hasAccess())
-                ->map(fn($modul) => MenuItemResource::make($modul)->toArray(request()))
-        )->merge(
-            ModulGroup::all()
-                ->map(fn($group) => MenuGroupResource::make($group)->toArray(request()))
-        );
+        if (Auth::user() !== null and session()->has('current_division_id'))
+            $shared['menu'] = collect(
+                Modul::whereNull('group_id')->where('in_production', true)
+                    ->get()
+                    ->filter(fn(Modul $modul) => $modul->hasAccess())
+                    ->map(fn(Modul $modul) => MenuItemResource::make($modul)->toArray(request()))
+            )
+                ->merge(ModulGroup::all()->map(fn(ModulGroup $group) => MenuGroupResource::make($group)->toArray(request())));
 
         return $shared;
     }

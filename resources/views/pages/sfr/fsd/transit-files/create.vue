@@ -15,12 +15,12 @@ export default {
         :action="route('sfr.fsd.transit-files.store')"
         :inputs="[
             {
-                type: 'datePicker',
+                type: 'date',
                 name: 'date_start',
                 label: 'Дата начала',
             },
             {
-                type: 'datePicker',
+                type: 'date',
                 name: 'date_end',
                 label: 'Дата окончания',
             },

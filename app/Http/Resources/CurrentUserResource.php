@@ -29,6 +29,11 @@ class CurrentUserResource extends JsonResource
             'permissions'       => $this->permissions->toResourceCollection(),
             'divisions'         => $this->divisions->toResourceCollection(),
             'current_division'  => $this->getCurrentDivision()?->toResource(),
+            'avatar'            => [
+                'url' => $this->avatar_id !== null
+                    ? route('files.show', ['file' => $this->avatar_id])
+                    : null
+            ]
         ];
     }
 }

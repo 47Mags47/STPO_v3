@@ -1,14 +1,11 @@
 <?php
 
-use App\Models\Administrate\Division;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // DEV
 if (config('app.env') === 'local') {
-    Route::get('/test', fn() => Inertia::render('test', [
-        'divisions' => Division::paginate(25)->toResourceCollection(),
-    ]));
+    Route::get('/test', fn() => Inertia::render('test'));
     Route::post('/test', fn() => dd(request()->all()));
     Route::get('/view', fn() => Inertia::render('view'));
 }
@@ -49,23 +46,18 @@ Route::middleware('guest')->group(function () {
 
 ### AUTH
 ##################################################
-
 Route::middleware(['auth'])->group(function () {
     Route::resource('/select-division',                                 App\Http\Controllers\Auth\SelectDivisionController::class)->only('index', 'store');
+    Route::post('/logout',                                              [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('auth.logout');
 
     Route::middleware(['current.division'])->group(function () {
         // SYSTEM
         Route::post('/notifications-readed',                             [App\Http\Controllers\Base\NotificationController::class, 'readAll'])->name('notifications-readAll');
         Route::post('/notification-readed',                              [App\Http\Controllers\Base\NotificationController::class, 'read'])->name('notification-read');
         Route::post('/game',                                             [App\Http\Controllers\Base\GameController::class, 'updateScore'])->name('update-score');
-        // AUTH
-        Route::name('auth.')->group(function () {
-            Route::post('/logout',                                      [App\Http\Controllers\Auth\UserController::class,   'logout'])->name('logout');
-            Route::resource('/users',                                   App\Http\Controllers\Auth\UserController::class)->only(['edit', 'update', 'show']);
-        });
 
+        // DASHBOARD
         Route::get('/dashboard',                                          fn() => Inertia::render('dashboard/navigation/DashboardUserData'))->name('dashboard');
-        Route::get('/users/show/{user}',                                  [App\Http\Controllers\Auth\UserController::class,  'show'])->name('users.show');
 
         // EMAIL
         Route::name('verification.')->prefix('/email')->group(function () {
@@ -75,13 +67,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/verification-notification',                    [App\Http\Controllers\Auth\EmailController::class, 'send'])->name('send')->middleware(['throttle:6,1']);
         });
 
-        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function() {
+        Route::prefix('email')->controller(App\Http\Controllers\Auth\EmailController::class)->group(function () {
             Route::get('/edit', 'edit')->name('email.edit');
             Route::put('/{user}/update', 'update')->name('email.update');
         });
 
         // PASSWORD
-        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function() {
+        Route::prefix('password')->controller(App\Http\Controllers\Auth\PasswordController::class)->group(function () {
             Route::get('/edit', 'edit')->name('password.edit');
             Route::put('/{user}/update', 'update')->name('password.update');
         });
@@ -89,6 +81,11 @@ Route::middleware(['auth'])->group(function () {
         // CHAT
         Route::name('chat.')->prefix('/chat')->group(function () {
             Route::apiResource('/{chat}/messages',                 App\Http\Controllers\Base\ChatMessageController::class)->only(['index', 'store']);
+        });
+
+        // BASE
+        Route::name('base.')->prefix('/base')->group(function () {
+            Route::resource('/users',                                  App\Http\Controllers\Base\UserController::class)->only(['edit', 'update', 'show']);
         });
 
         // ADMINISTRATE
@@ -128,12 +125,20 @@ Route::middleware(['auth'])->group(function () {
         Route::name('payment.')->prefix('/payment')->group(function () {
             Route::resource('/events',                                      App\Http\Controllers\Payment\EventController::class)->except('show');
             Route::prefix('/events/{event}')->group(function () {
-                Route::resource('/payment-files',                               App\Http\Controllers\Payment\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
-                Route::resource('/payment-files/{paymentFile}/recipients',      App\Http\Controllers\Payment\RecipientController::class)->except('show');
-                Route::resource('/banks',                                       App\Http\Controllers\Payment\BankController::class)->only('index');
-                Route::resource('/banks/{bank}/raports',                        App\Http\Controllers\Payment\BankRaportController::class)->only(['index', 'store', 'show']);
-                Route::resource('/archives',                                    App\Http\Controllers\Payment\ArchiveController::class)->only(['index', 'store', 'show']);
+                Route::resource('/payment-files',                           App\Http\Controllers\Payment\PaymentFileController::class)->only(['index', 'create', 'store', 'destroy']);
+                Route::resource('/payment-files/{paymentFile}/recipients',  App\Http\Controllers\Payment\RecipientController::class)->except('show');
+                Route::resource('/banks',                                   App\Http\Controllers\Payment\BankController::class)->only('index');
+                Route::resource('/banks/{bank}/raports',                    App\Http\Controllers\Payment\BankRaportController::class)->only(['index', 'store', 'show']);
+                Route::resource('/archives',                                App\Http\Controllers\Payment\ArchiveController::class)->only(['index', 'store', 'show']);
             });
+        });
+
+        Route::name('veteran.')->prefix('/veteran')->group(function () {
+            Route::resource('/accesses',                                    App\Http\Controllers\Veteran\AccessController::class)->only(['index', 'create', 'store']);
+            Route::delete('/accesses',                                      [App\Http\Controllers\Veteran\AccessController::class, 'destroy'])->name('accesses.destroy');
+            Route::resource('/dates',                                       App\Http\Controllers\Veteran\DateController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
+            Route::resource('dates/{date}/reports',                         App\Http\Controllers\Veteran\ReportController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+            Route::get('/report',                                           [App\Http\Controllers\Veteran\ReportController::class, 'report'])->name('report');
         });
     });
 });

@@ -73,10 +73,6 @@ export default {
                     title: 'Наименование',
                     dataIndex: 'name',
                 },
-                {
-                    title: 'Роль',
-                    dataIndex: 'role.name',
-                },
             ]" />
         </template>
     </ResourceForm>
