@@ -60,6 +60,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'login',
         'email',
         'password',
+        'avatar_id',
     ];
 
     protected $hidden = [

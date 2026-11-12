@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Base\File;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,8 @@ return new class extends Migration
 
             $table->string('password');
             $table->boolean('password_expired')->default(false);
+
+            $table->foreignId('avatar_id')->nullable()->constrained(File::getTableName());
 
             $table->unsignedInteger('gameScore')->default(0);
 
