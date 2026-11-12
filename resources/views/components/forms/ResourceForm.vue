@@ -123,7 +123,7 @@ export default {
                 <StringInput            v-if="input.type === 'string'"           v-bind="prepareProps(input)" />
                 <TextInput              v-if="input.type === 'text'"             v-bind="prepareProps(input)" />
                 <NumberInput            v-if="input.type === 'number'"           v-bind="prepareProps(input)" />
-                <PhoneInput             v-if="input.type === 'phone'"      v-bind="prepareProps(input)" />
+                <PhoneInput             v-if="input.type === 'phone'"            v-bind="prepareProps(input)" />
                 <EmailInput             v-if="input.type === 'email'"            v-bind="prepareProps(input)" />
                 <PasswordInput          v-if="input.type === 'password'"         v-bind="prepareProps(input)" />
                 <CheckBox               v-if="input.type === 'checkbox'"         v-bind="prepareProps(input)" />

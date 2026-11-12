@@ -11,29 +11,32 @@ export default {
     props: {
         value: {
             type: [String, Boolean, Number],
-            default: "",
+            default: '',
         },
     },
 
     data() {
         return {
-            localValue: "",
+            localValue: this.value,
             isPasswordVisible: false,
         };
     },
 
     watch: {
-        value(value) {
-            this.localValue = value;
-        },
+        value: {
+            handler(value) {
+                this.localValue = value;
+            },
+        }
     },
 
+    // Не передавать $attrs на корневой элемент
     inheritAttrs: false,
 };
 </script>
 
 <template>
-    <div class="relative size-full">
+    <div class="password-input-wrapper relative size-full flex items-center">
         <Baseinput
             :type="isPasswordVisible ? 'text' : 'password'"
             :on-input="(val) => (localValue = val.target.value)"
@@ -44,13 +47,21 @@ export default {
 
         <button
             type="button"
-            class="absolute right-2 top-0 h-full p-2! cursor-pointer"
+            class="h-full cursor-pointer shrink-0"
             @click="isPasswordVisible = !isPasswordVisible"
         >
             <Ico
                 :type="isPasswordVisible ? 'eye' : 'eye-closed'"
-                class="text-(--text-color)!"
             />
         </button>
     </div>
 </template>
+
+<style lang="sass" scoped>
+.password-input-wrapper
+    @include input()
+    button
+        padding: 4px
+    input
+        border: 0
+</style>

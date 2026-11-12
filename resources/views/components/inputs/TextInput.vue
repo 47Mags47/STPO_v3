@@ -70,9 +70,11 @@ export default {
     },
 
     watch: {
-        value(newValue) {
-            this.localValue = newValue;
-        },
+        value: {
+            handler(newValue) {
+                this.localValue = newValue;
+            },
+        }
     },
 };
 </script>
