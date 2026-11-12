@@ -17,11 +17,7 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        // HACK add validate in request
-
         if ($request->hasFile('avatar')) {
-            // $file = $request->file('avatar');
-
             $avatar = File::factory()->create([
                 'path' => 'avatars'
             ]);
