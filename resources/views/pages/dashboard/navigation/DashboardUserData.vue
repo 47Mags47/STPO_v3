@@ -16,6 +16,7 @@ export default {
             first_name: '',
             last_name: '',
             middle_name: '',
+            avatarPreview: null
         }
     },
     methods: {
@@ -32,7 +33,24 @@ export default {
         },
         submitHandler(){
             this.formDisabled = true
-        }
+        },
+
+        openAvatarInput() {
+            if (this.formDisabled)
+                return
+            this.$refs.avatarInput.click();
+        },
+
+        onAvatarChange(event) {
+            if (this.formDisabled)
+                return
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            this.avatarPreview = URL.createObjectURL(file);
+        },
     },
     computed: {
         current_user: () => usePage().props.current_user.data,
@@ -58,6 +76,9 @@ export default {
                 full_name += this.middle_name.charAt(0).toUpperCase() + '.'
 
             return full_name
+        },
+        avatarUrl() {
+            return this.avatarPreview ?? this.current_user.avatar?.url ?? null
         },
 
         inputsForm() {
@@ -152,16 +173,37 @@ export default {
             method="put"
         >
             <template #header>
-
                 <div class="grid grid-cols-3 items-center">
-
-                    <input type="file" ref="avatar" hidden />
-
-                    <Ico type="circle-user" class="text-gray-400! hover:text-gray-500!"
+                    <div
+                        class="avatar-wrapper flex items-center justify-center"
                         :class="formDisabled ? 'cursor-not-allowed' : 'cursor-pointer'"
-                    />
+                        @click="openAvatarInput"
+                    >
+                        <Ico
+                            v-if="!formDisabled"
+                            class="avatar-upload-ico"
+                            type="cloud-upload"
+                        />
+                        <img
+                            v-if="avatarUrl !== null"
+                            :src="avatarUrl"
+                        />
+                        <Ico
+                            v-else
+                            class="avatar-mock-ico"
+                            type="circle-user"
+                        />
+                        <input
+                            ref="avatarInput"
+                            type="file"
+                            name="avatar"
+                            accept="image/*"
+                            hidden
+                            @change="onAvatarChange"
+                        />
+                    </div>
 
-                    <span class="text-2xl!"> данные </span>
+                    <span class="text-2xl!"> Данные </span>
                     <SwitcherInput
                         class="justify-self-end"
                         :on-click="editClickHandler"
@@ -170,11 +212,46 @@ export default {
                     />
                 </div>
 
-                <div v-if="warnings.length !== 0" class="bg-(--warning-background-color) border-l-5 border-(--warning-border-color) rounded mt-2! p-2! flex items-start flex-col gap-1">
-                    <span v-for="warning in warnings" class="font-normal! "> {{ warning }} </span>
+                <div
+                    v-if="warnings.length !== 0"
+                    class="bg-(--warning-background-color) border-l-5 border-(--warning-border-color) rounded mt-2! p-2! flex items-start flex-col gap-1"
+                >
+                    <span v-for="warning in warnings" class="font-normal "> {{ warning }} </span>
                 </div>
 
             </template>
         </ResourceForm>
     </DashboardLayout>
 </template>
+
+<style lang="sass" scoped>
+.avatar-wrapper
+    position: relative
+    overflow: hidden
+    width: 148px
+    height: 148px
+
+    border: var(--border)
+    border-radius: 100%
+
+    .avatar-upload-ico
+        display: none
+
+    &:hover
+        &::after
+            content: ''
+            position: absolute
+            inset: 0
+            background: black
+            opacity: 0.2
+            transition: opacity 0.5s ease
+            pointer-events: none
+
+        .avatar-upload-ico
+            display: block
+            position: absolute
+            width: 80px
+            height: 80px
+            color: white
+            z-index: 1
+</style>

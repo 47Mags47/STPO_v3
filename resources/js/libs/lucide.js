@@ -29,6 +29,7 @@ export {
     FileArchive                 as 'file-zipper',
     Download                    as download,
     Paperclip                   as paperclip,
+    Upload                      as upload,
 
     BookText                    as 'book-text',
 

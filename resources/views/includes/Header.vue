@@ -65,9 +65,15 @@ export default {
             </div>
 
             <BlueButton class="user-info-container" v-if="current_user" @click="toDashboard">
-                <div class="user-logo">
+                <img
+                    v-if="current_user.avatar?.url !== null"
+                    :src="current_user.avatar.url"
+                    class="rounded-full h-full aspect-square"
+                />
+                <div v-else class="user-logo">
                     <Ico type="user" />
                 </div>
+
                 <div class="user-name">
                     <span>{{ current_user?.full_name }}</span>
                 </div>
