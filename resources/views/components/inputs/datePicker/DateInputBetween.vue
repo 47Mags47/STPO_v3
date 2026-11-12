@@ -137,6 +137,7 @@ export default {
     display: flex
     width: 100%
     padding: 4px 6px
+    overflow: hidden
 
     .ico
         color: black
@@ -145,20 +146,20 @@ export default {
         flex: 1
         height: 100%
         position: relative
+        min-width: 0
 
         .custom-date-input
             width: 100%
-            border: 0
 
     .date-input-wrapper-to
         flex: 1
         height: 100%
         position: relative
+        min-width: 0
 
             width: 25px
             height: 100%
 
         .custom-date-input
             width: 100%
-            border: 0
 </style>

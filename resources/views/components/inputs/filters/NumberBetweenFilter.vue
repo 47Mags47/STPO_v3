@@ -64,6 +64,8 @@ export default {
     position: relative
 
     .number-between-label-container
+        display: flex
+        justify-content: space-between
         position: relative
         border-radius: 12px
         padding: 6px 4px
@@ -71,24 +73,27 @@ export default {
         transition: .5s ease
         border: 1px solid var(--border-color)
         cursor: pointer
-
+        overflow: hidden
         @include input()
 
         &.active
             border-bottom-right-radius: 0
             border-bottom-left-radius: 0
 
+        span
+            white-space: nowrap
+            text-overflow: ellipsis
+            overflow: hidden
+            transition: color .5s ease
+
         &:hover
             background: var(--button-background-color)
-            span
-                transition: .5s ease
-                color: white
-            .ico-chevron
+            span, .ico-chevron
                 color: white
 
         .ico-chevron
-            position: absolute
             width: 22px
+            flex-shrink: 0
 
             top: 0
             right: 10px
@@ -124,6 +129,6 @@ export default {
         input
             width: calc((100% / 2) - 12px )
         .ico-minus
-            color: black
+            flex-shrink: 0
             width: 12px
 </style>

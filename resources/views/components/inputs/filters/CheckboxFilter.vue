@@ -44,23 +44,26 @@ export default {
 
 <style lang="sass" scoped>
 .checkbox-container
-    display: flex
     cursor: pointer
     padding: 7px
     transition: .5s ease
     @include input()
 
+
+    &.active > span, &:hover > span
+        color: white
+
+    span
+        transition: color .5s ease
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
     &.active
         background-color: var(--button-background-color)
-        span
-            transition: .5s ease
-            color: white
 
     &:hover
         background-color: var(--button-background-color)
-        span
-            transition: .5s ease
-            color: white
 
     input
         display: none

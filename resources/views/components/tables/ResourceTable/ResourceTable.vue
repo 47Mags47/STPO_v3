@@ -37,7 +37,6 @@ export default {
         NumberBetweenFilter:    defineAsyncComponent(() => import('../../inputs/filters/NumberBetweenFilter.vue')),
         DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
         MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
-        SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),
     },
 
     data() {
@@ -479,7 +478,6 @@ export default {
                             <MultiSelectFilter      v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <SingleSelectFilter     v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SelectPopupFilter      v-if="filter.type === 'selectPopup'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
 
                             <CheckboxFilter         v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                             <NumberBetweenFilter    v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />

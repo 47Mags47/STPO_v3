@@ -122,24 +122,33 @@ export default {
     &[type="checkbox"]
         width: 22px
         height: 22px
+
 .multi-select-container
     position: relative
     width: 100%
 
     .multi-select
+        display: flex
         position: relative
         width: 100%
         padding: 6px 4px
         border-radius: 12px
         border: 1px solid var(--border-color)
         cursor: pointer
+        overflow: hidden
+        justify-content: space-between
         @include input()
+
+        span
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
 
         transition: background-color .5s ease
 
         span,
         .ico-chevron
-            transition: color .5s ease
+            transition: transform .5s ease, color .5s ease
 
         &.active
             border-bottom-right-radius: 0
@@ -154,8 +163,8 @@ export default {
                 color: white
 
         .ico-chevron
-            position: absolute
             width: 22px
+            flex-shrink: 0
 
             top: 0
             right: 10px

@@ -98,13 +98,19 @@ export default {
 .single-select-container
     position: relative
     width: 100%
-    min-width: 120px
 
     .single-select
         position: relative
+        display: flex
+        justify-content: space-between
         cursor: pointer
         transition: .5s ease
         @include input()
+
+        span
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
 
         &.active
             border-bottom-right-radius: 0
@@ -120,8 +126,8 @@ export default {
                 color: white
 
         .ico-chevron
-            position: absolute
             width: 22px
+            flex-shrink: 0
 
             top: 0
             right: 10px

@@ -101,7 +101,7 @@ export default {
         </div>
 
         <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click.stop="onPopupClick" />
+            <Ico type="calendar" @click.stop="onPopupClick" />
         </div>
     </div>
 </template>
@@ -114,10 +114,12 @@ export default {
     align-items: center
     width: 100%
     min-width: 100px
+    overflow: hidden
 
     .date-input-container
         position: relative
         width: 100%
+        overflow: hidden
 
         &::after
             content: ""
@@ -131,15 +133,4 @@ export default {
 
         .custom-date-input
             width: 100%
-
-    .calendar-icon
-        position: absolute
-        right: 12px
-        top: 50%
-        transform: translateY(-50%)
-        color: #6b7280
-        cursor: pointer
-        display: flex
-        align-items: center
-        justify-content: center
 </style>

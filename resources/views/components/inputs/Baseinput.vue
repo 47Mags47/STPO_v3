@@ -106,6 +106,7 @@ export default {
 <style lang="sass" scoped>
 .base-input
     @include input()
+    text-overflow: ellipsis
 
     &.hidden
         display: none
