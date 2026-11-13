@@ -5,32 +5,14 @@ export default {
             type: String,
             default: (props) => props.name,
         },
-        name: {
-            type: String,
-            default: null,
-        },
-        placeholder: {
-            type: String,
-            default: null,
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
         value: {
             type: String,
             default: "",
         },
-        autocomplete: {
-            type: String,
-            default: "on",
-        },
-
         hidden: {
             type: Boolean,
             default: false,
         },
-
         resize: {
             type: String,
             default: "none",
@@ -59,10 +41,10 @@ export default {
     methods: {
         inputHandler(e) {
             this.localValue = e.target.value
-            this.onInput(e);
+            this.onInput(e, e.target.value);
         },
         changeHandler(e) {
-            this.onChange(e);
+            this.onChange(e, e.target.value);
         },
         onEnterKeyDownhandler(e){
             this.onEnterKeyDown(e);
@@ -84,15 +66,12 @@ export default {
             maxlength="255"
             :class="{ 'text-input': true }"
             :id
-            :name
-            :placeholder
-            :required
-            :autocomplete
             :value="localValue"
             :style="{ 'resize': resize }"
             @input="inputHandler"
             @change="changeHandler"
             @keydown.enter.exact.prevent="onEnterKeyDownhandler"
+            v-bind="$attrs"
         />
         <span class="absolute left-[12px] bottom-[4px] text-gray-500! text-sm! pointer-events-none"> {{ localValue?.length ?? 0 }}/255 </span>
     </div>

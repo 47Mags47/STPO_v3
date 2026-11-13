@@ -19,8 +19,8 @@ export default {
             default: null
         },
         value: {
-            type: Object,
-            default: {}
+            type: [Object, String],
+            default: null
         },
 
         // OTHER

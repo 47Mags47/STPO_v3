@@ -5,11 +5,26 @@ export default {
     components: {
         BaseInput,
     },
+    props:{
+        onChange: {
+            type: Function,
+            default: () => {}
+        }
+    },
+    methods: {
+        onChangeHandler(e) {
+            this.onChange(e, e.target.checked)
+        }
+    }
 };
 </script>
 
 <template>
-    <BaseInput type="checkbox" />
+    <BaseInput
+        type="checkbox"
+        :on-change="onChangeHandler"
+        v-bind="$attrs"
+    />
 </template>
 
 <style lang="sass" scoped>

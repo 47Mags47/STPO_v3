@@ -18,11 +18,13 @@ export default {
             type: Function,
             default: () => {},
         },
+        onChange: {
+            type: Function,
+            default: () => {},
+        },
     },
     methods: {
         inputHandler(e) {
-            this.onInput(e);
-
             const MASKDEFINITIONS = {
                 "#": { pattern: /\d/ },
                 X: { pattern: /[0-9a-zA-Z]/ },
@@ -77,17 +79,27 @@ export default {
             let formattedValue = maskedValue.join("");
 
             e.target.value = formattedValue;
-            this.current_value = formattedValue;
+            this.localValue = formattedValue;
+
+            this.onInput(e, this.localValue);
         },
+        changeHandler(e){
+            this.onChange(e, this.localValue);
+        }
     },
     data() {
         return {
-            current_value: this.value,
+            localValue: this.value,
         };
     },
 };
 </script>
 
 <template>
-    <Baseinput @input="inputHandler" v-bind="$attrs" :value="current_value" />
+    <Baseinput
+        @input="inputHandler"
+        @change="changeHandler"
+        v-bind="$attrs"
+        :value="localValue"
+    />
 </template>

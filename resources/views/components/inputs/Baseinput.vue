@@ -66,13 +66,14 @@ export default {
 
     methods: {
         inputHandler(e) {
-            this.onInput(e);
-        },
-        clickHandler(e){
-            this.onClick(e);
+            this.onInput(e, e.target.value);
         },
         changeHandler(e){
-            this.onChange(e);
+            this.onChange(e, e.target.value);
+        },
+
+        clickHandler(e){
+            this.onClick(e);
         },
 
         getInputElement(){

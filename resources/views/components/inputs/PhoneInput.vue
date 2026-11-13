@@ -15,12 +15,66 @@ export default {
             default: 'phone'
         },
         value: {
-            type: String,
-            default: null
+            type: [String, Object],
+            default: null,
         },
-        dobValue: {
-            type: String,
-            default: null
+
+        onInput:{
+            type: Function,
+            default: () => {}
+        },
+        onChange:{
+            type: Function,
+            default: () => {}
+        },
+    },
+
+    data(){
+        return {
+            phoneLocalValue: this.hasDob ? this.value?.phone : this.value,
+            dobLocalValue: this.hasDob ? (this.value?.dob ?? null): null,
+        }
+    },
+
+    methods: {
+        onInputPhoneHandler(e, value){
+            this.phoneLocalValue = value
+
+            this.onInput(e, this.hasDob
+                ? {
+                    phone: this.phoneLocalValue,
+                    dob: this.dobLocalValue
+                }
+                : value
+            )
+        },
+        onInputDobHandler(e, value){
+            this.dobLocalValue = value
+
+            this.onInput(e, {
+                phone: this.phoneLocalValue,
+                dob: this.dobLocalValue
+            })
+        },
+
+        onChangePhoneHandler(e, value){
+            this.phoneLocalValue = value
+
+            this.onChange(e, this.hasDob
+                ? {
+                    phone: this.phoneLocalValue,
+                    dob: this.dobLocalValue
+                }
+                : value
+            )
+        },
+        onChangeDobHandler(e, value){
+            this.dobLocalValue = value
+
+            this.onChange(e, {
+                phone: this.phoneLocalValue,
+                dob: this.dobLocalValue
+            })
         }
     }
 }
@@ -33,7 +87,9 @@ export default {
             mask="+7 (###) ### ##-##"
             placeholder="+7 (999) 999 99-99"
             :name
-            :value
+            :value="hasDob ? (value?.phone ?? null) : value"
+            :onInput="onInputPhoneHandler"
+            :onChange="onChangePhoneHandler"
             v-bind="$attrs"
         />
         <MaskInput
@@ -43,7 +99,9 @@ export default {
             mask="######"
             placeholder="0000"
             :name="`${name}_dob`"
-            :value="dobValue"
+            :value="value !== null ? value.dob: null"
+            :onInput="onInputDobHandler"
+            :onChange="onChangeDobHandler"
             v-bind="$attrs"
         />
     </div>
