@@ -27,7 +27,7 @@ class ResultFileController extends Controller
 
     public function store(SFRFile $SFRFile)
     {
-        $resultFile = File::createChildren(ResultFile::class, [
+        $resultFile = File::createAndLinkToOwner(ResultFile::class, [
             'sfr_file_id'   => $SFRFile->id,
             'status_id'     => FileStatus::byCode('creating')->id,
             'origin_name'   => $SFRFile->origin_name

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -79,35 +80,41 @@ class File extends BaseModel
     ### Методы модели
     ##################################################
     /**
-     * Создает модель File и дочернюю модель
+     * Создаёт File и дочернюю модель, проставляя file_id.
      *
-     * @param string $model
-     * @param array|null $attributes
-     * @return FileModel
+     * @param class-string $ownerClass Класс модели-владельца
+     * @param array<mixed> $attributes Атрибуты, распределённые между File и владельцем
+     * @return FileModel Экземпляр модели-владельца
      */
-    public static function createChildren(string $model, ?array $attributes = []): FileModel
+    public static function createAndLinkToOwner(string $ownerClass, ?array $attributes = []): FileModel
     {
-        $childAttributes = array_intersect_key($attributes, array_flip(new $model()->getFillable()));
-        $fileModel = self::createFromChildren($model, $attributes);
+        return DB::transaction(function () use ($ownerClass, $attributes) {
+            $fillable = array_flip((new self())->getFillable());
+            $childAttributes = array_intersect_key($attributes, $fillable);
 
-        return $model::create(array_merge([
-            'file_id' => $fileModel->id,
-        ], $childAttributes));
+            $fileModel = self::createForOwner($ownerClass, $attributes);
+
+            return $ownerClass::create(array_merge([
+                'file_id' => $fileModel->id,
+            ], $childAttributes));
+        });
     }
 
     /**
-     * создает модель File с аттрибутами дочерней модели
-     * @param string $model
-     * @param array|null $attributes
-     * @return File
+     * Создаёт File, подставляя disk/path из класса-владельца.
+     *
+     * @param class-string $ownerClass Класс модели-владельца
+     * @param array<mixed> $attributes Атрибуты File
+     * @return self
      */
-    public static function createFromChildren(string $model, ?array $attributes = []): self
+    public static function createForOwner(string $ownerClass, ?array $attributes = []): self
     {
-        $fileAttributes = array_intersect_key($attributes, array_flip(new self()->getFillable()));
+        $fillable = array_flip((new self())->getFillable());
+        $fileAttributes = array_intersect_key($attributes, $fillable);
 
         $fileModel = self::factory()->create(array_merge([
-            'disk' => $model::$storage_file_disk,
-            'path' => $model::$storage_file_path,
+            'disk' => $ownerClass::$storage_file_disk,
+            'path' => $ownerClass::$storage_file_path,
         ], $fileAttributes));
 
         return $fileModel;

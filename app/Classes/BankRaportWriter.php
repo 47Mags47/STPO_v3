@@ -105,7 +105,7 @@ class BankRaportWriter extends FileWriter
             $npp = $this->getFileNPP();
             $this->npp = $npp;
 
-            $file = File::createChildren(BankRaportFile::class, [
+            $file = File::createAndLinkToOwner(BankRaportFile::class, [
                 'raport_id'     => $this->raport->id,
                 'npp'           => $npp,
                 'origin_name'   => $this->getFileName($in_raport_npp + 1)
