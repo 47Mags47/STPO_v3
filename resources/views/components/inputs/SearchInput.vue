@@ -16,6 +16,10 @@ export default {
         value: {
             type: String,
             default: ''
+        },
+        onInput: {
+            type: Function,
+            default: () => {}
         }
     },
 
@@ -32,6 +36,8 @@ export default {
 
             if (this.localValue.trim().toLowerCase() === "метеор" && !this.meteorVisible)
                 this.meteorVisible = true;
+
+            this.onInput(event)
         },
     },
 
@@ -48,6 +54,7 @@ export default {
         <BaseInput
             type="search"
             v-bind="$attrs"
+            :placeholder
             :value="localValue"
             :on-input="inputHandler"
         />
