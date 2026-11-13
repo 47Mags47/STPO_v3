@@ -93,6 +93,7 @@ export default {
             <ResourceTable
                 caption="Подразделения"
                 :data="user.divisions"
+                :has-search-input="false"
                 :columns="[
                     {
                         title: 'Наименование',
