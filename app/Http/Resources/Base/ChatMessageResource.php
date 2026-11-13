@@ -28,6 +28,11 @@ class ChatMessageResource extends JsonResource
                 [
                     'id' => $this->sender->id,
                     'name' => $this->sender->full_name,
+                    'avatar' => [
+                        'url' => $this->sender->avatar_id !== null
+                            ? route('files.show', ['file' => $this->sender->avatar_id])
+                            : null
+                    ]
                 ]
                 : null,
 
