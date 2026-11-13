@@ -3,6 +3,7 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
+use App\Events\Base\SendNotificationEvent;
 use App\Models\Base\NotificationType;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,18 @@ class Notification extends BaseModel
             'is_readed' => 'boolean',
             'is_system' => 'boolean',
         ];
+    }
+
+    /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        self::created(function ($model) {
+            broadcast(new SendNotificationEvent($model));
+        });
     }
 
     ### Методы

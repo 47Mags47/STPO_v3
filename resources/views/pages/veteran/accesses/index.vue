@@ -70,6 +70,7 @@ export default {
                 color: 'red',
                 onClick: (row) => router.delete(route('veteran.accesses.destroy'), { data: {
                     user_id: row.user.id,
+                    division_id: row.permission.division.id,
                     permission_id: row.permission.id
                 }})
             }

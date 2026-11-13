@@ -7,6 +7,7 @@ use App\Http\Requests\Veteran\AccessDestroyRequest;
 use App\Http\Requests\Veteran\AccessStoreRequest;
 use App\Http\Resources\Veteran\UserAccessResource;
 use App\Models\Auth\PermissionGroup;
+use App\Models\Auth\UserPermission;
 use App\Models\Base\User;
 use Inertia\Inertia;
 
@@ -34,8 +35,7 @@ class AccessController extends Controller
     {
         $this->authorize('manage-veteran-accesses');
 
-        $user = User::findOrFail($request->validated('user_id'));
-        $user->permissions()->attach($request->validated('permission_id'), ['division_id' => $request->validated('division_id')]);
+        UserPermission::create($request->validated());
 
         return redirect()->route('veteran.accesses.index')->with('success', 'Запись успешно сохранена');
     }
@@ -44,8 +44,12 @@ class AccessController extends Controller
     {
         $this->authorize('manage-veteran-accesses');
 
-        $user = User::findOrFail($request->validated('user_id'));
-        $user->permissions()->detach($request->validated('permission_id'));
+        UserPermission::query()
+            ->where('permission_id', $request->validated('permission_id'))
+            ->where('user_id', $request->validated('user_id'))
+            ->where('division_id', $request->validated('division_id'))
+            ->get()
+            ->each(fn($permission) => $permission->delete());
 
         return redirect()->back()->with('success', 'Запись удалена');
     }
