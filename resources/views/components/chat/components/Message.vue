@@ -60,8 +60,11 @@ export default {
 <template>
     <div class="message-container" :class="{ 'mine': isMine, 'is-system': message.is_system }">
         <template v-if="message.is_system">
-
+            <div class="w-full rounded-lg text-white text-2xl py-3! flex items-center justify-center bg-(--menu-background-color)">
+                {{ message.message }}
+            </div>
         </template>
+
         <template v-else>
             <div class="message-wrapper">
                 <div class="message-sender" v-if="message.sender !== null">
