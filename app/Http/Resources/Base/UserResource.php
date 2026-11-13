@@ -23,6 +23,11 @@ class UserResource extends JsonResource
             'phone'             => $this->phone,
             'phone_dob'         => $this->phone_dob,
             'email'             => $this->email,
+            'avatar' => [
+                'url' => $this->avatar_id !== null
+                    ? route('files.show', ['file' => $this->avatar_id])
+                    : null
+            ],
             'divisions'         => $this->divisions->map(fn($division) => [
                 'id'    => $division->id,
                 'name'  => $division->name,

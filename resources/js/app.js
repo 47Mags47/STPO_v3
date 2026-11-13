@@ -40,6 +40,7 @@ createInertiaApp({
         app.use(plugin);
         app.use(ZiggyVue, Ziggy);
         app.directive("outsideClick", derectives.outsideClick);
+        app.directive("tooltip",      derectives.tooltip);
         app.mount(el);
     },
 });

@@ -60,12 +60,26 @@ export default {
 <template>
     <div class="message-container" :class="{ 'mine': isMine, 'is-system': message.is_system }">
         <template v-if="message.is_system">
-
+            <div class="w-full rounded-lg text-white text-2xl py-3! flex items-center justify-center bg-(--menu-background-color)">
+                {{ message.message }}
+            </div>
         </template>
+
         <template v-else>
             <div class="message-wrapper">
                 <div class="message-sender" v-if="message.sender !== null">
-                    <a :href="route('base.users.show', { user: message.sender.id })">{{ message.sender.name }}</a>
+                    <a class="flex items-center gap-3 pr-10!" :href="route('base.users.show', { user: message.sender.id })">
+                        <img
+                            v-if="![null, undefined].includes(message.sender.avatar?.url)"
+                            :src="message.sender.avatar?.url"
+                        />
+                        <Ico
+                            v-else
+                            class="avatar-mock-ico"
+                            type="circle-user"
+                        />
+                        <span>{{ message.sender.name }}</span>
+                    </a>
                 </div>
 
                 <div v-if="imageAttachments.length > 0" class="message-attachment-images-wrapper" :class="['grid-type-' + ((imageAttachments.length + 3) % 3)]">
@@ -134,6 +148,14 @@ export default {
         flex-direction: column
         gap: 7px
         .message-sender
+            display: flex
+            align-items: center
+            gap: 8px
+            img
+                border: var(--border)
+            img, .avatar-mock-ico
+                width: 40px
+                border-radius: 100%
             a
                 color: var(--text-color)
                 transition: .5s
