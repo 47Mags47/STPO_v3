@@ -30,7 +30,7 @@ export default {
     <div class="size-full bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 flex justify-center items-center">
         <div class="flex flex-col justify-center items-center">
 
-            <p class="text-[180px] leading-none ">
+            <p class="text-[180px] leading-none">
                 <slot name="code" v-if="$slots.code"/>
                 <template v-else>
                     {{ code }}
