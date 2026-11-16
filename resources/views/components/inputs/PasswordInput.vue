@@ -3,16 +3,27 @@ import Baseinput from "./Baseinput.vue";
 import Ico from "../Ico.vue";
 
 export default {
+    inheritAttrs: false,
+
     components: {
         Baseinput,
         Ico,
     },
 
     props: {
+        // INPUT
         value: {
             type: [String, Boolean, Number],
             default: "",
         },
+        onInput: {
+            type: Function,
+            default: () => {},
+        },
+        onChange: {
+            type: Function,
+            default: () => {},
+        }
     },
 
     data() {
@@ -22,35 +33,51 @@ export default {
         };
     },
 
+    methods: {
+        onInputHandler(event, value) {
+            this.localValue = value
+            this.onInput(event, value)
+        },
+        onChangeHandler(event, value) {
+            this.localValue = value
+            this.onChange(event, value)
+        },
+    },
+
     watch: {
         value(value) {
             this.localValue = value;
         },
     },
-
-    inheritAttrs: false,
 };
 </script>
 
 <template>
-    <div class="relative size-full">
+    <div class="password-input">
         <Baseinput
+            v-bind="$attrs"
             :type="isPasswordVisible ? 'text' : 'password'"
             :on-input="(val) => (localValue = val.target.value)"
-            :on-change="(val) => (localValue = val.target.value)"
+            :on-change="onChangeHandler"
             :value="localValue"
-            v-bind="$attrs"
         />
 
         <button
             type="button"
-            class="absolute right-2 top-0 h-full p-2! cursor-pointer"
             @click="isPasswordVisible = !isPasswordVisible"
         >
-            <Ico
-                :type="isPasswordVisible ? 'eye' : 'eye-closed'"
-                class="text-(--text-color)!"
-            />
+            <Ico :type="isPasswordVisible ? 'eye' : 'eye-closed'" />
         </button>
     </div>
 </template>
+
+<style lang="sass" scoped>
+.password-input
+    @include input()
+    input
+        padding: 0
+        border: 0
+    button
+        flex-shrink: 0
+        cursor: pointer
+</style>

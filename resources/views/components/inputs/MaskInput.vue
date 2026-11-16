@@ -97,9 +97,9 @@ export default {
 
 <template>
     <Baseinput
-        @input="inputHandler"
-        @change="changeHandler"
         v-bind="$attrs"
+        :on-input="inputHandler"
+        :on-change="changeHandler"
         :value="localValue"
     />
 </template>

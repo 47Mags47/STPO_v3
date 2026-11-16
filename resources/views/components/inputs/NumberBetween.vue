@@ -1,18 +1,40 @@
 <script>
+import NumberInput from './NumberInput.vue';
+
 export default {
+    components: {
+        NumberInput
+    },
+
     props: {
+        // INPUT
         name: {
             type: String,
             required: true,
         },
-        placeholderFrom: {
-            type: String,
-            default: 'От',
+        value: {
+            type: Object,
+            default: {
+                from: null,
+                to: null
+            }
+        },
+        placeholder: {
+            type: Object,
+            default: {
+                from: 'От',
+                to:   'До'
+            },
         },
 
-        placeholderTo: {
-            type: String,
-            default: 'До',
+        // HANDLERS
+        onChangeFrom: {
+            type: Function,
+            default: () => {}
+        },
+        onChangeTo: {
+            type: Function,
+            default: () => {}
         }
     }
 }
@@ -20,17 +42,19 @@ export default {
 
 <template>
     <div class="number-between-wrapper">
-        <input
-        type="number"
+        <NumberInput
         :name="`${name}[from]`"
-        :placeholder="placeholderFrom"/>
+        :value="value.from"
+        :on-change="onChangeFrom"
+        :placeholder="placeholder.from"/>
 
         <span>—</span>
 
-        <input
-        type="number"
+        <NumberInput
         :name="`${name}[to]`"
-        :placeholder="placeholderTo"/>
+        :value="value.to"
+        :on-change="onChangeTo"
+        :placeholder="placeholder.to"/>
     </div>
 </template>
 

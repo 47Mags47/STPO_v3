@@ -4,8 +4,8 @@
 
 // HACK добавить переключение вниз-вверх при достижении границы формы
 
-import Ico from "../Ico.vue";
-import Baseinput from "./Baseinput.vue";
+import Ico from "../../Ico.vue";
+import Baseinput from "../Baseinput.vue";
 
 export default {
     components: { Baseinput, Ico },
