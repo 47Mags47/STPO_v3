@@ -1,12 +1,19 @@
 <script>
-import { DateTime } from 'luxon';
-import Select from './Select.vue';
+import RadioButton from '../../RadioButton.vue';
+import BaseSelect from '../BaseSelect.vue'
 
 export default{
     components: {
-        Select
+        BaseSelect,
+        RadioButton
     },
+
     props:{
+        // INPUT
+        name: {
+            type: String,
+            default: null,
+        },
         value:{
             type: [String, Number],
             validator(value){
@@ -28,11 +35,22 @@ export default{
                 if(typeof value === 'number')
                     return value >= 1 && value <= 12
             }
-        }
+        },
+        placeholder: {
+            type: String,
+            default: 'Месяц: '
+        },
+
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {},
+        },
     },
-    computed:{
-        monthList(){
-            return [
+
+    data(){
+        return {
+            monthList: [
                 { label: 'Январь',      value: 1    },
                 { label: 'Февраль',     value: 2    },
                 { label: 'Март',        value: 3    },
@@ -45,13 +63,8 @@ export default{
                 { label: 'Октябрь',     value: 10   },
                 { label: 'Ноябрь',      value: 11   },
                 { label: 'Декабрь',     value: 12   },
-            ]
-        },
-    },
-
-    data(){
-        return {
-            currentMonth: this.findMonth(this.value)
+            ],
+            localValue: null,
         }
     },
 
@@ -60,30 +73,54 @@ export default{
             let findMonth = null
 
             if(typeof find === 'string')
-                findMonth = this.monthList?.find((month) => month.label === find) ?? null
+                findMonth = this.monthList?.find(month => month.label === find) ?? null
 
             if(typeof find === 'number')
-                findMonth = this.monthList?.find((month) => Number(month.value) === Number(find)) ?? null
+                findMonth = this.monthList?.find(month => month.value === find) ?? null
 
-            return findMonth
-        }
+            return findMonth?.value
+        },
+
+        optionClickHandler(optionValue) {
+            this.localValue = this.findMonth(optionValue)
+        },
     },
 
     watch:{
-        value(newVal){
-            this.currentMonth = this.findMonth(newVal)
+        value: {
+            handler(val) {
+                this.localValue = this.findMonth(val)
+            },
+            immediate: true
         }
     }
 }
 </script>
 
 <template>
-    <Select
-        placeholder="Месяц"
-        labelKey="label"
-        valueKey="value"
-        :hasSearch="false"
+    <BaseSelect
+        type="single"
         :options="monthList"
-        :value="findMonth(value)"
-    />
+        :value="localValue"
+        :placeholder
+        label-key="label"
+        value-key="value"
+        :on-option-click="optionClickHandler"
+    >
+        <template #option="{ option, selected, onKey, onOptionClick }">
+            <RadioButton
+                :value="localValue"
+                :checked="selected"
+                :name="`${name}[]`"
+                :on-change="(event) => onChange(event, option)"
+                @click="onOptionClick"
+                @keydown="onKey"
+            />
+            <span>{{ Object.get(option, 'label') }}</span>
+        </template>
+    </BaseSelect>
 </template>
+
+<style lang="sass" scoped>
+</style>
+

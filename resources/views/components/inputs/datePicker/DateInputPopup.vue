@@ -3,8 +3,8 @@ import { DateTime, Interval } from "luxon";
 import Select from '../../inputs/selects/Select.vue';
 import Ico from "../../Ico.vue";
 import BlueButton from "../../buttons/BlueButton.vue";
-import MonthSelect from "../selects/MonthSelect.vue";
-import YearSelect from "../selects/YearSelect.vue";
+import MonthSelect from "../selects/types/MonthSelect.vue";
+import YearSelect from "../selects/types/YearSelect.vue";
 
 export default {
     components: {
