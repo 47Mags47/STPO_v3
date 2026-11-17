@@ -8,13 +8,6 @@ export default {
         RadioButton,
     },
 
-    data() {
-        return {
-            isOpen: false,
-            localValue: this.value,
-        };
-    },
-
     props: {
         // INPUT
         name: {
@@ -41,6 +34,13 @@ export default {
         },
     },
 
+    data() {
+        return {
+            isOpen: false,
+            localValue: null,
+        };
+    },
+
     methods: {
         optionClickHandler(optionValue) {
             this.localValue = optionValue
@@ -48,8 +48,11 @@ export default {
     },
 
     watch: {
-        value(val) {
-            this.localValue = val;
+        value: {
+            handler(val) {
+                this.localValue = val
+            },
+            immediate: true
         },
     },
 };
