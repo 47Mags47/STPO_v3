@@ -227,8 +227,8 @@ export default {
         <Transition name="popup">
             <Popup
                 v-if="isPopupOpen"
-                width="340px"
-                height="405px"
+                width="430px"
+                height="500px"
                 :onClose="popupCloseHandler"
                 :has-resize="false"
                 :position="(el) => {

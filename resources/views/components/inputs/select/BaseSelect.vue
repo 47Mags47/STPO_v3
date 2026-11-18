@@ -301,7 +301,7 @@ export default {
 
         .select-ico
             height: 100%
-            width: 30px
+            width: 20px
             flex-shrink: 0
             transition: transform .5s ease
 

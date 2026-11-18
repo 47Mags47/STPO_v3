@@ -282,6 +282,7 @@ export default {
 
         button
             width: 40px
+            flex-shrink: 0
 
         .current-date-container
             flex: 1
@@ -301,12 +302,14 @@ export default {
                     th
                         color: var(--text-color)
             td
-                width: 45px
-                height: 45px
+                aspect-ratio: 1 / 1
+                height: auto
             .day-cell-container
                 width: 100%
-                height: 100%
+                height: auto
+                aspect-ratio: 1 / 1
                 padding: 5px
+                font-size: 16px
 
                 display: flex
                 justify-content: center

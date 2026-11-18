@@ -79,7 +79,7 @@ export default {
         </span>
 
         <div
-            class="relative flex pl-[1px]! items-center w-10 h-5 rounded-full transition-colors border border-(--switcher-border-color"
+            class="relative flex pl-[1px]! items-center w-10 h-5 rounded-full transition-colors border border-(--switcher-border-color)"
             :class="localValue
                 ? 'bg-(--switcher-background-on-color)'
                 : 'bg-(--switcher-background-off-color)'"
