@@ -20,9 +20,9 @@ export default {
         NumberInput:            defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
         Checkbox:               defineAsyncComponent(() => import('../inputs/Checkbox.vue')),
 
-        Select:                 defineAsyncComponent(() => import('../inputs/selects/Select.vue')),
-        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/selects/selectPopup/SelectPopupInput.vue')),
-        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/selects/selectPopup/MultiSelectPopupInput.vue')),
+        Select:                 defineAsyncComponent(() => import('../inputs/select/Select.vue')),
+        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/select/selectPopup/SelectPopupInput.vue')),
+        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/select/selectPopup/MultiSelectPopupInput.vue')),
 
         BigFilesInput:          defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
         BigFileInput:           defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
