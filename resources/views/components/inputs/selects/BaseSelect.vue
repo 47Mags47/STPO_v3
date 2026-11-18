@@ -123,7 +123,6 @@ export default {
                 return
 
             this.isOpen = false
-            this.activeElementIndex = null
 
             this.onClose()
         },
@@ -134,8 +133,6 @@ export default {
                 this.activeElementIndex = this.filteredOptions.length ? 0 : null
                 this.focusActiveOption()
             }
-            else
-                this.activeElementIndex = null
 
             this.onInputClick()
         },

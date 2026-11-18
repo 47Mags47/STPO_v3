@@ -20,12 +20,12 @@ export default {
         onInput: {
             type: Function,
             default: () => {}
-        }
+        },
     },
 
     data() {
         return {
-            localValue: this.value,
+            localValue: null,
             meteorVisible: false,
         };
     },
@@ -42,8 +42,11 @@ export default {
     },
 
     watch: {
-        value(val) {
-            this.localValue = val
+        value: {
+            handler(val) {
+                this.localValue = val
+            },
+            immediate: true
         }
     }
 };

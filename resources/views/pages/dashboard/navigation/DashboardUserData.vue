@@ -207,7 +207,6 @@ export default {
                     <SwitcherInput
                         class="justify-self-end"
                         :on-click="editClickHandler"
-                        :value="formDisabled"
                         label="редактировать"
                     />
                 </div>
