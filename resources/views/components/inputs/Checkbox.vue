@@ -18,9 +18,27 @@ export default {
             default: () => {}
         }
     },
+
+    data() {
+        return {
+            localValue: null
+        }
+    },
+
     methods: {
         onChangeHandler(e) {
+            this.localValue = e.target.checked
+
             this.onChange(e, e.target.checked)
+        }
+    },
+
+    watch: {
+        value: {
+            handler(val) {
+                this.localValue = val
+            },
+            immediate: true
         }
     }
 };
@@ -31,7 +49,7 @@ export default {
         v-bind="$attrs"
         type="checkbox"
         :checked="value"
-        :value
+        :value="localValue"
         :on-change="onChangeHandler"
     />
 </template>
