@@ -10,27 +10,9 @@ export default {
 
     props: {
         //  INPUT
-        name: {
-            type: String,
-            default: null
-        },
-        id: {
-            type: String,
-            default: null
-        },
-        value: {
-            type: [Object, String],
-            default: null
-        },
-
-        // OTHER
-        isRange: {
-            type: Boolean,
-            default: false,
-        },
     },
 
-
+    // HACK переделать
     methods: {
         inputClickHandler(data) {
             data.isPopupOpen = !data.isPopupOpen
@@ -41,16 +23,13 @@ export default {
 
 <template>
     <DatePicker
-        :id
-        :name
-        :value
-        :is-range
         :on-input-click="inputClickHandler"
     />
 </template>
 
 <style lang="sass" scoped>
-:deep(.date-input-between-wrapper)
+:deep(.date-input-between-wrapper),
+:deep(.date-input-wrapper)
     cursor: pointer
     transition: background-color .5s ease
     .custom-date-input

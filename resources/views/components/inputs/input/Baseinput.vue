@@ -21,7 +21,7 @@ export default {
             default: false,
         },
         value: {
-            type: [String, Boolean, Number],
+            type: [String, Boolean, Number, Object],
             default: '',
         },
         checked: {

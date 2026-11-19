@@ -1,28 +1,18 @@
 <script>
 import { DateTime } from "luxon";
 import Ico from "../../Ico.vue";
+import Baseinput from "../input/Baseinput.vue";
 
 export default {
     components: {
+        Baseinput,
         Ico,
     },
     props: {
         // Input
-        name: {
-            type: String,
-            default: null
-        },
         value: {
             type: [Object, String],
             default: null
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: {
-            type: String,
-            default: "ДД.MM.ГГГГ",
         },
 
         // Functions
@@ -36,7 +26,7 @@ export default {
         },
 
         // Handlers
-        onUpdate: {
+        onChange: {
             type: Function,
             default: () => {}
         },
@@ -51,8 +41,9 @@ export default {
         };
     },
     methods: {
-        inputBlurHandler(e) {
-            let value = e.target.value
+        changeHandler(e) {
+            const value = e.target.value
+
             let luxonDate = DateTime.fromFormat(value, 'yyyy-MM-dd')
 
             if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
@@ -68,8 +59,8 @@ export default {
             }
 
             if(/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
-                this.selectedDate = DateTime.fromFormat(value, 'yyyy-MM-dd')
-                this.onUpdate(value)
+                this.selectedDate = DateTime.fromFormat(value, 'yyyy-MM-dd').toJSDate()
+                this.onChange(e, value)
             }
         },
     },
@@ -88,20 +79,19 @@ export default {
 <template>
     <div class="date-input-wrapper">
         <div class="date-input-container flex items-center">
-            <input
+            <Baseinput
                 type="date"
                 class="custom-date-input"
                 ref="inputRef"
-                :name
-                :disabled
-                :placeholder
                 :value="selectedDate !== null ? selectedDate : value"
-                @blur="inputBlurHandler"
+                :on-change="changeHandler"
+                @blur="changeHandler"
             />
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color)"></div>
         </div>
 
-        <div class="w-[16px] mr-2! cursor-pointer shrink-0">
-            <Ico type="calendar" class="text-(--text-color)!" @click.stop="onPopupClick" />
+        <div class="ico-wrapper w-[16px] mr-2! cursor-pointer shrink-0">
+            <Ico type="calendar" class="ico-wrapper" @click.stop="onPopupClick" />
         </div>
     </div>
 </template>
@@ -119,18 +109,10 @@ export default {
         position: relative
         width: 100%
 
-        &::after
-            content: ""
-            position: absolute
-            background: var(--background-color)
-            top: 0
-            right: 0
-
-            width: 25px
-            height: 100%
-
         .custom-date-input
-            width: 100%
+            display: block
+            border: 0
+            padding: 0
 
     .calendar-icon
         position: absolute

@@ -20,21 +20,15 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        // INPUT
         label: {
-            type: String,
-            default: null
-        },
-        name: {
             type: String,
             default: null
         },
         value: {
             type: [Object, String],
             default: null
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
         start: {
             type: [String, Object],
@@ -57,7 +51,11 @@ export default {
         onInputClick: {
             type: Function,
             default: () => {}
-        }
+        },
+        onChange: {
+            type: Function,
+            default: () => {},
+        },
     },
     data() {
         return {
@@ -69,13 +67,13 @@ export default {
             selectedDateTo:     null,
             isFirstClick:       true,
 
-            // COMMON
+            // OTHER
             isPopupOpen: false,
         }
     },
     methods: {
-        // EMITS
-        updateDateFrom(newDateFrom) {
+        // HANDLERS
+        changeDateFromHandler(event, newDateFrom) {
             this.selectedDateFrom = newDateFrom
 
             const fromDateISO = DateTime.fromISO(this.getValue?.from)
@@ -89,9 +87,9 @@ export default {
                 to: toJsDate
             }
 
-            this.onDateUpdate(rangeJsDate)
+            this.onChange(event, rangeJsDate)
         },
-        updateDateTo(newDateTo) {
+        changeDateToHandler(event, newDateTo) {
             this.selectedDateTo = newDateTo
 
             const fromDateISO = DateTime.fromISO(this.getValue?.from)
@@ -105,17 +103,17 @@ export default {
                 to: toJsDate
             }
 
-            this.onDateUpdate(rangeJsDate)
+            this.onChange(event, rangeJsDate)
         },
-        updateDate(newDate) {
+        changeDateHandler(event, newDate) {
             this.selectedDate = newDate
 
             const dateISO = DateTime.fromISO(this.getValue)
             const jsDate  = dateISO.toJSDate()
-            this.onDateUpdate(jsDate)
+
+            this.onChange(event, jsDate)
         },
 
-        // HANDLERS
         popupButtonClickHandler() {
             this.isPopupOpen = !this.isPopupOpen
         },
@@ -136,8 +134,8 @@ export default {
                 if (dateNotNull && this.selectedDateFrom > this.selectedDateTo)
                     [this.selectedDateFrom, this.selectedDateTo] = [this.selectedDateTo, this.selectedDateFrom]
 
-                this.updateDateFrom(this.selectedDateFrom)
-                this.updateDateTo(this.selectedDateTo)
+                this.changeDateFromHandler(null, this.selectedDateFrom)
+                this.changeDateToHandler(null, this.selectedDateTo)
 
                 this.isFirstClick = !this.isFirstClick
 
@@ -146,7 +144,7 @@ export default {
             }
 
             else {
-                this.updateDate(date)
+                this.changeDateHandler(null, date)
                 this.popupCloseHandler()
             }
         },
@@ -202,11 +200,10 @@ export default {
     <div class="w-full">
         <DateInputBetween v-if="isRange"
             ref="dateInputBetweenWrapperRef"
-            :name
-            :disabled
+            v-bind="$attrs"
             :value="getValue"
-            :onFromUpdate="updateDateFrom"
-            :onToUpdate="updateDateTo"
+            :on-from-change="changeDateFromHandler"
+            :on-to-change="changeDateToHandler"
             :on-popup-click="popupButtonClickHandler"
             :on-input-click="inputClickHandler"
             :startInterval="start"
@@ -214,10 +211,9 @@ export default {
         />
         <DateInput v-else
             ref="dateInputWrapperRef"
-            :name
-            :disabled
+            v-bind="$attrs"
             :value="getValue"
-            :on-update="updateDate"
+            :on-change="changeDateHandler"
             :on-popup-click="popupButtonClickHandler"
             :on-input-click="inputClickHandler"
             :startInterval="start"

@@ -1,25 +1,16 @@
 <script>
-import Baseinput from '../Baseinput.vue';
-import Ico from '../../Ico.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
-import SelectPopup from '../SelectPopup/SelectPopup.vue';
+import SelectPopup from '../selectPopup/SelectPopup.vue';
 import Popup from '../../Popup/Popup.vue';
 import { Teleport } from 'vue';
 
 export default {
     components: {
-        Baseinput,
         BlueButton,
-        Ico,
         SelectPopup, Popup
     },
 
     props: {
-        ico: {
-            type: String,
-            default: 'book-text'
-        },
-
         // INPUT
         name: {
             type: String,
@@ -37,16 +28,26 @@ export default {
             type: String,
             default: 'Выбрано:'
         },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
         disabled: {
             type: Boolean,
             default: false
+        },
+
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {}
         },
     },
 
     data() {
         return {
             isSelectPopupShow: false,
-            selectedItems: this.value
+            localValue: null
         }
     },
 
@@ -59,10 +60,12 @@ export default {
             const value = Object.get(item, this.valueKey)
 
             if(e.target?.checked === true)
-                this.selectedItems.push(value)
+                this.localValue.push(value)
 
             if(e.target?.checked === false)
-                this.selectedItems = this.selectedItems.filter(itemValue => itemValue !== value)
+                this.localValue = this.localValue.filter(optionValue => optionValue !== value)
+
+            this.onChange(e, item)
         },
 
         closeClickHandler() {
@@ -72,11 +75,11 @@ export default {
 
     watch: {
         value: {
-            immediate: true,
-            deep: true,
             handler(val) {
-                this.selectedItems = [...val]
-            }
+                this.localValue = [...val]
+            },
+            immediate: true,
+            deep: true
         }
     }
 }
@@ -84,16 +87,11 @@ export default {
 
 <template>
     <div class="select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
-        <Baseinput
-            type="text"
-            ref="selectPopupInput"
-            class="select-popup-input"
-            :value="`${placeholder} ${selectedItems.length}`"
-            :disabled
-            :readonly="true"
-        />
+        <div class="select-popup-input">
+            <span> {{ placeholder }} {{ localValue.length }} </span>
+        </div>
 
-        <input v-for="value in selectedItems" type="hidden" :name="`${name}[]`" :value>
+        <input v-for="inputValue in localValue" type="hidden" :name="`${name}[]`" :value="inputValue">
 
         <Teleport to="body">
             <Transition name="popup">
@@ -104,8 +102,9 @@ export default {
                 >
                     <SelectPopup
                         v-bind="$attrs"
-                        :on-select="selectItemHandler"
-                        :value="selectedItems"
+                        :name
+                        :on-change="selectItemHandler"
+                        :value="localValue"
                         :valueKey
                     />
                 </Popup>
@@ -116,21 +115,21 @@ export default {
 
 <style lang="sass" scoped>
 .select-popup-input-wrapper
-    position: relative
     display: flex
     gap: 5px
 
     height: 35px
 
     .select-popup-input
+        @include input()
         cursor: pointer
-        color: var(--text-color)
-        transition: color .5s ease, background-color .5s ease
+        transition: background-color .5s ease
+        span
+            transition: color .5s ease
 
         &:hover
             background-color: var(--button-background-color)
-            color: white
 
-    :deep(.blue-button)
-        width: 35px
+            span
+                color: white
 </style>

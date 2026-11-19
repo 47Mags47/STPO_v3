@@ -3,9 +3,11 @@ import { DateTime } from "luxon";
 import Ico from "../../Ico.vue";
 import DateInputPopup from './DateInputPopup.vue'
 import Popup from "../../Popup/Popup.vue";
+import Baseinput from "../input/Baseinput.vue";
 
 export default {
     components: {
+        Baseinput,
         DateInputPopup, Popup,
         Ico
     },
@@ -22,14 +24,6 @@ export default {
         value: {
             type: [Object, String]
         },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: {
-            type: String,
-            default: "ДД.MM.ГГГГ",
-        },
 
         // Functions
         checkValid: {
@@ -38,11 +32,11 @@ export default {
         },
 
         // Handlers
-        onFromUpdate: {
+        onFromChange: {
             type: Function,
             default: () => {}
         },
-        onToUpdate: {
+        onToChange: {
             type: Function,
             default: () => {}
         },
@@ -68,17 +62,17 @@ export default {
         };
     },
     methods: {
-        inputFromBlurHandler(e) {
-            let value = e.target.value
+        fromChangeHandler(e) {
+            const value = e.target.value
 
             this.selectedDateFrom = DateTime.fromFormat(value, 'yyyy-MM-dd')
-            this.onFromUpdate(this.selectedDateFrom)
+            this.onFromChange(e, this.selectedDateFrom)
         },
-        inputToBlurHandler(e) {
-            let value = e.target.value
+        toChangeHandler(e) {
+            const value = e.target.value
 
             this.selectedDateTo = DateTime.fromFormat(value, 'yyyy-MM-dd')
-            this.onToUpdate(this.selectedDateTo)
+            this.onToChange(e, this.selectedDateTo)
         },
     },
 
@@ -92,35 +86,31 @@ export default {
 </script>
 
 <template>
-    <div class="date-input-between-wrapper group" @click.stop="onInputClick">
+    <div class="date-input-between-wrapper" @click.stop="onInputClick">
         <div class="date-input-wrapper-from flex items-center">
-            <input
+            <Baseinput
                 type="date"
                 class="custom-date-input"
-                ref="inputFromRef"
                 :name="`${name}_from`"
-                :disabled
-                :placeholder
                 :value="selectedDateFrom !== null ? selectedDateFrom : null"
-                @blur="inputFromBlurHandler"
+                :on-change="fromChangeHandler"
+                @blur="fromChangeHandler"
             />
 
-            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color)"></div>
         </div>
 
         <div class="date-input-wrapper-to flex items-center">
-            <input
+            <Baseinput
                 type="date"
                 class="custom-date-input"
-                ref="inputToRef"
                 :name="`${name}_to`"
-                :disabled
-                :placeholder
                 :value="selectedDateTo !== null ? selectedDateTo : null"
-                @blur="inputToBlurHandler"
+                :on-change="toChangeHandler"
+                @blur="toChangeHandler"
             />
 
-            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color) group-hover:bg-(--button-background-color)"></div>
+            <div class="overlay absolute right-0 h-full w-[22px] bg-(--background-color)"></div>
         </div>
 
         <div class="ico-wrapper w-[16px] mr-2! cursor-pointer shrink-0">
@@ -136,10 +126,7 @@ export default {
     position: relative
     display: flex
     width: 100%
-    padding: 4px 6px
-
-    .ico
-        color: black
+    padding: 4px 12px
 
     .date-input-wrapper-from
         flex: 1
@@ -147,7 +134,8 @@ export default {
         position: relative
 
         .custom-date-input
-            width: 100%
+            display: block
+            padding: 0
             border: 0
 
     .date-input-wrapper-to
@@ -159,6 +147,7 @@ export default {
             height: 100%
 
         .custom-date-input
-            width: 100%
+            display: block
+            padding: 0
             border: 0
 </style>

@@ -1,5 +1,6 @@
 <script>
 import Checkbox from '../input/Checkbox.vue';
+
 export default {
     components: {
         Checkbox
@@ -14,12 +15,16 @@ export default {
             type: Boolean,
             default: false
         },
-
         placeholder: {
             type: String,
             default: null,
         },
 
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {}
+        }
     },
     data() {
         return {
@@ -27,15 +32,17 @@ export default {
         }
     },
     methods: {
-        checkboxClickHandler(e) {
+        checkboxClickHandler(e, v) {
             this.isChecked = !this.isChecked
+
+            this.onChange(e, v)
         }
     },
 
     watch: {
         checked: {
             handler(val) {
-                this.isChecked = val
+                this.isChecked = val ?? false
             },
             immediate: true,
         },
@@ -44,11 +51,8 @@ export default {
 </script>
 
 <template>
-     <label
-        class="checkbox-container" :class="{ 'active': isChecked }"
-        @click="checkboxClickHandler"
-    >
-        <Checkbox hidden v-bind="$attrs" :checked="isChecked"/>
+    <label class="checkbox-container" :class="{ 'active': isChecked }">
+        <Checkbox hidden v-bind="$attrs" :on-change="checkboxClickHandler" :checked="isChecked"/>
         <span> {{ placeholder }} </span>
     </label>
 </template>
@@ -58,21 +62,19 @@ export default {
     display: flex
     cursor: pointer
     padding: 7px
-    transition: .5s ease
+    transition: background-color .5s ease
+    span
+        transition: color .5s ease
+
     @include input()
 
     &.active
         background-color: var(--button-background-color)
         span
-            transition: .5s ease
             color: white
 
     &:hover
         background-color: var(--button-background-color)
         span
-            transition: .5s ease
             color: white
-
-    input
-        display: none
 </style>

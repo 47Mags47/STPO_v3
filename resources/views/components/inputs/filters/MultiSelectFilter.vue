@@ -1,198 +1,100 @@
 <script>
-import Ico from '../../Ico.vue';
 import Checkbox from '../input/Checkbox.vue';
+import BaseSelect from '../select/BaseSelect.vue';
 
 export default {
     components: {
-        Ico,
-        Checkbox
+        BaseSelect,
+        Checkbox,
+    },
+
+    data() {
+        return {
+            localValue: []
+        }
     },
 
     props: {
-        options: {
-            type: Array,
-            default: () => []
-        },
-
-        label: {
+        // INPUT
+        name: {
             type: String,
-            default: 'Выберите..'
+            default: ''
         },
-
+        value: {
+            type: Array,
+            default: () => ([])
+        },
         labelKey: {
             type: String,
             default: 'name'
         },
         valueKey: {
             type: String,
-            default: 'id'
+            default: "id",
         },
 
-        name: {
-            type: String,
-            default: null
-        },
-        value: {
-            type: Array,
-            default: () => []
-        },
-
-        id: {
-            type: String,
-            default: null
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {}
         },
     },
 
     methods: {
-        selectClickHandler() {
-            this.isOpen = !this.isOpen
+        optionClickHandler(optionValue) {
+            if (this.localValue.includes(optionValue))
+                this.localValue = this.localValue.filter(item => item !== optionValue);
+            else
+                this.localValue.push(optionValue);
         },
-        clickOutsideHandler(event) {
-            this.isOpen = false;
-        },
-    },
-
-    data() {
-        return {
-            isOpen: false,
-            selectedRows: []
-        }
     },
 
     watch: {
         value: {
-            handler(values) {
-                this.selectedRows = [...values]
+            handler(val) {
+                this.localValue = val
             },
-            deep: true,
-            immediate: true,
-        }
-    }
+            immediate: true
+        },
+    },
 }
 </script>
 
 <template>
-    <div class="multi-select-container" v-outsideClick="clickOutsideHandler">
-        <div
-            class="multi-select"
-            :class="{ 'active': isOpen }"
-            @click="selectClickHandler"
-        >
-            <span> {{ label }}: выбрано - {{ selectedRows.length }}</span>
-
-            <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
-        </div>
-
-        <div
-            class="multi-select-content-container"
-            :class="{ 'active': isOpen }"
-        >
-            <label v-for="(option, index) in options"
-                class="multi-select-content"
-                :class="{ selected: selectedRows.includes(Object.get(option, valueKey)) }"
-                :for="`${name}_${index}`"
-            >
-                <Checkbox
-                    :name="`${name}[]`"
-                    :value="Object.get(option, valueKey)"
-                    :id="`${name}_${index}`"
-                    :checked="selectedRows.some(
-                        id => String(id) === String(Object.get(option, valueKey))
-                    )"
-                    :on-click="(e) => {
-                        const id = Object.get(option, valueKey);
-
-                        if (e.target.checked) {
-                            if (!selectedRows.includes(id)) {
-                                selectedRows.push(id);
-                            }
-                        } else {
-                            selectedRows = selectedRows.filter(item => item !== id);
-                        }
-                    }"
-                />
-                <span> {{ Object.get(option, labelKey) }} </span>
-            </label>
-        </div>
-    </div>
+    <BaseSelect
+        type="multi"
+        :value="localValue"
+        :label-key
+        :value-key
+        isFilter
+        :on-option-click="optionClickHandler"
+    >
+        <template #option="{ option, selected, onKey, onOptionClick }">
+            <Checkbox
+                :value="Object.get(option, valueKey)"
+                :checked="selected"
+                :name="`${name}[]`"
+                :on-change="(event, value) => onChange(event, option)"
+                @click="onOptionClick"
+                @keydown="onKey"
+            />
+            <span> {{ Object.get(option, labelKey) }} </span>
+        </template>
+    </BaseSelect>
 </template>
 
 <style lang="sass" scoped>
-.base-input
-    &[type="checkbox"]
-        width: 22px
-        height: 22px
-.multi-select-container
-    position: relative
-    width: 100%
+.select-list-option
+    padding: 5px 0
+    padding-left: 7px
 
-    .multi-select
-        position: relative
-        width: 100%
-        padding: 6px 4px
-        border-radius: 12px
-        border: 1px solid var(--border-color)
-        cursor: pointer
-        @include input()
+    display: flex
+    gap: 7px
 
-        transition: background-color .5s ease
+    cursor: pointer
 
-        span,
-        .ico-chevron
-            transition: color .5s ease
-
-        &.active
-            border-bottom-right-radius: 0
-            border-bottom-left-radius: 0
-
-        &:hover
-            background-color: var(--button-background-color)
-            span
-                color: white
-
-            .ico-chevron
-                color: white
-
-        .ico-chevron
-            position: absolute
-            width: 22px
-
-            top: 0
-            right: 10px
-
-            color: var(--text-color)
-
-            &.active
-                transform: rotate(540deg)
-
-    .multi-select-content-container
-        position: absolute
-        width: 100%
-        max-height: 0px
-        overflow: auto
-        transition: .5s ease
-        z-index: 10
-        border: 0 solid var(--border-color)
-
-        background: var(--background-color)
-        @include scroll()
-
-        &.active
-            max-height: 300px
-            border: 1px solid var(--border-color)
-
-        .multi-select-content
-            display: flex
-            align-items: center
-            gap: 6px
-            width: 100%
-            padding: 6px 4px
-            cursor: pointer
-            label
-                width: 100%
-                height: 100%
-            &:hover
-                background-color: var(--option-background-color-active)
-            &.selected
-                background-color: var(--option-background-color-selected)
+    &.selected
+        background-color: var(--option-background-selected)
+    &:hover, &.key-hover
+        background-color: var(--option-background-hover)
 </style>

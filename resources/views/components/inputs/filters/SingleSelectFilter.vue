@@ -1,22 +1,44 @@
 <script>
 import Ico from '../../Ico.vue';
+import BlueButton from '../../buttons/BlueButton.vue';
+import SelectPopup from '../selectPopup/SelectPopup.vue';
+import Popup from '../../Popup/Popup.vue';
+import { Teleport } from 'vue';
 
 export default {
     components: {
-        Ico
+        BlueButton,
+        Ico,
+        SelectPopup, Popup
     },
 
     props: {
-        options: {
-            type: Array,
-            default: () => []
-        },
-
-        label: {
+        ico: {
             type: String,
-            default: 'Выберите..'
+            default: 'book-text'
         },
 
+        // INPUT
+        hidden: {
+            type: Boolean,
+            default: false
+        },
+        name: {
+            type: String,
+            default: null
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        value: {
+            type: Object,
+            default: {},
+        },
         labelKey: {
             type: String,
             default: 'name'
@@ -25,140 +47,102 @@ export default {
             type: String,
             default: 'id'
         },
-
-        name: {
+        placeholder: {
             type: String,
-            default: null
-        },
-        checked: {
-            type: Boolean,
-            default: false
+            default: 'Выбрано:'
         },
 
-        id: {
-            type: String,
-            default: null
-        }
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {}
+        },
     },
 
     data() {
         return {
-            isOpen: false,
-            selectedRow: null,
+            isSelectPopupShow: false,
+            localValue: null,
+            localLabel: null,
         }
     },
 
     methods: {
-        selectClickHandler() {
-            this.isOpen = !this.isOpen
+        showPopupButtonHandler() {
+            this.isSelectPopupShow = !this.isSelectPopupShow
         },
-        clickOutsideHandler(event) {
-            this.isOpen = false;
+
+        selectItemHandler(e, item) {
+            this.localValue = Object.get(item, this.valueKey)
+            this.localLabel = Object.get(item, this.labelKey)
+
+            this.onChange(e, item)
         },
-        radioClickHandler(e) {
-            this.selectedRow = e.target.value
+
+        closeClickHandler() {
+            this.isSelectPopupShow = false
         }
     },
+
+    watch: {
+        value: {
+            immediate: true,
+            deep: true,
+            handler(val) {
+                // HACK пока так.. (чтобы передавать айдишники нужно переделать)
+                this.localValue = Object.get(val, this.valueKey)
+                this.localLabel = Object.get(val, this.labelKey)
+            }
+        }
+    }
 }
 </script>
 
 <template>
-    <div class="single-select-container" v-outsideClick="clickOutsideHandler">
-        <div
-            class="single-select"
-            :class="{ 'active': isOpen }"
-            @click="selectClickHandler"
-        >
-            <span> {{ label }}: {{ selectedRow ?? 'не назначено' }} </span>
-
-            <Ico type="chevron-down" class="ico-chevron" :class="{ 'active': isOpen }"/>
+    <div class="select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
+        <div class="select-popup-input">
+            <span> {{ placeholder }} {{ localLabel }} </span>
         </div>
 
-        <div class="single-select-content-container"
-        :class="{ 'active': isOpen }">
-            <label v-for="(option, index) in options"
-                class="single-select-content"
-                :for="`${name}_${index}`"
-                @click="radioClickHandler"
-            >
-                <input
-                    type="radio"
-                    :name
-                    :checked
-                    :value="Object.get(option, labelKey)"
-                    :id="`${name}_${index}`"
-                />
-                <span> {{ Object.get(option, labelKey) }} </span>
-            </label>
-        </div>
+        <input v-if="localValue" type="hidden" :name :value="localValue">
+
+        <Teleport to="body">
+            <Transition name="popup">
+                <Popup
+                    v-if="isSelectPopupShow"
+                    size="70%"
+                    :on-close="closeClickHandler"
+                >
+                    <SelectPopup
+                        v-bind="$attrs"
+                        :name
+                        :on-change="selectItemHandler"
+                        :value="localValue"
+                        :valueKey
+                    />
+                </Popup>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 
-<style lang="sass">
-.single-select-container
-    position: relative
-    width: 100%
-    min-width: 120px
+<style lang="sass" scoped>
+.select-popup-input-wrapper
+    display: flex
+    gap: 5px
 
-    .single-select
-        position: relative
-        cursor: pointer
-        transition: .5s ease
+    height: 35px
+
+    .select-popup-input
         @include input()
-
-        &.active
-            border-bottom-right-radius: 0
-            border-bottom-left-radius: 0
+        cursor: pointer
+        transition: background-color .5s ease
+        span
+            transition: color .5s ease
 
         &:hover
             background-color: var(--button-background-color)
-            color: white
+
             span
-                transition: .5s ease
                 color: white
-            .ico-chevron
-                color: white
-
-        .ico-chevron
-            position: absolute
-            width: 22px
-
-            top: 0
-            right: 10px
-
-            transition: .4s ease
-            color: var(--text-color)
-
-            &.active
-                transform: rotate(540deg)
-
-    .single-select-content-container
-        position: absolute
-        max-height: 0px
-        overflow-y: auto
-        transition: .5s ease
-        z-index: 10
-        width: 100%
-        border: 0 solid var(--border-color)
-        background: var(--background-color)
-
-        @include scroll
-
-        &.active
-            max-height: 300px
-            border: 1px solid var(--border-color)
-
-        .single-select-content
-            display: flex
-            gap: 6px
-            width: 100%
-            padding: 6px 4px
-            cursor: pointer
-            background: var(--background-color)
-            span
-                overflow: hidden
-                text-overflow: ellipsis
-                white-space: nowrap
-            &:hover
-                background-color: var(--option-background-color-hover)
 </style>
