@@ -5,42 +5,6 @@ export default {
     components: {
         BaseInput,
     },
-    props:{
-        // INPUT
-        value: {
-            type: Boolean,
-            deafult: false
-        },
-
-        // HANDLERS
-        onChange: {
-            type: Function,
-            default: () => {}
-        }
-    },
-
-    data() {
-        return {
-            localValue: null
-        }
-    },
-
-    methods: {
-        onChangeHandler(e) {
-            this.localValue = e.target.checked
-
-            this.onChange(e, e.target.checked)
-        }
-    },
-
-    watch: {
-        value: {
-            handler(val) {
-                this.localValue = val
-            },
-            immediate: true
-        }
-    }
 };
 </script>
 
@@ -48,9 +12,6 @@ export default {
     <BaseInput
         v-bind="$attrs"
         type="checkbox"
-        :checked="value"
-        :value="localValue"
-        :on-change="onChangeHandler"
     />
 </template>
 
