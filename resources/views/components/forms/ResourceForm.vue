@@ -12,20 +12,20 @@ export default {
 
         FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
 
-        StringInput:            defineAsyncComponent(() => import('../inputs/StringInput.vue')),
-        TextInput:              defineAsyncComponent(() => import('../inputs/TextInput.vue')),
-        PhoneInput:             defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
-        EmailInput:             defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
-        PasswordInput:          defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
-        NumberInput:            defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
-        Checkbox:               defineAsyncComponent(() => import('../inputs/Checkbox.vue')),
+        StringInput:            defineAsyncComponent(() => import('../inputs/input/StringInput.vue')),
+        TextInput:              defineAsyncComponent(() => import('../inputs/input/TextInput.vue')),
+        PhoneInput:             defineAsyncComponent(() => import('../inputs/input/PhoneInput.vue')),
+        EmailInput:             defineAsyncComponent(() => import('../inputs/input/EmailInput.vue')),
+        PasswordInput:          defineAsyncComponent(() => import('../inputs/input/PasswordInput.vue')),
+        NumberInput:            defineAsyncComponent(() => import('../inputs/input/NumberInput.vue')),
+        Checkbox:               defineAsyncComponent(() => import('../inputs/input/Checkbox.vue')),
+        BigFilesInput:          defineAsyncComponent(() => import('../inputs/input/BigFilesInput.vue')),
+        BigFileInput:           defineAsyncComponent(() => import('../inputs/input/BigFileInput.vue')),
 
         Select:                 defineAsyncComponent(() => import('../inputs/select/Select.vue')),
-        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/select/selectPopup/SelectPopupInput.vue')),
-        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/select/selectPopup/MultiSelectPopupInput.vue')),
 
-        BigFilesInput:          defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
-        BigFileInput:           defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
+        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/selectPopup/SelectPopupInput.vue')),
+        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/selectPopup/MultiSelectPopupInput.vue')),
 
         DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
     },

@@ -1,6 +1,6 @@
 <script>
 import { default as Link } from './components/TablePaginatorLink.vue'
-import NumberInput from '../inputs/NumberInput.vue';
+import NumberInput from '../inputs/input/NumberInput.vue';
 import { router } from '@inertiajs/vue3';
 
 export default {

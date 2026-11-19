@@ -1,8 +1,8 @@
 <script>
 import Ico from '../../Ico.vue';
 import ResourceTable from '../../tables/ResourceTable/ResourceTable.vue';
-import RadioButton from '../RadioButton.vue';
-import CheckBox from '../Checkbox.vue';
+import RadioButton from '../input/RadioButton.vue';
+import CheckBox from '../input/Checkbox.vue';
 import RedButton from '../../buttons/RedButton.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Popup from '../../Popup/Popup.vue';

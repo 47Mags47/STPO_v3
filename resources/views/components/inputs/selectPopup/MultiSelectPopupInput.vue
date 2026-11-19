@@ -1,5 +1,5 @@
 <script>
-import Baseinput from '../Baseinput.vue';
+import Baseinput from '../input/Baseinput.vue';
 import Ico from '../../Ico.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import SelectPopup from './SelectPopup.vue';
@@ -120,6 +120,7 @@ export default {
                 >
                     <SelectPopup
                         v-bind="$attrs"
+                        :name
                         :on-change="selectItemHandler"
                         :value="localValue"
                         :valueKey

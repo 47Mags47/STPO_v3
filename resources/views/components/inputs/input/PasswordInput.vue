@@ -1,6 +1,6 @@
 <script>
 import Baseinput from "./Baseinput.vue";
-import Ico from "../Ico.vue";
+import Ico from "../../Ico.vue";
 
 export default {
     inheritAttrs: false,

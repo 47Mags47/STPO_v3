@@ -1,6 +1,6 @@
 <script>
 import { DateTime, Interval } from 'luxon';
-import RadioButton from '../../RadioButton.vue';
+import RadioButton from '../../input/RadioButton.vue';
 import BaseSelect from '../BaseSelect.vue'
 
 export default{

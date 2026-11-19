@@ -1,5 +1,5 @@
 <script>
-import TextInput from '../../inputs/TextInput.vue';
+import TextInput from '../../inputs/input/TextInput.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Ico from '../../Ico.vue';
 import DragAndDropFull from '../../DragAndDropFull.vue';

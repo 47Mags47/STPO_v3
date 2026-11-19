@@ -1,5 +1,5 @@
 <script>
-import RadioButton from "../../RadioButton.vue";
+import RadioButton from "../../input/RadioButton.vue";
 import BaseSelect from "../BaseSelect.vue";
 
 export default {

@@ -1,6 +1,6 @@
 <script>
 import Ico from "../../Ico.vue";
-import Baseinput from "../Baseinput.vue";
+import Baseinput from "../input/Baseinput.vue";
 
 export default {
     components: {
@@ -9,7 +9,7 @@ export default {
     },
 
     props: {
-        // DEFAULT INPUT
+        // INPUT
         value: {
             type: [Number, Array],
             default: () => [],
@@ -49,6 +49,10 @@ export default {
         type: {
             type: String,
             default: "single",
+        },
+        isFilter: {
+            type: Boolean,
+            default: false,
         },
         hasSearch: {
             type: Boolean,
@@ -224,6 +228,7 @@ export default {
             :class="{
                 'open-up': isOpen && isOpenUp,
                 'open-down': isOpen && !isOpenUp,
+                'filter': isFilter
             }"
             @click="inputClickHandler"
         >
@@ -292,7 +297,12 @@ export default {
         display: flex
         align-items: center
         justify-content: space-between
-        transition: border-radius 1.5s ease
+        transition: color .5s ease, background-color .5s ease, border-radius 1.5s ease
+
+        &:hover
+            &.filter
+                background-color: var(--button-background-color)
+                color: white
 
         span
             white-space: nowrap
@@ -311,11 +321,11 @@ export default {
 
         &.open-up
             border-radius: 0 0 $input-border-radius $input-border-radius
-            transition: border-radius 0s ease
+            transition: color .5s ease, background-color .5s ease, border-radius 0s ease
 
         &.open-down
             border-radius: $input-border-radius $input-border-radius 0 0
-            transition: border-radius 0s ease
+            transition: color .5s ease, background-color .5s ease, border-radius 0s ease
 
 
     .select-list-wrapper

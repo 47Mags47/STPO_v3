@@ -1,5 +1,5 @@
 <script>
-import Checkbox from '../../Checkbox.vue';
+import Checkbox from '../../input/Checkbox.vue';
 import BaseSelect from '../BaseSelect.vue';
 
 export default {
