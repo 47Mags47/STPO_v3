@@ -1,6 +1,6 @@
 <script>
 import Ico from '../../Ico.vue';
-import Checkbox from '../CheckBox.vue';
+import Checkbox from '../input/Checkbox.vue';
 
 export default {
     components: {

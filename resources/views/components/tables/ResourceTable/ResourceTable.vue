@@ -8,7 +8,7 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
-import StringInput from '../../inputs/StringInput.vue';
+import StringInput from '../../inputs/input/StringInput.vue';
 
 export default {
     components: {
@@ -364,7 +364,7 @@ export default {
 
                 let props = {
                     ...renderData.props,
-                    onClick: (e) => renderData.props.onClick(e)
+                    onClick: (e) => renderData.props.onClick ? renderData.props.onClick(e) : null
                 }
 
                 return () => h(renderData.component ?? 'div', {...props});

@@ -1,45 +1,56 @@
 <script>
+import Checkbox from '../input/Checkbox.vue';
 export default {
+    components: {
+        Checkbox
+    },
+
     props:{
         name: {
             type: String,
             default: null,
         },
-        label: {
+        checked: {
+            type: Boolean,
+            default: false
+        },
+
+        placeholder: {
             type: String,
             default: null,
         },
-        checked: {
-            type: Boolean,
-            default: false,
-        },
+
     },
     data() {
         return {
-            isChecked: this.checked
+            isChecked: null
         }
     },
     methods: {
-        checkboxClickHandler() {
+        checkboxClickHandler(e) {
             this.isChecked = !this.isChecked
         }
     },
 
     watch: {
-        checked(val) {
-            this.isChecked = val
-        }
+        checked: {
+            handler(val) {
+                this.isChecked = val
+            },
+            immediate: true,
+        },
     }
 }
 </script>
 
 <template>
-     <div
+     <label
         class="checkbox-container" :class="{ 'active': isChecked }"
         @click="checkboxClickHandler"
     >
-        <span> {{ label }} </span>
-    </div>
+        <Checkbox hidden v-bind="$attrs" :checked="isChecked"/>
+        <span> {{ placeholder }} </span>
+    </label>
 </template>
 
 <style lang="sass" scoped>
