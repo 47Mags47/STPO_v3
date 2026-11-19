@@ -3,10 +3,10 @@ import { defineAsyncComponent } from 'vue';
 
 export default {
     components: {
-        MultiSelect: defineAsyncComponent(() => import('./types/MultiSelect.vue')),
-        SingleSelect: defineAsyncComponent(() => import('./types/SingleSelect.vue')),
-        MonthSelect: defineAsyncComponent(() => import('./types/MonthSelect.vue')),
-        YearSelect: defineAsyncComponent(() => import('./types/YearSelect.vue'))
+        MultiSelect: defineAsyncComponent(()    => import('./types/MultiSelect.vue')),
+        SingleSelect: defineAsyncComponent(()   => import('./types/SingleSelect.vue')),
+        MonthSelect: defineAsyncComponent(()    => import('./types/MonthSelect.vue')),
+        YearSelect: defineAsyncComponent(()     => import('./types/YearSelect.vue'))
     },
 
     props: {
