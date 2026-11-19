@@ -1,9 +1,9 @@
 <script>
-import Baseinput from '../Baseinput.vue';
-import Ico from '../../Ico.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
+import Baseinput from '../../Baseinput.vue';
+import Ico from '../../../Ico.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
 import SelectPopup from './SelectPopup.vue';
-import Popup from '../../Popup/Popup.vue';
+import Popup from '../../../Popup/Popup.vue';
 import { Teleport } from 'vue';
 
 
@@ -50,9 +50,13 @@ export default {
             type: String,
             default: 'id'
         },
+        placeholder: {
+            type: String,
+            default: 'Выбрано:'
+        },
 
         // HANDLERS
-        onSelect: {
+        onChange: {
             type: Function,
             default: () => {}
         },
@@ -61,8 +65,8 @@ export default {
     data() {
         return {
             isSelectPopupShow: false,
-            selectedItemValue: Object.get(this.value, this.valueKey),
-            selectedItemLabel: Object.get(this.value, this.labelKey)
+            localValue: null,
+            localLabel: null,
         }
     },
 
@@ -72,11 +76,10 @@ export default {
         },
 
         selectItemHandler(e, item) {
-            this.selectedItemValue = Object.get(item, this.valueKey)
-            this.selectedItemLabel = Object.get(item, this.labelKey)
+            this.localValue = Object.get(item, this.valueKey)
+            this.localLabel = Object.get(item, this.labelKey)
 
-            this.onSelect(item)
-
+            this.onChange(e, item)
         },
 
         closeClickHandler() {
@@ -89,8 +92,9 @@ export default {
             immediate: true,
             deep: true,
             handler(val) {
-                this.selectedItemValue = Object.get(val, this.valueKey),
-                this.selectedItemLabel = Object.get(val, this.labelKey)
+                // HACK пока так.. (чтобы передавать айдишники нужно переделать)
+                this.localValue = Object.get(val, this.valueKey)
+                this.localLabel = Object.get(val, this.labelKey)
             }
         }
     }
@@ -103,12 +107,12 @@ export default {
             v-if="!hidden"
             type="text"
             ref="selectPopupInput"
-            :value="selectedItemLabel ?? 'Не выбрано'"
+            :value="`${placeholder} ${localLabel}`"
             :disabled
             :readonly="true"
         />
 
-        <input v-if="selectedItemValue" type="hidden" :name :value="selectedItemValue">
+        <input v-if="localValue" type="hidden" :name :value="localValue">
 
         <BlueButton @click.stop="showPopupButtonHandler" :disabled>
             <Ico :type="ico" />
@@ -123,8 +127,8 @@ export default {
                 >
                     <SelectPopup
                         v-bind="$attrs"
-                        :on-select="selectItemHandler"
-                        :value="selectedItemValue"
+                        :on-change="selectItemHandler"
+                        :value="localValue"
                         :valueKey
                     />
                 </Popup>

@@ -1,11 +1,11 @@
 <script>
-import Ico from '../../Ico.vue';
-import ResourceTable from '../../tables/ResourceTable/ResourceTable.vue';
-import RadioButton from '../RadioButton.vue';
-import CheckBox from '../CheckBox.vue';
-import RedButton from '../../buttons/RedButton.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
-import Popup from '../../Popup/Popup.vue';
+import Ico from '../../../Ico.vue';
+import ResourceTable from '../../../tables/ResourceTable/ResourceTable.vue';
+import RadioButton from '../../RadioButton.vue';
+import CheckBox from '../../Checkbox.vue';
+import RedButton from '../../../buttons/RedButton.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
+import Popup from '../../../Popup/Popup.vue';
 
 export default {
     provide() {
@@ -44,6 +44,10 @@ export default {
             default: () => {}
         },
         onSelect: {
+            type: Function,
+            default: () => {}
+        },
+        onChange: {
             type: Function,
             default: () => {}
         },
@@ -90,11 +94,12 @@ export default {
                         return {
                             component: this.isArray ? CheckBox : RadioButton,
                             props: {
-                                name: this.isArray ? `${this.name}[]` : this.name,
+                                name: `${this.name}[]`,
+                                value:   value,
                                 checked: this.isArray
                                     ? this.value.includes(value)
                                     : this.value === value,
-                                onClick: (e) => this.onSelect(e, row)
+                                onChange: (e, v) => this.onChange(e, row),
                             }
                         };
                     }

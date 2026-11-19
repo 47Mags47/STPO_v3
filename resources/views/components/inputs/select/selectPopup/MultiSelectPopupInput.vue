@@ -1,10 +1,11 @@
 <script>
-import Baseinput from '../Baseinput.vue';
-import Ico from '../../Ico.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
+import Baseinput from '../../Baseinput.vue';
+import Ico from '../../../Ico.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
 import SelectPopup from './SelectPopup.vue';
-import Popup from '../../Popup/Popup.vue';
+import Popup from '../../../Popup/Popup.vue';
 import { Teleport } from 'vue';
+import { sassNull } from 'sass';
 
 
 export default {
@@ -46,12 +47,18 @@ export default {
             type: Boolean,
             default: false
         },
+
+        // HANDLERS
+        onChange: {
+            type: Function,
+            default: () => {}
+        },
     },
 
     data() {
         return {
             isSelectPopupShow: false,
-            selectedItems: this.value
+            localValue: null
         }
     },
 
@@ -64,10 +71,12 @@ export default {
             const value = Object.get(item, this.valueKey)
 
             if(e.target?.checked === true)
-                this.selectedItems.push(value)
+                this.localValue.push(value)
 
             if(e.target?.checked === false)
-                this.selectedItems = this.selectedItems.filter(itemValue => itemValue !== value)
+                this.localValue = this.localValue.filter(optionValue => optionValue !== value)
+
+            this.onChange(e, item)
         },
 
         closeClickHandler() {
@@ -77,11 +86,11 @@ export default {
 
     watch: {
         value: {
-            immediate: true,
-            deep: true,
             handler(val) {
-                this.selectedItems = [...val]
-            }
+                this.localValue = [...val]
+            },
+            immediate: true,
+            deep: true
         }
     }
 }
@@ -93,12 +102,12 @@ export default {
             type="text"
             ref="selectPopupInput"
             class="select-popup-input"
-            :value="`${placeholder} ${selectedItems.length}`"
+            :value="`${placeholder} ${localValue.length}`"
             :disabled
             :readonly="true"
         />
 
-        <input v-for="value in selectedItems" type="hidden" :name="`${name}[]`" :value>
+        <input v-for="inputValue in localValue" type="hidden" :name="`${name}[]`" :value="inputValue">
 
         <BlueButton @click.stop="showPopupButtonHandler">
             <Ico :type="ico" />
@@ -113,8 +122,8 @@ export default {
                 >
                     <SelectPopup
                         v-bind="$attrs"
-                        :on-select="selectItemHandler"
-                        :value="selectedItems"
+                        :on-change="selectItemHandler"
+                        :value="localValue"
                         :valueKey
                     />
                 </Popup>

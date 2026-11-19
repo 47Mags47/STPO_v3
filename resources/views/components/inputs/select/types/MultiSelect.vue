@@ -70,8 +70,9 @@ export default {
     >
         <template #option="{ option, selected, onKey, onOptionClick }">
             <Checkbox
-                :value="selected"
-                :name="`${name}[${Object.get(option, valueKey)}]`"
+                :value="Object.get(option, valueKey)"
+                :checked="selected"
+                :name="`${name}[]`"
                 :on-change="(event, value) => onChange(event, option)"
                 @click="onOptionClick"
                 @keydown="onKey"
