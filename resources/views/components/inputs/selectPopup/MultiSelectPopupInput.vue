@@ -1,11 +1,10 @@
 <script>
-import Baseinput from '../../Baseinput.vue';
-import Ico from '../../../Ico.vue';
-import BlueButton from '../../../buttons/BlueButton.vue';
+import Baseinput from '../Baseinput.vue';
+import Ico from '../../Ico.vue';
+import BlueButton from '../../buttons/BlueButton.vue';
 import SelectPopup from './SelectPopup.vue';
-import Popup from '../../../Popup/Popup.vue';
+import Popup from '../../Popup/Popup.vue';
 import { Teleport } from 'vue';
-
 
 export default {
     components: {
@@ -22,29 +21,13 @@ export default {
         },
 
         // INPUT
-        hidden: {
-            type: Boolean,
-            default: false
-        },
         name: {
             type: String,
             default: null
         },
-        readonly: {
-            type: Boolean,
-            default: false
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
         value: {
-            type: Object,
-            default: {},
-        },
-        labelKey: {
-            type: String,
-            default: 'name'
+            type: Array,
+            default: () => [],
         },
         valueKey: {
             type: String,
@@ -53,6 +36,14 @@ export default {
         placeholder: {
             type: String,
             default: 'Выбрано:'
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         },
 
         // HANDLERS
@@ -65,8 +56,7 @@ export default {
     data() {
         return {
             isSelectPopupShow: false,
-            localValue: null,
-            localLabel: null,
+            localValue: null
         }
     },
 
@@ -76,8 +66,13 @@ export default {
         },
 
         selectItemHandler(e, item) {
-            this.localValue = Object.get(item, this.valueKey)
-            this.localLabel = Object.get(item, this.labelKey)
+            const value = Object.get(item, this.valueKey)
+
+            if(e.target?.checked === true)
+                this.localValue.push(value)
+
+            if(e.target?.checked === false)
+                this.localValue = this.localValue.filter(optionValue => optionValue !== value)
 
             this.onChange(e, item)
         },
@@ -89,13 +84,11 @@ export default {
 
     watch: {
         value: {
-            immediate: true,
-            deep: true,
             handler(val) {
-                // HACK пока так.. (чтобы передавать айдишники нужно переделать)
-                this.localValue = Object.get(val, this.valueKey)
-                this.localLabel = Object.get(val, this.labelKey)
-            }
+                this.localValue = [...val]
+            },
+            immediate: true,
+            deep: true
         }
     }
 }
@@ -104,17 +97,17 @@ export default {
 <template>
     <div class="select-popup-input-wrapper">
         <Baseinput
-            v-if="!hidden"
             type="text"
             ref="selectPopupInput"
-            :value="`${placeholder} ${localLabel}`"
+            class="select-popup-input"
+            :value="`${placeholder} ${localValue.length}`"
             :disabled
             :readonly="true"
         />
 
-        <input v-if="localValue" type="hidden" :name :value="localValue">
+        <input v-for="inputValue in localValue" type="hidden" :name="`${name}[]`" :value="inputValue">
 
-        <BlueButton @click.stop="showPopupButtonHandler" :disabled>
+        <BlueButton @click.stop="showPopupButtonHandler">
             <Ico :type="ico" />
         </BlueButton>
 
