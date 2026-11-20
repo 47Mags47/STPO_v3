@@ -60,7 +60,7 @@ export default {
 </script>
 
 <template>
-    <div class="size-full relative">
+    <div class="text-input-wrapper size-full flex flex-col relative">
         <textarea
             v-show="!hidden"
             maxlength="255"
@@ -73,14 +73,22 @@ export default {
             @keydown.enter.exact.prevent="onEnterKeyDownhandler"
             v-bind="$attrs"
         />
-        <span class="absolute left-[12px] bottom-[4px] text-gray-500! text-sm! pointer-events-none"> {{ localValue?.length ?? 0 }}/255 </span>
+        <div class="w-full flex justify-end">
+            <span class="text-gray-500 text-sm pointer-events-none"> {{ localValue?.length ?? 0 }}/255 </span>
+        </div>
     </div>
 </template>
 
 <style lang="sass" scoped>
-.text-input
+.text-input-wrapper
     @include input()
+    height: 100px
+    width: 100%
 
-    @include hidden-scroll()
-    height: calc( 7.7rem + 10px )
+    .text-input
+        flex: 1
+        width: 100%
+        white-space: normal
+        @include hidden-scroll()
+        height: calc( 7.7rem + 10px )
 </style>
