@@ -1,6 +1,6 @@
 <script>
 import BlueButton from '../../../buttons/BlueButton.vue';
-import SelectPopup from '../../selectPopup/Popup.vue';
+import Popup from '../../selectPopup/Popup.vue';
 import PopupWrapper from '../../../Popup/PopupWrapper.vue';
 import { Teleport } from 'vue';
 
