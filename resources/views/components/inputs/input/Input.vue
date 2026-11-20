@@ -11,7 +11,7 @@ export default {
         PasswordInput:          defineAsyncComponent(() => import('./types/PasswordInput.vue')),
         NumberInput:            defineAsyncComponent(() => import('./types/NumberInput.vue')),
 
-        SwitcherInput:           defineAsyncComponent(() => import('./types/SwitcherInput.vue')),
+        SwitcherInput:          defineAsyncComponent(() => import('./types/SwitcherInput.vue')),
         Checkbox:               defineAsyncComponent(() => import('./types/Checkbox.vue')),
         Radio:                  defineAsyncComponent(() => import('./types/RadioButton.vue')),
 
@@ -22,11 +22,23 @@ export default {
     props: {
         type: {
             type: String,
-            default: 'string'
+            default: 'string',
+            validator(value) {
+                const validTypes = [
+                    'string', 'text', 'number', 'phone', 'email',
+                    'password', 'checkbox', 'radio', 'switcher',
+                    'bigFile', 'bigFiles',
+                ];
+
+                if (!validTypes.includes(value)) {
+                    console.error(`Недействительный тип "${value}"!`);
+                    return false;
+                }
+
+                return true;
+            },
         }
     }
-
-    // HACK перенести валидацию типов с ресурсов (form, table) сюда
 }
 </script>
 

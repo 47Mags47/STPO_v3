@@ -340,8 +340,8 @@ export default {
                 : this.hasDeleteButton
         },
 
-        checkCellVisible(row, collumn) {
-            let visible = collumn.visible ?? true
+        checkCellVisible(row, column) {
+            let visible = column.visible ?? true
 
             return typeof visible === 'function'
                 ? visible(row)
@@ -349,9 +349,9 @@ export default {
         },
 
         // MATH
-        getCellValue(row, collumn){
-            if('render' in collumn) {
-                let renderData = collumn.render(row)
+        getCellValue(row, column){
+            if('render' in column) {
+                let renderData = column.render(row)
 
                 let props = {
                     ...renderData.props,
@@ -361,10 +361,10 @@ export default {
                 return () => h(renderData.component ?? 'div', {...props});
             }
 
-            if(typeof collumn.value == 'function')
-                return collumn.value(row)
+            if(typeof column.value == 'function')
+                return column.value(row)
 
-            return Object.get(row, collumn.dataIndex)
+            return Object.get(row, column.dataIndex)
         },
         getCellRowspan(row, column, index) {
             if (typeof column.rowspan === 'function') {
@@ -525,17 +525,17 @@ export default {
                     :key="row.id ?? index"
                     :class="getRowClasses(row)"
                 >
-                    <template v-for="collumn in columns" :key="collumn.dataIndex">
+                    <template v-for="column in columns" :key="column.dataIndex">
                         <TableTd
                             v-if="
-                                checkCellVisible(row, collumn)
-                                && getCellRowspan(row, collumn, index) !== 0
+                                checkCellVisible(row, column)
+                                && getCellRowspan(row, column, index) !== 0
                             "
                             v-bind="{
-                                ...collumn,
+                                ...column,
                                 row,
-                                value: getCellValue(row, collumn),
-                                rowspan: getCellRowspan(row, collumn, index)
+                                value: getCellValue(row, column),
+                                rowspan: getCellRowspan(row, column, index)
                             }"
                         />
                     </template>

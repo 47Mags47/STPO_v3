@@ -84,6 +84,7 @@ export default {
                 {
                     type: 'render',
                     width: '40px',
+                    position: 'center-center',
                     render: (row) => {
                         const value = Object.get(row, this.valueKey)
 

@@ -4,20 +4,31 @@ import { defineAsyncComponent } from 'vue';
 export default {
     inheritAttrs: false,
     components: {
-        MultiSelect: defineAsyncComponent(()    => import('./types/MultiSelect.vue')),
-        SingleSelect: defineAsyncComponent(()   => import('./types/SingleSelect.vue')),
-        MonthSelect: defineAsyncComponent(()    => import('./types/MonthSelect.vue')),
-        YearSelect: defineAsyncComponent(()     => import('./types/YearSelect.vue'))
+        MultiSelect:  defineAsyncComponent(()    => import('./types/MultiSelect.vue')),
+        SingleSelect: defineAsyncComponent(()    => import('./types/SingleSelect.vue')),
+        MonthSelect:  defineAsyncComponent(()    => import('./types/MonthSelect.vue')),
+        YearSelect:   defineAsyncComponent(()    => import('./types/YearSelect.vue'))
     },
 
     props: {
         type: {
             type: String,
-            default: 'single'
+            default: 'singleSelect',
+            validator(value) {
+                const validTypes = [
+                    'singleSelect', 'multiSelect',
+                    'monthSelect', 'yearSelect',
+                ];
+
+                if (!validTypes.includes(value)) {
+                    console.error(`Недействительный тип "${value}"!`);
+                    return false;
+                }
+
+                return true;
+            },
         }
     }
-
-    // HACK перенести валидацию типов с ресурсов (form, table) сюда
 }
 </script>
 

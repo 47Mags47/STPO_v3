@@ -252,6 +252,8 @@ export default {
 
                     const inputPopupRect = dateInputWrapperRef.getBoundingClientRect()
 
+                    console.log(inputPopupRect)
+
                     return {
                         left: inputPopupRect.left + 'px',
                         top: inputPopupRect.bottom + 'px'

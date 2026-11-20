@@ -81,6 +81,7 @@ export default {
         <div class="date-input-container flex items-center">
             <Baseinput
                 type="date"
+                v-bind="$attrs"
                 class="custom-date-input"
                 ref="inputRef"
                 :value="selectedDate !== null ? selectedDate : value"

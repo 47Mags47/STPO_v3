@@ -25,39 +25,6 @@ export default {
             default() {
                 return [];
             },
-            validator(value) {
-                let hasInvalidType = value.filter((input) => {
-                    return ![
-                        'string',
-                        'number',
-                        'email',
-                        'phone',
-                        'password',
-                        'text',
-                        'singleSelect',
-                        'multiSelect',
-                        'singleSelectPopup',
-                        'multiSelectPopup',
-                        'checkbox',
-                        'file',
-                        'bigFile',
-                        'bigFiles',
-                        'date',
-                    ].includes(input.type);
-                });
-
-                if (hasInvalidType.length !== 0) {
-                    hasInvalidType.forEach((input) => {
-                        throw new Error(
-                            `Недействительный тип "${input.type}"!`,
-                        );
-                    });
-
-                    return false;
-                }
-
-                return true;
-            },
         },
         sbm: {
             type: String,
@@ -89,7 +56,26 @@ export default {
         getFormItemOrientation(input) {
             if (input.type === "checkbox") return "horizontal-reverse";
         },
+        isInputType(type) {
+            return [
+                'string', 'text', 'number', 'phone', 'email',
+                'password', 'checkbox', 'radio', 'switcher',
+                'bigFile', 'bigFiles',
+            ].includes(type)
+        },
+        isSelectType(type) {
+            return [
+                'singleSelect', 'multiSelect',
+                'monthSelect', 'yearSelect'
+            ].includes(type)
+        },
+        isSelectPopupType(type) {
+            return [
+                'singleSelectPopup', 'multiSelectPopup',
+            ].includes(type)
+        },
     },
+
 };
 </script>
 
@@ -107,11 +93,11 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <Input                  :type="input.type"                          v-bind="prepareProps(input)" />
-                <Select                 :type="input.type"                          v-bind="prepareProps(input)" />
-                <SelectPopup            :type="input.type"                          v-bind="prepareProps(input)" />
+                <Input        v-if="isInputType(input.type)"        :type="input.type"   v-bind="prepareProps(input)" />
+                <Select       v-if="isSelectType(input.type)"       :type="input.type"   v-bind="prepareProps(input)" />
+                <SelectPopup  v-if="isSelectPopupType(input.type)"  :type="input.type"   v-bind="prepareProps(input)" />
 
-                <DatePicker             v-if="input.type === 'date'"                v-bind="prepareProps(input)" />
+                <DatePicker   v-if="input.type === 'date'"           v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>

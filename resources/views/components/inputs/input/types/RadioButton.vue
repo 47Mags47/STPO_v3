@@ -16,8 +16,8 @@ export default {
 .base-input[type="radio"]
         appearance: none
         -webkit-appearance: none
-        width: 10px
-        height: 10px
+        width: 11px
+        height: 11px
         border: var(--border)
         border-radius: 100%
         cursor: pointer

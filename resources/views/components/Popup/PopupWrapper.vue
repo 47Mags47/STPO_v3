@@ -162,7 +162,7 @@ export default {
                 }
 
                 await this.$nextTick();
-                fixOverflow(popup)
+                fixPopupOverflow(popup)
             })
         },
 
@@ -303,7 +303,6 @@ export default {
 
     mounted() {
         this.setPosition()
-
     },
 
     beforeUnmount() {

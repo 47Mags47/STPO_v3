@@ -11,11 +11,21 @@ export default {
     props: {
         type: {
             type: String,
-            default: 'single'
+            default: 'singleSelectPopup',
+            validator(value) {
+                const validTypes = [
+                    'singleSelectPopup', 'multiSelectPopup',
+                ];
+
+                if (!validTypes.includes(value)) {
+                    console.error(`Недействительный тип "${value}"!`);
+                    return false;
+                }
+
+                return true;
+            },
         }
     }
-
-    // HACK перенести валидацию типов с ресурсов (form, table) сюда
 }
 </script>
 

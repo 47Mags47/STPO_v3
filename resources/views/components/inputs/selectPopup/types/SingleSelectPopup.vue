@@ -1,46 +1,13 @@
 <script>
-import Baseinput from '../../input/Baseinput.vue';
-import Ico from '../../../Ico.vue';
-import BlueButton from '../../../buttons/BlueButton.vue';
-import Popup from '../Popup.vue';
-import PopupWrapper from '../../../Popup/PopupWrapper.vue';
-import { Teleport } from 'vue';
+import BaseSelectPopup from '../BaseSelectPopup.vue';
 
 export default {
     components: {
-        Baseinput,
-        BlueButton,
-        Ico,
-        PopupWrapper, Popup
+        BaseSelectPopup,
     },
 
     props: {
-        ico: {
-            type: String,
-            default: 'book-text'
-        },
-
         // INPUT
-        hidden: {
-            type: Boolean,
-            default: false
-        },
-        name: {
-            type: String,
-            default: null
-        },
-        readonly: {
-            type: Boolean,
-            default: false
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        value: {
-            type: Object,
-            default: {},
-        },
         labelKey: {
             type: String,
             default: 'name'
@@ -48,6 +15,10 @@ export default {
         valueKey: {
             type: String,
             default: 'id'
+        },
+        value: {
+            type: Number,
+            default: null
         },
         placeholder: {
             type: String,
@@ -63,87 +34,51 @@ export default {
 
     data() {
         return {
-            isSelectPopupShow: false,
             localValue: null,
-            localLabel: null,
+            localLabel: '',
         }
     },
 
     methods: {
-        showPopupButtonHandler() {
-            this.isSelectPopupShow = !this.isSelectPopupShow
+        changeOptionHandler(e, option) {
+            this.localValue = Object.get(option, this.valueKey)
+            this.localLabel = Object.get(option, this.labelKey)
+
+            this.onChange(e, option)
         },
-
-        selectItemHandler(e, item) {
-            this.localValue = Object.get(item, this.valueKey)
-            this.localLabel = Object.get(item, this.labelKey)
-
-            this.onChange(e, item)
-        },
-
-        closeClickHandler() {
-            this.isSelectPopupShow = false
-        }
     },
 
     watch: {
         value: {
-            immediate: true,
-            deep: true,
             handler(val) {
-                // HACK пока так.. (чтобы передавать айдишники нужно переделать)
+                if (!val)
+                    return
+
                 this.localValue = Object.get(val, this.valueKey)
                 this.localLabel = Object.get(val, this.labelKey) ?? ''
-            }
+
+                console.log( Object.get(val, this.labelKey))
+            },
+            immediate: true,
+            deep: true,
+        }
+    },
+
+    computed: {
+        placeholderValue() {
+            return `${this.placeholder} ${this.localLabel}`
         }
     }
 }
 </script>
 
 <template>
-    <div class="single-select-popup-input-wrapper">
-        <Baseinput
-            v-if="!hidden"
-            type="text"
-            ref="selectPopupInput"
-            :value="`${placeholder} ${localLabel}`"
-            :disabled
-            :readonly="true"
-        />
-
-        <input v-if="localValue" type="hidden" :name :value="localValue">
-
-        <BlueButton @click.stop="showPopupButtonHandler" :disabled>
-            <Ico :type="ico" />
-        </BlueButton>
-
-        <Teleport to="body">
-            <Transition name="popup">
-                <PopupWrapper
-                    v-if="isSelectPopupShow"
-                    size="70%"
-                    :on-close="closeClickHandler"
-                >
-                    <Popup
-                        v-bind="$attrs"
-                        :name
-                        :on-change="selectItemHandler"
-                        :value="localValue"
-                        :valueKey
-                    />
-                </PopupWrapper>
-            </Transition>
-        </Teleport>
-    </div>
+    <BaseSelectPopup
+        :value="localValue"
+        :placeholder="placeholderValue"
+        :on-change="changeOptionHandler"
+    />
 </template>
 
 <style lang="sass" scoped>
-.single-select-popup-input-wrapper
-    display: flex
-    gap: 5px
-
-    height: 35px
-
-    :deep(.blue-button)
-        width: 35px
 </style>
