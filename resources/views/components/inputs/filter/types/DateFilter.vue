@@ -24,6 +24,7 @@ export default {
     methods: {
         inputClickHandler() {
             this.localIsOpen = !this.localIsOpen
+            console.log(123)
         },
         closeClickHandler() {
             this.localIsOpen = false

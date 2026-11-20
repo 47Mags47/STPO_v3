@@ -34,6 +34,10 @@ export default {
             type: Function,
             default: () => {}
         },
+        onInputClick: {
+            type: Function,
+            default: () => {}
+        }
     },
     data() {
         return {
@@ -77,7 +81,7 @@ export default {
 </script>
 
 <template>
-    <div class="date-input-wrapper">
+    <div class="date-input-wrapper" @click.stop="onInputClick">
         <div class="date-input-container flex items-center">
             <Baseinput
                 type="date"
