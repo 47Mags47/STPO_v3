@@ -8,7 +8,6 @@ export default {
     },
     computed: {
         event: () => usePage().props.event.data,
-        payments: () => usePage().props.payments.data
     }
 }
 </script>
@@ -26,11 +25,28 @@ export default {
             value: event.in_date
         },
         {
-            type: 'select',
+            type: 'singleSelectPopup',
             name: 'payment_id',
             label: 'Выплата',
-            options: payments,
-            value: event.payment
+            caption: 'Выплаты',
+            url: route('api.administrate.payments.index'),
+            hasSearchInput: true,
+            columns: [
+                {
+                    title: 'Код',
+                    dataIndex: 'code',
+                    width: '150px'
+                },
+                {
+                    title: 'КБК',
+                    dataIndex: 'kbk',
+                    width: '200px',
+                },
+                {
+                    title: 'Наименование',
+                    dataIndex: 'name',
+                },
+            ]
         },
     ]"
 />

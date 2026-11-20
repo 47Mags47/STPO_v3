@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 
 export default {
+    inheritAttrs: false,
     components: {
         StringInput:            defineAsyncComponent(() => import('./types/StringInput.vue')),
         TextInput:              defineAsyncComponent(() => import('./types/TextInput.vue')),

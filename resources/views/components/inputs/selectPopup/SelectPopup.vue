@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 
 export default {
+    inheritAttrs: false,
     components: {
         SingleSelectPopup:  defineAsyncComponent(()   => import('./types/SingleSelectPopup.vue')),
         MultiSelectPopup:   defineAsyncComponent(()   => import('./types/MultiSelectPopup.vue')),
@@ -19,6 +20,6 @@ export default {
 </script>
 
 <template>
-    <SingleSelectPopup v-if="type === 'single'" v-bind="$attrs" />
-    <MultiSelectPopup  v-if="type === 'multi'"  v-bind="$attrs" />
+    <SingleSelectPopup v-if="type === 'singleSelectPopup'" v-bind="$attrs" />
+    <MultiSelectPopup  v-if="type === 'multiSelectPopup'"  v-bind="$attrs" />
 </template>

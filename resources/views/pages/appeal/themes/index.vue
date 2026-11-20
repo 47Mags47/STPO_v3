@@ -26,6 +26,7 @@ export default {
         :columns="[
             {
                 title: 'Группа',
+                width: '200px',
                 dataIndex: 'group.name',
                 rowspan: (row, index, data) => {
                     const previous = data[index - 1]

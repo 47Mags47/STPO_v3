@@ -30,7 +30,7 @@ export default {
                 value: theme.name,
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'group_id',
                 label: 'Группа',
                 options: groups,

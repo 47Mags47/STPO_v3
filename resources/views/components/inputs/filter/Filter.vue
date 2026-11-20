@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 
 export default {
+    inheritAttrs: false,
     components: {
         CheckboxFilter:            defineAsyncComponent(() => import('./types/CheckboxFilter.vue')),
         MultiSelectFilter:         defineAsyncComponent(() => import('./types/MultiSelectFilter.vue')),
@@ -22,7 +23,6 @@ export default {
 
 <template>
     <CheckboxFilter           v-if="type === 'checkbox'"           v-bind="$attrs" />
-    <SingleSelectFilter       v-if="type === 'singleSelect'"       v-bind="$attrs" />
     <MultiSelectFilter        v-if="type === 'multiSelect'"        v-bind="$attrs" />
     <MultiSelectPopupFilter   v-if="type === 'multiSelectPopup'"   v-bind="$attrs" />
     <DateFilter               v-if="type === 'date'"               v-bind="$attrs" />

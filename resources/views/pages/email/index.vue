@@ -32,7 +32,7 @@ export default {
     >
             <template #header>
                 <div>
-                    <span class="text-[16px]!">
+                    <span class="text-[16px]">
                         Адрес электронной почты (email)
                     </span>
                 </div>

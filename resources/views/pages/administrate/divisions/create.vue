@@ -25,7 +25,7 @@ export default {
                 placeholder: 'Введите наименование',
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'city_id',
                 label: 'Город',
                 options: cities,

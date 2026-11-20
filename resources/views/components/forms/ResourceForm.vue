@@ -34,7 +34,8 @@ export default {
                         'phone',
                         'password',
                         'text',
-                        'select',
+                        'singleSelect',
+                        'multiSelect',
                         'singleSelectPopup',
                         'multiSelectPopup',
                         'checkbox',
@@ -42,7 +43,6 @@ export default {
                         'bigFile',
                         'bigFiles',
                         'date',
-                        'monthSelect'
                     ].includes(input.type);
                 });
 
@@ -109,7 +109,6 @@ export default {
             >
                 <Input                  :type="input.type"                          v-bind="prepareProps(input)" />
                 <Select                 :type="input.type"                          v-bind="prepareProps(input)" />
-
                 <SelectPopup            :type="input.type"                          v-bind="prepareProps(input)" />
 
                 <DatePicker             v-if="input.type === 'date'"                v-bind="prepareProps(input)" />

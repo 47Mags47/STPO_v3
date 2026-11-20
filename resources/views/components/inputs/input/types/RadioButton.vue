@@ -23,6 +23,7 @@ export default {
         cursor: pointer
         position: relative
         padding: 0
+        flex-shrink: 0
 
         &:checked
             background-color: var(--button-background-color)

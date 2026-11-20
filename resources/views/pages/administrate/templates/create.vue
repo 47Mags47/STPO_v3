@@ -28,7 +28,7 @@ export default {
                 placeholder: 'Введите наименование',
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'style_id',
                 label: 'Вид',
                 options: templateStyles,

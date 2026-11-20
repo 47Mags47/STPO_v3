@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 
 export default {
+    inheritAttrs: false,
     components: {
         MultiSelect: defineAsyncComponent(()    => import('./types/MultiSelect.vue')),
         SingleSelect: defineAsyncComponent(()   => import('./types/SingleSelect.vue')),
@@ -21,8 +22,8 @@ export default {
 </script>
 
 <template>
-    <SingleSelect v-if="type === 'single'" v-bind="$attrs" />
-    <MultiSelect  v-if="type === 'multi'"  v-bind="$attrs" />
-    <MonthSelect  v-if="type === 'month'"  v-bind="$attrs" />
-    <YearSelect   v-if="type === 'year'"   v-bind="$attrs" />
+    <SingleSelect v-if="type === 'singleSelect'" v-bind="$attrs" />
+    <MultiSelect  v-if="type === 'multiSelect'"  v-bind="$attrs" />
+    <MonthSelect  v-if="type === 'monthSelect'"  v-bind="$attrs" />
+    <YearSelect   v-if="type === 'yearSelect'"   v-bind="$attrs" />
 </template>

@@ -75,7 +75,7 @@ export default {
                 value: full_name,
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 label: 'Подразделение',
                 name: 'division',
                 required: true,

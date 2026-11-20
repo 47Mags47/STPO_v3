@@ -19,7 +19,7 @@ export default {
         :action="route('sfr.fsd.transit-equivalents.store')"
         :inputs="[
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'category_id',
                 label: 'Категория',
                 options: categories,

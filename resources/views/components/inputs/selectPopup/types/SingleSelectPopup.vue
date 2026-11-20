@@ -11,7 +11,7 @@ export default {
         Baseinput,
         BlueButton,
         Ico,
-        SelectPopup, Popup
+        PopupWrapper, Popup
     },
 
     props: {
