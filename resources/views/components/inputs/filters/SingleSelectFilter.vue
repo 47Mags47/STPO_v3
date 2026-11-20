@@ -99,8 +99,8 @@ export default {
 </script>
 
 <template>
-    <div class="select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
-        <div class="select-popup-input">
+    <div class="single-select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
+        <div class="single-select-popup-input">
             <span> {{ placeholder }} {{ localLabel }} </span>
         </div>
 
@@ -127,13 +127,13 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.select-popup-input-wrapper
+.single-select-popup-input-wrapper
     display: flex
     gap: 5px
 
     height: 35px
 
-    .select-popup-input
+    .single-select-popup-input
         @include input()
         cursor: pointer
         transition: background-color .5s ease

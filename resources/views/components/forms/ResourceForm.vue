@@ -24,8 +24,8 @@ export default {
 
         Select:                 defineAsyncComponent(() => import('../inputs/select/Select.vue')),
 
-        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/selectPopup/SelectPopupInput.vue')),
-        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/selectPopup/MultiSelectPopupInput.vue')),
+        SingleSelectPopup:      defineAsyncComponent(() => import('../inputs/selectPopup/SingleSelectPopup.vue')),
+        MultiSelectPopup:       defineAsyncComponent(() => import('../inputs/selectPopup/MultiSelectPopup.vue')),
 
         DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
     },
@@ -46,7 +46,7 @@ export default {
                         'password',
                         'text',
                         'select',
-                        'selectPopup',
+                        'singleSelectPopup',
                         'multiSelectPopup',
                         'checkbox',
                         'file',
@@ -118,21 +118,21 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput            v-if="input.type === 'string'"           v-bind="prepareProps(input)" />
-                <TextInput              v-if="input.type === 'text'"             v-bind="prepareProps(input)" />
-                <NumberInput            v-if="input.type === 'number'"           v-bind="prepareProps(input)" />
-                <PhoneInput             v-if="input.type === 'phone'"      v-bind="prepareProps(input)" />
-                <EmailInput             v-if="input.type === 'email'"            v-bind="prepareProps(input)" />
-                <PasswordInput          v-if="input.type === 'password'"         v-bind="prepareProps(input)" />
-                <Checkbox               v-if="input.type === 'checkbox'"         v-bind="prepareProps(input)" />
-                <BigFileInput           v-if="input.type === 'bigFile'"          v-bind="prepareProps(input)" />
-                <BigFilesInput          v-if="input.type === 'bigFiles'"         v-bind="prepareProps(input)" />
+                <StringInput            v-if="input.type === 'string'"              v-bind="prepareProps(input)" />
+                <TextInput              v-if="input.type === 'text'"                v-bind="prepareProps(input)" />
+                <NumberInput            v-if="input.type === 'number'"              v-bind="prepareProps(input)" />
+                <PhoneInput             v-if="input.type === 'phone'"               v-bind="prepareProps(input)" />
+                <EmailInput             v-if="input.type === 'email'"               v-bind="prepareProps(input)" />
+                <PasswordInput          v-if="input.type === 'password'"            v-bind="prepareProps(input)" />
+                <Checkbox               v-if="input.type === 'checkbox'"            v-bind="prepareProps(input)" />
+                <BigFileInput           v-if="input.type === 'bigFile'"             v-bind="prepareProps(input)" />
+                <BigFilesInput          v-if="input.type === 'bigFiles'"            v-bind="prepareProps(input)" />
 
-                <SelectPopupInput       v-if="input.type === 'selectPopup'"      v-bind="prepareProps(input)" />
-                <MultiSelectPopupInput  v-if="input.type === 'multiSelectPopup'" v-bind="prepareProps(input)" />
-                <Select                 v-if="input.type === 'select'"           v-bind="prepareProps(input)" />
+                <SingleSelectPopup      v-if="input.type === 'singleSelectPopup'"   v-bind="prepareProps(input)" />
+                <MultiSelectPopup       v-if="input.type === 'multiSelectPopup'"    v-bind="prepareProps(input)" />
+                <Select                 v-if="input.type === 'select'"              v-bind="prepareProps(input)" />
 
-                <DatePicker             v-if="input.type === 'date'"             v-bind="prepareProps(input)" />
+                <DatePicker             v-if="input.type === 'date'"                v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>

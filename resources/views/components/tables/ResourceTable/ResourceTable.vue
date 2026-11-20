@@ -18,25 +18,23 @@ export default {
         TableTd,
         StringInput,
 
-        RowLink:                defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
-        FormItem:               defineAsyncComponent(() => import("../../FormItem.vue")),
+        RowLink:                      defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
+        FormItem:                     defineAsyncComponent(() => import("../../FormItem.vue")),
 
-        CreateButton:           defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
-        EditButton:             defineAsyncComponent(() => import("../buttons/EditButton.vue")),
-        ShowButton:             defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
-        DeleteButton:           defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
+        CreateButton:                 defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
+        EditButton:                   defineAsyncComponent(() => import("../buttons/EditButton.vue")),
+        ShowButton:                   defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
+        DeleteButton:                 defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
 
-        Ico:                    defineAsyncComponent(() => import("../../Ico.vue")),
-        Paginator:              defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
-        BlueButton:             defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
-        RedButton:              defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
+        Ico:                          defineAsyncComponent(() => import("../../Ico.vue")),
+        Paginator:                    defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
+        BlueButton:                   defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+        RedButton:                    defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
 
-        CheckboxFilter:         defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
-        SingleSelectFilter:     defineAsyncComponent(() => import('../../inputs/filters/SingleSelectFilter.vue')),
-        MultiSelectFilter:      defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
-        DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
-        MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
-        SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),
+        CheckboxFilter:               defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
+        MultiSelectFilter:            defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
+        DateFilter:                   defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
+        MultiSelectPopupFilter:       defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
     },
 
     data() {
@@ -133,9 +131,7 @@ export default {
                         'checkbox',
                         'singleSelect',
                         'multiSelect',
-                        'selectPopup',
                         'multiSelectPopup',
-                        'numberBetween',
                         'date'
                     ].includes(input.type);
                 });
@@ -232,7 +228,6 @@ export default {
                             .map(Number)
                         break
 
-                    case 'numberBetween':
                     case 'date':
                         value = {
                             from: formData.get(`filters[${name}]_from`) ?? '',
@@ -475,14 +470,11 @@ export default {
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                         <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <MultiSelectFilter      v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SingleSelectFilter     v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SelectPopupFilter      v-if="filter.type === 'selectPopup'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <MultiSelectFilter            v-if="filter.type === 'multiSelect'"          v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <MultiSelectPopupFilter       v-if="filter.type === 'multiSelectPopup'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
 
-                            <CheckboxFilter         v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <NumberBetweenFilter    v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <DateFilter             v-if="filter.type === 'date'"             v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <CheckboxFilter               v-if="filter.type === 'checkbox'"             v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <DateFilter                   v-if="filter.type === 'date'"                 v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         </div>
                     </div>
                 </div>

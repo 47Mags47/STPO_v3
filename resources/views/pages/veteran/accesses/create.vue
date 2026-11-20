@@ -37,7 +37,7 @@ export default {
         sbm="Добавить"
         :inputs="[
             {
-                type: 'selectPopup',
+                type: 'singleSelectPopup',
                 name: 'division_id',
                 label: 'Организация',
                 url: route('api.administrate.divisions.index'),
@@ -50,7 +50,7 @@ export default {
                 ]
             },
             {
-                type: 'selectPopup',
+                type: 'singleSelectPopup',
                 name: 'user_id',
                 label: 'Пользователь',
                 labelKey: 'full_name',
