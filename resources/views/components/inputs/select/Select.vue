@@ -15,6 +15,8 @@ export default {
             default: 'single'
         }
     }
+
+    // HACK перенести валидацию типов с ресурсов (form, table) сюда
 }
 </script>
 

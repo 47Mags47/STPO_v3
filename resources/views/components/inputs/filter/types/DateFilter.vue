@@ -1,6 +1,6 @@
 <script>
-import DatePicker from '../datePicker/DatePicker.vue';
-import Ico from '../../Ico.vue';
+import DatePicker from '../../datePicker/DatePicker.vue';
+import Ico from '../../../Ico.vue';
 
 export default {
     components: {

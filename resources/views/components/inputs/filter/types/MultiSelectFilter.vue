@@ -1,6 +1,6 @@
 <script>
-import BaseSelect from '../select/BaseSelect.vue';
-import Input from '../input/Input.vue';
+import BaseSelect from '../../select/BaseSelect.vue';
+import Input from '../../input/Input.vue';
 
 export default {
     components: {

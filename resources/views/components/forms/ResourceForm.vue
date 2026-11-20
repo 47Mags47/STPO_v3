@@ -3,6 +3,7 @@ import VerticalForm from "./VerticalForm.vue";
 import BlueButton from "../buttons/BlueButton.vue";
 import Input from "../inputs/input/Input.vue";
 import Select from "../inputs/select/Select.vue";
+import SelectPopup from "../inputs/selectPopup/SelectPopup.vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
@@ -11,12 +12,9 @@ export default {
     components: {
         VerticalForm,
         BlueButton,
-        Input, Select,
+        Input, Select, SelectPopup,
 
         FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
-
-        SingleSelectPopup:      defineAsyncComponent(() => import('../inputs/selectPopup/SingleSelectPopup.vue')),
-        MultiSelectPopup:       defineAsyncComponent(() => import('../inputs/selectPopup/MultiSelectPopup.vue')),
 
         DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
     },
@@ -112,8 +110,7 @@ export default {
                 <Input                  :type="input.type"                          v-bind="prepareProps(input)" />
                 <Select                 :type="input.type"                          v-bind="prepareProps(input)" />
 
-                <SingleSelectPopup      v-if="input.type === 'singleSelectPopup'"   v-bind="prepareProps(input)" />
-                <MultiSelectPopup       v-if="input.type === 'multiSelectPopup'"    v-bind="prepareProps(input)" />
+                <SelectPopup            :type="input.type"                          v-bind="prepareProps(input)" />
 
                 <DatePicker             v-if="input.type === 'date'"                v-bind="prepareProps(input)" />
             </FormItem>

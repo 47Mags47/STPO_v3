@@ -1,12 +1,14 @@
 <script>
-import Ico from '../../Ico.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
-import SelectPopup from '../selectPopup/SelectPopup.vue';
-import Popup from '../../Popup/Popup.vue';
+import Baseinput from '../../input/Baseinput.vue';
+import Ico from '../../../Ico.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
+import Popup from '../Popup.vue';
+import PopupWrapper from '../../../Popup/PopupWrapper.vue';
 import { Teleport } from 'vue';
 
 export default {
     components: {
+        Baseinput,
         BlueButton,
         Ico,
         SelectPopup, Popup
@@ -91,7 +93,7 @@ export default {
             handler(val) {
                 // HACK пока так.. (чтобы передавать айдишники нужно переделать)
                 this.localValue = Object.get(val, this.valueKey)
-                this.localLabel = Object.get(val, this.labelKey)
+                this.localLabel = Object.get(val, this.labelKey) ?? ''
             }
         }
     }
@@ -99,28 +101,37 @@ export default {
 </script>
 
 <template>
-    <div class="single-select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
-        <div class="single-select-popup-input">
-            <span> {{ placeholder }} {{ localLabel }} </span>
-        </div>
+    <div class="single-select-popup-input-wrapper">
+        <Baseinput
+            v-if="!hidden"
+            type="text"
+            ref="selectPopupInput"
+            :value="`${placeholder} ${localLabel}`"
+            :disabled
+            :readonly="true"
+        />
 
         <input v-if="localValue" type="hidden" :name :value="localValue">
 
+        <BlueButton @click.stop="showPopupButtonHandler" :disabled>
+            <Ico :type="ico" />
+        </BlueButton>
+
         <Teleport to="body">
             <Transition name="popup">
-                <Popup
+                <PopupWrapper
                     v-if="isSelectPopupShow"
                     size="70%"
                     :on-close="closeClickHandler"
                 >
-                    <SelectPopup
+                    <Popup
                         v-bind="$attrs"
                         :name
                         :on-change="selectItemHandler"
                         :value="localValue"
                         :valueKey
                     />
-                </Popup>
+                </PopupWrapper>
             </Transition>
         </Teleport>
     </div>
@@ -133,16 +144,6 @@ export default {
 
     height: 35px
 
-    .single-select-popup-input
-        @include input()
-        cursor: pointer
-        transition: background-color .5s ease
-        span
-            transition: color .5s ease
-
-        &:hover
-            background-color: var(--button-background-color)
-
-            span
-                color: white
+    :deep(.blue-button)
+        width: 35px
 </style>

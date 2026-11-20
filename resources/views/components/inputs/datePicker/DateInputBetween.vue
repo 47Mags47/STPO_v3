@@ -2,13 +2,12 @@
 import { DateTime } from "luxon";
 import Ico from "../../Ico.vue";
 import DateInputPopup from './DateInputPopup.vue'
-import Popup from "../../Popup/Popup.vue";
 import Baseinput from "../input/Baseinput.vue";
 
 export default {
     components: {
         Baseinput,
-        DateInputPopup, Popup,
+        DateInputPopup,
         Ico
     },
     props: {

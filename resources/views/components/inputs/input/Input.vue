@@ -24,6 +24,8 @@ export default {
             default: 'string'
         }
     }
+
+    // HACK перенести валидацию типов с ресурсов (form, table) сюда
 }
 </script>
 

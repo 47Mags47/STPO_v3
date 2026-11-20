@@ -1,25 +1,16 @@
 <script>
-import Baseinput from '../input/Baseinput.vue';
-import Ico from '../../Ico.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
-import SelectPopup from './SelectPopup.vue';
-import Popup from '../../Popup/Popup.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
+import SelectPopup from '../../selectPopup/Popup.vue';
+import PopupWrapper from '../../../Popup/PopupWrapper.vue';
 import { Teleport } from 'vue';
 
 export default {
     components: {
-        Baseinput,
         BlueButton,
-        Ico,
-        SelectPopup, Popup
+        PopupWrapper, Popup
     },
 
     props: {
-        ico: {
-            type: String,
-            default: 'book-text'
-        },
-
         // INPUT
         name: {
             type: String,
@@ -95,37 +86,28 @@ export default {
 </script>
 
 <template>
-    <div class="multi-select-popup-input-wrapper">
-        <Baseinput
-            type="text"
-            ref="selectPopupInput"
-            class="select-popup-input"
-            :value="`${placeholder} ${localValue.length}`"
-            :disabled
-            :readonly="true"
-        />
+    <div class="multi-select-popup-input-wrapper" @click.stop="showPopupButtonHandler">
+        <div class="multi-select-popup-input">
+            <span> {{ placeholder }} {{ localValue.length }} </span>
+        </div>
 
         <input v-for="inputValue in localValue" type="hidden" :name="`${name}[]`" :value="inputValue">
 
-        <BlueButton @click.stop="showPopupButtonHandler">
-            <Ico :type="ico" />
-        </BlueButton>
-
         <Teleport to="body">
             <Transition name="popup">
-                <Popup
+                <PopupWrapper
                     v-if="isSelectPopupShow"
                     size="70%"
                     :on-close="closeClickHandler"
                 >
-                    <SelectPopup
+                    <Popup
                         v-bind="$attrs"
                         :name
                         :on-change="selectItemHandler"
                         :value="localValue"
                         :valueKey
                     />
-                </Popup>
+                </PopupWrapper>
             </Transition>
         </Teleport>
     </div>
@@ -138,6 +120,16 @@ export default {
 
     height: 35px
 
-    :deep(.blue-button)
-        width: 35px
+    .multi-select-popup-input
+        @include input()
+        cursor: pointer
+        transition: background-color .5s ease
+        span
+            transition: color .5s ease
+
+        &:hover
+            background-color: var(--button-background-color)
+
+            span
+                color: white
 </style>

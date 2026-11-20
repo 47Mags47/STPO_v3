@@ -9,6 +9,8 @@ import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
 import Input from '../../inputs/input/Input.vue';
+import Filter from '../../inputs/filter/Filter.vue';
+
 
 export default {
     components: {
@@ -16,7 +18,7 @@ export default {
         TableRow,
         TableTh,
         TableTd,
-        Input,
+        Input, Filter,
 
         RowLink:                      defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
         FormItem:                     defineAsyncComponent(() => import("../../FormItem.vue")),
@@ -30,11 +32,6 @@ export default {
         Paginator:                    defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
         BlueButton:                   defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
         RedButton:                    defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
-
-        CheckboxFilter:               defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
-        MultiSelectFilter:            defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
-        DateFilter:                   defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
-        MultiSelectPopupFilter:       defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
     },
 
     data() {
@@ -470,11 +467,7 @@ export default {
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                         <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <MultiSelectFilter            v-if="filter.type === 'multiSelect'"          v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <MultiSelectPopupFilter       v-if="filter.type === 'multiSelectPopup'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-
-                            <CheckboxFilter               v-if="filter.type === 'checkbox'"             v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <DateFilter                   v-if="filter.type === 'date'"                 v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <Filter   :type="filter.type"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         </div>
                     </div>
                 </div>

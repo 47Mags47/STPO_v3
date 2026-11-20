@@ -1,5 +1,5 @@
 <script>
-import Input from '../input/Input.vue';
+import Input from '../../input/Input.vue';
 
 export default {
     components: {

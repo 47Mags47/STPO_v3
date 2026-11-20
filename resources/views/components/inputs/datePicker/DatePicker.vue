@@ -1,10 +1,10 @@
 <script>
-import DateInput from "./DateInput.vue";
 import Label from "../../Label.vue";
 import { DateTime } from "luxon";
 import FormItem from "../../FormItem.vue";
 import DateInputBetween from "./DateInputBetween.vue";
-import Popup from "../../Popup/Popup.vue";
+import DateInput from "./DateInput.vue";
+import PopupWrapper from "../../Popup/PopupWrapper.vue";
 import DateInputPopup from "./DateInputPopup.vue";
 
 export default {
@@ -13,7 +13,7 @@ export default {
         Label,
         FormItem,
         DateInputBetween,
-        Popup, DateInputPopup
+        PopupWrapper, DateInputPopup
     },
     props: {
         isRange: {
@@ -239,7 +239,7 @@ export default {
         />
 
         <Transition name="popup">
-            <Popup
+            <PopupWrapper
                 v-if="localIsOpen"
                 width="430px"
                 height="500px"
@@ -265,7 +265,7 @@ export default {
                     :onClick="dayClickHandler"
                     :selectedDate="getValue"
                 />
-            </Popup>
+            </PopupWrapper>
         </Transition>
 
         <div v-if="showAvailable" class="avaible-date-container">
