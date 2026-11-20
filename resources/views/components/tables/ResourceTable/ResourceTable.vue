@@ -34,7 +34,6 @@ export default {
         CheckboxFilter:         defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
         SingleSelectFilter:     defineAsyncComponent(() => import('../../inputs/filters/SingleSelectFilter.vue')),
         MultiSelectFilter:      defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
-        NumberBetweenFilter:    defineAsyncComponent(() => import('../../inputs/filters/NumberBetweenFilter.vue')),
         DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
         MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
         SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),

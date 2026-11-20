@@ -20,6 +20,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isOpen: {
+            type: Boolean,
+            default: false,
+        },
 
         // INPUT
         label: {
@@ -56,6 +60,10 @@ export default {
             type: Function,
             default: () => {},
         },
+        onClose: {
+            type: Function,
+            default: () => {}
+        }
     },
     data() {
         return {
@@ -68,7 +76,7 @@ export default {
             isFirstClick:       true,
 
             // OTHER
-            isPopupOpen: false,
+            localIsOpen:        null,
         }
     },
     methods: {
@@ -115,10 +123,11 @@ export default {
         },
 
         popupButtonClickHandler() {
-            this.isPopupOpen = !this.isPopupOpen
+            this.localIsOpen = !this.localIsOpen
         },
         popupCloseHandler() {
-            this.isPopupOpen = false
+            this.localIsOpen = false
+            this.onClose()
         },
         dayClickHandler(date) {
             if (this.isRange) {
@@ -148,8 +157,8 @@ export default {
                 this.popupCloseHandler()
             }
         },
-        inputClickHandler() {
-            this.onInputClick(this.$data)
+        inputClickHandler(event) {
+            this.onInputClick()
         },
 
         // MATH
@@ -193,6 +202,15 @@ export default {
             return value
         }
     },
+
+    watch: {
+        isOpen: {
+            handler(val) {
+                this.localIsOpen = val ?? false
+            },
+            immediate: true
+        }
+    }
 }
 </script>
 
@@ -222,7 +240,7 @@ export default {
 
         <Transition name="popup">
             <Popup
-                v-if="isPopupOpen"
+                v-if="localIsOpen"
                 width="430px"
                 height="500px"
                 :onClose="popupCloseHandler"

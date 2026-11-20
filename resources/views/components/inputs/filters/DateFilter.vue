@@ -9,13 +9,33 @@ export default {
     },
 
     props: {
-        //  INPUT
+        isOpen: {
+            Type: Function,
+        }
+    },
+
+    data() {
+        return {
+            localIsOpen: null
+        }
     },
 
     // HACK переделать
     methods: {
-        inputClickHandler(data) {
-            data.isPopupOpen = !data.isPopupOpen
+        inputClickHandler() {
+            this.localIsOpen = !this.localIsOpen
+        },
+        closeClickHandler() {
+            this.localIsOpen = false
+        }
+    },
+
+    watch: {
+        isOpen: {
+            handler(val) {
+                this.localIsOpen = val ?? false
+            },
+            immediate: true
         }
     }
 }
@@ -23,6 +43,8 @@ export default {
 
 <template>
     <DatePicker
+        :is-open="localIsOpen"
+        :on-close="closeClickHandler"
         :on-input-click="inputClickHandler"
     />
 </template>
