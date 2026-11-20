@@ -32,7 +32,7 @@ export default {
         }
     },
     methods: {
-        checkboxClickHandler(e, v) {
+        checkboxChangeHandler(e, v) {
             this.isChecked = !this.isChecked
 
             this.onChange(e, v)
@@ -52,7 +52,7 @@ export default {
 
 <template>
     <label class="checkbox-container" :class="{ 'active': isChecked }">
-        <Input type="checkbox" hidden v-bind="$attrs" :on-change="checkboxClickHandler" :checked="isChecked"/>
+        <Input type="checkbox" hidden v-bind="$attrs" :on-change="checkboxChangeHandler" :checked="isChecked"/>
         <span> {{ placeholder }} </span>
     </label>
 </template>
