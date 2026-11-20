@@ -1,5 +1,5 @@
 <script>
-import Baseinput from "./Baseinput.vue";
+import Baseinput from "../Baseinput.vue";
 
 export default {
     components: {

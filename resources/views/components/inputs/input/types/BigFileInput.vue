@@ -1,8 +1,8 @@
 <script>
-import BlueButton from '../../buttons/BlueButton.vue';
-import Ico from '../../Ico.vue';
-import ProgressBar from '../../ProgressBar.vue';
-import UploadFile from '../../UploadFile.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
+import Ico from '../../../Ico.vue';
+import ProgressBar from '../../../ProgressBar.vue';
+import UploadFile from '../../../UploadFile.vue';
 import StringInput from './StringInput.vue'
 
 export default {

@@ -1,6 +1,6 @@
 <script>
-import Ico from "../../Ico.vue";
 import Baseinput from "../input/Baseinput.vue";
+import Ico from "../../Ico.vue";
 
 export default {
     components: {

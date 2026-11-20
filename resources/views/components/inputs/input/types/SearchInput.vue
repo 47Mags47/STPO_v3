@@ -1,6 +1,6 @@
 <script>
-import BaseInput from "./Baseinput.vue";
-import Pashalka from "../../pashalki/Pashalka.vue";
+import BaseInput from "../Baseinput.vue";
+import Pashalka from "../../../pashalki/Pashalka.vue";
 
 export default {
     components: {

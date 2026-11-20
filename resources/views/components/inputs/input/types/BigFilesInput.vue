@@ -1,9 +1,9 @@
 <script>
-import BlueButton from '../../buttons/BlueButton.vue';
-import RedButton from '../../buttons/RedButton.vue';
-import DragAndDropZone from '../../DragAndDropZone.vue';
-import Ico from '../../Ico.vue';
-import UploadFile from '../../UploadFile.vue';
+import BlueButton from '../../../buttons/BlueButton.vue';
+import RedButton from '../../../buttons/RedButton.vue';
+import DragAndDropZone from '../../../DragAndDropZone.vue';
+import Ico from '../../../Ico.vue';
+import UploadFile from '../../../UploadFile.vue';
 
 export default {
     components: {

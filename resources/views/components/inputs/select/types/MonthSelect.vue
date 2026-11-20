@@ -1,11 +1,11 @@
 <script>
-import RadioButton from '../../input/RadioButton.vue';
 import BaseSelect from '../BaseSelect.vue'
+import Input from '../../input/Input.vue';
 
 export default{
     components: {
         BaseSelect,
-        RadioButton
+        Input
     },
 
     props:{
@@ -108,7 +108,7 @@ export default{
         :on-option-click="optionClickHandler"
     >
         <template #option="{ option, selected, onKey, onOptionClick }">
-            <RadioButton
+            <Input type="radio"
                 :value="localValue"
                 :checked="selected"
                 :name="`${name}[]`"

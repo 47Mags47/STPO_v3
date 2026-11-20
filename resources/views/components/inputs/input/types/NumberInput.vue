@@ -1,5 +1,5 @@
 <script>
-import Baseinput from './Baseinput.vue';
+import Baseinput from '../Baseinput.vue';
 
 export default {
     components: {
@@ -10,6 +10,6 @@ export default {
 
 <template>
     <Baseinput
-        type="text"
+        type="number"
     />
 </template>

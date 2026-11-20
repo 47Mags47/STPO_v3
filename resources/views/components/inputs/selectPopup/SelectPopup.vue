@@ -1,8 +1,7 @@
 <script>
 import Ico from '../../Ico.vue';
 import ResourceTable from '../../tables/ResourceTable/ResourceTable.vue';
-import RadioButton from '../input/RadioButton.vue';
-import CheckBox from '../input/Checkbox.vue';
+import Input from '../input/Input.vue';
 import RedButton from '../../buttons/RedButton.vue';
 import BlueButton from '../../buttons/BlueButton.vue';
 import Popup from '../../Popup/Popup.vue';
@@ -15,8 +14,7 @@ export default {
     },
 
     components: {
-        RadioButton,
-        CheckBox,
+        Input,
         ResourceTable,
         Ico,
         RedButton, BlueButton,
@@ -92,8 +90,9 @@ export default {
                         const value = Object.get(row, this.valueKey)
 
                         return {
-                            component: this.isArray ? CheckBox : RadioButton,
+                            component: Input,
                             props: {
+                                type: this.isArray ? 'checkbox' : 'radio',
                                 name: `${this.name}[]`,
                                 value:   value,
                                 checked: this.isArray

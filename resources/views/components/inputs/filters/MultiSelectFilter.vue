@@ -1,11 +1,11 @@
 <script>
-import Checkbox from '../input/Checkbox.vue';
 import BaseSelect from '../select/BaseSelect.vue';
+import Input from '../input/Input.vue';
 
 export default {
     components: {
         BaseSelect,
-        Checkbox,
+        Input,
     },
 
     data() {
@@ -70,7 +70,7 @@ export default {
         :on-option-click="optionClickHandler"
     >
         <template #option="{ option, selected, onKey, onOptionClick }">
-            <Checkbox
+            <Input type="checkbox"
                 :value="Object.get(option, valueKey)"
                 :checked="selected"
                 :name="`${name}[]`"

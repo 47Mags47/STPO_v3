@@ -1,5 +1,5 @@
 <script>
-import NumberInput from './NumberInput.vue';
+import NumberInput from '../NumberInput.vue';
 
 export default {
     components: {

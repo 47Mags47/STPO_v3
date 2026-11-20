@@ -1,9 +1,9 @@
 <script>
-import Checkbox from '../input/Checkbox.vue';
+import Input from '../input/Input.vue';
 
 export default {
     components: {
-        Checkbox
+        Input
     },
 
     props:{
@@ -52,7 +52,7 @@ export default {
 
 <template>
     <label class="checkbox-container" :class="{ 'active': isChecked }">
-        <Checkbox hidden v-bind="$attrs" :on-change="checkboxClickHandler" :checked="isChecked"/>
+        <Input type="checkbox" hidden v-bind="$attrs" :on-change="checkboxClickHandler" :checked="isChecked"/>
         <span> {{ placeholder }} </span>
     </label>
 </template>

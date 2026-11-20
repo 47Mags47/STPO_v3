@@ -8,7 +8,7 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
-import StringInput from '../../inputs/input/StringInput.vue';
+import Input from '../../inputs/input/Input.vue';
 
 export default {
     components: {
@@ -16,7 +16,7 @@ export default {
         TableRow,
         TableTh,
         TableTd,
-        StringInput,
+        Input,
 
         RowLink:                      defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
         FormItem:                     defineAsyncComponent(() => import("../../FormItem.vue")),
@@ -423,7 +423,7 @@ export default {
     >
         <template  #toolbar-left>
             <slot name="toolbar-left"></slot>
-            <StringInput
+            <Input type="string"
                 v-if="hasSearchInput"
                 :form="id"
                 class="string-input "

@@ -1,6 +1,8 @@
 <script>
 import VerticalForm from "./VerticalForm.vue";
 import BlueButton from "../buttons/BlueButton.vue";
+import Input from "../inputs/input/Input.vue";
+import Select from "../inputs/select/Select.vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
@@ -9,20 +11,9 @@ export default {
     components: {
         VerticalForm,
         BlueButton,
+        Input, Select,
 
         FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
-
-        StringInput:            defineAsyncComponent(() => import('../inputs/input/StringInput.vue')),
-        TextInput:              defineAsyncComponent(() => import('../inputs/input/TextInput.vue')),
-        PhoneInput:             defineAsyncComponent(() => import('../inputs/input/PhoneInput.vue')),
-        EmailInput:             defineAsyncComponent(() => import('../inputs/input/EmailInput.vue')),
-        PasswordInput:          defineAsyncComponent(() => import('../inputs/input/PasswordInput.vue')),
-        NumberInput:            defineAsyncComponent(() => import('../inputs/input/NumberInput.vue')),
-        Checkbox:               defineAsyncComponent(() => import('../inputs/input/Checkbox.vue')),
-        BigFilesInput:          defineAsyncComponent(() => import('../inputs/input/BigFilesInput.vue')),
-        BigFileInput:           defineAsyncComponent(() => import('../inputs/input/BigFileInput.vue')),
-
-        Select:                 defineAsyncComponent(() => import('../inputs/select/Select.vue')),
 
         SingleSelectPopup:      defineAsyncComponent(() => import('../inputs/selectPopup/SingleSelectPopup.vue')),
         MultiSelectPopup:       defineAsyncComponent(() => import('../inputs/selectPopup/MultiSelectPopup.vue')),
@@ -118,19 +109,11 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput            v-if="input.type === 'string'"              v-bind="prepareProps(input)" />
-                <TextInput              v-if="input.type === 'text'"                v-bind="prepareProps(input)" />
-                <NumberInput            v-if="input.type === 'number'"              v-bind="prepareProps(input)" />
-                <PhoneInput             v-if="input.type === 'phone'"               v-bind="prepareProps(input)" />
-                <EmailInput             v-if="input.type === 'email'"               v-bind="prepareProps(input)" />
-                <PasswordInput          v-if="input.type === 'password'"            v-bind="prepareProps(input)" />
-                <Checkbox               v-if="input.type === 'checkbox'"            v-bind="prepareProps(input)" />
-                <BigFileInput           v-if="input.type === 'bigFile'"             v-bind="prepareProps(input)" />
-                <BigFilesInput          v-if="input.type === 'bigFiles'"            v-bind="prepareProps(input)" />
+                <Input                  :type="input.type"                          v-bind="prepareProps(input)" />
+                <Select                 :type="input.type"                          v-bind="prepareProps(input)" />
 
                 <SingleSelectPopup      v-if="input.type === 'singleSelectPopup'"   v-bind="prepareProps(input)" />
                 <MultiSelectPopup       v-if="input.type === 'multiSelectPopup'"    v-bind="prepareProps(input)" />
-                <Select                 v-if="input.type === 'select'"              v-bind="prepareProps(input)" />
 
                 <DatePicker             v-if="input.type === 'date'"                v-bind="prepareProps(input)" />
             </FormItem>
