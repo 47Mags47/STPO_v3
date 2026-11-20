@@ -95,7 +95,7 @@ export default {
 </script>
 
 <template>
-    <div class="select-popup-input-wrapper">
+    <div class="multi-select-popup-input-wrapper">
         <Baseinput
             type="text"
             ref="selectPopupInput"
@@ -132,7 +132,7 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.select-popup-input-wrapper
+.multi-select-popup-input-wrapper
     display: flex
     gap: 5px
 

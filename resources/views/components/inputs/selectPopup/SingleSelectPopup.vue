@@ -93,7 +93,7 @@ export default {
             handler(val) {
                 // HACK пока так.. (чтобы передавать айдишники нужно переделать)
                 this.localValue = Object.get(val, this.valueKey)
-                this.localLabel = Object.get(val, this.labelKey)
+                this.localLabel = Object.get(val, this.labelKey) ?? ''
             }
         }
     }
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <template>
-    <div class="select-popup-input-wrapper">
+    <div class="single-select-popup-input-wrapper">
         <Baseinput
             v-if="!hidden"
             type="text"
@@ -138,7 +138,7 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-.select-popup-input-wrapper
+.single-select-popup-input-wrapper
     display: flex
     gap: 5px
 
