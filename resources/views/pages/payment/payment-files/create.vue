@@ -20,7 +20,7 @@ export default {
         :action="route('payment.payment-files.store', { event: event.id })"
         :inputs="[
             {
-                type: 'selectPopup',
+                type: 'singleSlectPopup',
                 name: 'bank_id',
                 label: 'Банк',
                 caption: 'Банки',

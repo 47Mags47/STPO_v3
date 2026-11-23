@@ -8,7 +8,9 @@ import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
 
-import StringInput from '../../inputs/StringInput.vue';
+import Input from '../../inputs/input/Input.vue';
+import Filter from '../../inputs/filter/Filter.vue';
+
 
 export default {
     components: {
@@ -16,28 +18,20 @@ export default {
         TableRow,
         TableTh,
         TableTd,
-        StringInput,
+        Input, Filter,
 
-        RowLink:                defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
-        FormItem:               defineAsyncComponent(() => import("../../FormItem.vue")),
+        RowLink:                      defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
+        FormItem:                     defineAsyncComponent(() => import("../../FormItem.vue")),
 
-        CreateButton:           defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
-        EditButton:             defineAsyncComponent(() => import("../buttons/EditButton.vue")),
-        ShowButton:             defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
-        DeleteButton:           defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
+        CreateButton:                 defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
+        EditButton:                   defineAsyncComponent(() => import("../buttons/EditButton.vue")),
+        ShowButton:                   defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
+        DeleteButton:                 defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
 
-        Ico:                    defineAsyncComponent(() => import("../../Ico.vue")),
-        Paginator:              defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
-        BlueButton:             defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
-        RedButton:              defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
-
-        CheckboxFilter:         defineAsyncComponent(() => import("../../inputs/filters/CheckboxFilter.vue")),
-        SingleSelectFilter:     defineAsyncComponent(() => import('../../inputs/filters/SingleSelectFilter.vue')),
-        MultiSelectFilter:      defineAsyncComponent(() => import('../../inputs/filters/MultiSelectFilter.vue')),
-        NumberBetweenFilter:    defineAsyncComponent(() => import('../../inputs/filters/NumberBetweenFilter.vue')),
-        DateFilter:             defineAsyncComponent(() => import('../../inputs/filters/DateFilter.vue')),
-        MultiSelectPopupFilter: defineAsyncComponent(() => import('../../inputs/filters/MultiSelectPopupFilter.vue')),
-        SelectPopupFilter:      defineAsyncComponent(() => import('../../inputs/filters/SelectPopupFilter.vue')),
+        Ico:                          defineAsyncComponent(() => import("../../Ico.vue")),
+        Paginator:                    defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
+        BlueButton:                   defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
+        RedButton:                    defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
     },
 
     data() {
@@ -134,9 +128,7 @@ export default {
                         'checkbox',
                         'singleSelect',
                         'multiSelect',
-                        'selectPopup',
                         'multiSelectPopup',
-                        'numberBetween',
                         'date'
                     ].includes(input.type);
                 });
@@ -233,7 +225,6 @@ export default {
                             .map(Number)
                         break
 
-                    case 'numberBetween':
                     case 'date':
                         value = {
                             from: formData.get(`filters[${name}]_from`) ?? '',
@@ -349,8 +340,8 @@ export default {
                 : this.hasDeleteButton
         },
 
-        checkCellVisible(row, collumn) {
-            let visible = collumn.visible ?? true
+        checkCellVisible(row, column) {
+            let visible = column.visible ?? true
 
             return typeof visible === 'function'
                 ? visible(row)
@@ -358,22 +349,22 @@ export default {
         },
 
         // MATH
-        getCellValue(row, collumn){
-            if('render' in collumn) {
-                let renderData = collumn.render(row)
+        getCellValue(row, column){
+            if('render' in column) {
+                let renderData = column.render(row)
 
                 let props = {
                     ...renderData.props,
-                    onClick: (e) => renderData.props.onClick(e)
+                    onClick: (e) => renderData.props.onClick ? renderData.props.onClick(e) : null
                 }
 
                 return () => h(renderData.component ?? 'div', {...props});
             }
 
-            if(typeof collumn.value == 'function')
-                return collumn.value(row)
+            if(typeof column.value == 'function')
+                return column.value(row)
 
-            return Object.get(row, collumn.dataIndex)
+            return Object.get(row, column.dataIndex)
         },
         getCellRowspan(row, column, index) {
             if (typeof column.rowspan === 'function') {
@@ -429,7 +420,7 @@ export default {
     >
         <template  #toolbar-left>
             <slot name="toolbar-left"></slot>
-            <StringInput
+            <Input type="string"
                 v-if="hasSearchInput"
                 :form="id"
                 class="string-input "
@@ -476,14 +467,7 @@ export default {
                 >
                     <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
                         <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <MultiSelectFilter      v-if="filter.type === 'multiSelect'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SingleSelectFilter     v-if="filter.type === 'singleSelect'"     v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <MultiSelectPopupFilter v-if="filter.type === 'multiSelectPopup'" v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <SelectPopupFilter      v-if="filter.type === 'selectPopup'"      v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-
-                            <CheckboxFilter         v-if="filter.type === 'checkbox'"         v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <NumberBetweenFilter    v-if="filter.type === 'numberBetween'"    v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                            <DateFilter             v-if="filter.type === 'date'"             v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
+                            <Filter   :type="filter.type"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
                         </div>
                     </div>
                 </div>
@@ -541,17 +525,17 @@ export default {
                     :key="row.id ?? index"
                     :class="getRowClasses(row)"
                 >
-                    <template v-for="collumn in columns" :key="collumn.dataIndex">
+                    <template v-for="column in columns" :key="column.dataIndex">
                         <TableTd
                             v-if="
-                                checkCellVisible(row, collumn)
-                                && getCellRowspan(row, collumn, index) !== 0
+                                checkCellVisible(row, column)
+                                && getCellRowspan(row, column, index) !== 0
                             "
                             v-bind="{
-                                ...collumn,
+                                ...column,
                                 row,
-                                value: getCellValue(row, collumn),
-                                rowspan: getCellRowspan(row, collumn, index)
+                                value: getCellValue(row, column),
+                                rowspan: getCellRowspan(row, column, index)
                             }"
                         />
                     </template>

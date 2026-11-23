@@ -24,7 +24,7 @@ export default {
             label: 'Дата',
         },
         {
-            type: 'selectPopup',
+            type: 'singleSelectPopup',
             name: 'payment_id',
             label: 'Выплата',
             caption: 'Выплаты',

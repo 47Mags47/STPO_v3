@@ -31,14 +31,14 @@ export default {
                 value: template.name,
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'style_id',
                 label: 'Вид',
                 options: templateStyles,
                 value: template.style_id,
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'type_id',
                 label: 'Тип',
                 options: templateTypes,

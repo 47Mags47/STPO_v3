@@ -13,11 +13,11 @@ export default {
         }
     },
     methods: {
-        selectDivisionHandler(division) {
+        selectDivisionHandler(event, division) {
             this.division = division
             this.user = null
         },
-        selectUserHandler(user) {
+        selectUserHandler(event, user) {
             this.user = user
         },
         getUsersURL(){
@@ -37,11 +37,11 @@ export default {
         sbm="Добавить"
         :inputs="[
             {
-                type: 'selectPopup',
+                type: 'singleSelectPopup',
                 name: 'division_id',
                 label: 'Организация',
                 url: route('api.administrate.divisions.index'),
-                onSelect: selectDivisionHandler,
+                onChange: selectDivisionHandler,
                 columns: [
                     {
                         title: 'Наименование',
@@ -50,14 +50,14 @@ export default {
                 ]
             },
             {
-                type: 'selectPopup',
+                type: 'singleSelectPopup',
                 name: 'user_id',
                 label: 'Пользователь',
                 labelKey: 'full_name',
                 url: route('api.base.users.index'),
                 urlParams: { filters: { division: division?.id }},
                 disabled: division === null,
-                onSelect: selectUserHandler,
+                onChange: selectUserHandler,
                 value: user ?? {},
                 columns: [
                     {
@@ -75,7 +75,7 @@ export default {
                 ]
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'permission_id',
                 label: 'Доступ',
                 options: permissions

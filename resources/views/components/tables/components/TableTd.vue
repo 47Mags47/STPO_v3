@@ -99,12 +99,9 @@ export default {
                     : ''
 
             if(this.type == 'file-status'){
-                console.log(this.row)
                 if(this.row.file.status.code){
 
                 }
-
-                return '<h1>test<h1>'
             }
 
             if (this.type == 'bool')

@@ -30,7 +30,7 @@ export default {
                 placeholder: division.name,
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'city_id',
                 label: 'Город',
                 options: cities,

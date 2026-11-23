@@ -27,7 +27,7 @@ export default {
                 placeholder: 'Введите наименование',
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'group_id',
                 label: 'Группа',
                 options: groups,

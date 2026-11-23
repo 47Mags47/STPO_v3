@@ -14,7 +14,7 @@ export default{
     :action="route('appeal.appeals.store')"
     :inputs="[
         {
-            type: 'selectPopup',
+            type: 'singleSelectPopup',
             name: 'theme_id',
             label: 'Тема',
             caption: 'Темы',

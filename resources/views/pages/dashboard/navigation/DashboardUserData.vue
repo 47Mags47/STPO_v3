@@ -1,13 +1,13 @@
 <script>
 import { usePage } from "@inertiajs/vue3";
 import { DashboardLayout } from "@layouts";
-import { ResourceForm, Ico, SwitcherInput } from '@components';
+import { ResourceForm, Ico, Input } from '@components';
 
 export default {
     components: {
         DashboardLayout,
         ResourceForm,
-        SwitcherInput,
+        Input,
         Ico
     },
     data() {
@@ -204,10 +204,9 @@ export default {
                     </div>
 
                     <span class="text-2xl!"> Данные </span>
-                    <SwitcherInput
+                    <Input type="switcher"
                         class="justify-self-end"
                         :on-click="editClickHandler"
-                        :value="formDisabled"
                         label="редактировать"
                     />
                 </div>

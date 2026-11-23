@@ -38,7 +38,7 @@ export default {
             value: payment.name,
         },
         {
-            type: 'select',
+            type: 'singleSelect',
             name: 'law_id',
             label: 'Закон',
             options: laws,

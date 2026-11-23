@@ -1,6 +1,6 @@
 <script>
 import { default as Link } from './components/TablePaginatorLink.vue'
-import NumberInput from '../inputs/NumberInput.vue';
+import Input from '../inputs/input/Input.vue';
 import { router } from '@inertiajs/vue3';
 
 export default {
@@ -15,7 +15,7 @@ export default {
 
     components: {
         Link,
-        NumberInput
+        Input
     },
 
     props: {
@@ -134,7 +134,7 @@ export default {
             <Link v-if="current_page > 2" :page="current_page - 2"           :url="generateLink(current_page - 2)" />
             <Link v-if="current_page > 1" :page="current_page - 1"           :url="generateLink(current_page - 1)" />
 
-            <NumberInput
+            <Input type="number"
                 class="string-input"
                 :style="{
                     width: `${String(inputText).length + 3}ch`

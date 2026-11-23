@@ -10,6 +10,7 @@ export function fixOverflow(el) {
     el.style.display        = 'flex'
 
     let isOverflow = false
+    let side = null
     const rect = el.getBoundingClientRect();
 
     const overflowBottom = rect.bottom > window.innerHeight;
@@ -18,14 +19,16 @@ export function fixOverflow(el) {
     // Если вылез снизу за экран
     if (overflowBottom) {
         el.style.top = 'auto';
-        el.style.bottom = '10px';
+        el.style.bottom = '100%';
         isOverflow = true;
+        side = 'bottom'
     }
     if(overflowRight) {
         el.style.left    = 'auto'
         el.style.right = '10px'
 
         isOverflow = true
+        side = 'right'
     }
     // Другие
     // .....
@@ -36,7 +39,10 @@ export function fixOverflow(el) {
 
     void el.offsetHeight
 
-    return isOverflow
+    return {
+        side: side,
+        state: isOverflow
+    }
 }
 
 window.fixOverflow = fixOverflow;

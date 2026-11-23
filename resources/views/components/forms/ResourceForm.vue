@@ -1,6 +1,7 @@
 <script>
 import VerticalForm from "./VerticalForm.vue";
 import BlueButton from "../buttons/BlueButton.vue";
+import Input from "../inputs/input/Input.vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
@@ -9,27 +10,9 @@ export default {
     components: {
         VerticalForm,
         BlueButton,
+        Input,
 
         FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
-
-        StringInput:            defineAsyncComponent(() => import('../inputs/StringInput.vue')),
-        TextInput:              defineAsyncComponent(() => import('../inputs/TextInput.vue')),
-        PhoneInput:             defineAsyncComponent(() => import('../inputs/PhoneInput.vue')),
-        EmailInput:             defineAsyncComponent(() => import('../inputs/EmailInput.vue')),
-        PasswordInput:          defineAsyncComponent(() => import('../inputs/PasswordInput.vue')),
-        NumberInput:            defineAsyncComponent(() => import('../inputs/NumberInput.vue')),
-        DateInput:              defineAsyncComponent(() => import('../inputs/DateInput.vue')),
-        CheckBox:               defineAsyncComponent(() => import('../inputs/CheckBox.vue')),
-
-        Select:                 defineAsyncComponent(() => import('../inputs/Select.vue')),
-        SelectPopupInput:       defineAsyncComponent(() => import('../inputs/SelectPopup/SelectPopupInput.vue')),
-        MultiSelectPopupInput:  defineAsyncComponent(() => import('../inputs/SelectPopup/MultiSelectPopupInput.vue')),
-
-        BigFilesInput:          defineAsyncComponent(() => import('../inputs/BigFilesInput.vue')),
-        BigFileInput:           defineAsyncComponent(() => import('../inputs/BigFileInput.vue')),
-
-        DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
-        MonthSelect:            defineAsyncComponent(() => import('../inputs/MonthSelect.vue')),
     },
 
     props: {
@@ -37,39 +20,6 @@ export default {
             type: Array,
             default() {
                 return [];
-            },
-            validator(value) {
-                let hasInvalidType = value.filter((input) => {
-                    return ![
-                        'string',
-                        'number',
-                        'email',
-                        'phone',
-                        'password',
-                        'text',
-                        'select',
-                        'selectPopup',
-                        'multiSelectPopup',
-                        'checkbox',
-                        'file',
-                        'bigFile',
-                        'bigFiles',
-                        'date',
-                        'monthSelect'
-                    ].includes(input.type);
-                });
-
-                if (hasInvalidType.length !== 0) {
-                    hasInvalidType.forEach((input) => {
-                        throw new Error(
-                            `Недействительный тип "${input.type}"!`,
-                        );
-                    });
-
-                    return false;
-                }
-
-                return true;
             },
         },
         sbm: {
@@ -103,6 +53,7 @@ export default {
             if (input.type === "checkbox") return "horizontal-reverse";
         },
     },
+
 };
 </script>
 
@@ -120,22 +71,7 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <StringInput            v-if="input.type === 'string'"           v-bind="prepareProps(input)" />
-                <TextInput              v-if="input.type === 'text'"             v-bind="prepareProps(input)" />
-                <NumberInput            v-if="input.type === 'number'"           v-bind="prepareProps(input)" />
-                <PhoneInput             v-if="input.type === 'phone'"      v-bind="prepareProps(input)" />
-                <EmailInput             v-if="input.type === 'email'"            v-bind="prepareProps(input)" />
-                <PasswordInput          v-if="input.type === 'password'"         v-bind="prepareProps(input)" />
-                <CheckBox               v-if="input.type === 'checkbox'"         v-bind="prepareProps(input)" />
-                <BigFileInput           v-if="input.type === 'bigFile'"          v-bind="prepareProps(input)" />
-                <BigFilesInput          v-if="input.type === 'bigFiles'"         v-bind="prepareProps(input)" />
-
-                <SelectPopupInput       v-if="input.type === 'selectPopup'"      v-bind="prepareProps(input)" />
-                <MultiSelectPopupInput  v-if="input.type === 'multiSelectPopup'" v-bind="prepareProps(input)" />
-                <Select                 v-if="input.type === 'select'"           v-bind="prepareProps(input)" />
-
-                <DatePicker             v-if="input.type === 'date'"             v-bind="prepareProps(input)" />
-                <MonthSelect            v-if="input.type === 'monthSelect'"      v-bind="prepareProps(input)" />
+                <Input                :type="input.type"        v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>

@@ -26,7 +26,7 @@ export default {
                 value: category.name
             },
             {
-                type: 'select',
+                type: 'singleSelect',
                 name: 'sfr_payment_category_id',
                 label: 'Категория СФР',
                 options: sfr_categories.data,
