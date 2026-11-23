@@ -8,10 +8,6 @@ export default {
     },
 
     props: {
-        data: {
-            type: Array,
-            default: () => []
-        },
         columns: {
             type: Array,
             default: ([])
@@ -47,12 +43,12 @@ export default {
             </TableTh>
         </template>
 
-        <template v-if="columns.length > 0 && data.length > 0">
-            <TableTh v-if="!hasDeleteButton" button />
-            <TableTh v-if="!hasShowButton"   button />
-            <TableTh v-if="!hasEditButton"   button />
+        <template v-if="columns.length > 0">
+            <TableTh v-if="hasDeleteButton" button />
+            <TableTh v-if="hasShowButton"   button />
+            <TableTh v-if="hasEditButton"   button />
         </template>
 
-        <TableTh v-for="link in rowLinks" button />
+        <TableTh v-for="link in rowLinks"   button />
     </TableRow>
 </template>

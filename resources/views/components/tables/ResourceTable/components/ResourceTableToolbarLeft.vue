@@ -1,5 +1,6 @@
 <script>
 import Input from '../../../inputs/input/Input.vue';
+import { router } from '@inertiajs/vue3';
 
 export default {
     components: {
@@ -14,12 +15,39 @@ export default {
             type: Boolean,
             type: true
         },
-
-        // HANDLERS
-        onSearch: {
+        onSearchInput: {
             type: Function,
-            default: () => {}
+            type: () => {}
         }
+    },
+
+    data() {
+        return {
+            searchInputTimer: null,
+        }
+    },
+
+    methods: {
+        searchInputHandler(e) {
+            clearTimeout(this.searchInputTimer);
+
+            this.searchInputTimer = setTimeout(
+                this.onSearchInput !== null
+                    ? () => this.onSearchInput(e)
+                    : () => { router.get(window.location.pathname,
+                        {
+                            search: e.target.value
+                        },
+                        {
+                            preserveState: true,
+                        }
+                    );
+            }, 1000)
+        },
+    },
+
+    unmounted() {
+        clearTimeout(this.searchInputTimer);
     }
 };
 </script>
@@ -34,7 +62,7 @@ export default {
             class="string-input"
             placeholder="Поиск.."
             name="search[appealId]"
-            :on-input="onSearch"
+            :on-input="searchInputHandler"
         />
     </div>
 </template>
@@ -43,4 +71,7 @@ export default {
 .toolbar-left-wrapper
     width: 100%
     height: 100%
+
+    :deep(input)
+        width: 240px
 </style>

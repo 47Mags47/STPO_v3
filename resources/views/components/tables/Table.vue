@@ -1,6 +1,4 @@
 <script>
-import { Form } from '@inertiajs/vue3';
-
 export default {
     props: {
         caption: {
@@ -16,55 +14,23 @@ export default {
             default: null
         },
     },
-
-    components: {
-        Form,
-    },
-
-    computed:{
-        currentURL: () => location.href
-    },
 };
 </script>
 
 <template>
     <div class="table-container">
         <div class="table-header">
-            <slot name="header" />
-
             <div class="header" v-if="caption !== null">
-                <h3>
-                    {{ caption }}
-                </h3>
+                <h3> {{ caption }} </h3>
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <Form
-                    ref="filtersForm"
-                    method="GET"
-                    :action="currentURL" class="pt-0!"
-                    :options="{
-                        preserveState: true,
-                        onSuccess: onApplyFilters
-                    }"
-                >
-                    <slot name="filters"></slot>
-                </Form>
+                <slot name="filters"></slot>
             </div>
 
             <div v-if="['toolbar-left', 'paginator-top', 'toolbar-right'].some(slot => $slots[slot])" class="flex w-full">
                 <div class="toolbar-left flex-1" v-if="'toolbar-left' in $slots">
-                    <Form
-                        ref="toolbarLeftRef"
-                        method="GET"
-                        :id
-                        :action="currentURL"
-                        :options="{
-                            preserveState: true,
-                        }"
-                    >
-                        <slot name="toolbar-left" />
-                    </Form>
+                    <slot name="toolbar-left" />
                 </div>
 
                 <div class="paginator" v-if="'paginator-top' in $slots">
@@ -125,14 +91,11 @@ export default {
             gap: 32px
         .paginator
             width: 385px
-        .toolbar-left form
+        .toolbar-left
             display: flex
             justify-content: flex-start
             align-items: center
             gap: 1rem
-            border: 0
-            padding: 0
-            margin: 0
             width: fit-content
         .toolbar-right
             display: flex
