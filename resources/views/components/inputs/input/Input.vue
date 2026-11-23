@@ -54,4 +54,6 @@ export default {
     <SwitcherInput          v-if="type === 'switcher'"         v-bind="$attrs" />
     <BigFileInput           v-if="type === 'bigFile'"          v-bind="$attrs" />
     <BigFilesInput          v-if="type === 'bigFiles'"         v-bind="$attrs" />
+
+    <!-- HACK по идее можно дописать селекты и датапикер -->
 </template>
