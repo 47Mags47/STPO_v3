@@ -5,21 +5,11 @@ namespace App\Http\Controllers\Appeal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Appeal\AppealStoreRequest;
 use App\Http\Resources\Appeal\AppealResource;
-use App\Http\Resources\Appeal\ThemeGROUPBYGroupResource;
 use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Theme;
-use App\Models\Appeal\ThemeGroup;
 use App\Models\Base\Chat;
 use App\Models\Base\User;
-use App\Models\Base\ChatMessage;
-use App\Models\Base\Notification;
-use App\Events\Appeal\AppealCreated;
-use App\Events\Appeal\StatusChanged;
-use App\Events\Base\SendNotificationEvent;
-use App\Events\Appeal\MessageSent;
-use App\Events\Base\SendChatMessageEvent;
-use App\Models\Base\NotificationType;
 use Inertia\Inertia;
 
 class AppealController extends Controller
@@ -41,9 +31,7 @@ class AppealController extends Controller
 
     public function create()
     {
-        return Inertia::render('appeal/appeals/create', [
-            'theme_GROUPBY_group' => fn() => ThemeGROUPBYGroupResource::collection(ThemeGroup::all()),
-        ]);
+        return Inertia::render('appeal/appeals/create');
     }
 
     public function store(AppealStoreRequest $request)
@@ -57,14 +45,7 @@ class AppealController extends Controller
             'chat_id' => $chat->id,
         ]));
 
-        broadcast(new AppealCreated($appeal))->toOthers();
-
-        ChatMessage::factory()->create([
-            'message' => 'Заявка создана пользователем ' . user()->full_name,
-            'sender_id' => null,
-            'is_system' => true,
-            'chat_id' => $chat->id,
-        ]);
+        $chat->postSystemMessage('Заявка создана пользователем ' . user()->full_name, user()->id);
 
         return redirect()->route('appeal.appeals.show', ['appeal' => $appeal->id])->with('success', 'Запись успешно создана');
     }
@@ -88,34 +69,7 @@ class AppealController extends Controller
         ]);
 
         $appeal->chat->subscribers()->attach(user()->id);
-
-        broadcast(new StatusChanged($appeal))->toOthers();
-
-        $message = ChatMessage::factory()->create([
-            'message' => 'Заявка принята пользователем ' . user()->full_name,
-            'sender_id' => null,
-            'is_system' => true,
-            'chat_id' => $appeal->chat_id,
-        ]);
-
-        broadcast(new MessageSent(
-            $message,
-            $appeal->id,
-        ));
-
-        $appeal->chat->subscribers->each(function ($subscriber) use ($message) {
-            $notification = Notification::factory()->create([
-                'recipient_id' => $subscriber->id,
-                'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
-            ]);
-
-            broadcast(new SendNotificationEvent($notification));
-        });
+        $appeal->chat->postSystemMessage('Заявка принята пользователем ' . user()->full_name);
 
         return redirect()->route('appeal.appeals.show', ['appeal' => $appeal->id]);
     }
@@ -125,37 +79,9 @@ class AppealController extends Controller
         if(user()->cannot('close', $appeal))
             return abort(403);
 
-        $appeal->update([
-            'status_id' => 3,
-        ]);
+        $appeal->update(['status_id' => 3]);
 
-        broadcast(new StatusChanged($appeal))->toOthers();
-
-        $message = ChatMessage::factory()->create([
-            'message' => 'Заявка закрыта пользователем ' . user()->full_name,
-            'sender_id' => null,
-            'is_system' => true,
-            'chat_id' => $appeal->chat->id,
-        ]);
-
-        broadcast(new MessageSent(
-            $message,
-            $appeal->id,
-        ));
-
-        $appeal->chat->subscribers->each(function ($subscriber) use ($message) {
-            $notification = Notification::factory()->create([
-                'recipient_id' => $subscriber->id,
-                'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
-            ]);
-
-            broadcast(new SendNotificationEvent($notification));
-        });
+        $appeal->chat->postSystemMessage('Заявка закрыта пользователем ' . user()->full_name);
 
         return redirect()->route('appeal.appeals.index');
     }
@@ -165,37 +91,12 @@ class AppealController extends Controller
         if(user()->cannot('reaccept', $appeal))
             return abort(403);
 
-        $appeal->update([
-            'status_id' => 4
-        ]);
+        $appeal->update(['status_id' => 4]);
 
         if ($appeal->chat->subscribers()->where('user_id', user()->id)->count() === 0)
             $appeal->chat->subscribers()->attach(user()->id);
 
-        broadcast(new StatusChanged($appeal))->toOthers();
-
-        $message = ChatMessage::factory()->create([
-            'message' => 'Заявка возобновлена пользователем ' . user()->full_name,
-            'sender_id' => null,
-            'is_system' => true,
-            'chat_id' => $appeal->chat_id,
-        ]);
-
-        broadcast(new SendChatMessageEvent($message));
-
-        $appeal->chat->subscribers->each(function ($subscriber) use ($message) {
-            $notification = Notification::factory()->create([
-                'recipient_id' => $subscriber->id,
-                'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('message'),
-                'context' => [
-                    'chat_id' => $message->chat_id,
-                ]
-            ]);
-
-            broadcast(new SendNotificationEvent($notification));
-        });
+        $appeal->chat->postSystemMessage('Заявка возобновлена пользователем ' . user()->full_name);
 
         return redirect()->route('appeal.appeals.show', ['appeal' => $appeal->id]);
     }

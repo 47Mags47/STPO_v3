@@ -43,7 +43,7 @@ class Notification extends BaseModel
     public static function booted()
     {
         self::created(function ($model) {
-            broadcast(new SendNotificationEvent($model));
+            broadcast(new SendNotificationEvent($model))->toOthers();
         });
     }
 

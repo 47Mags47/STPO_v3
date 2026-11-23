@@ -3,6 +3,8 @@
 namespace App\Models\Appeal;
 
 use App\Classes\BaseModel;
+use App\Events\Appeal\AppealCreated;
+use App\Events\Appeal\StatusChanged;
 use App\Models\Base\Chat;
 use App\Models\Base\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,6 +27,19 @@ class Appeal extends BaseModel
         'status_id',
         'theme_id',
     ];
+
+    public static function booted()
+    {
+        self::created(function (self $appeal) {
+            broadcast(new AppealCreated($appeal))->toOthers();
+        });
+
+        self::updated(function (self $appeal) {
+            if ($appeal->isDirty('status_id')) {
+                broadcast(new StatusChanged($appeal))->toOthers();
+            }
+        });
+    }
 
     ### SCOPES
     ##################################################

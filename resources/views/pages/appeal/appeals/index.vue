@@ -72,7 +72,7 @@ export default {
 
         if (hasPermission('appeal_work')) {
             Echo.private('appeals')
-                .listen('.appeal.created_at', (data) => {
+                .listen('.appeal.created', (data) => {
                     this.appealList.unshift(data)
                 });
         }

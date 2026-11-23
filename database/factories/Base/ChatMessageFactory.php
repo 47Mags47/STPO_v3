@@ -3,7 +3,7 @@
 namespace Database\Factories\Base;
 
 use App\Models\Base\Chat;
-use App\Models\Base\User;
+use App\Models\Base\ChatMessage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,19 +18,20 @@ class ChatMessageFactory extends Factory
      */
     public function definition(): array
     {
-        $chat = Chat::randomOrCreate();
-
-        if($chat->subscribers()->count() === 0)
-            $chat->subscribers()->attach(User::randomOrCreate()->id);
-
         return [
             'message' => $this->faker->text(250),
 
             'is_readed' => false,
             'is_system' => false,
-
-            'chat_id' => $chat->id,
-            'sender_id' => $chat->subscribers->random()->id,
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (ChatMessage $message) {
+            if($message->chat_id === null){
+                $message->chat = Chat::randomOrCreate();
+            }
+        });
     }
 }
