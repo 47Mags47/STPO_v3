@@ -122,6 +122,28 @@ export default {
 
     methods: {},
 
+    computed: {
+        tableHeadValues() {
+            let values = []
+
+            this.columns.forEach(column => {
+                values.push(column.title)
+            })
+
+            // Если есть кнопка, ставим в имя колонки пустую строку
+            values.push(...[
+                this.hasShowButton && '',
+                this.hasEditButton && '',
+                this.hasDeleteButton && '',
+            ].filter(value => value !== false));
+
+            // Если есть rowLink (rowAction) в строке, ставим в имя колонки пустую строку
+            values.push(...Array(this.rowLinks.length).fill(''));
+
+            return values
+        }
+    },
+
     async mounted() {
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
@@ -189,14 +211,7 @@ export default {
         </template>
 
         <template v-if="data.length > 0" #thead>
-            <!-- HACK передавать массив [col1, col2, hasDeleteButon ? '' : null ....] -->
-            <ResourceTableHead
-                :row-links
-                :columns
-                :has-show-button
-                :has-edit-button
-                :has-delete-button
-            />
+            <ResourceTableHead :table-head-values />
         </template>
 
         <template #tbody>

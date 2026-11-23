@@ -112,6 +112,10 @@ export default {
             },
         ]"
     >
+        <template #header>
+            test
+        </template>
+
         <template #toolbar-left>
             <div class="month-picker-container">
                 <BlueButton :onClick="prevMonthButtonClickHandler">
@@ -135,18 +139,17 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-#payment-event-resource-table
-    .month-picker-container
-        display: flex
-        align-items: center
-        gap: 15px
+.month-picker-container
+    display: flex
+    align-items: center
+    gap: 15px
 
-        font-size: 1.2rem
+    font-size: 1.2rem
 
-        span
-            white-space: nowrap
+    span
+        white-space: nowrap
 
-        .blue-button
-            width: 35px
-            flex-shrink: 0
+    .blue-button
+        width: 35px
+        flex-shrink: 0
 </style>

@@ -8,28 +8,10 @@ export default {
     },
 
     props: {
-        columns: {
+        tableHeadValues: {
             type: Array,
-            default: ([])
-        },
-        rowLinks: {
-            type: Array,
-            default: () => [],
-        },
-
-        //
-        hasShowButton: {
-            type: [Boolean, Function],
-            default: false,
-        },
-        hasEditButton: {
-            type: [Boolean, Function],
-            default: false,
-        },
-        hasDeleteButton: {
-            type: [Boolean, Function],
-            default: false,
-        },
+            default: () => []
+        }
     }
 }
 </script>
@@ -37,18 +19,8 @@ export default {
 
 <template>
     <TableRow>
-        <template v-for="column in columns">
-            <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
-                <span> {{ column.title }} </span>
-            </TableTh>
-        </template>
-
-        <template v-if="columns.length > 0">
-            <TableTh v-if="hasDeleteButton" button />
-            <TableTh v-if="hasShowButton"   button />
-            <TableTh v-if="hasEditButton"   button />
-        </template>
-
-        <TableTh v-for="link in rowLinks"   button />
+        <TableTh v-for="thValue in tableHeadValues">
+            {{ thValue }}
+        </TableTh>
     </TableRow>
 </template>
