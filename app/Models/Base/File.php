@@ -82,40 +82,38 @@ class File extends BaseModel
     /**
      * Создаёт File и дочернюю модель, проставляя file_id.
      *
-     * @param class-string $ownerClass Класс модели-владельца
+     * @param class-string $child_class Класс дочерней модели
      * @param array<mixed> $attributes Атрибуты, распределённые между File и владельцем
      * @return FileModel Экземпляр модели-владельца
      */
-    public static function createAndLinkToOwner(string $ownerClass, ?array $attributes = []): FileModel
+    public static function createAndLinkToChild(string $child_class, ?array $attributes = []): FileModel
     {
-        return DB::transaction(function () use ($ownerClass, $attributes) {
-            $fillable = array_flip((new self())->getFillable());
-            $childAttributes = array_intersect_key($attributes, $fillable);
+        return DB::transaction(function () use ($child_class, $attributes) {
+            $file_attributes = array_intersect_key($attributes, array_flip((new self())->getFillable()));
+            $child_attributes = array_intersect_key($attributes, array_flip((new $child_class)->getFillable()));
 
-            $fileModel = self::createForOwner($ownerClass, $attributes);
+            $fileModel = self::createForOwner($child_class, $file_attributes);
+            $child_model = $child_class::create(array_merge(['file_id' => $fileModel->id,], $child_attributes));
 
-            return $ownerClass::create(array_merge([
-                'file_id' => $fileModel->id,
-            ], $childAttributes));
+            return $child_model;
         });
     }
 
     /**
      * Создаёт File, подставляя disk/path из класса-владельца.
      *
-     * @param class-string $ownerClass Класс модели-владельца
+     * @param class-string $owner_class Класс модели-владельца
      * @param array<mixed> $attributes Атрибуты File
      * @return self
      */
-    public static function createForOwner(string $ownerClass, ?array $attributes = []): self
+    public static function createForOwner(string $owner_class, ?array $attributes = []): self
     {
-        $fillable = array_flip((new self())->getFillable());
-        $fileAttributes = array_intersect_key($attributes, $fillable);
+        $file_attributes = array_intersect_key($attributes, array_flip((new self())->getFillable()));
 
         $fileModel = self::factory()->create(array_merge([
-            'disk' => $ownerClass::$storage_file_disk,
-            'path' => $ownerClass::$storage_file_path,
-        ], $fileAttributes));
+            'disk' => $owner_class::$storage_file_disk,
+            'path' => $owner_class::$storage_file_path,
+        ], $file_attributes));
 
         return $fileModel;
     }
