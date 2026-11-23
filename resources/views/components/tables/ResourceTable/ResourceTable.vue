@@ -1,19 +1,24 @@
 <script>
-import { h } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import { router } from '@inertiajs/vue3';
-
 import Table from '../Table.vue';
 import TableRow from '../components/TableRow.vue';
 import TableTh from '../components/TableTh.vue';
 import TableTd from '../components/TableTd.vue';
-
 import Input from '../../inputs/input/Input.vue';
 import Filter from '../../inputs/filter/Filter.vue';
-
+//
+import ResourceTableToolbarLeft from './components/ResourceTableToolbarLeft.vue';
+import ResourceTableToolbarRight from './components/ResourceTableToolbarRight.vue';
+import ResourceTableFilters from './components/ResourceTableFilters.vue';
+import ResourceTableBody from './components/ResourceTableBody.vue';
+import ResourceTableHead from './components/ResourceTableHead.vue';
 
 export default {
     components: {
+        ResourceTableToolbarLeft, ResourceTableToolbarRight, ResourceTableFilters,
+        ResourceTableBody, ResourceTableHead,
+        //
         Table,
         TableRow,
         TableTh,
@@ -186,14 +191,7 @@ export default {
                 }
             );
         },
-        preparePropsFromFilter(filter) {
-            const { type, label, ...rest } = filter;
 
-            rest.value = this.cachedFilters[type]?.value?.[rest.name] ?? rest.value
-            rest.name = `filters[${rest.name}]`
-
-            return rest;
-        },
         toggleFilterVisible() {
             this.isFilterOpen = !this.isFilterOpen;
         },
@@ -299,80 +297,6 @@ export default {
                     );
             }, 1000)
         },
-
-        // ClASSES
-        getRowClasses(row) {
-            if (this.rowClasses === null) return
-
-            if (typeof this.rowClasses === 'string')
-                return this.rowClasses
-
-            if (typeof this.rowClasses === 'object')
-                return Object.keys().filter((key) => this.rowClasses[key] === true).join(' ')
-
-            if (Array.isArray(this.rowClasses))
-                return this.rowClasses.join(' ')
-
-            if (typeof this.rowClasses === 'function') {
-                let returned = this.rowClasses(row)
-
-                if ( typeof returned !== 'string' )
-                    console.error('rowClasses должен возвращать строку. Возвращаемое значение: ', returned)
-
-                return returned
-            }
-        },
-
-        // CHECK
-        checkRowHasShowButton(row) {
-            return typeof this.hasShowButton === 'function'
-                ? this.hasShowButton(row)
-                : this.hasShowButton
-        },
-        checkRowHasEditButton(row) {
-            return typeof this.hasEditButton === 'function'
-                ? this.hasEditButton(row)
-                : this.hasEditButton
-        },
-        checkRowHasDeleteButton(row) {
-            return typeof this.hasDeleteButton === 'function'
-                ? this.hasDeleteButton(row)
-                : this.hasDeleteButton
-        },
-
-        checkCellVisible(row, column) {
-            let visible = column.visible ?? true
-
-            return typeof visible === 'function'
-                ? visible(row)
-                : visible ?? true
-        },
-
-        // MATH
-        getCellValue(row, column){
-            if('render' in column) {
-                let renderData = column.render(row)
-
-                let props = {
-                    ...renderData.props,
-                    onClick: (e) => renderData.props.onClick ? renderData.props.onClick(e) : null
-                }
-
-                return () => h(renderData.component ?? 'div', {...props});
-            }
-
-            if(typeof column.value == 'function')
-                return column.value(row)
-
-            return Object.get(row, column.dataIndex)
-        },
-        getCellRowspan(row, column, index) {
-            if (typeof column.rowspan === 'function') {
-                return column.rowspan(row, index, this.data)
-            }
-
-            return column.rowspan
-        },
     },
 
     async mounted() {
@@ -418,19 +342,16 @@ export default {
         :on-apply-filters="applyFilters"
         :id
     >
-        <template  #toolbar-left>
-            <slot name="toolbar-left"></slot>
-            <Input type="string"
-                v-if="hasSearchInput"
-                :form="id"
-                class="string-input "
-                placeholder="Поиск.."
-                name="search[appealId]"
-                :on-input="inputHandler"
+        <template #toolbar-left>
+            <slot name="toolbar-left" />
+            <ResourceTableToolbarLeft
+                :id
+                :has-search-input
+                :on-search="inputHandler"
             />
         </template>
 
-        <template #paginator>
+        <template #paginator-top>
             <div class="table-paginate-container">
                 <Paginator
                     v-if="meta.last_page > 1"
@@ -440,54 +361,22 @@ export default {
         </template>
 
         <template #toolbar-right>
-            <div class="table-search-container">
-
-            </div>
-            <div class="table-actions-container">
-                <slot name="actions" />
-                <div class="resource-table-actions-container">
-                    <template v-for="action in actions">
-                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </BlueButton>
-                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </RedButton>
-                    </template>
-                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
-                </div>
-            </div>
+            <slot name="toolbar-right" />
+            <ResourceTableToolbarRight
+                :has-create-button
+                :on-create="createButtonClickHandler"
+            />
         </template>
 
         <template v-if="filters.length !== 0" #filters>
-            <div class="container-table-filters">
-                <div
-                    class="table-filters-collapse"
-                    :class="{ 'opened': isFilterOpen }"
-                >
-                    <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                        <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <Filter   :type="filter.type"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-btns">
-                    <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
-                        Сбросить
-                    </button>
-                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }">
-                        Применить
-                    </button>
-                    <button type="button" class="filter-showbtn"
-                    :class="{ active: isFilterOpen }"
-                    @click="toggleFilterVisible">
-                        <span> фильтры </span>
-                        <div class="filter-btn-item-icon">
-                            <Ico type="chevron-down" />
-                        </div>
-                    </button>
-                </div>
-            </div>
+            <ResourceTableFilters
+                :is-filter-open
+                :filters
+                :cached-filters
+                :filter-reset-key
+                :on-open="toggleFilterVisible"
+                :on-reset="resetFilters"
+            />
         </template>
 
         <template #colgroup>
@@ -501,83 +390,31 @@ export default {
 
         <template #thead>
             <slot name="thead" />
-            <TableRow>
-                <template v-for="column in columns">
-                    <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
-                        <span> {{ column.title }} </span>
-                    </TableTh>
-                </template>
-
-                <template v-if="columns.length > 0 && data.length > 0">
-                    <TableTh v-if="hasDeleteButton !== false" button />
-                    <TableTh v-if="hasShowButton !== false" button />
-                    <TableTh v-if="hasEditButton !== false" button />
-                </template>
-
-                <TableTh v-for="link in rowLinks" button />
-            </TableRow>
+            <ResourceTableHead
+                :data
+                :row-links
+                :has-show-button
+                :has-edit-button
+                :has-delete-button
+            />
         </template>
 
         <template #tbody>
-            <template v-if="data.length > 0">
-                <TableRow
-                    v-for="(row, index) in data"
-                    :key="row.id ?? index"
-                    :class="getRowClasses(row)"
-                >
-                    <template v-for="column in columns" :key="column.dataIndex">
-                        <TableTd
-                            v-if="
-                                checkCellVisible(row, column)
-                                && getCellRowspan(row, column, index) !== 0
-                            "
-                            v-bind="{
-                                ...column,
-                                row,
-                                value: getCellValue(row, column),
-                                rowspan: getCellRowspan(row, column, index)
-                            }"
-                        />
-                    </template>
-
-                    <TableTd v-if="checkRowHasDeleteButton(row)">
-                        <DeleteButton @click="() => deleteButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <TableTd v-if="checkRowHasShowButton(row)">
-                        <ShowButton @click="() => showButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <TableTd v-if="checkRowHasEditButton(row)">
-                        <EditButton @click="() => editButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <RowLink
-                        v-for="link in rowLinks"
-                        :key="link.name ?? link"
-                        v-bind="{ ...link, row }"
-                    />
-                </TableRow>
-            </template>
-
-            <tr v-else>
-                <TableTd
-                    :colspan="columns.length + rowLinks.length"
-                    vertical="center"
-                    horizontal="center"
-                    class="not-data-cell"
-                >
-                    <Ico
-                        class="h-[148px]!"
-                        type="database"
-                    />
-
-                    <span class="text">Данных нет :(</span>
-                </TableTd>
-            </tr>
+            <ResourceTableBody
+                :data
+                :columns
+                :row-links
+                :row-classes
+                :has-show-button
+                :has-edit-button
+                :has-delete-button
+                :on-show="showButtonClickHandler"
+                :on-edit="editButtonClickHandler"
+                :on-delete="deleteButtonClickHandler"
+            />
         </template>
 
-        <template v-if="meta.last_page > 1" #pagination>
+        <template v-if="meta.last_page > 1" #paginator-bottom>
             <Paginator v-bind="meta" />
         </template>
     </Table>
@@ -585,133 +422,9 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
-    :deep(.string-input)
-        width: 250px
-    .container-table-filters
-        width: 100%
-        display: flex
-        flex-direction: column
-
-        .table-filters-collapse
-            display: grid
-            grid-template-rows: 0fr
-            transition: grid-template-rows .3s ease
-            overflow: hidden
-
-            &.opened
-                grid-template-rows: 1fr
-                overflow: visible
-
-        :deep(.table-filters)
-            display: flex
-            flex-wrap: wrap
-            align-items: center
-            gap: 12px
-
-            min-height: 0
-            opacity: 0
-            padding-bottom: 0
-
-            transition: opacity .3s ease, padding-bottom .3s ease, padding-top .3s ease
-
-        .table-filters-collapse.opened
-            :deep(.table-filters)
-                opacity: 1
-                padding-bottom: 8px
-
-        :deep(.filter-item)
-            position: relative
-            display: flex
-            align-items: center
-
-            height: 32px
-            gap: 6px
-            padding: 6px 10px
-            border-radius: 14px
-            background: whitesmoke
-            transition: .2s ease
-
-            &:hover
-                background: lightgray
-                cursor: pointer
-                color: black
-                .filter-item-icon
-                    color: black
-                    transform: rotate(180deg)
-                .filter-item-content
-                    display: flex
-
-            .filter-item-icon
-                color: lightgray
-                height: 100%
-                width: 24px
-                transform: rotate(0deg)
-                transition: .2s ease
-
-        .filter-btns
-            display: flex
-            justify-content: end
-            gap: 4px
-
-            :deep(.filter-btn)
-                height: 35px
-                padding: 8px
-                border-radius: 8px
-                background: var(--button-background-color)
-                color: white
-                font-weight: bold
-                align-self: flex-end
-                transition: .2s ease
-
-                opacity: 0
-                visibility: hidden
-
-                &.filterShow
-                    opacity: 1
-                    visibility: visible
-
-                &:hover
-                    background: var(--button-background-color-hover)
-                    cursor: pointer
-
-            :deep(.filter-showbtn)
-                display: flex
-                justify-content: center
-                gap: 6px
-                height: 35px
-                padding: 8px
-                border-radius: 8px
-                background: var(--button-background-color)
-                color: white
-                align-self: flex-end
-                transition: .2s ease
-                font-weight: bold
-
-                &:hover
-                    background: var(--button-background-color-hover)
-                    cursor: pointer
-
-                &.active
-                    .filter-btn-item-icon
-                        transform: rotate(540deg)
-
-                .filter-btn-item-icon
-                    color: lightgray
-                    height: 100%
-                    width: fit-content
-                    transition: .2s ease
-                    transform: rotate(0deg)
     :deep()
         .table-header
             padding: 0 15px
-        .toolbar
-            .table-actions-container
-                display: flex
-                gap: 10px
-                .button
-                    padding: 9px
-                    width: 35px
-                    height: 35px
 
         .table-content
             .not-data-cell .table-cell-container

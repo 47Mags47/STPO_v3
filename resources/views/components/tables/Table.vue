@@ -30,6 +30,8 @@ export default {
 <template>
     <div class="table-container">
         <div class="table-header">
+            <slot name="header" />
+
             <div class="header" v-if="caption !== null">
                 <h3>
                     {{ caption }}
@@ -50,7 +52,7 @@ export default {
                 </Form>
             </div>
 
-            <div v-if="['toolbar-left', 'paginator', 'toolbar-right'].some(slot => $slots[slot])" class="flex justify-center w-full">
+            <div v-if="['toolbar-left', 'paginator-top', 'toolbar-right'].some(slot => $slots[slot])" class="flex w-full">
                 <div class="toolbar-left flex-1" v-if="'toolbar-left' in $slots">
                     <Form
                         ref="toolbarLeftRef"
@@ -61,16 +63,16 @@ export default {
                             preserveState: true,
                         }"
                     >
-                        <slot name="toolbar-left"></slot>
+                        <slot name="toolbar-left" />
                     </Form>
                 </div>
 
-                <div class="paginator" v-if="'paginator' in $slots">
-                    <slot name="paginator"></slot>
+                <div class="paginator" v-if="'paginator-top' in $slots">
+                    <slot name="paginator-top" />
                 </div>
 
                 <div class="toolbar-right flex-1 " v-if="'toolbar-right' in $slots">
-                    <slot name="toolbar-right"></slot>
+                    <slot name="toolbar-right" />
                 </div>
             </div>
         </div>
@@ -95,8 +97,8 @@ export default {
             </table>
         </div>
 
-        <div v-if="['footer', 'pagination'].some(slot => slot in $slots)" class="table-footer">
-            <slot v-if="'pagination' in $slots" name="pagination" />
+        <div v-if="['footer', 'paginator-bottom'].some(slot => slot in $slots)" class="table-footer">
+            <slot v-if="'paginator-bottom' in $slots" name="paginator-bottom" />
         </div>
     </div>
 </template>

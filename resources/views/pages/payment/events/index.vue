@@ -114,7 +114,7 @@ export default {
     >
         <template #toolbar-left>
             <div class="month-picker-container">
-                <BlueButton :onClick="prevMonthButtonClickHandler" class="flex-1">
+                <BlueButton :onClick="prevMonthButtonClickHandler">
                     <Ico type="arrow-left" />
                 </BlueButton>
 
@@ -122,7 +122,7 @@ export default {
                     <span class=""> {{  currentDate.setLocale('ru').toFormat('LLLL yyyy') }} </span>
                 </div>
 
-                <BlueButton :onClick="nextMonthButtonClickHandler" class="flex-1">
+                <BlueButton :onClick="nextMonthButtonClickHandler">
                     <Ico type="arrow-right" />
                 </BlueButton>
             </div>
@@ -137,12 +137,16 @@ export default {
 <style lang="sass" scoped>
 #payment-event-resource-table
     .month-picker-container
-            display: flex
-            align-items: center
-            gap: 15px
+        display: flex
+        align-items: center
+        gap: 15px
 
-            font-size: 1.2rem
+        font-size: 1.2rem
 
-            span
-                white-space: nowrap
+        span
+            white-space: nowrap
+
+        .blue-button
+            width: 35px
+            flex-shrink: 0
 </style>
