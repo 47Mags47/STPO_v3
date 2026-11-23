@@ -21,6 +21,6 @@ export { default as EditButton } from './tables/buttons/EditButton.vue'
 export { default as ResourceTable } from './tables/ResourceTable/ResourceTable.vue'
 export { default as FileResourceTable } from './tables/FileResourceTable/FileResourceTable.vue'
 
-export { default as Select } from './inputs/select/Select.vue'
+export { default as Select } from './inputs/input/types/select/Select.vue'
 export { default as Input }  from './inputs/input/Input.vue'
-export { default as DatePicker } from './inputs/datePicker/DatePicker.vue'
+export { default as DatePicker } from './inputs/input/types/datePicker/DatePicker.vue'

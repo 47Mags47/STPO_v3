@@ -1,15 +1,15 @@
 <script>
-import SelectPopup from '../../selectPopup/SelectPopup.vue';
+import Input from '../../input/Input.vue';
 
 export default {
     components: {
-        SelectPopup
+        Input
     },
 }
 </script>
 
 <template>
-    <SelectPopup type="multiSelectPopup" isFilter/>
+    <Input type="multiSelectPopup" isFilter/>
 </template>
 
 <style lang="sass" scoped>

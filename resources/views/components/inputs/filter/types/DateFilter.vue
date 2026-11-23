@@ -1,5 +1,5 @@
 <script>
-import DatePicker from '../../datePicker/DatePicker.vue';
+import DatePicker from '../../input/types/datePicker/DatePicker.vue';
 import Ico from '../../../Ico.vue';
 
 export default {
@@ -10,7 +10,8 @@ export default {
 
     props: {
         isOpen: {
-            Type: Function,
+            Type: Boolean,
+            default: false
         }
     },
 

@@ -1,9 +1,9 @@
 <script>
-import Ico from '../../Ico.vue';
-import ResourceTable from '../../tables/ResourceTable/ResourceTable.vue';
-import Input from '../input/Input.vue';
-import RedButton from '../../buttons/RedButton.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
+import Ico from '../../../../Ico.vue';
+import ResourceTable from '../../../../tables/ResourceTable/ResourceTable.vue';
+import Input from '../../Input.vue';
+import RedButton from '../../../../buttons/RedButton.vue';
+import BlueButton from '../../../../buttons/BlueButton.vue';
 
 export default {
     provide() {

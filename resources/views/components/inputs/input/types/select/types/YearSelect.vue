@@ -1,7 +1,7 @@
 <script>
 import { DateTime, Interval } from 'luxon';
 import BaseSelect from '../BaseSelect.vue'
-import Input from '../../input/Input.vue';
+import Input from '../../../Input.vue';
 
 export default{
     components: {

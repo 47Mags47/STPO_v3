@@ -1,9 +1,9 @@
 <script>
-import Baseinput from '../input/Baseinput.vue';
+import Baseinput from '../../Baseinput.vue';
 import Popup from './Popup.vue';
-import PopupWrapper from '../../Popup/PopupWrapper.vue';
-import BlueButton from '../../buttons/BlueButton.vue';
-import Ico from '../../Ico.vue';
+import PopupWrapper from '../../../../Popup/PopupWrapper.vue';
+import BlueButton from '../../../../buttons/BlueButton.vue';
+import Ico from '../../../../Ico.vue';
 import { Teleport } from 'vue';
 
 export default {

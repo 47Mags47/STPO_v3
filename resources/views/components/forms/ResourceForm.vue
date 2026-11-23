@@ -2,8 +2,6 @@
 import VerticalForm from "./VerticalForm.vue";
 import BlueButton from "../buttons/BlueButton.vue";
 import Input from "../inputs/input/Input.vue";
-import Select from "../inputs/select/Select.vue";
-import SelectPopup from "../inputs/selectPopup/SelectPopup.vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
@@ -12,11 +10,9 @@ export default {
     components: {
         VerticalForm,
         BlueButton,
-        Input, Select, SelectPopup,
+        Input,
 
         FormItem:               defineAsyncComponent(() => import('../FormItem.vue')),
-
-        DatePicker:             defineAsyncComponent(() => import('../inputs/datePicker/DatePicker.vue')),
     },
 
     props: {
@@ -56,24 +52,6 @@ export default {
         getFormItemOrientation(input) {
             if (input.type === "checkbox") return "horizontal-reverse";
         },
-        isInputType(type) {
-            return [
-                'string', 'text', 'number', 'phone', 'email',
-                'password', 'checkbox', 'radio', 'switcher',
-                'bigFile', 'bigFiles',
-            ].includes(type)
-        },
-        isSelectType(type) {
-            return [
-                'singleSelect', 'multiSelect',
-                'monthSelect', 'yearSelect'
-            ].includes(type)
-        },
-        isSelectPopupType(type) {
-            return [
-                'singleSelectPopup', 'multiSelectPopup',
-            ].includes(type)
-        },
     },
 
 };
@@ -93,11 +71,7 @@ export default {
                 :for="input.id ?? input.name"
                 :orientation="getFormItemOrientation(input)"
             >
-                <Input        v-if="isInputType(input.type)"        :type="input.type"   v-bind="prepareProps(input)" />
-                <Select       v-if="isSelectType(input.type)"       :type="input.type"   v-bind="prepareProps(input)" />
-                <SelectPopup  v-if="isSelectPopupType(input.type)"  :type="input.type"   v-bind="prepareProps(input)" />
-
-                <DatePicker   v-if="input.type === 'date'"           v-bind="prepareProps(input)" />
+                <Input                :type="input.type"        v-bind="prepareProps(input)" />
             </FormItem>
             <BlueButton v-if="hasSubmit" :disabled="sbmDisabled" type="submit">{{ sbm }}</BlueButton>
         </template>

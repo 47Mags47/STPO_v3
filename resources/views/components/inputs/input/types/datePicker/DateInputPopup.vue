@@ -1,8 +1,8 @@
 <script>
 import { DateTime, Interval } from "luxon";
-import Select from '../../inputs/select/Select.vue';
-import Ico from "../../Ico.vue";
-import BlueButton from "../../buttons/BlueButton.vue";
+import Select from '../select/Select.vue';
+import Ico from "../../../../Ico.vue";
+import BlueButton from "../../../../buttons/BlueButton.vue";
 import MonthSelect from "../select/types/MonthSelect.vue";
 import YearSelect from "../select/types/YearSelect.vue";
 

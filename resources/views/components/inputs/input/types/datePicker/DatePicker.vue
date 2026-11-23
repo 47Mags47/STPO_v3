@@ -1,10 +1,10 @@
 <script>
-import Label from "../../Label.vue";
+import Label from "../../../../Label.vue";
 import { DateTime } from "luxon";
-import FormItem from "../../FormItem.vue";
+import FormItem from "../../../../FormItem.vue";
 import DateInputBetween from "./DateInputBetween.vue";
 import DateInput from "./DateInput.vue";
-import PopupWrapper from "../../Popup/PopupWrapper.vue";
+import PopupWrapper from "../../../../Popup/PopupWrapper.vue";
 import DateInputPopup from "./DateInputPopup.vue";
 
 export default {
@@ -215,7 +215,7 @@ export default {
 </script>
 
 <template>
-    <div class="w-full">
+    <div class="datepicker-wrapper w-full">
         <DateInputBetween v-if="isRange"
             ref="dateInputBetweenWrapperRef"
             v-bind="$attrs"

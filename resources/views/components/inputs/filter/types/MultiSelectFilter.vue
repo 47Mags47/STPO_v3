@@ -1,15 +1,15 @@
 <script>
-import Select from '../../select/Select.vue';
+import Input from '../../input/Input.vue';
 
 export default {
     components: {
-        Select
+        Input
     },
 }
 </script>
 
 <template>
-    <Select
+    <Input
         type="multiSelect"
         isFilter
     />

@@ -1,6 +1,6 @@
 <script>
-import BaseSelect from "../BaseSelect.vue";
-import Input from '../../input/Input.vue';
+import BaseSelect from '../BaseSelect.vue';
+import Input from '../../../Input.vue';
 
 export default {
     components: {
@@ -8,19 +8,25 @@ export default {
         Input,
     },
 
+    data() {
+        return {
+            localValue: []
+        }
+    },
+
     props: {
         // INPUT
         name: {
             type: String,
-            default: "",
+            default: ''
         },
         value: {
-            type: Number,
-            default: null,
+            type: Array,
+            default: () => ([])
         },
         labelKey: {
             type: String,
-            default: "name",
+            default: 'name'
         },
         valueKey: {
             type: String,
@@ -30,20 +36,16 @@ export default {
         // HANDLERS
         onChange: {
             type: Function,
-            default: () => {},
+            default: () => {}
         },
-    },
-
-    data() {
-        return {
-            isOpen: false,
-            localValue: null,
-        };
     },
 
     methods: {
         optionClickHandler(optionValue) {
-            this.localValue = optionValue
+            if (this.localValue.includes(optionValue))
+                this.localValue = this.localValue.filter(item => item !== optionValue);
+            else
+                this.localValue.push(optionValue);
         },
     },
 
@@ -55,30 +57,43 @@ export default {
             immediate: true
         },
     },
-};
+}
 </script>
 
 <template>
     <BaseSelect
-        type="single"
+        type="multi"
         :value="localValue"
         :label-key
         :value-key
         :on-option-click="optionClickHandler"
     >
         <template #option="{ option, selected, onKey, onOptionClick }">
-            <Input type="radio"
-                :value="localValue"
+            <Input type="checkbox"
+                :value="Object.get(option, valueKey)"
                 :checked="selected"
                 :name="`${name}[]`"
-                :on-change="(event) => onChange(event, option)"
+                :on-change="(event, value) => onChange(event, option)"
                 @click="onOptionClick"
                 @keydown="onKey"
             />
-            <span>{{ Object.get(option, labelKey) }}</span>
+            <span> {{ Object.get(option, labelKey) }} </span>
         </template>
     </BaseSelect>
 </template>
 
 <style lang="sass" scoped>
+.select-list-option
+    padding: 5px 0
+    padding-left: 7px
+
+    display: flex
+    gap: 7px
+
+    cursor: pointer
+
+    &.selected
+        background-color: var(--option-background-selected)
+    &:hover, &.key-hover
+        background-color: var(--option-background-hover)
 </style>
