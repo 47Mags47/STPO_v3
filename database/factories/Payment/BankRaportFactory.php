@@ -21,7 +21,7 @@ class BankRaportFactory extends Factory
     public function definition(): array
     {
         return [
-            'file_id' => File::createFromChildren(BankRaport::class),
+            'file_id' => File::createForOwner(BankRaport::class),
             'bank_id' => Bank::randomOrCreate(),
             'event_id' => Event::randomOrCreate(),
         ];

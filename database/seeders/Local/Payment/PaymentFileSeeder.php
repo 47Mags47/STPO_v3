@@ -23,7 +23,7 @@ class PaymentFileSeeder extends Seeder
 
         Event::all()->each(function ($event) use ($banks) {
             $banks->each(function ($bank) use ($event) {
-                File::createChildren(PaymentFile::class, PaymentFile::factory()->make([
+                File::createAndLinkToOwner(PaymentFile::class, PaymentFile::factory()->make([
                     'event_id' => $event->id,
                     'bank_id' => $bank->id
                 ])->toArray());

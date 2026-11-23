@@ -32,7 +32,7 @@ class WriteArchiveJob implements ShouldQueue
         $zip->open($this->archive->fullPath, ZipArchive::CREATE);
 
         foreach ($banks as $bank) {
-            $raport = File::createChildren(BankRaport::class, [
+            $raport = File::createAndLinkToOwner(BankRaport::class, [
                 'bank_id' => $bank->id,
                 'event_id' => $this->archive->event_id,
                 'origin_name' => $bank->number . ' ' . $bank->name . '.zip',

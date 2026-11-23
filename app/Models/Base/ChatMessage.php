@@ -3,6 +3,7 @@
 namespace App\Models\Base;
 
 use App\Classes\BaseModel;
+use App\Events\Base\SendChatMessageEvent;
 use App\Models\Appeal\Appeal;
 use App\Models\Base\Chat;
 use App\Models\Base\User;
@@ -36,6 +37,15 @@ class ChatMessage extends BaseModel
             'readed' => 'boolean',
             'context' => 'json'
         ];
+    }
+
+    public static function booted()
+    {
+        self::created(function (self $message) {
+            broadcast(new SendChatMessageEvent($message))->toOthers();
+
+            $message->chat->notifySubscribers($message->message, [user()->id]);
+        });
     }
 
     public static string|null $storage_file_disk = 'appeals';
@@ -79,7 +89,8 @@ class ChatMessage extends BaseModel
     }
 
     // Полиморфные
-    public function appeal() {
+    public function appeal()
+    {
         return $this->hasOneThrough(Appeal::class, Chat::class, 'id', 'chat_id', 'chat_id', 'id');
     }
 }

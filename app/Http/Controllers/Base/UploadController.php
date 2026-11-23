@@ -13,13 +13,13 @@ class UploadController extends Controller
 {
     public function startUpload(UploadStartUploadRequest $request)
     {
-        $uploadFile = File::createChildren(UploadFile::class, [
+        $uploadFile = File::createAndLinkToOwner(UploadFile::class, [
             'totalChunks' => (int) ceil((int) $request->input('file_size') / return_bytes(config('filesystems.max_file_size'))),
             'origin_name' => $request->input('origin_name')
         ]);
 
         for ($i = 1; $i <= $uploadFile->totalChunks; $i++) {
-            File::createChildren(FileChunk::class, [
+            File::createAndLinkToOwner(FileChunk::class, [
                 'upload_file_id' => $uploadFile->id,
                 'npp' => $i,
             ]);
