@@ -21,7 +21,7 @@ class BankRaportController extends Controller
     }
 
     public function store(Event $event, Bank $bank){
-        $raport = File::createAndLinkToOwner(BankRaport::class, [
+        $raport = File::createAndLinkToChild(BankRaport::class, [
             'bank_id' => $bank->id,
             'event_id' => $event->id,
             'origin_name' => $bank->name . '.zip',
