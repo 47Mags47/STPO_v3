@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Appeal;
 
+use App\Models\Appeal\Appeal;
 use App\Models\Appeal\Status;
 use App\Models\Appeal\Theme;
 use App\Models\Base\Chat;
@@ -23,11 +24,20 @@ class AppealFactory extends Factory
         return [
             'comment' => $this->faker->text(250),
 
-            'chat_id'  => Chat::randomOrCreate()->id,
             'sender_id' => User::randomOrCreate()->id,
             'worker_id' => User::randomOrCreate()->id,
             'theme_id' => Theme::randomOrCreate()->id,
             'status_id' => Status::randomOrCreate()->id,
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Appeal $appeal) {
+            if ($appeal->chat_id == null) {
+                $chat = Chat::factory()->create();
+                $appeal->chat_id = $chat->id;
+            }
+        });
     }
 }
