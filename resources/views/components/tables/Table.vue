@@ -5,10 +5,6 @@ export default {
             type: String,
             default: null,
         },
-        onApplyFilters: {
-            type: Function,
-            default: () => {}
-        },
         id: {
             type: String,
             default: null

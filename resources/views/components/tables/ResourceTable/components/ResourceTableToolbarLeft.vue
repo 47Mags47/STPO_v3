@@ -13,11 +13,11 @@ export default {
         },
         hasSearchInput: {
             type: Boolean,
-            type: true
+            default: true
         },
         onSearchInput: {
             type: Function,
-            type: () => {}
+            default: () => {}
         }
     },
 
