@@ -26,6 +26,7 @@ class Payment extends BaseModel
         'asp_payment_category_id',
         'financing_type_id',
         'file_id',
+        'hash'
     ];
 
     ### Связи

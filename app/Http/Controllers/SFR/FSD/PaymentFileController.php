@@ -35,7 +35,7 @@ class PaymentFileController extends Controller
                 'division_id' => user()->getCurrentDivision()?->id
             ]));
 
-            ReadPaymentFileJob::dispatch($paymentFile);
+            ReadPaymentFileJob::dispatch($paymentFile->id);
         }
 
         return redirect()->route('sfr.fsd.payment-files.index')->with('success', 'Запись успешно создана');

@@ -126,9 +126,19 @@ class File extends BaseModel
     {
         $error = str_replace(PHP_EOL, '', trim($error));
 
-        $this->errors()->create(
-            ['error' => $error]
-        );
+        $this->errors()->create(['error' => $error]);
+
+        return $this;
+    }
+
+    public function addErrors(array $errors): self
+    {
+        $data = array_map(fn($error) => [
+            'file_id' => $this->id,
+            'error' => $error,
+        ], $errors);
+
+        FileError::insert($data);
 
         return $this;
     }

@@ -78,8 +78,8 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     public function handle(): void
     {
         $in_date = $this->paymentFile->in_date;
-        $batches = [];
 
+        $batches = [];
         foreach ($this->lines as $line) {
             if (!$this->checkValidLine($line))
                 continue;
@@ -98,26 +98,31 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 'financing_type_id'         => $this->financingTypes[$row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']]]->id,
             ];
 
-            $data['duplicate_hash'] = hash('sha256', implode('|', $data));
+            $data['hash'] = hash('sha256', implode('|', $data));
             $data['file_id'] = $this->paymentFile->id;
+            $data['line'] = $line;
 
-            $batches[] = [
-                'data' => $data,
-                'line' => $line
-            ];
+            $batches[$data['hash']] = $data;
         }
 
-        foreach ($batches as $batch) {
-            try {
-                Payment::insert($batch['data']);
-            } catch (\Illuminate\Database\QueryException $e) {
-                if (preg_match("/SQLSTATE\[[0-9]*\]: Integrity constraint violation: [0-9]* Duplicate entry .* for key 'sfr__fsd__payments.uq.*/", $e->getMessage()) == 1)
-                    $this->paymentFile->addError('Попытка вставить дубликат записи: ' . $batch['line']);
-                    Log::driver('check')->debug('Попытка вставить дубликат записи: ' . $batch['line']);
-            } catch (\Throwable $th) {
-                Log::error($th);
-            }
+        // Проверяем, есть ли дубликаты
+        $hashes = collect($batches)->pluck('hash');
+        $duplicate_hashes = Payment::whereIn('hash', $hashes)->pluck('hash');
+
+        $errors = [];
+        foreach ($duplicate_hashes as $hash) {
+            $errors[] = 'Попытка вставить дубликат записи: ' . $batches[$hash]['line'];
+            unset($batches[$hash]);
         }
+        if(count($errors) > 0)
+            $this->paymentFile->addErrors($errors);
+
+        $batches = array_map(function($batch){
+            unset($batch['line']);
+            return $batch;
+        }, $batches);
+
+        Payment::insertOrIgnore(array_values($batches));
     }
 
     public function checkValidLine(string $line)
