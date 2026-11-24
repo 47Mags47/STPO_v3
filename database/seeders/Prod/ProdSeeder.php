@@ -2,9 +2,6 @@
 
 namespace Database\Seeders\Prod;
 
-use Database\Seeders\Prod\Administrate\CitySeeder;
-use Database\Seeders\Prod\Administrate\DivisionSeeder;
-use Database\Seeders\Prod\Auth\SuperUserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
