@@ -82,9 +82,10 @@ export default {
                 options: divisions,
             },
             {
-                type: 'phoneHasDob',
+                type: 'phone',
                 label: 'Номер телефона',
                 name: 'phone',
+                hasDob: true
             },
             {
                 type: 'email',
