@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Local\Auth;
+namespace Database\Seeders\Prod\Auth;
 
 use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
@@ -31,7 +31,11 @@ class SuperUserSeeder extends Seeder
         ]);
 
         // Add division
-        $superuser->divisions()->attach(Division::get('id')->pluck('id'));
+        if (config('app.env') === 'local')
+            $superuser->divisions()->attach(Division::get('id')->pluck('id'));
+
+        if (config('app.env') === 'production')
+            $superuser->divisions()->attach(Division::where('name', 'ЦСВИ')->value('id'));
 
         // Add all permissions
         $permission_ids = Permission::get('id')->pluck('id');

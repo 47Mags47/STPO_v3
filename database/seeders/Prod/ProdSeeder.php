@@ -20,6 +20,8 @@ class ProdSeeder extends Seeder
         $this->call(Administrate\ModulGroupSeeder::class);
         $this->call(Administrate\ModulSeeder::class);
         $this->call(Administrate\FinancingTypeSeeder::class);
+        $this->call(Administrate\CitySeeder::class);
+        $this->call(Administrate\DivisionSeeder::class);
 
         $this->call(Appeal\ThemeSeeder::class);
         $this->call(Appeal\StatusSeeder::class);
@@ -28,5 +30,7 @@ class ProdSeeder extends Seeder
         $this->call(SFR\FSD\TransitEquivalentSeeder::class);
         $this->call(SFR\FSD\SFRPaymentCategorySeeder::class);
         $this->call(SFR\FSD\ASPPaymentCategorySeeder::class);
+
+        $this->call(Auth\SuperUserSeeder::class);
     }
 }
