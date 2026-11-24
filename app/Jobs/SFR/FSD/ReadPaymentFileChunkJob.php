@@ -10,7 +10,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class ReadPaymentFileChunkJob implements ShouldQueue
 {
@@ -130,18 +129,14 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         if (strlen(trim($line)) == 0)
             return false;
 
-        if (!preg_match('/[0-9а-яА-ЯёЁ\s%;\.\(\)\-]*$/u', str_replace(["\r", "\r\n", "\n"], '', $line))) {
-            Log::driver('check')->debug('Строка "' . $line . '" содержит недопустимые символы');
-            $this->paymentFile->addError('Строка "' . $line . '" содержит недопустимые символы');
-            return false;
-        }
-
         $row = str_getcsv($line, self::CSV_SEPARATOR);
-        $flag = true;
+        if (count($row) != count($this->ROW_KEYS))
+            return false;
 
+        // Проверка полей
+        $flag = true;
         foreach ($this->ROW_KEYS as $key) {
             if (!preg_match('/' . $key['pattern'] . '/u', $line)) {
-                Log::driver('check')->debug('Строка "' . clearString($row[$key['row_number']]) . '" не соответсвует паттерну ' . $key['pattern']);
                 $this->paymentFile->addError('Поле "' . $key['name'] . '" не соответсвует формату в cтроке ' . clearString($row[$key['row_number']]));
 
                 $flag = false;
@@ -151,7 +146,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверка категории в АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
         if (!$this->ASPPaymentCategories->has($ASPCategoryRow)) {
-            Log::driver('check')->debug('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
             $this->paymentFile->addError('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
 
             $flag = false;
@@ -160,7 +154,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
         if (!$this->financingTypes->has($financingTypeRow)) {
-            Log::driver('check')->debug('Не найден источник финансирования "' . $financingTypeRow . '"');
             $this->paymentFile->addError('Не найден источник финансирования "' . $financingTypeRow . '"');
 
             $flag = false;
