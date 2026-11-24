@@ -48,7 +48,6 @@ export default {
         editClickHandler(event) {
             this.localValue = !this.localValue
 
-            this.onClick(event)
             this.onChange(event, this.localValue)
         }
     },

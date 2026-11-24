@@ -20,8 +20,8 @@ export default {
         }
     },
     methods: {
-        editClickHandler(event) {
-            this.formDisabled = !event.target.checked
+        editClickHandler(event, value) {
+            this.formDisabled = !value
         },
         inputsClasses(name = null) {
             if (name === 'email') {
@@ -206,7 +206,8 @@ export default {
                     <span class="text-2xl!"> Данные </span>
                     <Input type="switcher"
                         class="justify-self-end"
-                        :on-click="editClickHandler"
+                        :on-change="editClickHandler"
+                        :value="!formDisabled"
                         label="редактировать"
                     />
                 </div>

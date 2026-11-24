@@ -22,12 +22,15 @@ class UserController extends Controller
                 'path' => 'avatars'
             ]);
 
+
             $request->file('avatar')->storeAs($avatar->path, $avatar->name);
 
+
             $avatar->setStatus('ok');
+            $user->update(['avatar_id' => $avatar?->id]);
         }
 
-        $user->update(array_merge($request->validated(), ['avatar_id' => $avatar?->id]));
+        $user->update($request->validated());
 
         return redirect()->route('dashboard')->with('success', 'Запись успешно обновлена');
     }
