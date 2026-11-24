@@ -84,7 +84,7 @@ export default{
             <Input type="radio"
                 :value="localValue"
                 :checked="selected"
-                :name="`${name}[]`"
+                :name="`${name}`"
                 :on-change="(event) => onChange(event, option)"
                 @click="onOptionClick"
                 @keydown="onKey"

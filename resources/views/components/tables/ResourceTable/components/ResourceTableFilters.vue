@@ -3,6 +3,7 @@ import Input from '../../../inputs/input/Input.vue';
 import Filter from '../../../inputs/filter/Filter.vue';
 import Ico from '../../../Ico.vue';
 import { Form } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 export default {
     components: {
@@ -16,16 +17,6 @@ export default {
             type: Array,
             default: () => []
         },
-
-        // HANDLERS
-        onOpen: {
-            type: Function,
-            default: () => {}
-        },
-        onReset: {
-            type: Function,
-            default: () => {}
-        }
     },
 
     data() {
