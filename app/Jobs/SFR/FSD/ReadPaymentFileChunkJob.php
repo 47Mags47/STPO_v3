@@ -16,7 +16,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
-    public $timeout = 999;
     public $ROW_KEYS = [];
     public Collection $ASPPaymentCategories;
     public Collection $financingTypes;

@@ -9,6 +9,7 @@
         "php": "^8.2",
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/framework": "^13.0",
+        "laravel/pulse": "^1.11",
         "laravel/reverb": "*",
         "laravel/tinker": "^3.0",
         "phpoffice/phpspreadsheet": "^5.9",
