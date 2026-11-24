@@ -1,3 +1,11 @@
 *
 !.gitignore
+
+!appeals/
+!avatars/
+!factory/
+!fsd/
+!payments/
+!temp/
 !templates/
+!uploads/
