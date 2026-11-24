@@ -21,7 +21,7 @@ class TemplateFactory extends Factory
         return [
             'description' => $this->faker->text(50),
             'writer' => null,
-            'file_id' => File::createFromChildren(Template::class)->id
+            'file_id' => File::createForOwner(Template::class)->id
         ];
     }
 }

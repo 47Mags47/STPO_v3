@@ -29,7 +29,7 @@ abstract class FileModel extends BaseModel
     {
         self::creating(function ($model) {
             if ($model->file_id === null){
-                $file = File::createFromChildren($model::class);
+                $file = File::createForOwner($model::class);
                 $model->file_id = $file->id;
                 $model->setRelation('file', $file);
             }

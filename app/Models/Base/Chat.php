@@ -18,12 +18,34 @@ class Chat extends BaseModel
     ##################################################
     protected $table = 'base__chats';
 
-    protected $fillable = [
-    ];
+    protected $fillable = [];
 
     ### Методы
     ##################################################
-    //
+    public function notifySubscribers(string $message, ?array $excludeUserIds = []): void
+    {
+        $this->subscribers
+            ->when(
+                count($excludeUserIds) > 0,
+                fn($subscribers) => $subscribers->reject(fn($subscriber) => in_array($subscriber->id, $excludeUserIds))
+            )
+            ->each(fn($subscriber) => Notification::factory()->create([
+                'recipient_id' => $subscriber->id,
+                'message'      => $message,
+
+                'type_id'      => NotificationType::byCode('message'),
+                'context'      => ['chat_id' => $this->id],
+            ]));
+    }
+
+    public function postSystemMessage(string $message){
+        ChatMessage::factory()->create([
+            'message' => $message,
+            'sender_id' => null,
+            'is_system' => true,
+            'chat_id' => $this->id,
+        ]);
+    }
 
     ### Связи
     ##################################################

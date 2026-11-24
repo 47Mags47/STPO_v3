@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Base;
 
-use App\Events\Base\SendChatMessageEvent;
-use App\Events\Base\SendNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Base\ChatMessageStoreRequest;
 use App\Models\Base\Chat;
 use App\Models\Base\ChatMessage;
 use App\Models\Base\ChatMessageAttachment;
-use App\Models\Base\Notification;
-use App\Models\Base\NotificationType;
 use App\Models\Base\UploadFile;
 
 class ChatMessageController extends Controller
 {
     public function index(Chat $chat)
     {
-        if(user()->cannot('view', $chat))
+        if (user()->cannot('view', $chat))
             return abort(403);
 
         return $chat->messages()->orderBy('created_at', 'desc')->paginate(25)->toResourceCollection();
@@ -25,47 +21,22 @@ class ChatMessageController extends Controller
 
     public function store(ChatMessageStoreRequest $request, Chat $chat)
     {
-        if(user()->cannot('view', $chat))
+        if (user()->cannot('view', $chat))
             return abort(403);
 
         $message = ChatMessage::factory()->create([
-            'message'       => $request->message,
-            'sender_id'     => user()->id,
-            'chat_id'       => $chat->id,
+            'message'   => $request->has('files') ? 'Файл(ы)' : $request->input('message'),
+            'sender_id' => user()->id,
+            'chat_id'   => $chat->id,
         ]);
 
-        if ($request->has('files')){
+        if ($request->has('files')) {
             foreach ($request->input('files') as $file_id) {
-                $file = UploadFile::moveToModel($file_id, ChatMessageAttachment::class, [
+                UploadFile::moveToModel($file_id, ChatMessageAttachment::class, [
                     'message_id' => $message->id,
                 ]);
-
-                $file->setStatus('ok');
             }
         }
-
-        $target_url = '';
-        switch ($message->entity::class) {
-            case \App\Models\Appeal\Appeal::class:
-                $target_url = route('appeal.appeals.show', ['appeal' => $message->entity]);
-                break;
-        }
-
-        broadcast(new SendChatMessageEvent($message))->toOthers();
-
-        $chat->subscribers()->where('user_id', '<>', user()->id)->get()->each(function ($subscriber) use ($message, $target_url) {
-            $notification = Notification::factory()->create([
-                'recipient_id' => $subscriber->id,
-                'message' => $message->message,
-
-                'type_id' => NotificationType::byCode('message'),
-                'context' => [
-                    'target_url' => $target_url,
-                ]
-            ]);
-
-            broadcast(new SendNotificationEvent($notification));
-        });
 
         return $message->toResource();
     }

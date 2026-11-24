@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Veteran;
 
+use App\Models\Administrate\Division;
 use App\Models\Auth\Permission;
 use App\Models\Auth\PermissionGroup;
 use App\Models\Base\User;
@@ -18,6 +19,7 @@ class AccessDestroyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'division_id'   => ['nullable', 'exists:' . Division::class . ',id'],
             'user_id'       => ['required', 'exists:' . User::class . ',id'],
             'permission_id' => [
                 'required',
