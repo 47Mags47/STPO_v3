@@ -66,7 +66,7 @@ export default {
 
     methods: {
         getStatusColor(file) {
-            if (file.status.code === 'ok' && file.errors > 0)
+            if (file.errors > 0)
                 return 'red'
 
             return {
@@ -74,16 +74,12 @@ export default {
                 'creating': 'orange',
                 'reading': 'orange',
                 'moving': 'orange',
+                'error': 'red'
             }[file.status.code] ?? 'black'
         },
 
         getFileTitle(file) {
-            if(file.status.code === 'ok')
-                return file.errors > 0
-                    ? 'Содержит ошибки'
-                    : file.status.name
-            else
-                return file.status.name
+            return file.status.name
         }
     },
 

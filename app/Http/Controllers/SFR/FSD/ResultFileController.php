@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SFR\FSD;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SFR\FSD\WriteResultFile;
+use App\Jobs\SFR\FSD\WriteResultFileJob;
 use App\Models\Base\File;
 use App\Models\Base\FileStatus;
 use App\Models\SFR\FSD\ResultFile;
@@ -33,7 +33,7 @@ class ResultFileController extends Controller
             'origin_name'   => $SFRFile->origin_name
         ]);
 
-        WriteResultFile::dispatch($resultFile);
+        WriteResultFileJob::dispatch($resultFile);
 
         return redirect()->route('sfr.fsd.result-files.index', ['SFRFile' => $SFRFile])->with('success', 'Формирование файла запущено');
     }

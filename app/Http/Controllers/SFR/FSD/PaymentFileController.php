@@ -32,7 +32,7 @@ class PaymentFileController extends Controller
     {
         foreach ($request->input('file_ids') as $uploadFileId) {
             $paymentFile = UploadFile::moveToModel($uploadFileId, PaymentFile::class, array_merge($request->validated(), [
-                'division_id' => session()->get('division_id')
+                'division_id' => user()->getCurrentDivision()?->id
             ]));
 
             ReadPaymentFileJob::dispatch($paymentFile);

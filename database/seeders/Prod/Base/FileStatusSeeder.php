@@ -13,8 +13,9 @@ class FileStatusSeeder extends Seeder
     public function run(): void
     {
         FileStatus::create(['code' => 'ok',         'name' => 'Ок']);
+        FileStatus::create(['code' => 'error',      'name' => 'Ошибка']);
         FileStatus::create(['code' => 'creating',   'name' => 'Создается']);
         FileStatus::create(['code' => 'moving',     'name' => 'Перемещается']);
-        FileStatus::create(['code' => 'reading',     'name' => 'Считывается']);
+        FileStatus::create(['code' => 'reading',    'name' => 'Считывается']);
     }
 }
