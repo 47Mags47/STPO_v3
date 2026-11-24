@@ -101,9 +101,9 @@ export default {
                 </div>
 
                 <div class="message-footer">
-                    <Ico v-if="current_user.id === message.sender.id && message.is_readed" type="check-double"
+                    <Ico v-if="current_user.id === message.sender?.id && message.is_readed" type="check-double"
                         class="readed" />
-                    <Ico v-else-if="current_user.id === message.sender.id && !message.is_readed" type="check"
+                    <Ico v-else-if="current_user.id === message.sender?.id && !message.is_readed" type="check"
                         class="not-readed" />
                     <span class="date">
                         {{ DateTime.fromISO(message.created_at).toFormat('HH:mm') }}
