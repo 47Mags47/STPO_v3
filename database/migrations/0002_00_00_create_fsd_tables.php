@@ -99,7 +99,7 @@ return new class extends Migration
 
             // Проверка уникальности перед вставкой
             $table->string('hash', 64)->nullable();
-            $table->unique('hash', 'uq_payments_hash');
+            // $table->unique('hash', 'uq_payments_hash');
         });
 
         Schema::create('sfr__fsd__transit_categories', function (Blueprint $table) {
