@@ -10,6 +10,7 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class ReadPaymentFileChunkJob implements ShouldQueue
 {
@@ -111,10 +112,16 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверяем, есть ли дубликаты
         $hashes = collect($batches)->pluck('hash');
         $duplicate_hashes = Payment::whereIn('hash', $hashes)->pluck('hash');
-
+        dump($duplicate_hashes);
         foreach ($duplicate_hashes as $hash) {
             $errors[] = 'Попытка вставить дубликат записи: ' . $batches[$hash]['line'];
-            unset($batches[$hash]);
+            Log::driver('check')->info('Попытка вставить дубликат записи', [
+                'line' => $batches[$hash]['line'],
+                'in_date' => $batches[$hash]['file_in_date']->format('Y-m-d'),
+                'payment_file_id' => $this->paymentFile->id,
+                'file_name' => $this->paymentFile->origin_name,
+            ]);
+            // unset($batches[$hash]);
         }
         if (count($errors) > 0)
             $this->paymentFile->addErrors($errors);
@@ -144,12 +151,12 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
         // Проверка категории АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
-        if (!$this->ASPPaymentCategories->has($ASPCategoryRow) or trim(mb_strlen($row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']])))
+        if (!$this->ASPPaymentCategories->has($ASPCategoryRow) or mb_strlen(trim($row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']])) === 0)
             $errors[] = 'Не найдена категория выплаты "' . $ASPCategoryRow . '"';
 
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
-        if (!$this->financingTypes->has($financingTypeRow) or trim(mb_strlen($row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']])))
+        if (!$this->financingTypes->has($financingTypeRow) or mb_strlen(trim($row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']])) === 0)
             $errors[] = 'Не найден источник финансирования "' . $financingTypeRow . '"';
 
         return $errors;
