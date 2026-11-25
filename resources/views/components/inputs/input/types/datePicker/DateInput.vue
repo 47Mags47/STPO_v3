@@ -37,7 +37,13 @@ export default {
         onInputClick: {
             type: Function,
             default: () => {}
-        }
+        },
+
+        // OTHER
+        mode: {
+            type: String,
+            default: 'date'
+        },
     },
     data() {
         return {
@@ -48,7 +54,8 @@ export default {
         changeHandler(e) {
             const value = e.target.value
 
-            let luxonDate = DateTime.fromFormat(value, 'yyyy-MM-dd')
+            const format = this.mode === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd'
+            const luxonDate = DateTime.fromFormat(value, format)
 
             if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
                 alert('Дата выходит за возможный диапазон')
@@ -84,7 +91,7 @@ export default {
     <div class="date-input-wrapper" @click.stop="onInputClick">
         <div class="date-input-container flex items-center">
             <Baseinput
-                type="date"
+                :type="mode"
                 v-bind="$attrs"
                 class="custom-date-input"
                 ref="inputRef"
