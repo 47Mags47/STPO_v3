@@ -84,7 +84,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         foreach ($this->lines as $line) {
             $row = str_getcsv($line, self::CSV_SEPARATOR);
 
-            $check_errors = $this->checkRow($row);
+            $check_errors = $this->checkRow($row, $line);
 
             if (count($check_errors) > 0) {
                 $errors = array_merge($errors, $check_errors);
@@ -134,7 +134,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         Payment::insertOrIgnore(array_values($batches));
     }
 
-    public function checkRow(array $row): array
+    public function checkRow(array $row, string $line): array
     {
         $errors = [];
 
@@ -146,18 +146,18 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверка полей
         foreach ($this->ROW_KEYS as $key) {
             if (!preg_match('/^' . $key['pattern'] . '$/u', $row[$key['row_number']]))
-                $errors[] = 'Поле "' . $key['name'] . '" не соответсвует формату';
+                $errors[] = 'Поле "' . $key['name'] . '" не соответсвует формату в строке: ' . $line;
         }
 
         // Проверка категории АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
         if (!$this->ASPPaymentCategories->has($ASPCategoryRow) or mb_strlen(trim($row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']])) === 0)
-            $errors[] = 'Не найдена категория выплаты "' . $ASPCategoryRow . '"';
+            $errors[] = 'Не найдена категория выплаты "' . $ASPCategoryRow . '" в строке: ' . $line;
 
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
         if (!$this->financingTypes->has($financingTypeRow) or mb_strlen(trim($row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']])) === 0)
-            $errors[] = 'Не найден источник финансирования "' . $financingTypeRow . '"';
+            $errors[] = 'Не найден источник финансирования "' . $financingTypeRow . '" в строке: ' . $line;
 
         return $errors;
     }
