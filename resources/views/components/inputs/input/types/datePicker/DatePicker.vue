@@ -28,7 +28,7 @@ export default {
             type: String,
             default: 'date',
             validator: (value) => {
-                if(['date', 'month', 'year'].includes(value))
+                if(['date', 'month'].includes(value))
                     return true
 
                 console.error(`Недействительный тип ${value}`)
