@@ -129,7 +129,7 @@ export default {
             this.localIsOpen = false
             this.onClose()
         },
-        dayClickHandler(date) {
+        dayClickHandler(e, date) {
             if (this.isRange) {
                 if (this.isFirstClick) {
                     this.selectedDateFrom = date
@@ -143,8 +143,8 @@ export default {
                 if (dateNotNull && this.selectedDateFrom > this.selectedDateTo)
                     [this.selectedDateFrom, this.selectedDateTo] = [this.selectedDateTo, this.selectedDateFrom]
 
-                this.changeDateFromHandler(null, this.selectedDateFrom)
-                this.changeDateToHandler(null, this.selectedDateTo)
+                this.changeDateFromHandler(e, this.selectedDateFrom)
+                this.changeDateToHandler(e, this.selectedDateTo)
 
                 this.isFirstClick = !this.isFirstClick
 
@@ -153,7 +153,7 @@ export default {
             }
 
             else {
-                this.changeDateHandler(null, date)
+                this.changeDateHandler(e, date)
                 this.popupCloseHandler()
             }
         },
@@ -251,8 +251,6 @@ export default {
                         : this.$refs.dateInputWrapperRef.$el
 
                     const inputPopupRect = dateInputWrapperRef.getBoundingClientRect()
-
-                    console.log(inputPopupRect)
 
                     return {
                         left: inputPopupRect.left + 'px',

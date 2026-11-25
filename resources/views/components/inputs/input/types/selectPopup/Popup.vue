@@ -93,7 +93,7 @@ export default {
                             props: {
                                 type: this.isArray ? 'checkbox' : 'radio',
                                 name: `${this.name}[]`,
-                                value:   value,
+                                value: value,
                                 checked: this.isArray
                                     ? this.value.includes(value)
                                     : this.value === value,
@@ -109,27 +109,12 @@ export default {
     },
 
     methods: {
-        searchInputHandler(e) {
-            const page = e.target?.value
-            // HACK Вынести в метод
-            axios
-                .get(this.url, {
-                    params: {
-                        search: page,
-                    }
-                })
-                .then(function(response){
-                    this.data = response.data.data
-                    this.meta = response.data.meta
-                    this.links = response.data.links
-                }.bind(this))
-        },
-        paginateClickHandler(page) {
+        axiosQuery(params = {}) {
             axios
                 .get(this.url, {
                     params: {
                         ...this.urlParams,
-                        page: page,
+                        ...params
                     }
                 })
                 .then(function(response){
@@ -138,18 +123,28 @@ export default {
                     this.links = response.data.links
                 }.bind(this))
         },
+
+        searchInputHandler(e) {
+            const page = e.target?.value
+
+            this.axiosQuery({ page: page })
+        },
+        paginateClickHandler(page) {
+            this.axiosQuery({ page: page })
+        },
+        rowClickHandler(e, row) {
+            // Если клик по инпуту
+            // Пропускаем (чтобы не запускался этот обработчик) одновременно с обработчиками чекбокса или радио
+            if (e.target.closest('input')) {
+                return
+            }
+
+            this.onChange(e, row)
+        }
     },
 
     created() {
-        axios
-            .get(this.url, {
-                params: this.urlParams
-            })
-            .then(function(response){
-                this.data = response.data.data
-                this.meta = response.data.meta
-                this.links = response.data.links
-            }.bind(this))
+        this.axiosQuery()
     }
 }
 </script>
@@ -163,6 +158,8 @@ export default {
             :has-delete-button="false"
             :has-edit-button="false"
             :on-search-input="searchInputHandler"
+            :on-row-click="rowClickHandler"
+            :row-classes="'cursor-pointer'"
             :columns
             :data
             :meta

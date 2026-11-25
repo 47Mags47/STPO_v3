@@ -56,8 +56,6 @@ export default {
 
                 this.localValue = Object.get(val, this.valueKey)
                 this.localLabel = Object.get(val, this.labelKey) ?? ''
-
-                console.log( Object.get(val, this.labelKey))
             },
             immediate: true,
             deep: true,
@@ -68,7 +66,7 @@ export default {
         placeholderValue() {
             return `${this.placeholder} ${this.localLabel}`
         }
-    }
+    },
 }
 </script>
 

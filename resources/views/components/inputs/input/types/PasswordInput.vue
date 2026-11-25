@@ -78,6 +78,10 @@ export default {
         padding: 0
         border: 0
     button
-        flex-shrink: 0
         cursor: pointer
+        height: 100%
+        padding: 3px
+
+        :deep(.ico-container)
+            flex-shrink: 0
 </style>

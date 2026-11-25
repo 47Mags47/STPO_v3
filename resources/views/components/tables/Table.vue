@@ -1,28 +1,14 @@
 <script>
-import { Form } from '@inertiajs/vue3';
-
 export default {
     props: {
         caption: {
             type: String,
             default: null,
         },
-        onApplyFilters: {
-            type: Function,
-            default: () => {}
-        },
         id: {
             type: String,
             default: null
         },
-    },
-
-    components: {
-        Form,
-    },
-
-    computed:{
-        currentURL: () => location.href
     },
 };
 </script>
@@ -31,46 +17,24 @@ export default {
     <div class="table-container">
         <div class="table-header">
             <div class="header" v-if="caption !== null">
-                <h3>
-                    {{ caption }}
-                </h3>
+                <h3> {{ caption }} </h3>
             </div>
 
             <div v-if="'filters' in $slots" class="filters">
-                <Form
-                    ref="filtersForm"
-                    method="GET"
-                    :action="currentURL" class="pt-0!"
-                    :options="{
-                        preserveState: true,
-                        onSuccess: onApplyFilters
-                    }"
-                >
-                    <slot name="filters"></slot>
-                </Form>
+                <slot name="filters"></slot>
             </div>
 
-            <div v-if="['toolbar-left', 'paginator', 'toolbar-right'].some(slot => $slots[slot])" class="flex justify-center w-full">
+            <div v-if="['toolbar-left', 'paginator-top', 'toolbar-right'].some(slot => $slots[slot])" class="flex w-full">
                 <div class="toolbar-left flex-1" v-if="'toolbar-left' in $slots">
-                    <Form
-                        ref="toolbarLeftRef"
-                        method="GET"
-                        :id
-                        :action="currentURL"
-                        :options="{
-                            preserveState: true,
-                        }"
-                    >
-                        <slot name="toolbar-left"></slot>
-                    </Form>
+                    <slot name="toolbar-left" />
                 </div>
 
-                <div class="paginator" v-if="'paginator' in $slots">
-                    <slot name="paginator"></slot>
+                <div class="paginator" v-if="'paginator-top' in $slots">
+                    <slot name="paginator-top" />
                 </div>
 
                 <div class="toolbar-right flex-1 " v-if="'toolbar-right' in $slots">
-                    <slot name="toolbar-right"></slot>
+                    <slot name="toolbar-right" />
                 </div>
             </div>
         </div>
@@ -95,8 +59,8 @@ export default {
             </table>
         </div>
 
-        <div v-if="['footer', 'pagination'].some(slot => slot in $slots)" class="table-footer">
-            <slot v-if="'pagination' in $slots" name="pagination" />
+        <div v-if="['footer', 'paginator-bottom'].some(slot => slot in $slots)" class="table-footer">
+            <slot v-if="'paginator-bottom' in $slots" name="paginator-bottom" />
         </div>
     </div>
 </template>
@@ -123,14 +87,11 @@ export default {
             gap: 32px
         .paginator
             width: 385px
-        .toolbar-left form
+        .toolbar-left
             display: flex
             justify-content: flex-start
             align-items: center
             gap: 1rem
-            border: 0
-            padding: 0
-            margin: 0
             width: fit-content
         .toolbar-right
             display: flex

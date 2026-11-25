@@ -1,56 +1,33 @@
 <script>
-import { h } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import { router } from '@inertiajs/vue3';
-
 import Table from '../Table.vue';
-import TableRow from '../components/TableRow.vue';
-import TableTh from '../components/TableTh.vue';
-import TableTd from '../components/TableTd.vue';
-
-import Input from '../../inputs/input/Input.vue';
-import Filter from '../../inputs/filter/Filter.vue';
-
+import ResourceTableToolbarLeft from './components/ResourceTableToolbarLeft.vue';
+import ResourceTableToolbarRight from './components/ResourceTableToolbarRight.vue';
+import ResourceTableFilters from './components/ResourceTableFilters.vue';
+import ResourceTableBody from './components/ResourceTableBody.vue';
+import ResourceTableHead from './components/ResourceTableHead.vue';
 
 export default {
     components: {
         Table,
-        TableRow,
-        TableTh,
-        TableTd,
-        Input, Filter,
+        ResourceTableToolbarLeft,
+        ResourceTableToolbarRight,
+        ResourceTableFilters,
+        ResourceTableBody,
+        ResourceTableHead,
 
-        RowLink:                      defineAsyncComponent(() => import("../ResourceTable/RowLink.vue")),
-        FormItem:                     defineAsyncComponent(() => import("../../FormItem.vue")),
-
-        CreateButton:                 defineAsyncComponent(() => import("../buttons/CreateButton.vue")),
-        EditButton:                   defineAsyncComponent(() => import("../buttons/EditButton.vue")),
-        ShowButton:                   defineAsyncComponent(() => import("../buttons/ShowButton.vue")),
-        DeleteButton:                 defineAsyncComponent(() => import("../buttons/DeleteButton.vue")),
-
-        Ico:                          defineAsyncComponent(() => import("../../Ico.vue")),
         Paginator:                    defineAsyncComponent(() => import("../../paginations/TablePaginator.vue")),
-        BlueButton:                   defineAsyncComponent(() => import("../../buttons/BlueButton.vue")),
-        RedButton:                    defineAsyncComponent(() => import("../../buttons/RedButton.vue")),
-    },
-
-    data() {
-        return {
-            isFilterOpen: false,
-            filterResetKey: 0,
-            cachedFilters: {},
-            filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
-            searchInputTimer: null,
-        }
     },
 
     props: {
+        // DEFAULT
         id: {
             type: String,
             default: null
         },
 
-        // Toggles
+        // BUTTONS
         hasCreateButton: {
             type: Boolean,
             default: false,
@@ -72,7 +49,7 @@ export default {
             default: true
         },
 
-        // Actions
+        // HANDLERS
         onCreateButtonClick: {
             type: Function,
             default: () => {
@@ -105,8 +82,12 @@ export default {
             type: Function,
             default: null
         },
+        onRowClick: {
+            type: Function,
+            default: () => {}
+        },
 
-        // Data
+        // DATA
         columns: {
             type: Array,
             default: () => []
@@ -122,263 +103,77 @@ export default {
         filters: {
             type: Array,
             default: () => [],
-            validator(value) {
-                let hasInvalidType = value.filter((input) => {
-                    return ![
-                        'checkbox',
-                        'singleSelect',
-                        'multiSelect',
-                        'multiSelectPopup',
-                        'date'
-                    ].includes(input.type);
-                });
-
-                if (hasInvalidType.length !== 0) {
-                    hasInvalidType.forEach((input) => {
-                        throw new Error(
-                            `Недействительный тип "${input.type}"!`,
-                        );
-                    });
-
-                    return false;
-                }
-
-                return true;
-            },
         },
         channels: {
             type: Array,
             default: () => []
         },
 
-        //Other
+        // OTHER
+        actions: {
+            type: Array,
+            default: () => [],
+        },
         rowLinks: {
             type: Array,
-            default: [],
+            default: () => [],
         },
         rowClasses: {
             type: [Array, String, Function, Object],
             default: null
         },
-        actions: {
-            type: Array,
-            default: [],
-        },
+    },
+
+    data() {
+        return {
+            filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
+            cachedFilters: {}
+        }
     },
 
     methods: {
-        // FILTERS
-        resetFilters() {
-            localStorage.removeItem(this.filtersStorageKey)
-            this.cachedFilters = {}
+        cachedFiltersChangeHandler(v) {
+            this.cachedFilters = v
+        }
+    },
 
-            // Увеличиваем ключ - этот ключ у каждого компонента фильтров и он конкатенируется с filter.name
-            // Это нужно для сброса, чтобы создавался новый компонент (при изменении ключа компонент пересоздаётся),
-            // Оставался фильтр открытым, а значения компонентов сбрасывались
-            this.filterResetKey++
+    computed: {
+        tableHeadValues() {
+            let values = []
 
-            router.get(
-                window.location.pathname,
-                {},
-                {
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        },
-        preparePropsFromFilter(filter) {
-            const { type, label, ...rest } = filter;
+            this.columns.forEach(column => {
+                values.push({
+                    title: column.title,
+                    isFiltered: column.filterName
+                        ? Object.entries(this.cachedFilters.urlParams ?? {}).some(
+                            ([key, value]) =>
+                                key.startsWith(`filters[${column.filterName}]`) && value !== ''
+                        )
+                        : false
+                })
+            })
 
-            rest.value = this.cachedFilters[type]?.value?.[rest.name] ?? rest.value
-            rest.name = `filters[${rest.name}]`
+            // Кнопки
+            values.push(...[
+                this.hasShowButton,
+                this.hasEditButton,
+                this.hasDeleteButton,
+            ].filter(Boolean).map(() => ({
+                title: '',
+                isFiltered: false
+            })))
 
-            return rest;
-        },
-        toggleFilterVisible() {
-            this.isFilterOpen = !this.isFilterOpen;
-        },
-        restoreFilters() {
-            try {
-                const savedFilters = localStorage.getItem(this.filtersStorageKey);
+            // RowLinks
+            values.push(...Array.from(
+                { length: this.rowLinks.length },
+                () => ({ title: '', isFiltered: false })
+            ))
 
-                if (savedFilters) {
-                    this.cachedFilters = JSON.parse(savedFilters);
-                }
-            } catch (error) {
-                console.error('Не удалось восстановить фильтры:', error);
-                this.cachedFilters = {};
-            }
-        },
-        applyFilters() {
-            const form = this.$refs.table.$refs.filtersForm.$el;
-            const formData = new FormData(form);
-
-            const result = {};
-
-            this.filters.forEach(({ name, type }) => {
-                let value
-
-                switch (type) {
-                    case 'multiSelect':
-                        value = formData
-                            .getAll(`filters[${name}][]`)
-                            .map(Number)
-                        break
-
-                    case 'date':
-                        value = {
-                            from: formData.get(`filters[${name}]_from`) ?? '',
-                            to: formData.get(`filters[${name}]_to`) ?? '',
-                        };
-                        break;
-
-                    case 'singleSelect':
-                        value = formData.get(`filters[${name}]`)
-                        break
-
-                    case 'checkbox':
-                        value = formData.has(`filters[${name}]`)
-                        break
-
-                    case 'selectPopup':
-                        value = formData.get(`filters[${name}]`)
-                        break
-
-                    case 'multiSelectPopup':
-                        value = formData
-                            .getAll(`filters[${name}][]`)
-                            .map(Number)
-                        break
-
-                    default:
-                        return
-                }
-
-                result[type] ??= { value: {} };
-                result[type].value[name] = value;
-            });
-
-            result.urlParams = Object.fromEntries(
-                new URLSearchParams(window.location.search)
-            );
-
-            this.cachedFilters = result;
-
-            localStorage.setItem(
-                this.filtersStorageKey,
-                JSON.stringify(result)
-            );
-        },
-
-        // HANDLERS
-        createButtonClickHandler(e) {
-            this.onCreateButtonClick(e);
-        },
-        showButtonClickHandler(row) {
-            this.onShowButtonClick(row);
-        },
-        editButtonClickHandler(row) {
-            this.onEditButtonClick(row);
-        },
-        deleteButtonClickHandler(row) {
-            this.onDeleteButtonClick(row);
-        },
-        inputHandler(e) {
-            clearTimeout(this.searchInputTimer);
-
-            this.searchInputTimer = setTimeout(
-                this.onSearchInput !== null
-                    ? () => this.onSearchInput(e)
-                    : () => { router.get(window.location.pathname,
-                        {
-                            search: e.target.value
-                        },
-                        {
-                            preserveState: true,
-                        }
-                    );
-            }, 1000)
-        },
-
-        // ClASSES
-        getRowClasses(row) {
-            if (this.rowClasses === null) return
-
-            if (typeof this.rowClasses === 'string')
-                return this.rowClasses
-
-            if (typeof this.rowClasses === 'object')
-                return Object.keys().filter((key) => this.rowClasses[key] === true).join(' ')
-
-            if (Array.isArray(this.rowClasses))
-                return this.rowClasses.join(' ')
-
-            if (typeof this.rowClasses === 'function') {
-                let returned = this.rowClasses(row)
-
-                if ( typeof returned !== 'string' )
-                    console.error('rowClasses должен возвращать строку. Возвращаемое значение: ', returned)
-
-                return returned
-            }
-        },
-
-        // CHECK
-        checkRowHasShowButton(row) {
-            return typeof this.hasShowButton === 'function'
-                ? this.hasShowButton(row)
-                : this.hasShowButton
-        },
-        checkRowHasEditButton(row) {
-            return typeof this.hasEditButton === 'function'
-                ? this.hasEditButton(row)
-                : this.hasEditButton
-        },
-        checkRowHasDeleteButton(row) {
-            return typeof this.hasDeleteButton === 'function'
-                ? this.hasDeleteButton(row)
-                : this.hasDeleteButton
-        },
-
-        checkCellVisible(row, column) {
-            let visible = column.visible ?? true
-
-            return typeof visible === 'function'
-                ? visible(row)
-                : visible ?? true
-        },
-
-        // MATH
-        getCellValue(row, column){
-            if('render' in column) {
-                let renderData = column.render(row)
-
-                let props = {
-                    ...renderData.props,
-                    onClick: (e) => renderData.props.onClick ? renderData.props.onClick(e) : null
-                }
-
-                return () => h(renderData.component ?? 'div', {...props});
-            }
-
-            if(typeof column.value == 'function')
-                return column.value(row)
-
-            return Object.get(row, column.dataIndex)
-        },
-        getCellRowspan(row, column, index) {
-            if (typeof column.rowspan === 'function') {
-                return column.rowspan(row, index, this.data)
-            }
-
-            return column.rowspan
-        },
+            return values
+        }
     },
 
     async mounted() {
-        // Берём из localStorage значения фильтров пихуем в компоненты и кликаем (отправляем на сервер)
-        this.restoreFilters()
-
         this.channels.forEach(function(channel){
             if(typeof channel !== 'object'){
                 console.error('Неверный формат канала');
@@ -402,182 +197,74 @@ export default {
 
             Echo.channel(channel.name)
                 .listen(channel.event, channel.onEvent)
-
         })
     },
-
-    beforeUnmount() {
-        clearTimeout(this.searchInputTimer);
-    }
 }
 </script>
 
 <template>
-    <Table
-        ref="table" class="resource-table"
-        :on-apply-filters="applyFilters"
-        :id
-    >
-        <template  #toolbar-left>
-            <slot name="toolbar-left"></slot>
-            <Input type="string"
-                v-if="hasSearchInput"
-                :form="id"
-                class="string-input "
-                placeholder="Поиск.."
-                name="search[appealId]"
-                :on-input="inputHandler"
+    <Table class="resource-table">
+        <template #toolbar-left>
+            <slot name="toolbar-left" />
+            <ResourceTableToolbarLeft
+                :id
+                :has-search-input
+                :on-search-input
             />
         </template>
 
-        <template #paginator>
-            <div class="table-paginate-container">
-                <Paginator
-                    v-if="meta.last_page > 1"
-                    v-bind="meta"
-                />
-            </div>
+        <template v-if="meta.last_page > 1" #paginator-top>
+            <Paginator v-bind="meta" />
         </template>
 
         <template #toolbar-right>
-            <div class="table-search-container">
-
-            </div>
-            <div class="table-actions-container">
-                <slot name="actions" />
-                <div class="resource-table-actions-container">
-                    <template v-for="action in actions">
-                        <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </BlueButton>
-                        <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                            <Ico :type="action.ico" />
-                        </RedButton>
-                    </template>
-                    <CreateButton v-if="hasCreateButton" @click="createButtonClickHandler" />
-                </div>
-            </div>
+            <slot name="toolbar-right" />
+            <ResourceTableToolbarRight
+                :has-create-button
+                :on-create="onCreateButtonClick"
+            />
         </template>
 
-        <template v-if="filters.length !== 0" #filters>
-            <div class="container-table-filters">
-                <div
-                    class="table-filters-collapse"
-                    :class="{ 'opened': isFilterOpen }"
-                >
-                    <div ref="filtersRef" class="table-filters" :class="{ 'opened': isFilterOpen }">
-                        <div class="min-w-[calc(100%/5-12px)] max-w-[calc(100%/5-12px)] flex-1" v-for="filter in filters" :key="`${filter.name}-${filterResetKey}`">
-                            <Filter   :type="filter.type"   v-bind="preparePropsFromFilter(filter)" :label="filter.label" />
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-btns">
-                    <button type="button" @click="resetFilters" class="filter-btn"  :class="{ filterShow: isFilterOpen }">
-                        Сбросить
-                    </button>
-                    <button class="filter-btn" ref="filtersBtnApply" :class="{ filterShow: isFilterOpen }">
-                        Применить
-                    </button>
-                    <button type="button" class="filter-showbtn"
-                    :class="{ active: isFilterOpen }"
-                    @click="toggleFilterVisible">
-                        <span> фильтры </span>
-                        <div class="filter-btn-item-icon">
-                            <Ico type="chevron-down" />
-                        </div>
-                    </button>
-                </div>
-            </div>
+        <template v-if="filters.length > 0" #filters>
+            <ResourceTableFilters
+                :filters
+                :filters-storage-key
+                :cached-filters
+                :on-cached-filters-change="cachedFiltersChangeHandler"
+            />
         </template>
 
         <template #colgroup>
-            <slot name="colgroup" />
-            <col v-for="column in columns" :width="column.width ?? 'auto'"/>
+            <col v-for="column in columns"  :width="column.width ?? 'auto'"/>
+            <col v-for="link in rowLinks"   :width="link.width ?? 'auto'"/>
+            <col v-for="action in actions"  :width="action.width ?? 'auto'"/>
 
-            <col v-if="hasDeleteButton && data.length > 0" width="60px" />
-            <col v-if="hasShowButton && data.length > 0" width="60px" />
-            <col v-if="hasEditButton && data.length > 0" width="60px" />
+            <col v-if="hasDeleteButton  && data.length > 0" width="60px" />
+            <col v-if="hasShowButton    && data.length > 0" width="60px" />
+            <col v-if="hasEditButton    && data.length > 0" width="60px" />
         </template>
 
-        <template #thead>
-            <slot name="thead" />
-            <TableRow>
-                <template v-for="column in columns">
-                    <TableTh v-if="column.colspan !== 0" v-bind="{ width: column.width, colspan: column.headerColspan }">
-                        <span> {{ column.title }} </span>
-                    </TableTh>
-                </template>
-
-                <template v-if="columns.length > 0 && data.length > 0">
-                    <TableTh v-if="hasDeleteButton !== false" button />
-                    <TableTh v-if="hasShowButton !== false" button />
-                    <TableTh v-if="hasEditButton !== false" button />
-                </template>
-
-                <TableTh v-for="link in rowLinks" button />
-            </TableRow>
+        <template v-if="data.length > 0" #thead>
+            <ResourceTableHead :table-head-values />
         </template>
 
         <template #tbody>
-            <template v-if="data.length > 0">
-                <TableRow
-                    v-for="(row, index) in data"
-                    :key="row.id ?? index"
-                    :class="getRowClasses(row)"
-                >
-                    <template v-for="column in columns" :key="column.dataIndex">
-                        <TableTd
-                            v-if="
-                                checkCellVisible(row, column)
-                                && getCellRowspan(row, column, index) !== 0
-                            "
-                            v-bind="{
-                                ...column,
-                                row,
-                                value: getCellValue(row, column),
-                                rowspan: getCellRowspan(row, column, index)
-                            }"
-                        />
-                    </template>
-
-                    <TableTd v-if="checkRowHasDeleteButton(row)">
-                        <DeleteButton @click="() => deleteButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <TableTd v-if="checkRowHasShowButton(row)">
-                        <ShowButton @click="() => showButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <TableTd v-if="checkRowHasEditButton(row)">
-                        <EditButton @click="() => editButtonClickHandler(row)" />
-                    </TableTd>
-
-                    <RowLink
-                        v-for="link in rowLinks"
-                        :key="link.name ?? link"
-                        v-bind="{ ...link, row }"
-                    />
-                </TableRow>
-            </template>
-
-            <tr v-else>
-                <TableTd
-                    :colspan="columns.length + rowLinks.length"
-                    vertical="center"
-                    horizontal="center"
-                    class="not-data-cell"
-                >
-                    <Ico
-                        class="h-[148px]!"
-                        type="database"
-                    />
-
-                    <span class="text">Данных нет :(</span>
-                </TableTd>
-            </tr>
+            <ResourceTableBody
+                :data
+                :columns
+                :row-links
+                :row-classes
+                :has-show-button
+                :has-edit-button
+                :has-delete-button
+                :on-show="onShowButtonClick"
+                :on-edit="onEditButtonClick"
+                :on-delete="onDeleteButtonClick"
+                :on-row-click
+            />
         </template>
 
-        <template v-if="meta.last_page > 1" #pagination>
+        <template v-if="meta.last_page > 1" #paginator-bottom>
             <Paginator v-bind="meta" />
         </template>
     </Table>
@@ -585,133 +272,9 @@ export default {
 
 <style lang="sass" scoped>
 .resource-table
-    :deep(.string-input)
-        width: 250px
-    .container-table-filters
-        width: 100%
-        display: flex
-        flex-direction: column
-
-        .table-filters-collapse
-            display: grid
-            grid-template-rows: 0fr
-            transition: grid-template-rows .3s ease
-            overflow: hidden
-
-            &.opened
-                grid-template-rows: 1fr
-                overflow: visible
-
-        :deep(.table-filters)
-            display: flex
-            flex-wrap: wrap
-            align-items: center
-            gap: 12px
-
-            min-height: 0
-            opacity: 0
-            padding-bottom: 0
-
-            transition: opacity .3s ease, padding-bottom .3s ease, padding-top .3s ease
-
-        .table-filters-collapse.opened
-            :deep(.table-filters)
-                opacity: 1
-                padding-bottom: 8px
-
-        :deep(.filter-item)
-            position: relative
-            display: flex
-            align-items: center
-
-            height: 32px
-            gap: 6px
-            padding: 6px 10px
-            border-radius: 14px
-            background: whitesmoke
-            transition: .2s ease
-
-            &:hover
-                background: lightgray
-                cursor: pointer
-                color: black
-                .filter-item-icon
-                    color: black
-                    transform: rotate(180deg)
-                .filter-item-content
-                    display: flex
-
-            .filter-item-icon
-                color: lightgray
-                height: 100%
-                width: 24px
-                transform: rotate(0deg)
-                transition: .2s ease
-
-        .filter-btns
-            display: flex
-            justify-content: end
-            gap: 4px
-
-            :deep(.filter-btn)
-                height: 35px
-                padding: 8px
-                border-radius: 8px
-                background: var(--button-background-color)
-                color: white
-                font-weight: bold
-                align-self: flex-end
-                transition: .2s ease
-
-                opacity: 0
-                visibility: hidden
-
-                &.filterShow
-                    opacity: 1
-                    visibility: visible
-
-                &:hover
-                    background: var(--button-background-color-hover)
-                    cursor: pointer
-
-            :deep(.filter-showbtn)
-                display: flex
-                justify-content: center
-                gap: 6px
-                height: 35px
-                padding: 8px
-                border-radius: 8px
-                background: var(--button-background-color)
-                color: white
-                align-self: flex-end
-                transition: .2s ease
-                font-weight: bold
-
-                &:hover
-                    background: var(--button-background-color-hover)
-                    cursor: pointer
-
-                &.active
-                    .filter-btn-item-icon
-                        transform: rotate(540deg)
-
-                .filter-btn-item-icon
-                    color: lightgray
-                    height: 100%
-                    width: fit-content
-                    transition: .2s ease
-                    transform: rotate(0deg)
     :deep()
         .table-header
             padding: 0 15px
-        .toolbar
-            .table-actions-container
-                display: flex
-                gap: 10px
-                .button
-                    padding: 9px
-                    width: 35px
-                    height: 35px
 
         .table-content
             .not-data-cell .table-cell-container
