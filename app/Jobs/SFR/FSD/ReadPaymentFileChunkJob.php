@@ -82,10 +82,12 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         $errors = [];
         $batches = [];
         foreach ($this->lines as $line) {
+            // Если строка заканчивается на ;, то удаляем его
+            $line = rtrim($line, ';');
+
             $row = str_getcsv($line, self::CSV_SEPARATOR);
 
             $check_errors = $this->checkRow($row, $line);
-
             if (count($check_errors) > 0) {
                 $errors = array_merge($errors, $check_errors);
                 continue;
@@ -112,7 +114,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         // Проверяем, есть ли дубликаты
         $hashes = collect($batches)->pluck('hash');
         $duplicate_hashes = Payment::whereIn('hash', $hashes)->pluck('hash');
-        dump($duplicate_hashes);
+
         foreach ($duplicate_hashes as $hash) {
             $errors[] = 'Попытка вставить дубликат записи: ' . $batches[$hash]['line'];
             Log::driver('check')->info('Попытка вставить дубликат записи', [
