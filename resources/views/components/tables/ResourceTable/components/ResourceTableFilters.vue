@@ -2,8 +2,7 @@
 import Input from '../../../inputs/input/Input.vue';
 import Filter from '../../../inputs/filter/Filter.vue';
 import Ico from '../../../Ico.vue';
-import { Form } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3';
+import { Form, router } from '@inertiajs/vue3';
 
 export default {
     components: {

@@ -42,11 +42,10 @@ export default {
         changeOptionHandler(e, option) {
             const value = Object.get(option, this.valueKey)
 
-            if(e.target?.checked === true)
-                this.localValue.push(value)
-
-            if(e.target?.checked === false)
+            if (this.localValue.includes(value))
                 this.localValue = this.localValue.filter(optionValue => optionValue !== value)
+            else
+                this.localValue.push(value)
 
             this.onChange(e, option)
         },

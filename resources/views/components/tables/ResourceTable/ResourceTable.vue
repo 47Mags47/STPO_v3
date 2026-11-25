@@ -82,6 +82,10 @@ export default {
             type: Function,
             default: null
         },
+        onRowClick: {
+            type: Function,
+            default: () => {}
+        },
 
         // DATA
         columns: {
@@ -106,6 +110,10 @@ export default {
         },
 
         // OTHER
+        actions: {
+            type: Array,
+            default: () => [],
+        },
         rowLinks: {
             type: Array,
             default: () => [],
@@ -113,10 +121,6 @@ export default {
         rowClasses: {
             type: [Array, String, Function, Object],
             default: null
-        },
-        actions: {
-            type: Array,
-            default: () => [],
         },
     },
 
@@ -226,6 +230,7 @@ export default {
                 :on-show="onShowButtonClick"
                 :on-edit="onEditButtonClick"
                 :on-delete="onDeleteButtonClick"
+                :on-row-click
             />
         </template>
 

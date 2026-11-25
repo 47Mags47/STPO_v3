@@ -18,15 +18,15 @@ export default {
     props: {
         data: {
             type: Array,
-            default: ([])
+            default: () => []
         },
         columns: {
             type: Array,
-            default: ([])
+            default: () => []
         },
         rowLinks: {
             type: Array,
-            default: ([]),
+            default: () => [],
         },
         rowClasses: {
             type: [Array, String, Function, Object],
@@ -57,6 +57,10 @@ export default {
         onEdit: {
             type: Function,
             default: () => {}
+        },
+        onRowClick: {
+            type: Function,
+            default: null
         },
     },
 
@@ -112,7 +116,8 @@ export default {
 
         // GETTERS
         getRowClasses(row) {
-            if (this.rowClasses === null) return
+            if (this.rowClasses === null)
+                return
 
             if (typeof this.rowClasses === 'string')
                 return this.rowClasses
@@ -142,6 +147,7 @@ export default {
             v-for="(row, index) in data"
             :key="row.id ?? index"
             :class="getRowClasses(row)"
+            @click="(e) => onRowClick ? onRowClick(e, row) : null"
         >
             <template v-for="column in columns" :key="column.dataIndex">
                 <TableTd
