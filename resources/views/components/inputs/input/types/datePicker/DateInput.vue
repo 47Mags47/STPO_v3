@@ -47,7 +47,7 @@ export default {
     },
     data() {
         return {
-            selectedDate: this.value !== null ? this.value : null,
+            localValue: this.value !== null ? this.value : null,
         };
     },
     methods: {
@@ -59,29 +59,27 @@ export default {
 
             if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
                 alert('Дата выходит за возможный диапазон')
-                this.$refs.inputRef.value = this.selectedDate?.toFormat('yyyy-MM-dd')
+                this.$refs.inputRef.value = this.localValue?.toFormat('yyyy-MM-dd')
                 return
             }
 
             if(this.endInterval !== null && luxonDate > this.endInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
                 alert('Дата выходит за возможный диапазон')
-                this.$refs.inputRef.value = this.selectedDate.toFormat('yyyy-MM-dd')
+                this.$refs.inputRef.value = this.localValue.toFormat('yyyy-MM-dd')
                 return
             }
 
-            if(/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
-                this.selectedDate = DateTime.fromFormat(value, 'yyyy-MM-dd').toJSDate()
-                this.onChange(e, value)
-            }
+            this.localValue = value
+            this.onChange(e, value)
         },
     },
 
     watch: {
-        value(val) {
-            const isValid = typeof val === 'string' && DateTime.fromFormat(val, 'yyyy-MM-dd').isValid
-            if (isValid) {
-                this.selectedDate = val
-            }
+        value: {
+            handler(val) {
+                this.localValue = val
+            },
+            immediate: true
         }
     }
 }
@@ -95,7 +93,7 @@ export default {
                 v-bind="$attrs"
                 class="custom-date-input"
                 ref="inputRef"
-                :value="selectedDate !== null ? selectedDate : value"
+                :value="localValue"
                 :on-change="changeHandler"
                 @blur="changeHandler"
             />

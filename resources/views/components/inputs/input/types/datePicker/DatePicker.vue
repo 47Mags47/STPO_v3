@@ -128,7 +128,7 @@ export default {
             this.selectedDate = newDate
 
             const dateISO = DateTime.fromISO(this.getValue)
-            const jsDate  = dateISO.toJSDate()
+            const jsDate  = dateISO.isValid ? dateISO.toJSDate() : null
 
             this.onChange(event, jsDate)
         },

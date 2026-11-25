@@ -25,6 +25,14 @@ export default {
             type: Function,
             default: (day) => true
         },
+        startInterval: {
+            type: [Object, String],
+            default: null
+        },
+        endInterval: {
+            type: [Object, String],
+            default: null
+        },
 
         // Handlers
         onFromChange: {
@@ -57,11 +65,11 @@ export default {
     data() {
         return {
             // HACK добавить валидацию формата даты
-            selectedDateFrom: this.value?.from !== null
+            localValueFrom: this.value?.from !== null
                 ? this.value?.from
                 : null,
 
-            selectedDateTo: this.value?.to !== null
+            localValueTo: this.value?.to !== null
                 ? this.value?.to
                 : null,
         };
@@ -71,25 +79,54 @@ export default {
             const value = e.target.value
 
             const format = this.mode === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd'
-            this.selectedDateFrom = DateTime.fromFormat(value, format)
+            const luxonDate = DateTime.fromFormat(value, format)
 
-            this.onFromChange(e, this.selectedDateFrom)
+            if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
+                alert('Дата выходит за возможный диапазон')
+                this.$refs.inputRef.value = this.localValue?.toFormat('yyyy-MM-dd')
+                return
+            }
+
+            if(this.endInterval !== null && luxonDate > this.endInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
+                alert('Дата выходит за возможный диапазон')
+                this.$refs.inputRef.value = this.localValue.toFormat('yyyy-MM-dd')
+                return
+            }
+
+            this.localValueFrom = value
+            this.onFromChange(e, value)
         },
         toChangeHandler(e) {
             const value = e.target.value
 
             const format = this.mode === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd'
-            this.selectedDateTo = DateTime.fromFormat(value, format)
+            const luxonDate = DateTime.fromFormat(value, format)
 
-            this.onToChange(e, this.selectedDateTo)
+            if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
+                alert('Дата выходит за возможный диапазон')
+                this.$refs.inputRef.value = this.localValue?.toFormat('yyyy-MM-dd')
+                return
+            }
+
+            if(this.endInterval !== null && luxonDate > this.endInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
+                alert('Дата выходит за возможный диапазон')
+                this.$refs.inputRef.value = this.localValue.toFormat('yyyy-MM-dd')
+                return
+            }
+
+            this.localValueTo = value
+            this.onToChange(e, value)
         },
     },
 
     watch: {
-        value(val) {
-            this.selectedDateFrom = val?.from ?? null
-            this.selectedDateTo = val?.to ?? null
-        },
+        value: {
+            handler(val) {
+                this.localValueFrom = val?.from ?? null
+                this.localValueTo = val?.to ?? null
+            },
+            immediate: true
+        }
     },
 }
 </script>
@@ -101,7 +138,7 @@ export default {
                 :type="mode"
                 class="custom-date-input"
                 :name="`${name}_from`"
-                :value="selectedDateFrom !== null ? selectedDateFrom : null"
+                :value="localValueFrom"
                 :on-change="fromChangeHandler"
                 @blur="fromChangeHandler"
             />
@@ -114,7 +151,7 @@ export default {
                 :type="mode"
                 class="custom-date-input"
                 :name="`${name}_to`"
-                :value="selectedDateTo !== null ? selectedDateTo : null"
+                :value="localValueTo"
                 :on-change="toChangeHandler"
                 @blur="toChangeHandler"
             />
