@@ -1,10 +1,12 @@
 <script>
-import { DateTime, Interval } from "luxon";
+import { DateTime } from "luxon";
 import Select from '../select/Select.vue';
 import Ico from "../../../../Ico.vue";
 import BlueButton from "../../../../buttons/BlueButton.vue";
 import MonthSelect from "../select/types/MonthSelect.vue";
 import YearSelect from "../select/types/YearSelect.vue";
+import DayPicker from "./types/DayPicker.vue";
+import MonthPicker from "./types/MonthPicker.vue";
 
 export default {
     components: {
@@ -12,13 +14,20 @@ export default {
         BlueButton,
         Ico,
         MonthSelect,
-        YearSelect
+        YearSelect,
+        DayPicker,
+        MonthPicker,
     },
     props: {
         isRange: {
             type: Boolean,
             default: false,
         },
+        mode: {
+            type: String,
+            default: 'date'
+        },
+        // дата, выбранная пользователем
         selectedDate: {
             type: [String, Object],
             default: null,
@@ -37,138 +46,67 @@ export default {
             type: Function,
             default: () => {}
         },
-        onInputClick: {
-            type: Function,
-            default: () => {}
-        }
     },
-    computed: {
-        now: () => DateTime.now(),
 
-        startOfMonth: function() {
-            return this.currentDate.startOf('month')
-        },
-        startOfWeek: function() {
-            return this.startOfMonth.startOf('week')
-        },
-        endOfMonth: function() {
-            return this.currentDate.endOf('month')
-        },
-        endOfWeek: function() {
-            return this.endOfMonth.endOf('week')
-        },
-        interval() {
-            let interval = Interval.fromDateTimes(this.startOfWeek, this.endOfWeek)
-
-            if (interval.splitBy({ week: 1 }).length === 4)
-                interval = interval.set({ start: interval.start.minus({ weeks: 1 }) });
-
-            if (interval.splitBy({ week: 1 }).length === 5)
-                interval = interval.set({ end: interval.end.plus({ weeks: 1 }) });
-
-            return interval
-        },
-        availableInterval(){
-            let startInterval = this.startInterval ?? this.now.startOf('year').minus({'year': 5})
-            let endInterval = this.endInterval ?? this.now.endOf('year').plus({'year': 5})
-            return Interval.fromDateTimes(startInterval, endInterval)
-        },
-    },
     data() {
         return {
+            // для навигации по календарю
             currentDate: DateTime.now(),
-            hoveredDate: null
         }
     },
     methods: {
-        goToNextMonth(){
-            this.currentDate = this.currentDate.plus({ month: 1 });
-        },
+        // CHECK
+        checkMonthAvaible(month) {
+            const start = this.toDateTime(this.startInterval)
+            const end = this.toDateTime(this.endInterval)
 
-        goToPrevMonth(){
-            this.currentDate = this.currentDate.minus({ month: 1 });
-        },
-
-        checkDateInMonth(date){
-            return Interval.fromDateTimes(this.startOfMonth, this.endOfMonth).contains(date)
-        },
-
-        dayClickHandler(e, date){
-            if(this.isDisabled(date))
-                return
-
-            this.onClick(e, date)
-        },
-
-        setMonthHandler(option){
-            let nextmonth = this.currentDate.set({'month': option.value})
-
-            if(this.checkMonthAvaible(nextmonth))
-                this.currentDate = this.currentDate.set({'month': option.value})
-        },
-
-        setYearHandler(option){
-            this.currentDate = this.currentDate.set({'year': option.value})
-        },
-
-        checkMonthAvaible(month){
-            if(this.startInterval !== null && this.startInterval.startOf('month').startOf('day') > month.startOf('month').startOf('day') )
+            if (start && start.startOf('month') > month.startOf('month'))
                 return false
 
-            if(this.endInterval !== null && this.endInterval.endOf('month').endOf('day') < month.endOf('month').endOf('day') )
+            if (end && end.endOf('month') < month.endOf('month'))
                 return false
 
             return true
         },
 
-        checkSelectable(date){
-            if(this.startInterval !== null && date < this.startInterval)
-                return false
+        // HANDLERS
+        clickNextGridHandler(){
+            if (this.mode === 'date')
+                this.currentDate = this.currentDate.plus({ month: 1 })
+            if (this.mode === 'month')
+                this.currentDate = this.currentDate.plus({ year: 1 })
 
-            if(this.endInterval !== null && date > this.endInterval)
-                return false
-
-            return true
         },
+        clickPrevGridHandler(){
+            if (this.mode === 'date')
+                this.currentDate = this.currentDate.minus({ month: 1 })
+            if (this.mode === 'month')
+                this.currentDate = this.currentDate.minus({ year: 1 })
+        },
+        setMonthHandler(e, option){
+            let nextDate = this.currentDate.set({'month': option.value})
 
-        isDisabled(date) {
-            return !this.checkDateInMonth(date) || !this.checkSelectable(date)
+            if(this.checkMonthAvaible(nextDate))
+                this.currentDate = nextDate
+        },
+        setYearHandler(e, option) {
+            const nextDate = this.currentDate.set({ year: Number(option.value) })
+
+            if (this.checkMonthAvaible(nextDate))
+                this.currentDate = nextDate
         },
 
         // MATH
-        isCurrentDay(date) {
-           return date.hasSame(this.now, 'day')
+        toDateTime(value) {
+            if (!value)
+                return null
+
+            return DateTime.isDateTime(value)
+                ? value
+                : DateTime.fromISO(value)
         },
-        isSelectedDay(date) {
-            const isCurrentDate          = !date.hasSame(this.now, 'day')
-            const isDateSelected         = date.toFormat('yyyy-MM-dd') === this.selectedDate?.from ||
-                date.toFormat('yyyy-MM-dd') === this.selectedDate?.to                              ||
-                date.toFormat('yyyy-MM-dd') === this.selectedDate
-            const isSelectedDateToNull   = this.selectedDate?.to === null || this.selectedDate?.to === undefined
-            const isHoveredDateNotNull   = this.hoveredDate !== null
-            const isDateHovered          = isHoveredDateNotNull && date.hasSame(this.hoveredDate, 'day')
-
-            return isCurrentDate && isDateSelected || isSelectedDateToNull && isDateHovered
-        },
-        isInRange(date) {
-            if (!this.isRange)
-                return false
-
-            const { from, to } = this.selectedDate ?? {}
-
-            if (!from)
-                return false
-
-            const fromDate = DateTime.fromISO(from)
-            const toDate = to
-                ? DateTime.fromISO(to)
-                : this.hoveredDate
-
-            return toDate != null
-                ? date > Math.min(fromDate, toDate) && date < Math.max(fromDate, toDate)
-                : false
-        }
     },
+
     watch: {
         selectedDate: {
             handler(newValue) {
@@ -195,60 +133,50 @@ export default {
 <template>
     <div class="date-input-popup-container">
         <div class="header-container">
-            <BlueButton :onClick="goToPrevMonth" :disabled="!checkMonthAvaible(currentDate.minus({'month': 1}))">
+            <BlueButton :onClick="clickPrevGridHandler" :disabled="!checkMonthAvaible(currentDate.minus({'month': 1}))">
                 <Ico type="chevron-left"/>
             </BlueButton>
             <div class="current-date-container">
                 <MonthSelect
+                    v-if="mode !== 'month'"
                     class="month-select"
                     name="month"
                     :value="Number(currentDate.toFormat('M'))"
-                    :onSelect="setMonthHandler"
+                    :on-change="setMonthHandler"
                 />
                 <YearSelect
+                    v-if="mode !== 'year'"
                     class="year-select"
                     name="year"
                     :value="currentDate.toFormat('yyyy')"
-                    :onSelect="setYearHandler"
+                    :on-change="setYearHandler"
                 />
             </div>
-            <BlueButton :onClick="goToNextMonth" :disabled="!checkMonthAvaible(currentDate.plus({'month': 1}))">
+            <BlueButton :onClick="clickNextGridHandler" :disabled="!checkMonthAvaible(currentDate.plus({'month': 1}))">
                 <Ico type="chevron-right"/>
             </BlueButton>
         </div>
         <div class="content-container">
             <table>
-                <thead>
-                    <tr>
-                        <th>ПН</th>
-                        <th>ВТ</th>
-                        <th>СР</th>
-                        <th>ЧТ</th>
-                        <th>ПТ</th>
-                        <th>СБ</th>
-                        <th>ВС</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="weekInterval in interval.splitBy({ week: 1 })" >
-                        <td v-for="dayInterval in weekInterval.splitBy({ day: 1 })">
-                            <div
-                                @mouseenter="hoveredDate = dayInterval.start"
-                                @mouseleave="hoveredDate = null"
-                                class="day-cell-container available"
-                                :class="{
-                                    'current-day'   : isCurrentDay(dayInterval.start),
-                                    'selected-day'  : isSelectedDay(dayInterval.start),
-                                    'disabled'      : isDisabled(dayInterval.start),
-                                    'in-range'      : isInRange(dayInterval.start)
-                                }"
-                                @click="(e) => dayClickHandler(e, dayInterval.start)"
-                            >
-                                {{ dayInterval.start.day }}
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                <DayPicker
+                    v-if="mode === 'date'"
+                    :is-range
+                    :start-interval
+                    :end-interval
+                    :current-date
+                    :selected-date
+                    :on-click
+                />
+
+                <MonthPicker
+                    v-if="mode === 'month'"
+                    :is-range
+                    :start-interval
+                    :end-interval
+                    :current-date
+                    :selected-date
+                    :on-click
+                />
             </table>
         </div>
     </div>
@@ -260,7 +188,6 @@ export default {
     flex-direction: column
 
     background: var(--background-color)
-
 
     width: 100%
     height: 100%
@@ -295,45 +222,7 @@ export default {
         table
             width: 100%
             height: 100%
-            thead
-                tr
-                    th
-                        color: var(--text-color)
             td
                 aspect-ratio: 1 / 1
                 height: auto
-            .day-cell-container
-                width: 100%
-                height: auto
-                aspect-ratio: 1 / 1
-                padding: 5px
-                font-size: 16px
-
-                display: flex
-                justify-content: center
-                align-items: center
-
-                background: var(--background-color)
-                border-radius: 50%
-                overflow: hidden
-
-                color: var(--text-color)
-                &.current-day
-                    color: orange !important
-                &.selected-day
-                    color: #a770ff
-                &.in-range
-                    color: #c29cff
-                &.available
-                    cursor: pointer
-                    &:hover
-                        background: #70707020
-                &.disabled, &.other-month
-                    cursor: not-allowed
-                    color: #aaa
-
-.select-wrapper
-    width: 64px
-    :deep(.single-select)
-        min-width: 0
 </style>
