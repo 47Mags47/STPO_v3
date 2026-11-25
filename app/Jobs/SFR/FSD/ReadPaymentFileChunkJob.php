@@ -78,17 +78,21 @@ class ReadPaymentFileChunkJob implements ShouldQueue
     {
         $in_date = $this->paymentFile->in_date;
 
+        $errors = [];
         $batches = [];
         foreach ($this->lines as $line) {
-            if (!$this->checkValidLine($line))
-                continue;
-
             $row = str_getcsv($line, self::CSV_SEPARATOR);
+
+            $check_errors = $this->checkRow($row);
+
+            if (count($check_errors) > 0) {
+                $errors = array_merge($errors, $check_errors);
+                continue;
+            }
 
             $data = [
                 'last_name'                 => $row[$this->ROW_KEYS['LAST_NAME']['row_number']],
                 'first_name'                => $row[$this->ROW_KEYS['FIRST_NAME']['row_number']],
-                'middle_name'               => $row[$this->ROW_KEYS['MIDDLE_NAME']['row_number']],
                 'SNILS'                     => $row[$this->ROW_KEYS['SNILS']['row_number']],
                 'amount'                    => $row[$this->ROW_KEYS['AMOUNT']['row_number']],
                 'file_in_date'              => $in_date,
@@ -108,15 +112,14 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         $hashes = collect($batches)->pluck('hash');
         $duplicate_hashes = Payment::whereIn('hash', $hashes)->pluck('hash');
 
-        $errors = [];
         foreach ($duplicate_hashes as $hash) {
             $errors[] = 'Попытка вставить дубликат записи: ' . $batches[$hash]['line'];
             unset($batches[$hash]);
         }
-        if(count($errors) > 0)
+        if (count($errors) > 0)
             $this->paymentFile->addErrors($errors);
 
-        $batches = array_map(function($batch){
+        $batches = array_map(function ($batch) {
             unset($batch['line']);
             return $batch;
         }, $batches);
@@ -124,41 +127,31 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         Payment::insertOrIgnore(array_values($batches));
     }
 
-    public function checkValidLine(string $line)
+    public function checkRow(array $row): array
     {
-        if (strlen(trim($line)) == 0)
-            return false;
+        $errors = [];
 
-        $row = str_getcsv($line, self::CSV_SEPARATOR);
-        if (count($row) != count($this->ROW_KEYS))
-            return false;
+        if (count($row) != count($this->ROW_KEYS)) {
+            $errors[] = 'Неверное количество полей в строке';
+            return $errors;
+        }
 
         // Проверка полей
-        $flag = true;
         foreach ($this->ROW_KEYS as $key) {
-            if (!preg_match('/' . $key['pattern'] . '/u', $line)) {
-                $this->paymentFile->addError('Поле "' . $key['name'] . '" не соответсвует формату в cтроке ' . clearString($row[$key['row_number']]));
-
-                $flag = false;
-            }
+            if (!preg_match('/^' . $key['pattern'] . '$/u', $row[$key['row_number']]))
+                $errors[] = 'Поле "' . $key['name'] . '" не соответсвует формату';
         }
 
-        // Проверка категории в АСП
+        // Проверка категории АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
-        if (!$this->ASPPaymentCategories->has($ASPCategoryRow)) {
-            $this->paymentFile->addError('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
-
-            $flag = false;
-        }
+        if (!$this->ASPPaymentCategories->has($ASPCategoryRow) or trim(mb_strlen($row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']])))
+            $errors[] = 'Не найдена категория выплаты "' . $ASPCategoryRow . '"';
 
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
-        if (!$this->financingTypes->has($financingTypeRow)) {
-            $this->paymentFile->addError('Не найден источник финансирования "' . $financingTypeRow . '"');
+        if (!$this->financingTypes->has($financingTypeRow) or trim(mb_strlen($row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']])))
+            $errors[] = 'Не найден источник финансирования "' . $financingTypeRow . '"';
 
-            $flag = false;
-        }
-
-        return $flag;
+        return $errors;
     }
 }
