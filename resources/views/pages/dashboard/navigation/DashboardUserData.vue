@@ -23,14 +23,6 @@ export default {
         editClickHandler(event) {
             this.formDisabled = !event.target.checked
         },
-        inputsClasses(name = null) {
-            if (name === 'email') {
-                if (this.formDisabled)
-                    return this.isEmailVerified ? "text-gray-400! border-gray-400!" : 'text-gray-400! border-(--warning-border-color)!'
-
-                return this.isEmailVerified ? '' : 'border-(--warning-border-color)!'
-            }
-        },
         submitHandler(){
             this.formDisabled = true
         },
@@ -128,7 +120,6 @@ export default {
                     disabled: this.formDisabled
                 },
                 {
-                    class: this.inputsClasses('email'),
                     type: 'string',
                     name: 'email',
                     label: 'почта',
@@ -213,9 +204,9 @@ export default {
 
                 <div
                     v-if="warnings.length !== 0"
-                    class="bg-(--warning-background-color) border-l-5 border-(--warning-border-color) rounded mt-2! p-2! flex items-start flex-col gap-1"
+                    class="warnings-form"
                 >
-                    <span v-for="warning in warnings" class="font-normal "> {{ warning }} </span>
+                    <span v-for="warning in warnings"> {{ warning }} </span>
                 </div>
 
             </template>
@@ -224,6 +215,14 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.warnings-form
+    background: var(--warning-background-color)
+    border-radius: $input-border-radius
+    display: flex
+    justify-content: start
+    padding: 7px
+    border-left: 6px solid var(--warning-border-color)
+    margin-top: 14px
 .avatar-wrapper
     position: relative
     overflow: hidden
