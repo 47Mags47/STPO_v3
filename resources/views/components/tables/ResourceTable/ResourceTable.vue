@@ -124,25 +124,50 @@ export default {
         },
     },
 
-    methods: {},
+    data() {
+        return {
+            filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
+            cachedFilters: {}
+        }
+    },
+
+    methods: {
+        cachedFiltersChangeHandler(v) {
+            this.cachedFilters = v
+        }
+    },
 
     computed: {
         tableHeadValues() {
             let values = []
 
             this.columns.forEach(column => {
-                values.push(column.title)
+                values.push({
+                    title: column.title,
+                    isFiltered: column.filterName
+                        ? Object.entries(this.cachedFilters.urlParams ?? {}).some(
+                            ([key, value]) =>
+                                key.startsWith(`filters[${column.filterName}]`) && value !== ''
+                        )
+                        : false
+                })
             })
 
-            // Если есть кнопка, ставим в имя колонки пустую строку
+            // Кнопки
             values.push(...[
-                this.hasShowButton && '',
-                this.hasEditButton && '',
-                this.hasDeleteButton && '',
-            ].filter(value => value !== false));
+                this.hasShowButton,
+                this.hasEditButton,
+                this.hasDeleteButton,
+            ].filter(Boolean).map(() => ({
+                title: '',
+                isFiltered: false
+            })))
 
-            // Если есть rowLink (rowAction) в строке, ставим в имя колонки пустую строку
-            values.push(...Array(this.rowLinks.length).fill(''));
+            // RowLinks
+            values.push(...Array.from(
+                { length: this.rowLinks.length },
+                () => ({ title: '', isFiltered: false })
+            ))
 
             return values
         }
@@ -201,7 +226,12 @@ export default {
         </template>
 
         <template v-if="filters.length > 0" #filters>
-            <ResourceTableFilters :filters />
+            <ResourceTableFilters
+                :filters
+                :filters-storage-key
+                :cached-filters
+                :on-cached-filters-change="cachedFiltersChangeHandler"
+            />
         </template>
 
         <template #colgroup>

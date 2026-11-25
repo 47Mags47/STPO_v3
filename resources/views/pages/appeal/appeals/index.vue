@@ -151,16 +151,19 @@ export default {
                 type: 'datetime',
                 dataIndex: 'created_at',
                 width: '135px',
+                filterName: 'created_at'
             },
             {
                 title: 'Отправитель',
                 width: '250px',
                 value: (row) => row.sender.full_name,
+                filterName: 'sender_ids'
             },
             {
                 title: 'Тема',
                 width: '300px',
-                value: (row) => `${row.theme.group.name}<br>${row.theme.name}`
+                value: (row) => `${row.theme.group.name}<br>${row.theme.name}`,
+                filterName: 'theme_ids'
             },
             {
                 title: 'Комментарий',
@@ -170,6 +173,7 @@ export default {
                 title: 'Статус',
                 dataIndex: 'status.name',
                 width: '125px',
+                filterName: 'status_ids',
                 cellClasses: (value, row) => (
                     {
                         new:            'text-(--appeal-status-new)!',

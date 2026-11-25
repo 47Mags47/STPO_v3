@@ -16,14 +16,24 @@ export default {
             type: Array,
             default: () => []
         },
+        cachedFilters: {
+            type: Object,
+            default: {}
+        },
+        filtersStorageKey: {
+            type: String,
+            default: `resource-table-filters:${window.location.pathname}`
+        },
+        onCachedFiltersChange: {
+            type: Function,
+            default: () => {}
+        }
     },
 
     data() {
         return {
             isFilterOpen: false,
             filterResetKey: 0,
-            cachedFilters: {},
-            filtersStorageKey: `resource-table-filters:${window.location.pathname}`,
         }
     },
 
@@ -42,11 +52,13 @@ export default {
                 const savedFilters = localStorage.getItem(this.filtersStorageKey);
 
                 if (savedFilters) {
-                    this.cachedFilters = JSON.parse(savedFilters);
+                    // this.cachedFilters = JSON.parse(savedFilters);
+                    this.onCachedFiltersChange(JSON.parse(savedFilters))
                 }
             } catch (error) {
                 console.error('Не удалось восстановить фильтры:', error);
-                this.cachedFilters = {};
+                // this.cachedFilters = {};
+                this.onCachedFiltersChange({})
             }
         },
 
@@ -104,7 +116,8 @@ export default {
                 new URLSearchParams(window.location.search)
             );
 
-            this.cachedFilters = result;
+            // this.cachedFilters = result;
+            this.onCachedFiltersChange(result)
 
             localStorage.setItem(
                 this.filtersStorageKey,
@@ -113,7 +126,8 @@ export default {
         },
         resetFiltersHandler() {
             localStorage.removeItem(this.filtersStorageKey)
-            this.cachedFilters = {}
+            // this.cachedFilters = {}
+            this.onCachedFiltersChange({})
 
             // Увеличиваем ключ - этот ключ у каждого компонента фильтров и он конкатенируется с filter.name
             // Это нужно для сброса, чтобы создавался новый компонент (при изменении ключа компонент пересоздаётся),

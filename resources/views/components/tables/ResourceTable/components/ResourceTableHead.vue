@@ -19,8 +19,17 @@ export default {
 
 <template>
     <TableRow>
-        <TableTh v-for="thValue in tableHeadValues">
-            {{ thValue }}
+        <TableTh
+            v-for="thValue in tableHeadValues"
+            :class="{ 'column-filtered': thValue.isFiltered }"
+            v-tooltip="thValue.isFiltered ? 'К таблице применён фильтр по этой колонке' : null"
+        >
+            {{ thValue.title }} {{ thValue.isFiltered ? '*' : '' }}
         </TableTh>
     </TableRow>
 </template>
+
+<style lang="sass" scoped>
+.column-filtered
+    color: var(--color-blue-400)
+</style>
