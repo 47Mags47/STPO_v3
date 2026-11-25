@@ -139,7 +139,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
         $errors = [];
 
         if (count($row) != count($this->ROW_KEYS)) {
-            $errors[] = 'Неверное количество полей в строке';
+            $errors[] = 'Неверное количество полей в строке: ' . $line;
             return $errors;
         }
 
