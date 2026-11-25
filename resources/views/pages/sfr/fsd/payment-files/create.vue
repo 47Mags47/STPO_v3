@@ -19,6 +19,7 @@ export default {
                 type: 'date',
                 name: 'in_date',
                 label: 'На дату',
+                mode: 'month',
             },
             {
                 type: 'bigFiles',
