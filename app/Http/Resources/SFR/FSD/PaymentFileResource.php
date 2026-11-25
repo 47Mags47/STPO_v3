@@ -16,7 +16,7 @@ class PaymentFileResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'file'          => $this->file->toResource(),
+            'file' => $this->file->toResource(),
             'payments' => [
                 'count' => $this->payments()->count()
             ],

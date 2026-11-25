@@ -15,55 +15,50 @@ class ReadPaymentFileJob implements ShouldQueue
 {
     use Queueable, InteractsWithQueue;
 
-    public $timeout = 999;
+    const CHUNK_SIZE = 2000;
 
-    const CHUNK_SIZE = 250;
+    /**
+     * @var integer
+     */
+    private $paymentFileId;
 
-    public function __construct(public PaymentFile $paymentFile)
+    /**
+     * @var paymentFile|null
+     */
+    private $paymentFile;
+
+    /**
+     * @var resource|null
+     */
+    private $paymentFileCursor = null;
+
+    public function __construct(int $paymentFileId)
     {
         $this->onQueue('SFR-FSD');
+
+        $this->paymentFileId = $paymentFileId;
     }
 
     public function middleware(): array
     {
+        $paymentFile = PaymentFile::findOrFail($this->paymentFileId);
+
         return [
-            (new WithoutOverlapping("file:" . $this->paymentFile->file_id))->shared()
+            (new WithoutOverlapping("file:" . $paymentFile->file_id))->shared()
         ];
     }
 
     public function handle(): void
     {
+        $this->paymentFile = PaymentFile::findOrFail($this->paymentFileId);
         $this->paymentFile->setStatus('reading');
-        $this->paymentFile->setDisabled();
-        $this->paymentFile = $this->paymentFile->fresh();
 
-        Log::driver('check')->debug('Чтение файла: ' . $this->paymentFile->localPath);
-
-
-        $path = $this->paymentFile->fullPath;
-
-        if (!is_readable($path)) {
-            Log::driver('check')->error('Файл недоступен для чтения: ' . $path);
-            $this->paymentFile->addError('Файл недоступен для чтения');
-            $this->paymentFile->setStatus('error');
-            $this->paymentFile->setDisabled(false);
-            return;
-        }
-
-        $file = @fopen($path, 'r');
-        if ($file === false) {
-            Log::driver('check')->error('Не удалось открыть файл: ' . $path);
-            $this->paymentFile->addError('Не удалось открыть файл');
-            $this->paymentFile->setStatus('error');
-            $this->paymentFile->setDisabled(false);
-            return;
-        }
-
+        $this->openFile();
 
         $count = 0;
         $lines = [];
         $jobs = [];
-        while (($line = fgets($file)) !== false) {
+        while (($line = fgets($this->paymentFileCursor)) !== false) {
             // Проверка кодировки документа
             $converted = @mb_convert_encoding($line, 'UTF-8', 'CP-866');
             if ($converted === false) {
@@ -88,7 +83,7 @@ class ReadPaymentFileJob implements ShouldQueue
             }
         }
 
-        fclose($file);
+        fclose($this->paymentFileCursor);
 
         if (!empty($lines))
             $jobs[] = new ReadPaymentFileChunkJob($this->paymentFile, $lines);
@@ -96,13 +91,34 @@ class ReadPaymentFileJob implements ShouldQueue
         $file = $this->paymentFile;
 
         Bus::batch($jobs)
-            ->then(function (Batch $batch) use ($file) {
-                $file->setStatus('ok');
-            })
             ->finally(function (Batch $batch) use ($file) {
-                $file->setDisabled(false);
+                $file->setStatus('ok');
             })
             ->onQueue('SFR-FSD')
             ->dispatch();
+    }
+
+    private function openFile()
+    {
+        $path = $this->paymentFile->fullPath;
+
+        if (!is_file($path)) {
+            $this->paymentFile->setStatus('error');
+            $this->paymentFile->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Файл не найден: ' . $path);
+        }
+
+        if (!is_readable($path)) {
+            $this->paymentFile->setStatus('error');
+            $this->paymentFile->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Файл недоступен для чтения: ' . $path);
+        }
+
+        $cursor = @fopen($path, 'rb');
+        if ($cursor === false) {
+            $this->paymentFile->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Не удалось открыть исходный файл: ' . $path);
+        }
+        $this->paymentFileCursor = $cursor;
     }
 }

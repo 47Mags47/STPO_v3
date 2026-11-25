@@ -98,8 +98,8 @@ return new class extends Migration
             $table->index(['SNILS']);
 
             // Проверка уникальности перед вставкой
-            $table->string('duplicate_hash', 64)->nullable();
-            $table->unique('duplicate_hash', 'uq_payments_duplicate_hash');
+            $table->string('hash', 64)->nullable();
+            // $table->unique('hash', 'uq_payments_hash');
         });
 
         Schema::create('sfr__fsd__transit_categories', function (Blueprint $table) {

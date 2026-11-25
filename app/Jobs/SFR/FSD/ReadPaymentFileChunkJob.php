@@ -16,7 +16,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
-    public $timeout = 999;
     public $ROW_KEYS = [];
     public Collection $ASPPaymentCategories;
     public Collection $financingTypes;
@@ -78,90 +77,88 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function handle(): void
     {
-        $in_date = $this->paymentFile->in_date;
+        $errors = [];
         $batches = [];
-
         foreach ($this->lines as $line) {
-            if (!$this->checkValidLine($line))
-                continue;
+            // Если строка заканчивается на ;, то удаляем его
+            $line = rtrim($line, ';');
 
             $row = str_getcsv($line, self::CSV_SEPARATOR);
+
+            $check_errors = $this->checkRow($row, $line);
+            if (count($check_errors) > 0) {
+                $errors = array_merge($errors, $check_errors);
+                continue;
+            }
 
             $data = [
                 'last_name'                 => $row[$this->ROW_KEYS['LAST_NAME']['row_number']],
                 'first_name'                => $row[$this->ROW_KEYS['FIRST_NAME']['row_number']],
-                'middle_name'               => $row[$this->ROW_KEYS['MIDDLE_NAME']['row_number']],
                 'SNILS'                     => $row[$this->ROW_KEYS['SNILS']['row_number']],
                 'amount'                    => $row[$this->ROW_KEYS['AMOUNT']['row_number']],
-                'file_in_date'              => $in_date,
+                'file_in_date'              => $this->paymentFile->in_date,
 
                 'asp_payment_category_id'   => $this->ASPPaymentCategories[$row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']]]->id,
                 'financing_type_id'         => $this->financingTypes[$row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']]]->id,
             ];
 
-            $data['duplicate_hash'] = hash('sha256', implode('|', $data));
+            $data['hash'] = hash('sha256', implode('|', $data));
             $data['file_id'] = $this->paymentFile->id;
+            $data['line'] = $line;
 
-            $batches[] = [
-                'data' => $data,
-                'line' => $line
-            ];
+            $batches[$data['hash']] = $data;
         }
 
-        foreach ($batches as $batch) {
-            try {
-                Payment::insert($batch['data']);
-            } catch (\Illuminate\Database\QueryException $e) {
-                if (preg_match("/SQLSTATE\[[0-9]*\]: Integrity constraint violation: [0-9]* Duplicate entry .* for key 'sfr__fsd__payments.uq.*/", $e->getMessage()) == 1)
-                    $this->paymentFile->addError('Попытка вставить дубликат записи: ' . $batch['line']);
-                    Log::driver('check')->debug('Попытка вставить дубликат записи: ' . $batch['line']);
-            } catch (\Throwable $th) {
-                Log::error($th);
-            }
+        // Проверяем, есть ли дубликаты
+        $hashes = collect($batches)->pluck('hash');
+        $duplicate_hashes = Payment::whereIn('hash', $hashes)->pluck('hash');
+
+        foreach ($duplicate_hashes as $hash) {
+            $errors[] = 'Попытка вставить дубликат записи: ' . $batches[$hash]['line'];
+            Log::driver('check')->info('Попытка вставить дубликат записи', [
+                'line' => $batches[$hash]['line'],
+                'in_date' => $batches[$hash]['file_in_date']->format('Y-m-d'),
+                'payment_file_id' => $this->paymentFile->id,
+                'file_name' => $this->paymentFile->origin_name,
+            ]);
+            // unset($batches[$hash]);
         }
+        if (count($errors) > 0)
+            $this->paymentFile->addErrors($errors);
+
+        $batches = array_map(function ($batch) {
+            unset($batch['line']);
+            return $batch;
+        }, $batches);
+
+        Payment::insertOrIgnore(array_values($batches));
     }
 
-    public function checkValidLine(string $line)
+    public function checkRow(array $row, string $line): array
     {
-        if (strlen(trim($line)) == 0)
-            return false;
+        $errors = [];
 
-        if (!preg_match('/[0-9а-яА-ЯёЁ\s%;\.\(\)\-]*$/u', str_replace(["\r", "\r\n", "\n"], '', $line))) {
-            Log::driver('check')->debug('Строка "' . $line . '" содержит недопустимые символы');
-            $this->paymentFile->addError('Строка "' . $line . '" содержит недопустимые символы');
-            return false;
+        if (count($row) != count($this->ROW_KEYS)) {
+            $errors[] = 'Неверное количество полей в строке: ' . $line;
+            return $errors;
         }
 
-        $row = str_getcsv($line, self::CSV_SEPARATOR);
-        $flag = true;
-
+        // Проверка полей
         foreach ($this->ROW_KEYS as $key) {
-            if (!preg_match('/' . $key['pattern'] . '/u', $line)) {
-                Log::driver('check')->debug('Строка "' . clearString($row[$key['row_number']]) . '" не соответсвует паттерну ' . $key['pattern']);
-                $this->paymentFile->addError('Поле "' . $key['name'] . '" не соответсвует формату в cтроке ' . clearString($row[$key['row_number']]));
-
-                $flag = false;
-            }
+            if (!preg_match('/^' . $key['pattern'] . '$/u', $row[$key['row_number']]))
+                $errors[] = 'Поле "' . $key['name'] . '" не соответсвует формату в строке: ' . $line;
         }
 
-        // Проверка категории в АСП
+        // Проверка категории АСП
         $ASPCategoryRow = $row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']];
-        if (!$this->ASPPaymentCategories->has($ASPCategoryRow)) {
-            Log::driver('check')->debug('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
-            $this->paymentFile->addError('Не найдена категория выплаты "' . $ASPCategoryRow . '"');
-
-            $flag = false;
-        }
+        if (!$this->ASPPaymentCategories->has($ASPCategoryRow) or mb_strlen(trim($row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']])) === 0)
+            $errors[] = 'Не найдена категория выплаты "' . $ASPCategoryRow . '" в строке: ' . $line;
 
         // Проверка источника финансирования
         $financingTypeRow = $row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']];
-        if (!$this->financingTypes->has($financingTypeRow)) {
-            Log::driver('check')->debug('Не найден источник финансирования "' . $financingTypeRow . '"');
-            $this->paymentFile->addError('Не найден источник финансирования "' . $financingTypeRow . '"');
+        if (!$this->financingTypes->has($financingTypeRow) or mb_strlen(trim($row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']])) === 0)
+            $errors[] = 'Не найден источник финансирования "' . $financingTypeRow . '" в строке: ' . $line;
 
-            $flag = false;
-        }
-
-        return $flag;
+        return $errors;
     }
 }

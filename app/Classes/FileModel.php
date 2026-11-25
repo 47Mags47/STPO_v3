@@ -125,6 +125,17 @@ abstract class FileModel extends BaseModel
     }
 
     /**
+     * Adds an errors to the record
+     * @param array $errors
+     */
+    public function addErrors(array $errors): self
+    {
+        $this->file->addErrors($errors);
+
+        return $this;
+    }
+
+    /**
      * Set file status
      *
      * @param FileStatus|string $status
