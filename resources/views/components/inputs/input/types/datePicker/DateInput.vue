@@ -37,44 +37,49 @@ export default {
         onInputClick: {
             type: Function,
             default: () => {}
-        }
+        },
+
+        // OTHER
+        mode: {
+            type: String,
+            default: 'date'
+        },
     },
     data() {
         return {
-            selectedDate: this.value !== null ? this.value : null,
+            localValue: this.value !== null ? this.value : null,
         };
     },
     methods: {
         changeHandler(e) {
             const value = e.target.value
 
-            let luxonDate = DateTime.fromFormat(value, 'yyyy-MM-dd')
+            const format = this.mode === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd'
+            const luxonDate = DateTime.fromFormat(value, format)
 
             if(this.startInterval !== null && luxonDate < this.startInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
                 alert('Дата выходит за возможный диапазон')
-                this.$refs.inputRef.value = this.selectedDate?.toFormat('yyyy-MM-dd')
+                this.$refs.inputRef.value = this.localValue?.toFormat('yyyy-MM-dd')
                 return
             }
 
             if(this.endInterval !== null && luxonDate > this.endInterval && /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
                 alert('Дата выходит за возможный диапазон')
-                this.$refs.inputRef.value = this.selectedDate.toFormat('yyyy-MM-dd')
+                this.$refs.inputRef.value = this.localValue.toFormat('yyyy-MM-dd')
                 return
             }
 
-            if(/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)){
-                this.selectedDate = DateTime.fromFormat(value, 'yyyy-MM-dd').toJSDate()
-                this.onChange(e, value)
-            }
+            this.localValue = value
+            this.onChange(e, value)
         },
     },
 
     watch: {
-        value(val) {
-            const isValid = typeof val === 'string' && DateTime.fromFormat(val, 'yyyy-MM-dd').isValid
-            if (isValid) {
-                this.selectedDate = val
-            }
+        value: {
+            handler(val) {
+                this.localValue = val
+            },
+            immediate: true
         }
     }
 }
@@ -84,11 +89,11 @@ export default {
     <div class="date-input-wrapper" @click.stop="onInputClick">
         <div class="date-input-container flex items-center">
             <Baseinput
-                type="date"
+                :type="mode"
                 v-bind="$attrs"
                 class="custom-date-input"
                 ref="inputRef"
-                :value="selectedDate !== null ? selectedDate : value"
+                :value="localValue"
                 :on-change="changeHandler"
                 @blur="changeHandler"
             />

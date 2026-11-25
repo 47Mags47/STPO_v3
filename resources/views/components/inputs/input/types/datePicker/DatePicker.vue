@@ -24,6 +24,17 @@ export default {
             type: Boolean,
             default: false,
         },
+        mode: {
+            type: String,
+            default: 'date',
+            validator: (value) => {
+                if(['date', 'month'].includes(value))
+                    return true
+
+                console.error(`Недействительный тип ${value}`)
+                return false
+            }
+        },
 
         // INPUT
         label: {
@@ -117,7 +128,7 @@ export default {
             this.selectedDate = newDate
 
             const dateISO = DateTime.fromISO(this.getValue)
-            const jsDate  = dateISO.toJSDate()
+            const jsDate  = dateISO.isValid ? dateISO.toJSDate() : null
 
             this.onChange(event, jsDate)
         },
@@ -178,7 +189,7 @@ export default {
                 parsedDate = DateTime.fromISO(date)
 
             return parsedDate.isValid
-                ? parsedDate.toFormat('yyyy-MM-dd')
+                ? parsedDate.toFormat(this.mode === 'month' ? 'yyyy-MM' : 'yyyy-MM-dd')
                 : null
         }
     },
@@ -220,6 +231,7 @@ export default {
             ref="dateInputBetweenWrapperRef"
             v-bind="$attrs"
             :value="getValue"
+            :mode
             :on-from-change="changeDateFromHandler"
             :on-to-change="changeDateToHandler"
             :on-popup-click="popupButtonClickHandler"
@@ -231,6 +243,7 @@ export default {
             ref="dateInputWrapperRef"
             v-bind="$attrs"
             :value="getValue"
+            :mode
             :on-change="changeDateHandler"
             :on-popup-click="popupButtonClickHandler"
             :on-input-click="inputClickHandler"
@@ -241,8 +254,8 @@ export default {
         <Transition name="popup">
             <PopupWrapper
                 v-if="localIsOpen"
-                width="430px"
-                height="500px"
+                :width="mode === 'date' ? '430px' : '300px'"
+                :height="mode === 'date' ? '495px' : '420px'"
                 :onClose="popupCloseHandler"
                 :has-resize="false"
                 :position="(el) => {
@@ -260,6 +273,7 @@ export default {
             >
                 <DateInputPopup
                     :isRange
+                    :mode
                     :startInterval="start"
                     :endInterval=end
                     :onClick="dayClickHandler"
