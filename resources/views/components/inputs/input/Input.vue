@@ -10,6 +10,7 @@ export default {
         EmailInput:             defineAsyncComponent(() => import('./types/EmailInput.vue')),
         PasswordInput:          defineAsyncComponent(() => import('./types/PasswordInput.vue')),
         NumberInput:            defineAsyncComponent(() => import('./types/NumberInput.vue')),
+        SearchInput:            defineAsyncComponent(() => import('./types/SearchInput.vue')),
 
         SwitcherInput:          defineAsyncComponent(() => import('./types/SwitcherInput.vue')),
         Checkbox:               defineAsyncComponent(() => import('./types/Checkbox.vue')),
@@ -36,9 +37,10 @@ export default {
             default: 'string',
             validator(value) {
                 const validTypes = [
-                    'string', 'text', 'number', 'phone', 'email',
+                    'string', 'text', 'number', 'phone', 'email', 'search',
                     'password', 'checkbox', 'radio', 'switcher',
-                    'bigFile', 'bigFiles', 'date',
+                    'bigFile', 'bigFiles',
+                    'date',
                     'monthSelect', 'yearSelect', 'singleSelect', 'multiSelect',
                     'singleSelectPopup', 'multiSelectPopup'
                 ];
@@ -63,6 +65,7 @@ export default {
     <PhoneInput             v-if="type === 'phone'"                 v-bind="$attrs" />
     <EmailInput             v-if="type === 'email'"                 v-bind="$attrs" />
     <PasswordInput          v-if="type === 'password'"              v-bind="$attrs" />
+    <SearchInput            v-if="type === 'search'"                v-bind="$attrs" />
 
     <Checkbox               v-if="type === 'checkbox'"              v-bind="$attrs" />
     <Radio                  v-if="type === 'radio'"                 v-bind="$attrs" />

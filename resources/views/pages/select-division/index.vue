@@ -30,14 +30,29 @@ export default {
             :clickHandler="clickHandler"
         >
             <template #header>
-                <span class="text-2xl!"> Выберите организацию </span>
-                <div class="w-full flex items-center justify-end">
-                    <button class="flex group cursor-pointer h-[32px] p-1.5 items-center" @click="logoutHandler">
-                        <Ico type="logout" class="text-red-400" />
-                        <span class="text-red-400 text-lg rounded px-2! font-normal group-hover:text-red-300 group-active:text-red-600"> выход </span>
+                <div class="size-full grid grid-cols-[120px_1fr_120px] items-center">
+                    <div class="grid-mock"></div>
+                    <span class="justify-self-center text-2xl"> Выберите организацию </span>
+                    <button class="button-logout justify-self-end flex group cursor-pointer h-[32px] p-1.5 items-center" @click="logoutHandler">
+                        <Ico type="logout" class="text-red-400 shrink-0" />
+                        <span class="text-lg rounded px-2! font-normal"> выход </span>
                     </button>
                 </div>
             </template>
         </SelectDivisionForm>
     </div>
 </template>
+
+<style lang="sass" scoped>
+.button-logout
+    padding: 4px
+    .ico-container
+        width: fit-content
+
+    span
+        color: var(--color-red-400)
+
+    &:hover
+        span
+            color: var(--color-red-300)
+</style>

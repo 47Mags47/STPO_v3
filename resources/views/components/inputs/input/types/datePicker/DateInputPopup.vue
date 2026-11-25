@@ -93,11 +93,11 @@ export default {
             return Interval.fromDateTimes(this.startOfMonth, this.endOfMonth).contains(date)
         },
 
-        dayClickHandler(date){
+        dayClickHandler(e, date){
             if(this.isDisabled(date))
                 return
 
-            this.onClick(date)
+            this.onClick(e, date)
         },
 
         setMonthHandler(option){
@@ -242,7 +242,7 @@ export default {
                                     'disabled'      : isDisabled(dayInterval.start),
                                     'in-range'      : isInRange(dayInterval.start)
                                 }"
-                                @click="() => dayClickHandler(dayInterval.start)"
+                                @click="(e) => dayClickHandler(e, dayInterval.start)"
                             >
                                 {{ dayInterval.start.day }}
                             </div>
@@ -288,9 +288,7 @@ export default {
             flex: 1
             display: flex
             gap: 10px
-            .month-select
-                flex: 1
-            .year-select
+            .month-select, .year-select
                 flex: 1
     .content-container
         padding: 5px

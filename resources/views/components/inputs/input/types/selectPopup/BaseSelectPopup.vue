@@ -94,7 +94,7 @@ export default {
             },
             immediate: true
         }
-    }
+    },
 }
 </script>
 
@@ -112,7 +112,12 @@ export default {
                     <span> {{ placeholder }} </span>
                 </div>
 
-                <input v-if="value" type="hidden" :name :value>
+                <template v-if="Array.isArray(value)">
+                    <input v-for="val in value" type="hidden" :name="`${name}[]`" :value="val" />
+                </template>
+                <template v-if="Number.isInteger(value)">
+                    <input type="hidden" :name="`${name}`" :value />
+                </template>
 
                 <BlueButton v-if="!isFilter" @click.stop="openClickHandler" :disabled>
                     <Ico :type="icoButton" />

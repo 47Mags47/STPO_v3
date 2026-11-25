@@ -29,7 +29,7 @@ export default {
     flex-shrink: 0
 
     &:checked
-        background-color: var(--button-background-color)
+        background-color: var(--checkbox-on-background)
 
     &:checked::after
         content: ""

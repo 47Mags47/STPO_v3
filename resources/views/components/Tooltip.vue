@@ -23,12 +23,12 @@ export default {
 
     width: max-content
     max-width: min(280px, calc(100vw - 16px))
-    padding: 8px 12px
+    padding: 5px 8px
 
     color: #f1f5f9
     background: var(--tooltip-background)
 
-    font-size: 12px
+    font-size: 13px
     font-weight: 500
     line-height: 1.5
     letter-spacing: .15px
