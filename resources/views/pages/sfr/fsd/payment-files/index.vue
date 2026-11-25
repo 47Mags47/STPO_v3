@@ -30,6 +30,12 @@ export default {
                 width: '100px',
                 position: 'center-left'
             },
+            {
+                title: 'Ошибок',
+                dataIndex: 'file.errors',
+                width: '100px',
+                position: 'center-left'
+            },
         ]"
     />
 </template>
