@@ -77,8 +77,6 @@ class ReadPaymentFileChunkJob implements ShouldQueue
 
     public function handle(): void
     {
-        $in_date = $this->paymentFile->in_date;
-
         $errors = [];
         $batches = [];
         foreach ($this->lines as $line) {
@@ -98,7 +96,7 @@ class ReadPaymentFileChunkJob implements ShouldQueue
                 'first_name'                => $row[$this->ROW_KEYS['FIRST_NAME']['row_number']],
                 'SNILS'                     => $row[$this->ROW_KEYS['SNILS']['row_number']],
                 'amount'                    => $row[$this->ROW_KEYS['AMOUNT']['row_number']],
-                'file_in_date'              => $in_date,
+                'file_in_date'              => $this->paymentFile->in_date,
 
                 'asp_payment_category_id'   => $this->ASPPaymentCategories[$row[$this->ROW_KEYS['ASP_CATEGORY']['row_number']]]->id,
                 'financing_type_id'         => $this->financingTypes[$row[$this->ROW_KEYS['FINANCING_TYPE']['row_number']]]->id,
