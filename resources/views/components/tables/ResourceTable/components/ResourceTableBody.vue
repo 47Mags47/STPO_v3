@@ -73,6 +73,23 @@ export default {
                 ? visible(row)
                 : visible ?? true
         },
+        checkRowHasShowButton(row) {
+            return typeof this.hasShowButton === 'function'
+                ? this.hasShowButton(row)
+                : this.hasShowButton
+        },
+        checkRowHasEditButton(row) {
+            return typeof this.hasEditButton === 'function'
+                ? this.hasEditButton(row)
+                : this.hasEditButton
+        },
+        checkRowHasDeleteButton(row) {
+            return typeof this.hasDeleteButton === 'function'
+                ? this.hasDeleteButton(row)
+                : this.hasDeleteButton
+        },
+
+        // GETTERS
         getCellRowspan(row, column, index) {
             if (typeof column.rowspan === 'function') {
                 return column.rowspan(row, index, this.data)
@@ -97,24 +114,6 @@ export default {
 
             return Object.get(row, column.dataIndex)
         },
-
-        checkRowHasShowButton(row) {
-            return typeof this.hasShowButton === 'function'
-                ? this.hasShowButton(row)
-                : this.hasShowButton
-        },
-        checkRowHasEditButton(row) {
-            return typeof this.hasEditButton === 'function'
-                ? this.hasEditButton(row)
-                : this.hasEditButton
-        },
-        checkRowHasDeleteButton(row) {
-            return typeof this.hasDeleteButton === 'function'
-                ? this.hasDeleteButton(row)
-                : this.hasDeleteButton
-        },
-
-        // GETTERS
         getRowClasses(row) {
             if (this.rowClasses === null)
                 return
