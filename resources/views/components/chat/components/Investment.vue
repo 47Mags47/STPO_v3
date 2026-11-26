@@ -129,8 +129,6 @@ export default {
 
         color: var(--text-color)
 
-        transition: .5s
-
         cursor: pointer
         &:hover
             color: var(--text-hover-color)

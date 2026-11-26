@@ -81,7 +81,6 @@ export default {
 
     cursor: pointer
 
-    transition: .5s
     &.disabled
         cursor: not-allowed
         background: #ccc !important
