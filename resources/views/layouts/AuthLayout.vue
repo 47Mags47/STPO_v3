@@ -16,7 +16,7 @@ export default {
     <BaseLayout name="auth-layout">
         <Header />
         <SubHeader />
-        <div class="content" @scroll="scrollHandler">
+        <div class="content">
             <slot />
         </div>
     </BaseLayout>
