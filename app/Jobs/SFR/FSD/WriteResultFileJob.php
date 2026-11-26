@@ -14,7 +14,7 @@ class WriteResultFileJob implements ShouldQueue
 
     public $timeout = 60;
 
-    const CHUNK_SIZE = 5;
+    const CHUNK_SIZE = 1000;
 
     public function __construct(public ResultFile $resultFile)
     {

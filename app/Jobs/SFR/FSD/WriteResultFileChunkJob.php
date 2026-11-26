@@ -82,6 +82,7 @@ class WriteResultFileChunkJob implements ShouldQueue
                 continue;
 
             // Получаем снилс
+            $rawLine = mb_convert_encoding($rawLine, 'UTF-8', 'CP-866');
             $snils = mb_substr($rawLine, 1, 14);
             if (!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}$/", $snils))
                 continue;
@@ -146,8 +147,8 @@ class WriteResultFileChunkJob implements ShouldQueue
 
         foreach ($persons as $snils => $person) {
             $persons[$snils] = array_merge($persons[$snils], [
-                'payments' => $payments->has($person['SNILS']) ? $payments[$person['SNILS']] : [],
-                'transits' => $transits->has($person['SNILS']) ? $transits[$person['SNILS']] : [],
+                'payments' => $payments->get($person['SNILS'], collect()),
+                'transits' => $transits->get($person['SNILS'], collect()),
             ]);
         }
 
