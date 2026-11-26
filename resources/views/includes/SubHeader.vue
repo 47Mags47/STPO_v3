@@ -14,13 +14,6 @@ export default {
         }
     },
 
-    data() {
-        return {
-            scrollTop: 0,
-        };
-    },
-
-
     methods: {
 
     },

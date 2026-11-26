@@ -9,31 +9,13 @@ export default {
         Header,
         SubHeader,
     },
-
-    data() {
-        return {
-            scrollTop: 0,
-        }
-    },
-
-    methods: {
-        scrollHandler(e) {
-            this.scrollTop = e.target.scrollTop
-        },
-    },
-
-    computed: {
-        subHeaderClass() {
-            return this.scrollTop > 300 ? 'max-h-0' : 'max-h-[40px]'
-        }
-    }
 };
 </script>
 
 <template>
     <BaseLayout name="auth-layout">
         <Header />
-        <SubHeader :class-wrapper="subHeaderClass"/>
+        <SubHeader />
         <div class="content" @scroll="scrollHandler">
             <slot />
         </div>
