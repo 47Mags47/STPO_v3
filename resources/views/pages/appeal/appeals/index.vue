@@ -131,12 +131,14 @@ export default {
                 type: 'multiSelect',
                 label: 'Тема',
                 name: 'theme_ids',
+                placeholder: 'Тема: выбрано -',
                 options: themes,
             },
             {
                 type: 'multiSelect',
                 label: 'Статус',
                 name: 'status_ids',
+                placeholder: 'Статус: выбрано -',
                 options: statuses,
             },
         ]"
@@ -144,36 +146,45 @@ export default {
             {
                 title: 'ID',
                 dataIndex: 'id',
-                width: '75px',
+                width: '140px',
+                hasSort: true,
             },
             {
                 title: 'Создана',
                 type: 'datetime',
                 dataIndex: 'created_at',
-                width: '135px',
-                filterName: 'created_at'
+                width: '160px',
+                filterName: 'created_at',
+                sortName: 'created_at',
+                hasSort: true,
             },
             {
                 title: 'Отправитель',
                 width: '250px',
                 value: (row) => row.sender.full_name,
-                filterName: 'sender_ids'
+                filterName: 'sender_ids',
             },
             {
                 title: 'Тема',
                 width: '300px',
                 value: (row) => `${row.theme.group.name}<br>${row.theme.name}`,
-                filterName: 'theme_ids'
+                filterName: 'theme_ids',
+                hasSort: true,
+                sortName: 'theme.name',
+                hasSort: true,
             },
             {
                 title: 'Комментарий',
                 dataIndex: 'comment',
+                sortName: 'sender.full_name',
+                hasSort: true,
             },
             {
                 title: 'Статус',
                 dataIndex: 'status.name',
                 width: '125px',
                 filterName: 'status_ids',
+                sortName: 'sender.full_name',
                 cellClasses: (value, row) => (
                     {
                         new:            'text-(--appeal-status-new)!',
@@ -181,7 +192,7 @@ export default {
                         in_work:        'text-(--appeal-status-work)!',
                         reaccepted:     'text-(--appeal-status-reaccepted)!',
                     }[row.status.code] ?? ''
-                )
+                ),
             },
             {
                 // Перейти или принять

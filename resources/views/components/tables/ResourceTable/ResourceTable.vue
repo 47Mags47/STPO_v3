@@ -144,6 +144,7 @@ export default {
             this.columns.forEach(column => {
                 values.push({
                     title: column.title,
+                    sortName: column.hasSort ? (column.dataIndex ?? column.sortName) : null,
                     isFiltered: column.filterName
                         ? Object.entries(this.cachedFilters.urlParams ?? {}).some(
                             ([key, value]) =>

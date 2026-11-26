@@ -80,8 +80,13 @@ export {
 
     LogOut                      as 'logout',
 
-    CircleQuestionMark,
-
     CornerUpRight               as 'corner-up-right',
     Info                        as 'info',
+
+    Funnel                      as 'funnel',
+
+    ArrowUpAZ                   as 'arrow-up-a-z',
+    ArrowDownZA                 as 'arrow-down-z-a',
+
+    CircleQuestionMark,
 } from '@lucide/vue';
