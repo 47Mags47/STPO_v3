@@ -104,6 +104,8 @@ export default {
 
     transition: .2s
 
+    color: white
+
     &.isActive
         opacity: 1
         border-color: var(--blue-color)

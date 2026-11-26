@@ -1,9 +1,9 @@
 <script>
 import BlueButton from '../../../buttons/BlueButton.vue';
 import RedButton from '../../../buttons/RedButton.vue';
-import DragAndDropZone from '../../../DragAndDropZone.vue';
 import Ico from '../../../Ico.vue';
 import UploadFile from '../../../UploadFile.vue';
+import DragAndDropFull from '../../../DragAndDropFull.vue';
 
 export default {
     components: {
@@ -11,7 +11,7 @@ export default {
         BlueButton,
         RedButton,
         UploadFile,
-        DragAndDropZone,
+        DragAndDropFull
     },
     props: {
         name: {
@@ -72,7 +72,7 @@ export default {
             />
         </div>
 
-        <DragAndDropZone :onDrop="dropFilesHandler" />
+        <DragAndDropFull :on-drop="dropFilesHandler" />
 
         <div class="add-file-container">
             <RedButton class="list-action-button clear-file-list-button" :onClick="clearFileListButtonClickHandler">
