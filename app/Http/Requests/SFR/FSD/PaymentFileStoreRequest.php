@@ -15,7 +15,7 @@ class PaymentFileStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'in_date'           => ['required', 'date'],
+            'in_date'           => ['required', 'date_format:Y-m'],
             'file_ids'          => ['required', 'array'],
             'file_ids.*'        => ['exists:' . UploadFile::class . ',id'],
         ];

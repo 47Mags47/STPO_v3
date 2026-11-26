@@ -23,6 +23,7 @@ export default {
                 name: 'category_id',
                 label: 'Категория',
                 options: categories,
+                hasSearch: true
             },
             {
                 type: 'number',

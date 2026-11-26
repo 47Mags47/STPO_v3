@@ -144,6 +144,7 @@ export default {
             this.columns.forEach(column => {
                 values.push({
                     title: column.title,
+                    sortName: column.hasSort ? (column.dataIndex ?? column.sortName) : null,
                     isFiltered: column.filterName
                         ? Object.entries(this.cachedFilters.urlParams ?? {}).some(
                             ([key, value]) =>
@@ -204,6 +205,7 @@ export default {
 
 <template>
     <Table class="resource-table">
+        <!-- HEADER -->
         <template #toolbar-left>
             <slot name="toolbar-left" />
             <ResourceTableToolbarLeft
@@ -221,6 +223,7 @@ export default {
             <slot name="toolbar-right" />
             <ResourceTableToolbarRight
                 :has-create-button
+                :actions
                 :on-create="onCreateButtonClick"
             />
         </template>
@@ -234,14 +237,15 @@ export default {
             />
         </template>
 
+        <!-- CONTENT -->
         <template #colgroup>
             <col v-for="column in columns"  :width="column.width ?? 'auto'"/>
-            <col v-for="link in rowLinks"   :width="link.width ?? 'auto'"/>
-            <col v-for="action in actions"  :width="action.width ?? 'auto'"/>
 
             <col v-if="hasDeleteButton  && data.length > 0" width="60px" />
             <col v-if="hasShowButton    && data.length > 0" width="60px" />
             <col v-if="hasEditButton    && data.length > 0" width="60px" />
+
+            <col v-for="link in rowLinks"   :width="link.width ?? '60px'"/>
         </template>
 
         <template v-if="data.length > 0" #thead>
@@ -264,6 +268,7 @@ export default {
             />
         </template>
 
+        <!-- FOOTER -->
         <template v-if="meta.last_page > 1" #paginator-bottom>
             <Paginator v-bind="meta" />
         </template>

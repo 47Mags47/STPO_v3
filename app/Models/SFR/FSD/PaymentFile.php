@@ -3,8 +3,10 @@
 namespace App\Models\SFR\FSD;
 
 use App\Classes\FileModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class PaymentFile extends FileModel
 {
@@ -23,8 +25,16 @@ class PaymentFile extends FileModel
     protected function casts(): array
     {
         return [
-            'in_date' => 'date',
+            'in_date' => 'datetime:Y-m',
         ];
+    }
+
+    protected function inDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::make($value),
+            set: fn (string $value) => Carbon::make($value)->startOfMonth()->format('Y-m-d'),
+        );
     }
 
     public static string|null $storage_file_disk = 'fsd';

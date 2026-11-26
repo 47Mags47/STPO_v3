@@ -62,9 +62,6 @@ export default {
     display: flex
     cursor: pointer
     padding: 7px
-    transition: background-color .5s ease
-    span
-        transition: color .5s ease
 
     @include input()
 

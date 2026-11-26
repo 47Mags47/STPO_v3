@@ -73,14 +73,12 @@ export default {
     width: 100%
     height: 100%
 
-    color: var(--text-color)
-
-    :deep()
-        form
-            .form-header-container
-                padding-bottom: 20px
-                text-align: center
-                font-weight: bold
-            .form-footer-container
-                margin-top: 10px
+    form
+        box-shadow: var(--shadow-color)
+        .form-header-container
+            padding-bottom: 20px
+            text-align: center
+            font-weight: bold
+        .form-footer-container
+            margin-top: 10px
 </style>

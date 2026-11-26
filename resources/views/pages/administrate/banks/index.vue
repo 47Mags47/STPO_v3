@@ -31,5 +31,12 @@ export default {
                 dataIndex: 'name',
             },
         ]"
+        :rowLinks="[
+            {
+                'ico': 'file',
+                'onClick': (bank) => {},
+                width: '100px'
+            }
+        ]"
     />
 </template>

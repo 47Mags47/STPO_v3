@@ -26,4 +26,5 @@ export default {
     <MultiSelectFilter        v-if="type === 'multiSelect'"        v-bind="$attrs" />
     <MultiSelectPopupFilter   v-if="type === 'multiSelectPopup'"   v-bind="$attrs" />
     <DateFilter               v-if="type === 'date'"               v-bind="$attrs" />
+    <DateFilter               v-if="type === 'month'"              v-bind="$attrs"  mode="month"/>
 </template>

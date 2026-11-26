@@ -308,7 +308,6 @@ export default {
                     transform: rotate(540deg)
 
             .filter-btn-item-icon
-                color: lightgray
                 height: 100%
                 width: fit-content
                 transition: .2s ease

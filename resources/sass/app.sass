@@ -21,9 +21,15 @@
 #app
     transform-origin: center center
 
+    input, button
+        transition: border-color .5s ease, color .5s ease, background-color .5s ease, border-radius .5s ease
+        span, p
+            transition: color .5s ease
+
     &.shake
         animation: page-shake 1s ease-in-out
 
+// ПАСХАЛКИ
 @keyframes page-shake
     0%
         transform: translate(0, 0) skew(0, 0) scale(1)

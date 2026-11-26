@@ -11,7 +11,7 @@ class SFRFileStoreRequest extends FormRequest
     {
         return [
             'file_id'       => ['required', 'exists:' . UploadFile::class . ',id'],
-            'in_date'       => ['required', 'date']
+            'in_date'       => ['required', 'date_format:Y-m'],
         ];
     }
 }

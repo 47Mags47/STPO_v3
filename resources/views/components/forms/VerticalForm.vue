@@ -34,7 +34,7 @@ export default {
             padding: 25px
 
             border-radius: $border-radius
-            border: var(--border)
+
             .form-body-container
                 display: flex
                 flex-direction: column
