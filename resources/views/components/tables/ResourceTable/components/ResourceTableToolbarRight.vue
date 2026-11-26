@@ -32,19 +32,17 @@ export default {
 
 <template>
     <div class="toolbar-right-wrapper">
-        <div class="table-actions-container">
+        <div class="resource-table-actions-container">
             <slot name="actions" />
-            <div class="resource-table-actions-container">
-                <template v-for="action in actions">
-                    <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
-                        <Ico :type="action.ico" />
-                    </BlueButton>
-                    <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
-                        <Ico :type="action.ico" />
-                    </RedButton>
-                </template>
-                <CreateButton v-if="hasCreateButton" @click="onCreate" />
-            </div>
+            <template v-for="action in actions">
+                <BlueButton v-if="action.color === undefined || action.color === 'blue'" :onClick="action.onClick">
+                    <Ico :type="action.ico" />
+                </BlueButton>
+                <RedButton v-if="action.color === 'red'" :onClick="action.onClick">
+                    <Ico :type="action.ico" />
+                </RedButton>
+            </template>
+            <CreateButton v-if="hasCreateButton" @click="onCreate" />
         </div>
     </div>
 </template>
@@ -57,7 +55,7 @@ export default {
     align-items: center
     justify-content: end
 
-    .table-actions-container
+    .resource-table-actions-container
         display: flex
         gap: 10px
         .button
