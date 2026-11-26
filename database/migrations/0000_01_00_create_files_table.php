@@ -55,7 +55,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('base__file_chunks', function (Blueprint $table) {
+        Schema::create('base__file_upload_chunks', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('file_id')->constrained(File::getTableName())
@@ -64,6 +64,16 @@ return new class extends Migration
             $table->foreignId('upload_file_id')->constrained(UploadFile::getTableName());
             $table->boolean('uploaded')->default(false);
             $table->integer('npp');
+
+            $table->timestamps();
+        });
+
+        Schema::create('base__file_parts', function (Blueprint $table) {
+            $table->id();
+
+            $table->integer('npp');
+            $table->foreignId('file_id')->constrained(File::getTableName())->cascadeOnDelete();
+            $table->foreignId('parent_id')->constrained(File::getTableName())->cascadeOnDelete();
 
             $table->timestamps();
         });

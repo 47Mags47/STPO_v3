@@ -119,6 +119,21 @@ class File extends BaseModel
     }
 
     /**
+     * create part to file
+     * @param ?int $npp - номер части по порядку
+     */
+    public function createPart(?int $npp = null): FilePart
+    {
+        if($npp === null)
+            $npp = $this->parts()->count() + 1;
+
+        return $this::createAndLinkToChild(FilePart::class, [
+            'npp' => $npp,
+            'parent_id' => $this->id
+        ]);
+    }
+
+    /**
      * Adds an error to the record
      * @param string $error
      */
@@ -250,5 +265,10 @@ class File extends BaseModel
     public function errors(): HasMany
     {
         return $this->hasMany(FileError::class, 'file_id');
+    }
+
+    public function parts(): HasMany
+    {
+        return $this->hasMany(FilePart::class, 'parent_id');
     }
 }

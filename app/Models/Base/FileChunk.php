@@ -12,7 +12,7 @@ class FileChunk extends FileModel
 
     ### Настройки
     ##################################################
-    protected $table = 'base__file_chunks';
+    protected $table = 'base__file_upload_chunks';
 
     protected $fillable = [
         'upload_file_id',

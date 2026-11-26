@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use App\Events\Base\FileChangeStatusEvent;
 use App\Models\Base\File;
+use App\Models\Base\FilePart;
 use App\Models\Base\FileStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -113,6 +114,16 @@ abstract class FileModel extends BaseModel
 
     ### Методы модели
     ##################################################
+    /**
+     * create part to file
+     * @param ?int $npp - номер части по порядку
+     */
+    public function createPart(?int $npp = null): FilePart
+    {
+        return $this->file->createPart($npp);
+    }
+
+
     /**
      * Adds an error to the record
      * @param string $error

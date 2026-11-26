@@ -131,6 +131,7 @@ if (! function_exists('snakeCase')) {
         return \Illuminate\support\Str::snake($string);
     }
 }
+
 if (! function_exists('stringDotToSlash')) {
     /**
      * Заменяет точки в строке на слеши
@@ -141,5 +142,33 @@ if (! function_exists('stringDotToSlash')) {
     function stringDotToSlash(string $string): string
     {
         return str_replace('.', '/', $string);
+    }
+}
+
+if (! function_exists('openFile')) {
+    function openFile(FileModel $file, ?string $mod = 'rb')
+    {
+        $fromPath = $file->fullPath;
+
+        if (!is_file($fromPath)) {
+            $file->setStatus('error');
+            $file->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Исходный файл не найден: ' . $fromPath);
+        }
+
+        if (!is_readable($fromPath)) {
+            $file->setStatus('error');
+            $file->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Исходный файл недоступен для чтения: ' . $fromPath);
+        }
+
+        $from = @fopen($fromPath, $mod);
+        if ($from === false) {
+            $file->setStatus('error');
+            $file->addError('Ошибка чтения файла');
+            throw new \RuntimeException('Не удалось открыть исходный файл: ' . $fromPath);
+        }
+
+        return $from;
     }
 }
