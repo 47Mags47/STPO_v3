@@ -27,6 +27,8 @@ export default {
         return {
             localValue: null,
             meteorVisible: false,
+            infectionVisible: false,
+            kittyVisible: false,
         };
     },
 
@@ -36,6 +38,10 @@ export default {
 
             if (this.localValue.trim().toLowerCase() === "метеор" && !this.meteorVisible)
                 this.meteorVisible = true;
+            if (this.localValue.trim().toLowerCase() === "вирус" && !this.infectionVisible)
+                this.infectionVisible = true;
+            if (this.localValue.trim().toLowerCase() === "мяу" && !this.kittyVisible)
+                this.kittyVisible = true;
 
             this.onInput(event)
         },
@@ -62,7 +68,9 @@ export default {
             :on-input="inputHandler"
         />
 
-        <Pashalka v-if="meteorVisible" type="meteor" :on-finish="() => meteorVisible = false" />
+        <Pashalka v-if="meteorVisible"    type="meteor"     :on-finish="() => meteorVisible = false" />
+        <Pashalka v-if="infectionVisible" type="infection"  :on-finish="() => infectionVisible = false" />
+        <Pashalka v-if="kittyVisible"     type="kitty"      :on-finish="() => kittyVisible = false" />
     </div>
 </template>
 

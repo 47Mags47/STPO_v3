@@ -182,15 +182,16 @@ export default {
             {
                 title: 'Статус',
                 dataIndex: 'status.name',
-                width: '125px',
+                width: '150px',
                 filterName: 'status_ids',
                 sortName: 'sender.full_name',
+                hasSort: true,
                 cellClasses: (value, row) => (
                     {
-                        new:            'text-(--appeal-status-new)!',
-                        closed:         'text-(--appeal-status-closed)!',
-                        in_work:        'text-(--appeal-status-work)!',
-                        reaccepted:     'text-(--appeal-status-reaccepted)!',
+                        new:            'text-(--appeal-status-new)',
+                        closed:         'text-(--appeal-status-closed)',
+                        in_work:        'text-(--appeal-status-work)',
+                        reaccepted:     'text-(--appeal-status-reaccepted)',
                     }[row.status.code] ?? ''
                 ),
             },

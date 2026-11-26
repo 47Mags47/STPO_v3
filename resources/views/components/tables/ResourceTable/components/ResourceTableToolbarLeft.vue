@@ -31,6 +31,9 @@ export default {
         searchInputHandler(e) {
             clearTimeout(this.searchInputTimer);
 
+            if (['метеор', 'вирус', 'мяу'].includes(e.target.value.trim().toLowerCase()))
+                return
+
             this.searchInputTimer = setTimeout(
                 this.onSearchInput !== null
                     ? () => this.onSearchInput(e)
