@@ -133,6 +133,27 @@ class File extends BaseModel
         ]);
     }
 
+    public function mergeParts(): self
+    {
+        // очищаем содержимое файла
+        $this->write('');
+
+        // Пишем данные
+        $toFileCursor = openFile($this, 'wb');
+
+        $parts = $this->parts()->orderBy('npp')->get();
+        foreach ($parts as $part) {
+            $fromFileCursor = openFile($part);
+
+            stream_copy_to_stream($fromFileCursor, $toFileCursor);
+            fclose($fromFileCursor);
+        }
+
+        fclose($toFileCursor);
+
+        return $this;
+    }
+
     /**
      * Adds an error to the record
      * @param string $error

@@ -123,6 +123,13 @@ abstract class FileModel extends BaseModel
         return $this->file->createPart($npp);
     }
 
+    public function mergeParts(): self
+    {
+        $this->file->mergeParts();
+
+        return $this;
+}
+
 
     /**
      * Adds an error to the record

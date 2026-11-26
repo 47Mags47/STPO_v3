@@ -1,6 +1,7 @@
 <?php
 
 use App\Classes\FileModel;
+use App\Models\Base\File;
 use App\Models\Base\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -146,7 +147,7 @@ if (! function_exists('stringDotToSlash')) {
 }
 
 if (! function_exists('openFile')) {
-    function openFile(FileModel $file, ?string $mod = 'rb')
+    function openFile(File|FileModel $file, ?string $mod = 'rb')
     {
         $fromPath = $file->fullPath;
 

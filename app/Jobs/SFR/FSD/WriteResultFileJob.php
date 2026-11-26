@@ -3,6 +3,7 @@
 namespace App\Jobs\SFR\FSD;
 
 use App\Models\SFR\FSD\ResultFile;
+use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -32,7 +33,7 @@ class WriteResultFileJob implements ShouldQueue
         while (($rawLine = fgets($fromFileCursor)) !== false) {
             $rowCount++;
 
-            if($rowCount % self::CHUNK_SIZE === 0) {
+            if ($rowCount % self::CHUNK_SIZE === 0) {
                 $offsets[] = ftell($fromFileCursor);
             }
         }
@@ -46,7 +47,12 @@ class WriteResultFileJob implements ShouldQueue
             $batches[] = new WriteResultFileChunkJob($this->resultFile, $part, $offset, self::CHUNK_SIZE);
         }
 
+        $file = $this->resultFile;
         Bus::batch($batches)
+            ->finally(function (Batch $batch) use ($file) {
+                $file->mergeParts();
+                $file->setStatus('ok');
+            })
             ->onQueue('SFR-FSD')
             ->dispatch();
     }
