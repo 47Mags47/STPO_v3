@@ -80,9 +80,9 @@ export default {
 .column-indicators
     display: flex
     gap: 5px
+    flex-shrink: 0
 
     .ico-container
-        flex-shrink: 0
         width: fit-content
         color: var(--color-amber-600)
 </style>
