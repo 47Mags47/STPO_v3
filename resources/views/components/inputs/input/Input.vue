@@ -37,10 +37,10 @@ export default {
             default: 'string',
             validator(value) {
                 const validTypes = [
-                    'string', 'text', 'number', 'phone', 'email', 'search',
-                    'password', 'checkbox', 'radio', 'switcher',
+                    'string', 'text', 'number', 'phone', 'email', 'search', 'password',
+                    'checkbox', 'radio', 'switcher',
                     'bigFile', 'bigFiles',
-                    'date',
+                    'date', 'month',
                     'monthSelect', 'yearSelect', 'singleSelect', 'multiSelect',
                     'singleSelectPopup', 'multiSelectPopup'
                 ];
@@ -59,29 +59,30 @@ export default {
 
 <template>
     <!-- SIMPLE -->
-    <StringInput            v-if="type === 'string'"                v-bind="$attrs" />
-    <TextInput              v-if="type === 'text'"                  v-bind="$attrs" />
-    <NumberInput            v-if="type === 'number'"                v-bind="$attrs" />
-    <PhoneInput             v-if="type === 'phone'"                 v-bind="$attrs" />
-    <EmailInput             v-if="type === 'email'"                 v-bind="$attrs" />
-    <PasswordInput          v-if="type === 'password'"              v-bind="$attrs" />
-    <SearchInput            v-if="type === 'search'"                v-bind="$attrs" />
+    <StringInput            v-if="type === 'string'"                                v-bind="$attrs" />
+    <TextInput              v-if="type === 'text'"                                  v-bind="$attrs" />
+    <NumberInput            v-if="type === 'number'"                                v-bind="$attrs" />
+    <PhoneInput             v-if="type === 'phone'"                                 v-bind="$attrs" />
+    <EmailInput             v-if="type === 'email'"                                 v-bind="$attrs" />
+    <PasswordInput          v-if="type === 'password'"                              v-bind="$attrs" />
+    <SearchInput            v-if="type === 'search'"                                v-bind="$attrs" />
 
-    <Checkbox               v-if="type === 'checkbox'"              v-bind="$attrs" />
-    <Radio                  v-if="type === 'radio'"                 v-bind="$attrs" />
-    <SwitcherInput          v-if="type === 'switcher'"              v-bind="$attrs" />
+    <Checkbox               v-if="type === 'checkbox'"                              v-bind="$attrs" />
+    <Radio                  v-if="type === 'radio'"                                 v-bind="$attrs" />
+    <SwitcherInput          v-if="type === 'switcher'"                              v-bind="$attrs" />
 
-    <BigFileInput           v-if="type === 'bigFile'"               v-bind="$attrs" />
-    <BigFilesInput          v-if="type === 'bigFiles'"              v-bind="$attrs" />
+    <BigFileInput           v-if="type === 'bigFile'"                               v-bind="$attrs" />
+    <BigFilesInput          v-if="type === 'bigFiles'"                              v-bind="$attrs" />
 
-    <DatePicker             v-if="type === 'date'"                  v-bind="$attrs" />
+    <DatePicker             v-if="type === 'date'"                                  v-bind="$attrs" />
+    <DatePicker             v-if="type === 'month'"                 mode="month"    v-bind="$attrs" />
 
     <!-- SELECTS -->
-    <MonthSelect            v-if="type === 'monthSelect'"           v-bind="$attrs" />
-    <YearSelect             v-if="type === 'yearSelect'"            v-bind="$attrs" />
-    <MultiSelect            v-if="type === 'multiSelect'"           v-bind="$attrs" />
-    <SingleSelect           v-if="type === 'singleSelect'"          v-bind="$attrs" />
+    <MonthSelect            v-if="type === 'monthSelect'"                           v-bind="$attrs" />
+    <YearSelect             v-if="type === 'yearSelect'"                            v-bind="$attrs" />
+    <MultiSelect            v-if="type === 'multiSelect'"                           v-bind="$attrs" />
+    <SingleSelect           v-if="type === 'singleSelect'"                          v-bind="$attrs" />
 
-    <SingleSelectPopup      v-if="type === 'singleSelectPopup'"     v-bind="$attrs" />
-    <MultiSelectPopup       v-if="type === 'multiSelectPopup'"      v-bind="$attrs" />
+    <SingleSelectPopup      v-if="type === 'singleSelectPopup'"                     v-bind="$attrs" />
+    <MultiSelectPopup       v-if="type === 'multiSelectPopup'"                      v-bind="$attrs" />
 </template>

@@ -16,10 +16,9 @@ export default {
         :action="route('sfr.fsd.payment-files.store', { sfrFile: route().params.sfrFile })"
         :inputs="[
             {
-                type: 'date',
+                type: 'month',
                 name: 'in_date',
                 label: 'На дату',
-                mode: 'month',
             },
             {
                 type: 'bigFiles',

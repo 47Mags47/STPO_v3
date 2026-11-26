@@ -15,7 +15,7 @@ export default {
         :action="route('sfr.fsd.sfr-files.store')"
         :inputs="[
             {
-                type: 'date',
+                type: 'month',
                 name: 'in_date',
                 label: 'Месяц',
             },
