@@ -169,7 +169,7 @@ export default {
                 this.lastClickedElement = null;
             }, 1000);
 
-            if (this.clickCount < 3) return;
+            if (this.clickCount < 5) return;
 
             event.preventDefault();
             event.stopPropagation();
