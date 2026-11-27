@@ -140,5 +140,10 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('dates/{date}/reports',                         App\Http\Controllers\Veteran\ReportController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
             Route::get('/report',                                           [App\Http\Controllers\Veteran\ReportController::class, 'report'])->name('report');
         });
+
+        Route::name('telephone.')->prefix('/telephone')->group(function () {
+            Route::resource('/accesses',                                    App\Http\Controllers\Telephone\AccessController::class)->only(['index', 'create', 'store']);
+            Route::resource('/glossary',                                    App\Http\Controllers\Telephone\GlossaryController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+        });
     });
 });

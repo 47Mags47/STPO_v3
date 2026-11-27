@@ -154,6 +154,7 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('appeals')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('appeal_theme'));
+
         ### Veteran
         ##################################################
         $modul = Modul::firstOrCreate([
@@ -179,5 +180,21 @@ class ModulSeeder extends Seeder
             'group_id'      => ModulGroup::byCode('veteran')->id,
         ]);
         $modul->permissions()->attach(Permission::byCode('veteran_worker'));
+
+        ### Telephone directory
+        ##################################################
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Справочник',
+            'route_name'    => 'telephone.glossary',
+            'group_id'      => ModulGroup::byCode('telephone')->id,
+        ]);
+
+        $modul = Modul::firstOrCreate([
+            'in_production' => true,
+            'name'          => 'Доступ',
+            'route_name'    => 'telephone.access',
+            'group_id'      => ModulGroup::byCode('telephone')->id,
+        ]);
     }
 }

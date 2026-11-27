@@ -12,10 +12,11 @@ class ModulGroupSeeder extends Seeder
      */
     public function run(): void
     {
-        ModulGroup::firstOrCreate(['code' => 'administrate',   'name' => 'Администрирование']);
-        ModulGroup::firstOrCreate(['code' => 'FSD_reestrs',    'name' => 'Реестры ФСД']);
-        ModulGroup::firstOrCreate(['code' => 'payments',       'name' => 'Выплаты']);
-        ModulGroup::firstOrCreate(['code' => 'appeals',        'name' => 'Обращения']);
-        ModulGroup::firstOrCreate(['code' => 'veteran',        'name' => 'Ветеран труда']);
+        ModulGroup::firstOrCreate(['code' => 'administrate',        'name' => 'Администрирование']);
+        ModulGroup::firstOrCreate(['code' => 'FSD_reestrs',         'name' => 'Реестры ФСД']);
+        ModulGroup::firstOrCreate(['code' => 'payments',            'name' => 'Выплаты']);
+        ModulGroup::firstOrCreate(['code' => 'appeals',             'name' => 'Обращения']);
+        ModulGroup::firstOrCreate(['code' => 'veteran',             'name' => 'Ветеран труда']);
+        ModulGroup::firstOrCreate(['code' => 'telephone',           'name' => 'Телефонный справочник']);
     }
 }
